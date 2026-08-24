@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ActivityLog;
 use App\Models\BlogPost;
 use App\Models\Faq;
 use App\Models\Lead;
@@ -10,15 +11,13 @@ use App\Models\Portfolio;
 use App\Models\Service;
 use App\Models\Solution;
 use App\Models\Testimonial;
-use App\Models\ActivityLog;
-use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
     public function index()
     {
         $stats = [
-            'total_leads' => Lead::count(),
+            'leads' => Lead::count(),
             'new_leads' => Lead::where('status', 'new')->count(),
             'portfolios' => Portfolio::count(),
             'services' => Service::count(),
@@ -28,9 +27,9 @@ class DashboardController extends Controller
             'faqs' => Faq::count(),
         ];
 
-        $recentLeads = Lead::latest()->take(5)->get();
-        $recentActivities = ActivityLog::with('user')->latest()->take(10)->get();
+        $recentLeads = Lead::latest()->limit(10)->get();
+        $recentActivity = ActivityLog::with('user')->latest()->limit(15)->get();
 
-        return view('admin.dashboard', compact('stats', 'recentLeads', 'recentActivities'));
+        return view('admin.dashboard', compact('stats', 'recentLeads', 'recentActivity'));
     }
 }

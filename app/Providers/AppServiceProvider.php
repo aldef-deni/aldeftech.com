@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Http\Middleware\CheckRole;
 use App\Models\SiteSetting;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\View;
@@ -17,9 +16,6 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        // Register middleware aliases
-        $this->app['router']->alias('role', CheckRole::class);
-
         // Share site settings with all frontend views
         View::composer('layouts.app', function ($view) {
             $view->with('siteSettings', SiteSetting::getGroup('general'));

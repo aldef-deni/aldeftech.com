@@ -22,10 +22,10 @@ Route::get('/services', [ServiceController::class, 'index'])->name('services');
 Route::get('/solutions', [SolutionController::class, 'index'])->name('solutions');
 
 Route::get('/portfolio', [PortfolioController::class, 'index'])->name('portfolio');
-Route::get('/portfolio/{portfolio}', [PortfolioController::class, 'show'])->name('portfolio.show');
+Route::get('/portfolio/{portfolio:slug}', [PortfolioController::class, 'show'])->name('portfolio.show');
 
 Route::get('/blog', [BlogController::class, 'index'])->name('blog');
-Route::get('/blog/{post}', [BlogController::class, 'show'])->name('blog.show');
+Route::get('/blog/{post:slug}', [BlogController::class, 'show'])->name('blog.show');
 
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
