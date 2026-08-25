@@ -9,7 +9,11 @@ class FaqController extends Controller
 {
     public function index(Request $request)
     {
-        $faqs = Faq::published()->ordered()->get();
+        try {
+            $faqs = Faq::published()->ordered()->get();
+        } catch (\Throwable $e) {
+            $faqs = collect();
+        }
 
         // If no FAQs in DB yet or few, provide fallback curated items
         if ($faqs->isEmpty()) {

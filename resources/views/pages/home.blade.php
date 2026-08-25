@@ -23,7 +23,7 @@ $metaDescription = 'Aldef Tech adalah software development partner terpercaya un
                 {{-- Status Pill --}}
                 <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/[0.07] border border-white/15 backdrop-blur-md shadow-2xs mb-6 reveal">
                     <span class="status-dot status-dot-pulse"></span>
-                    <span class="text-xs font-semibold text-blue-200 tracking-wide uppercase">Software Engineering & AI Studio</span>
+                    <span class="text-xs font-semibold text-blue-200 tracking-wide uppercase">Software Engineering & AI Technology</span>
                 </div>
 
                 {{-- Main Headline --}}
@@ -306,10 +306,14 @@ $metaDescription = 'Aldef Tech adalah software development partner terpercaya un
 </section>
 
 {{-- ============================================================
-     4. WHY ALDEF TECH / THE ENGINEERING ADVANTAGE
+     4. WHY ALDEF TECH / THE ENGINEERING ADVANTAGE (SOFT PURPLE)
      ============================================================ --}}
-<section class="section-padding bg-slate-50/80 relative border-y border-slate-200/80" id="why-us">
-    <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
+<section class="section-padding bg-gradient-to-b from-[#FAF5FF] via-[#F5EEFB] to-[#FAF5FF] relative border-y border-purple-200/70 overflow-hidden" id="why-us">
+    {{-- Subtle Ambient Purple Glow --}}
+    <div class="absolute -top-32 -left-20 w-[450px] h-[450px] bg-purple-300/20 blur-[130px] rounded-full pointer-events-none"></div>
+    <div class="absolute -bottom-32 -right-20 w-[450px] h-[450px] bg-fuchsia-300/15 blur-[130px] rounded-full pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 relative z-10">
         
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center mb-16">
             
@@ -750,10 +754,19 @@ $metaDescription = 'Aldef Tech adalah software development partner terpercaya un
                 'btn_class' => 'text-cyan-700 hover:text-cyan-900'
             ],
         ];
+        @php
+        $filteredSolutions = $solutions->reject(function($sol) {
+            $t = strtolower($sol->title ?? '');
+            $s = strtolower($sol->slug ?? '');
+            return str_contains($t, 'dashboard') || str_contains($s, 'dashboard')
+                || str_contains($t, 'customer service') || str_contains($s, 'customer-service') || str_contains($t, 'ai cs')
+                || str_contains($t, 'custom system') || str_contains($s, 'custom-system')
+                || str_contains($t, 'business automation') || str_contains($s, 'business-automation') || str_contains($t, 'otomasi bisnis') || str_contains($t, 'automasi bisnis');
+        })->values();
         @endphp
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7">
-            @foreach($solutions as $index => $sol)
+            @foreach($filteredSolutions as $index => $sol)
             @php
                 $style = $solutionColors[$index % count($solutionColors)];
             @endphp
@@ -819,14 +832,14 @@ $metaDescription = 'Aldef Tech adalah software development partner terpercaya un
             <div class="absolute -bottom-24 -left-24 w-80 h-80 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
             
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center relative z-10">
-                {{-- CEO Photo (Prominent & Balanced) --}}
+                {{-- CEO Photo (Prominent, Taller & Top-Aligned) --}}
                 <div class="lg:col-span-5 flex justify-center">
-                    <div class="relative group w-full max-w-[320px] sm:max-w-[340px] lg:max-w-none">
+                    <div class="relative group w-full max-w-[340px] sm:max-w-[380px] lg:max-w-none">
                         {{-- Outer Soft Glow Frame --}}
                         <div class="absolute -inset-2 bg-gradient-to-tr from-blue-600 via-indigo-500 to-cyan-400 rounded-3xl opacity-20 blur-md group-hover:opacity-35 transition duration-500"></div>
                         
-                        <div class="relative aspect-[4/5] w-full rounded-2xl overflow-hidden border-2 border-white shadow-2xl bg-slate-900">
-                            <img src="{{ asset('images/deni-afrizal.jpg') }}" alt="{{ $ceoProfile->name }}" class="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105">
+                        <div class="relative aspect-[3/4.2] sm:h-[28rem] lg:h-[33rem] w-full rounded-2xl overflow-hidden border-2 border-white shadow-2xl bg-slate-900">
+                            <img src="{{ asset('images/deni-afrizal.jpg') }}" alt="{{ $ceoProfile->name }}" class="w-full h-full object-cover object-[top_center] transition-transform duration-700 group-hover:scale-105">
                             
                             {{-- High-tech Glass Overlay Badge --}}
                             <div class="absolute bottom-3.5 left-3.5 right-3.5 p-3.5 rounded-xl bg-slate-950/85 backdrop-blur-md border border-white/15 text-white flex items-center justify-between shadow-lg">
@@ -879,10 +892,13 @@ $metaDescription = 'Aldef Tech adalah software development partner terpercaya un
                             <span>Visi & Metodologi Lengkap</span>
                             <svg class="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                         </a>
-                        <a href="{{ \App\Services\WhatsAppService::getUrl() }}?text=Halo%20Deni%20Afrizal,%20saya%20ingin%20konsultasi%20langsung%20mengenai%20arsitektur%20sistem%20bisnis%20saya." target="_blank" rel="noopener" class="btn-secondary">
-                            <span>Konsultasi Langsung via WhatsApp →</span>
+                        <a href="{{ \App\Services\WhatsAppService::getUrl() }}?text=Halo%20Deni%20Afrizal,%20saya%20ingin%20konsultasi%20langsung%20mengenai%20arsitektur%20sistem%20bisnis%20saya." target="_blank" rel="noopener"
+                           class="inline-flex items-center gap-2 px-5 py-3 rounded-xl font-semibold text-sm bg-emerald-50 text-emerald-800 border border-emerald-300/90 hover:bg-emerald-100 hover:border-emerald-400 shadow-sm transition-all duration-200 group">
+                            <svg class="w-4 h-4 text-emerald-600 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                            <span>Konsultasi Langsung via WhatsApp</span>
                         </a>
                     </div>
+                </div>
                 </div>
             </div>
         </div>

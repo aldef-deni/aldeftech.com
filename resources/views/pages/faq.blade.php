@@ -1,4 +1,4 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 @section('content')
 @php
 $pageTitle = 'Frequently Asked Questions (FAQ) — Aldef Tech';
@@ -140,21 +140,19 @@ $metaDescription = 'Jawaban lengkap seputar proses konsultasi, durasi pengerjaan
 
 {{-- JSON-LD FAQPage Schema for Search Engines --}}
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    @foreach($faqs as $index => $faq)
-    {
-      "@type": "Question",
-      "name": "{{ addslashes($faq->question) }}",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "{{ addslashes(strip_tags($faq->answer)) }}"
-      }
-    }@if(!$loop->last),@endif
-    @endforeach
-  ]
-}
+{!! json_encode([
+    '@context' => 'https://schema.org',
+    '@type' => 'FAQPage',
+    'mainEntity' => $faqs->map(function($faq) {
+        return [
+            '@type' => 'Question',
+            'name' => $faq->question,
+            'acceptedAnswer' => [
+                '@type' => 'Answer',
+                'text' => strip_tags($faq->answer),
+            ],
+        ];
+    })->values()->all(),
+], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) !!}
 </script>
 @endsection
