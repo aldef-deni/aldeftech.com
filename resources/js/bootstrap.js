@@ -4,3 +4,5 @@ const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribut
 if (csrfToken) {
     window.csrfToken = csrfToken;
 }
+
+// Alpine.js is loaded via CDN in the layout — this module is just for base setup.

@@ -36,7 +36,7 @@
     {{-- Schema.org --}}
     @stack('schema')
 
-    {{-- Google Fonts - Inter --}}
+    {{-- Google Fonts – Inter + Space Grotesk --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
@@ -108,7 +108,7 @@
          x-transition:leave="transition ease-in duration-300"
          x-transition:leave-start="opacity-100 translate-y-0"
          x-transition:leave-end="opacity-0 -translate-y-2"
-         class="fixed top-6 right-6 z-[100] bg-success/90 backdrop-blur-lg text-white px-6 py-4 rounded-xl shadow-2xl font-medium">
+         class="fixed top-6 right-6 z-[100] border border-success/30 bg-success/10 text-success backdrop-blur-lg px-6 py-4 rounded-xl shadow-elevated font-medium">
         {{ session('success') }}
     </div>
     @endif
@@ -118,7 +118,7 @@
          x-transition:leave="transition ease-in duration-300"
          x-transition:leave-start="opacity-100 translate-y-0"
          x-transition:leave-end="opacity-0 -translate-y-2"
-         class="fixed top-6 right-6 z-[100] bg-danger/90 backdrop-blur-lg text-white px-6 py-4 rounded-xl shadow-2xl font-medium">
+         class="fixed top-6 right-6 z-[100] border border-danger/30 bg-danger/10 text-danger backdrop-blur-lg px-6 py-4 rounded-xl shadow-elevated font-medium">
         {{ session('error') }}
     </div>
     @endif
