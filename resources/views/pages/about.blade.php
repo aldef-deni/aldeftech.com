@@ -120,22 +120,20 @@ $metaDescription = 'Aldef Tech adalah software engineering studio yang membantu 
             </div>
 
             {{-- Photo --}}
-            <div class="lg:col-span-5 reveal-right reveal-delay-2">
-                @if($ceoProfile->profile_photo)
-                <div class="relative">
-                    <img src="{{ asset('storage/' . $ceoProfile->profile_photo) }}" alt="{{ $ceoProfile->name }}" class="rounded-2xl w-full max-w-md mx-auto border border-slate-200 shadow-card">
-                </div>
-                @else
-                <div class="aspect-[4/3] bg-white border border-slate-200 rounded-2xl flex items-center justify-center max-w-md mx-auto p-8 shadow-card">
-                    <div class="text-center">
-                        <div class="w-24 h-24 rounded-2xl bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-600 text-4xl font-display font-extrabold mx-auto mb-4">
-                            {{ substr($ceoProfile->name, 0, 1) }}
+            <div class="lg:col-span-5 reveal-right reveal-delay-2 flex justify-center">
+                <div class="relative group w-full max-w-sm">
+                    <div class="absolute -inset-2 bg-gradient-to-tr from-blue-600 to-indigo-600 rounded-3xl opacity-20 blur-md group-hover:opacity-30 transition duration-500"></div>
+                    <div class="relative aspect-[4/5] rounded-2xl overflow-hidden border-2 border-white shadow-2xl bg-slate-900">
+                        <img src="{{ $ceoProfile->profile_photo ? asset('storage/' . $ceoProfile->profile_photo) : asset('images/deni-afrizal.jpg') }}" alt="{{ $ceoProfile->name }}" class="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105">
+                        <div class="absolute bottom-3.5 left-3.5 right-3.5 p-3 rounded-xl bg-slate-950/80 backdrop-blur-md border border-white/10 text-white flex items-center justify-between">
+                            <div>
+                                <p class="text-xs font-display font-bold text-white">{{ $ceoProfile->name }}</p>
+                                <p class="text-[0.6875rem] text-blue-300 font-mono">{{ $ceoProfile->position }}</p>
+                            </div>
+                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
                         </div>
-                        <div class="text-slate-900 font-bold font-display text-lg">{{ $ceoProfile->name }}</div>
-                        <div class="text-slate-500 text-sm mt-0.5">{{ $ceoProfile->position }}</div>
                     </div>
                 </div>
-                @endif
             </div>
 
         </div>
@@ -143,16 +141,25 @@ $metaDescription = 'Aldef Tech adalah software engineering studio yang membantu 
 </section>
 @endif
 
-{{-- Striking Dark CTA Section --}}
-<section class="py-20 lg:py-28 relative bg-[#090D16] text-white overflow-hidden">
+{{-- Striking Luxury Dark CTA Section (Black, Blue & Red Blend) --}}
+<section class="py-20 lg:py-28 relative bg-[#060810] text-white overflow-hidden">
+    <div class="absolute -top-32 -left-20 w-[450px] h-[450px] bg-gradient-to-br from-blue-600/30 via-indigo-600/20 to-transparent rounded-full blur-[130px] pointer-events-none"></div>
+    <div class="absolute -bottom-32 -right-20 w-[500px] h-[500px] bg-gradient-to-tl from-rose-600/25 via-red-600/20 to-transparent rounded-full blur-[140px] pointer-events-none"></div>
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-radial from-blue-600/15 via-red-700/10 to-transparent blur-[120px] pointer-events-none"></div>
+
     <div class="max-w-4xl mx-auto px-5 sm:px-8 lg:px-10 text-center relative z-10">
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gradient-to-r from-blue-950/80 via-slate-900/90 to-red-950/80 border border-white/15 text-xs font-mono font-bold tracking-wider mb-6 shadow-lg reveal">
+            <span class="w-2 h-2 rounded-full bg-gradient-to-r from-blue-400 to-rose-500 animate-pulse"></span>
+            <span class="bg-gradient-to-r from-blue-300 via-white to-rose-300 bg-clip-text text-transparent uppercase">Mulai Transformasi</span>
+        </div>
+
         <h2 class="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold text-white mb-6 leading-tight tracking-tight reveal">
-            Siap Membangun Sistem Digital Anda?
+            Siap Membangun <span class="bg-gradient-to-r from-blue-400 via-indigo-200 to-rose-400 bg-clip-text text-transparent">Sistem Digital Anda?</span>
         </h2>
         <p class="text-slate-300 text-lg mb-10 max-w-2xl mx-auto reveal reveal-delay-1">
             Mari jadwalkan sesi konsultasi gratis untuk mendiskusikan visi dan kebutuhan teknis bisnis Anda.
         </p>
-        <a href="{{ \App\Services\WhatsAppService::getUrl() }}" target="_blank" rel="noopener" class="btn-primary btn-lg shadow-lg reveal reveal-delay-2">
+        <a href="{{ \App\Services\WhatsAppService::getUrl() }}" target="_blank" rel="noopener" class="btn-primary btn-lg shadow-xl font-bold bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 hover:from-blue-500 hover:to-indigo-600 border border-blue-400/30 reveal reveal-delay-2">
             <span>Mulai Konsultasi Gratis</span>
             <svg class="w-4 h-4 ml-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
         </a>

@@ -7,12 +7,13 @@ $metaDescription = 'Aldef Tech adalah software development partner terpercaya un
 @endphp
 
 {{-- ============================================================
-     1. HERO SECTION
+     1. HERO SECTION (ELEGANT & PREMIUM TECH HERO)
      ============================================================ --}}
-<section class="hero-light-gradient relative overflow-hidden pt-12 pb-20 lg:pt-20 lg:pb-32 border-b border-slate-200/60">
-    {{-- Ambient Light Grids --}}
-    <div class="absolute inset-0 subtle-grid opacity-60 pointer-events-none"></div>
-    <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-gradient-to-tr from-blue-500/10 via-indigo-500/5 to-transparent blur-[120px] rounded-full pointer-events-none"></div>
+<section class="hero-premium-dark relative overflow-hidden pt-14 pb-24 lg:pt-24 lg:pb-36 border-b border-slate-800/80">
+    {{-- Ambient Lighting & Grid Overlay --}}
+    <div class="absolute inset-0 hero-grid-dark pointer-events-none"></div>
+    <div class="absolute -top-24 -right-24 w-[500px] h-[500px] bg-blue-600/20 blur-[130px] rounded-full pointer-events-none"></div>
+    <div class="absolute -bottom-24 -left-24 w-[500px] h-[500px] bg-cyan-500/15 blur-[130px] rounded-full pointer-events-none"></div>
 
     <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 relative z-10">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
@@ -20,45 +21,45 @@ $metaDescription = 'Aldef Tech adalah software development partner terpercaya un
             {{-- Left Column: Copy & Actions --}}
             <div class="lg:col-span-7">
                 {{-- Status Pill --}}
-                <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-blue-50/90 border border-blue-200/80 shadow-2xs mb-6 reveal">
+                <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/[0.07] border border-white/15 backdrop-blur-md shadow-2xs mb-6 reveal">
                     <span class="status-dot status-dot-pulse"></span>
-                    <span class="text-xs font-semibold text-blue-700 tracking-wide uppercase">Software Engineering & AI Studio</span>
+                    <span class="text-xs font-semibold text-blue-200 tracking-wide uppercase">Software Engineering & AI Studio</span>
                 </div>
 
                 {{-- Main Headline --}}
-                <h1 class="text-4xl sm:text-5xl lg:text-[3.65rem] font-display font-extrabold text-slate-900 tracking-tight leading-[1.1] mb-6 reveal reveal-delay-1">
-                    We Build Digital Products That <span class="text-gradient-blue">Move Your Business Forward.</span>
+                <h1 class="text-4xl sm:text-5xl lg:text-[3.75rem] font-display font-extrabold text-white tracking-tight leading-[1.1] mb-6 reveal reveal-delay-1">
+                    We Build Digital Products That <span class="bg-gradient-to-r from-blue-300 via-indigo-200 to-cyan-300 bg-clip-text text-transparent">Move Your Business Forward.</span>
                 </h1>
 
                 {{-- Subheadline --}}
-                <p class="text-slate-600 text-lg lg:text-xl leading-relaxed max-w-2xl mb-8 reveal reveal-delay-2">
+                <p class="text-slate-300 text-lg lg:text-xl leading-relaxed max-w-2xl mb-8 reveal reveal-delay-2">
                     Custom software, scalable SaaS platforms, AI solutions, and intelligent business automation engineered around the exact way your business operates.
                 </p>
 
                 {{-- Actions --}}
                 <div class="flex flex-wrap items-center gap-4 mb-12 reveal reveal-delay-3">
-                    <a href="{{ \App\Services\WhatsAppService::getUrl() }}" target="_blank" rel="noopener" class="btn-primary btn-lg shadow-md group">
+                    <a href="{{ \App\Services\WhatsAppService::getUrl() }}" target="_blank" rel="noopener" class="btn-primary btn-lg shadow-xl shadow-blue-500/25 group">
                         <span>Konsultasi Proyek Gratis</span>
                         <svg class="w-4 h-4 ml-0.5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                     </a>
-                    <a href="#portfolio" class="btn-secondary btn-lg">
+                    <a href="#portfolio" class="btn-ghost-light btn-lg">
                         <span>Lihat Portofolio</span>
                     </a>
                 </div>
 
                 {{-- Key Trust Metrics --}}
-                <div class="grid grid-cols-3 gap-6 pt-8 border-t border-slate-200/80 reveal reveal-delay-4">
+                <div class="grid grid-cols-3 gap-6 pt-8 border-t border-white/10 reveal reveal-delay-4">
                     <div>
-                        <div class="text-2xl lg:text-3xl font-display font-bold text-slate-900">99.9%</div>
-                        <div class="text-xs font-medium text-slate-500 mt-0.5">Uptime Architecture</div>
+                        <div class="text-2xl lg:text-3xl font-display font-bold text-white tracking-tight">99.9%</div>
+                        <div class="text-xs font-medium text-slate-400 mt-0.5">Uptime Architecture</div>
                     </div>
                     <div>
-                        <div class="text-2xl lg:text-3xl font-display font-bold text-slate-900">&lt; 45ms</div>
-                        <div class="text-xs font-medium text-slate-500 mt-0.5">P99 API Latency</div>
+                        <div class="text-2xl lg:text-3xl font-display font-bold text-white tracking-tight">&lt; 45ms</div>
+                        <div class="text-xs font-medium text-slate-400 mt-0.5">P99 API Latency</div>
                     </div>
                     <div>
-                        <div class="text-2xl lg:text-3xl font-display font-bold text-slate-900">100%</div>
-                        <div class="text-xs font-medium text-slate-500 mt-0.5">Custom Tailored</div>
+                        <div class="text-2xl lg:text-3xl font-display font-bold text-white tracking-tight">100%</div>
+                        <div class="text-xs font-medium text-slate-400 mt-0.5">Custom Tailored</div>
                     </div>
                 </div>
             </div>
@@ -76,15 +77,15 @@ $metaDescription = 'Aldef Tech adalah software development partner terpercaya un
                 </div>
 
                 {{-- Mockup Window Container --}}
-                <div class="relative bg-white border border-slate-200/90 rounded-2xl shadow-elevated p-5 sm:p-6 overflow-hidden">
+                <div class="relative bg-[#0D1527]/90 backdrop-blur-2xl border border-white/15 rounded-2xl shadow-2xl p-5 sm:p-6 overflow-hidden">
                     {{-- Top Window Controls --}}
-                    <div class="flex items-center justify-between pb-4 mb-4 border-b border-slate-100">
+                    <div class="flex items-center justify-between pb-4 mb-4 border-b border-white/10">
                         <div class="flex items-center gap-1.5">
                             <span class="w-3 h-3 rounded-full bg-rose-400"></span>
                             <span class="w-3 h-3 rounded-full bg-amber-400"></span>
                             <span class="w-3 h-3 rounded-full bg-emerald-400"></span>
                         </div>
-                        <div class="px-3 py-1 rounded-full bg-slate-50 border border-slate-200 text-[0.6875rem] font-mono text-slate-500">
+                        <div class="px-3 py-1 rounded-full bg-white/[0.06] border border-white/10 text-[0.6875rem] font-mono text-cyan-300">
                             aldef-core-cluster // live
                         </div>
                     </div>
@@ -92,35 +93,35 @@ $metaDescription = 'Aldef Tech adalah software development partner terpercaya un
                     {{-- Live Dashboard Metrics --}}
                     <div class="space-y-4 font-mono text-xs">
                         {{-- Pipeline Status Card --}}
-                        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200/80">
+                        <div class="p-4 rounded-xl bg-white/[0.04] border border-white/10">
                             <div class="flex items-center justify-between mb-2">
-                                <span class="text-slate-500 font-sans font-semibold">AI Workflow Pipeline</span>
-                                <span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[0.65rem] font-bold">ACTIVE</span>
+                                <span class="text-slate-300 font-sans font-semibold">AI Workflow Pipeline</span>
+                                <span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[0.65rem] font-bold">ACTIVE</span>
                             </div>
-                            <div class="text-slate-900 font-semibold font-sans text-sm mb-1">Automated Invoice & Data Extraction</div>
-                            <div class="text-slate-500 text-[0.6875rem]">Model: Aldef-OCR-Engine v2.4 • Accuracy: 99.8%</div>
+                            <div class="text-white font-semibold font-sans text-sm mb-1">Automated Invoice & Data Extraction</div>
+                            <div class="text-slate-400 text-[0.6875rem]">Model: Aldef-OCR-Engine v2.4 • Accuracy: 99.8%</div>
                         </div>
 
                         {{-- Microservice Metrics Grid --}}
                         <div class="grid grid-cols-2 gap-3">
-                            <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80">
-                                <div class="text-[0.6875rem] text-slate-500 font-sans">API Response</div>
-                                <div class="text-base font-bold text-slate-900 font-sans mt-0.5">32ms</div>
-                                <div class="text-[0.65rem] text-emerald-600 font-semibold mt-1">● Optimal P99</div>
+                            <div class="p-3.5 rounded-xl bg-white/[0.04] border border-white/10">
+                                <div class="text-[0.6875rem] text-slate-400 font-sans">API Response</div>
+                                <div class="text-base font-bold text-white font-sans mt-0.5">32ms</div>
+                                <div class="text-[0.65rem] text-emerald-400 font-semibold mt-1">● Optimal P99</div>
                             </div>
-                            <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80">
-                                <div class="text-[0.6875rem] text-slate-500 font-sans">Database Sync</div>
-                                <div class="text-base font-bold text-slate-900 font-sans mt-0.5">0.02s lag</div>
-                                <div class="text-[0.65rem] text-blue-600 font-semibold mt-1">● Multi-Region</div>
+                            <div class="p-3.5 rounded-xl bg-white/[0.04] border border-white/10">
+                                <div class="text-[0.6875rem] text-slate-400 font-sans">Database Sync</div>
+                                <div class="text-base font-bold text-white font-sans mt-0.5">0.02s lag</div>
+                                <div class="text-[0.65rem] text-cyan-400 font-semibold mt-1">● Multi-Region</div>
                             </div>
                         </div>
 
                         {{-- Code Diagnostic Snippet --}}
-                        <div class="p-3.5 rounded-xl bg-[#0B1020] text-slate-300 font-mono text-[0.6875rem] leading-relaxed">
+                        <div class="p-3.5 rounded-xl bg-[#060913] text-slate-300 font-mono text-[0.6875rem] leading-relaxed border border-white/10">
                             <div class="text-blue-400">// Aldef Tech Scalable Architecture</div>
-                            <div class="text-slate-400">$service->deploy(<span class="text-emerald-300">'custom_erp'</span>, [</div>
-                            <div class="pl-3 text-slate-300"><span class="text-indigo-300">'cache'</span> => <span class="text-amber-300">'Redis::cluster'</span>,</div>
-                            <div class="pl-3 text-slate-300"><span class="text-indigo-300">'queue'</span> => <span class="text-amber-300">'Horizon::parallel'</span></div>
+                            <div class="text-slate-400">$service-&gt;deploy(<span class="text-emerald-300">'custom_erp'</span>, [</div>
+                            <div class="pl-3 text-slate-300"><span class="text-indigo-300">'cache'</span> =&gt; <span class="text-amber-300">'Redis::cluster'</span>,</div>
+                            <div class="pl-3 text-slate-300"><span class="text-indigo-300">'queue'</span> =&gt; <span class="text-amber-300">'Horizon::parallel'</span></div>
                             <div class="text-slate-400">]); <span class="text-emerald-400">// Status: 200 OK</span></div>
                         </div>
                     </div>
@@ -178,7 +179,7 @@ $metaDescription = 'Aldef Tech adalah software development partner terpercaya un
             </p>
         </div>
 
-        {{-- Services Grid (6 Core Services) --}}
+        {{-- Services Grid (6 Core Services with Soft Colors & Elevated 3D Look) --}}
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             @php
             $coreServices = [
@@ -187,81 +188,114 @@ $metaDescription = 'Aldef Tech adalah software development partner terpercaya un
                     'title' => 'Custom Software Development',
                     'desc' => 'Perancangan sistem enterprise khusus yang disesuaikan 100% dengan alur operasional dan aturan bisnis perusahaan Anda.',
                     'features' => ['Analisis Proses Bisnis', 'Arsitektur Database Terukur', 'Clean Code & Dokumentasi', 'API Integration Ready'],
-                    'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>'
+                    'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>',
+                    'bg_class' => 'bg-gradient-to-b from-[#F0F7FF] to-[#E6F1FD] border-[#BFDBFE]/80 shadow-[0_14px_34px_-8px_rgba(37,99,235,0.16)] hover:shadow-[0_24px_48px_-10px_rgba(37,99,235,0.28)] hover:border-blue-400',
+                    'icon_bg' => 'bg-gradient-to-br from-blue-500 to-blue-700 text-white shadow-md shadow-blue-500/30',
+                    'num_class' => 'text-blue-700 bg-blue-100/90 border border-blue-200',
+                    'accent_hover' => 'group-hover:text-blue-600',
+                    'btn_class' => 'text-blue-600 hover:text-blue-800'
                 ],
                 [
                     'num' => '02',
                     'title' => 'SaaS Platform Engineering',
                     'desc' => 'Membangun platform SaaS dari tahap MVP hingga production skala besar dengan arsitektur multi-tenant dan billing terintegrasi.',
                     'features' => ['Multi-tenant Architecture', 'Subscription & Payment Gateway', 'Role & Permission Granular', 'Admin Telemetry Dashboard'],
-                    'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/>'
+                    'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/>',
+                    'bg_class' => 'bg-gradient-to-b from-[#F5F3FF] to-[#ECE7FD] border-[#DDD6FE]/80 shadow-[0_14px_34px_-8px_rgba(99,102,241,0.16)] hover:shadow-[0_24px_48px_-10px_rgba(99,102,241,0.28)] hover:border-indigo-400',
+                    'icon_bg' => 'bg-gradient-to-br from-indigo-500 to-indigo-700 text-white shadow-md shadow-indigo-500/30',
+                    'num_class' => 'text-indigo-700 bg-indigo-100/90 border border-indigo-200',
+                    'accent_hover' => 'group-hover:text-indigo-600',
+                    'btn_class' => 'text-indigo-600 hover:text-indigo-800'
                 ],
                 [
                     'num' => '03',
                     'title' => 'AI & Intelligent Automation',
                     'desc' => 'Integrasi AI Agent, LLM, knowledge base perusahaan, dan asisten cerdas untuk mengotomasi interaksi serta keputusan operasional.',
                     'features' => ['AI Chatbot & Knowledge Base', 'OCR & Document Processing', 'Autonomous AI Agents', 'Data Sentiment & Prediction'],
-                    'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M13 10V3L4 14h7v7l9-11h-7z"/>'
+                    'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M13 10V3L4 14h7v7l9-11h-7z"/>',
+                    'bg_class' => 'bg-gradient-to-b from-[#FAF5FF] to-[#F3E8FF] border-[#E9D5FF]/80 shadow-[0_14px_34px_-8px_rgba(168,85,247,0.16)] hover:shadow-[0_24px_48px_-10px_rgba(168,85,247,0.28)] hover:border-purple-400',
+                    'icon_bg' => 'bg-gradient-to-br from-purple-500 to-purple-700 text-white shadow-md shadow-purple-500/30',
+                    'num_class' => 'text-purple-700 bg-purple-100/90 border border-purple-200',
+                    'accent_hover' => 'group-hover:text-purple-600',
+                    'btn_class' => 'text-purple-600 hover:text-purple-800'
                 ],
                 [
                     'num' => '04',
                     'title' => 'Business Process Automation',
                     'desc' => 'Menghilangkan pekerjaan manual yang berulang melalui integrasi alur kerja otomatis antar berbagai divisi dan platform.',
                     'features' => ['Automated Invoicing & Sync', 'Multi-System Data Pipeline', 'WhatsApp & Email Triggers', 'Real-time Approval Flow'],
-                    'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>'
+                    'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>',
+                    'bg_class' => 'bg-gradient-to-b from-[#FFFDF5] to-[#FEF3C7] border-[#FDE68A]/80 shadow-[0_14px_34px_-8px_rgba(217,119,6,0.16)] hover:shadow-[0_24px_48px_-10px_rgba(217,119,6,0.28)] hover:border-amber-400',
+                    'icon_bg' => 'bg-gradient-to-br from-amber-500 to-amber-600 text-white shadow-md shadow-amber-500/30',
+                    'num_class' => 'text-amber-800 bg-amber-100/90 border border-amber-200',
+                    'accent_hover' => 'group-hover:text-amber-600',
+                    'btn_class' => 'text-amber-700 hover:text-amber-900'
                 ],
                 [
                     'num' => '05',
                     'title' => 'Web Application Development',
                     'desc' => 'Aplikasi web interaktif dengan performa tinggi, responsive di setiap ukuran layar, dan keamanan berlapis untuk bisnis modern.',
                     'features' => ['Single Page Applications', 'PWA & Mobile-First UX', 'Zero-Downtime Deployment', 'Automated Testing & QA'],
-                    'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>'
+                    'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>',
+                    'bg_class' => 'bg-gradient-to-b from-[#F0FDF4] to-[#DCFCE7] border-[#BBF7D0]/80 shadow-[0_14px_34px_-8px_rgba(16,185,129,0.16)] hover:shadow-[0_24px_48px_-10px_rgba(16,185,129,0.28)] hover:border-emerald-400',
+                    'icon_bg' => 'bg-gradient-to-br from-emerald-500 to-emerald-700 text-white shadow-md shadow-emerald-500/30',
+                    'num_class' => 'text-emerald-800 bg-emerald-100/90 border border-emerald-200',
+                    'accent_hover' => 'group-hover:text-emerald-600',
+                    'btn_class' => 'text-emerald-700 hover:text-emerald-900'
                 ],
                 [
                     'num' => '06',
                     'title' => 'System Integration & APIs',
                     'desc' => 'Menghubungkan ekosistem perangkat lunak Anda dengan payment gateway, logistik, WhatsApp API, ERP pusat, dan pihak ketiga.',
                     'features' => ['Payment Gateway & Banking', 'WhatsApp Business API', 'PPOB & Third-party Sync', 'Webhook & Event Brokers'],
-                    'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>'
+                    'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>',
+                    'bg_class' => 'bg-gradient-to-b from-[#ECFEFF] to-[#CEFAFE] border-[#A5F3FC]/80 shadow-[0_14px_34px_-8px_rgba(6,182,212,0.16)] hover:shadow-[0_24px_48px_-10px_rgba(6,182,212,0.28)] hover:border-cyan-400',
+                    'icon_bg' => 'bg-gradient-to-br from-cyan-500 to-cyan-700 text-white shadow-md shadow-cyan-500/30',
+                    'num_class' => 'text-cyan-800 bg-cyan-100/90 border border-cyan-200',
+                    'accent_hover' => 'group-hover:text-cyan-600',
+                    'btn_class' => 'text-cyan-700 hover:text-cyan-900'
                 ],
             ];
             @endphp
 
             @foreach($coreServices as $s)
-            <div class="premium-card p-8 lg:p-9 flex flex-col justify-between group reveal">
+            <div class="rounded-3xl border p-8 lg:p-9 flex flex-col justify-between group transition-all duration-300 hover:-translate-y-2 reveal {{ $s['bg_class'] }}">
                 <div>
                     {{-- Top Number & Icon --}}
                     <div class="flex items-center justify-between mb-6">
-                        <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center transition-all duration-300 group-hover:bg-blue-600 group-hover:text-white shadow-2xs">
+                        <div class="w-13 h-13 rounded-2xl flex items-center justify-center transition-transform duration-300 group-hover:scale-110 {{ $s['icon_bg'] }}">
                             <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">{!! $s['icon'] !!}</svg>
                         </div>
-                        <span class="text-xs font-mono font-bold text-slate-600 tracking-wider">{{ $s['num'] }}</span>
+                        <span class="text-xs font-mono font-bold px-3 py-1 rounded-full {{ $s['num_class'] }} tracking-wider">{{ $s['num'] }}</span>
                     </div>
 
                     {{-- Title & Description --}}
-                    <h3 class="text-xl font-display font-bold text-slate-900 mb-3 group-hover:text-blue-600 transition-colors">
+                    <h3 class="text-xl font-display font-bold text-slate-900 mb-3 transition-colors {{ $s['accent_hover'] }}">
                         {{ $s['title'] }}
                     </h3>
                     <p class="text-slate-600 text-sm leading-relaxed mb-6">
                         {{ $s['desc'] }}
                     </p>
 
-                    {{-- Feature Checklist --}}
-                    <ul class="space-y-2.5 mb-8">
+                    {{-- Feature Checklist (Soft White Elevated Pills) --}}
+                    <div class="space-y-2 mb-8">
                         @foreach($s['features'] as $feat)
-                        <li class="flex items-center gap-2.5 text-xs text-slate-600 font-medium">
-                            <svg class="w-4 h-4 text-emerald-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                        <div class="flex items-center gap-2.5 text-xs text-slate-700 font-medium bg-white/85 backdrop-blur-xs border border-white/80 px-3.5 py-2.5 rounded-xl shadow-2xs">
+                            <svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
                             <span>{{ $feat }}</span>
-                        </li>
+                        </div>
                         @endforeach
-                    </ul>
+                    </div>
                 </div>
 
                 {{-- Action Link --}}
-                <div class="pt-5 border-t border-slate-100">
-                    <a href="{{ route('services') }}" class="btn-link text-xs uppercase tracking-wider">
+                <div class="pt-5 border-t border-black/5 flex items-center justify-between">
+                    <a href="{{ route('services') }}" class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider transition-colors {{ $s['btn_class'] }}">
                         <span>Detail Layanan</span>
-                        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                        <svg class="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                    </a>
+                    <a href="{{ \App\Services\WhatsAppService::getUrl() }}?text=Halo%20Aldef%20Tech,%20saya%20tertarik%20konsultasi%20layanan%20{{ urlencode($s['title']) }}" target="_blank" rel="noopener" class="text-[0.6875rem] font-semibold text-slate-500 hover:text-slate-800">
+                        Konsultasi →
                     </a>
                 </div>
             </div>
@@ -369,22 +403,60 @@ $metaDescription = 'Aldef Tech adalah software development partner terpercaya un
 
         </div>
 
-        {{-- 3 Guarantee Badges --}}
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-10 border-t border-slate-200">
-            <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-2xs reveal">
-                <div class="text-2xl mb-3">🛡️</div>
-                <h4 class="font-display font-bold text-slate-900 text-base mb-1">100% Code & IP Ownership</h4>
-                <p class="text-xs text-slate-600 leading-relaxed">Seluruh source code, arsitektur database, dan aset digital sepenuhnya menjadi milik perusahaan Anda.</p>
+        {{-- 3 Guarantee Badges (Soft Colored, 3D Elevated with Hover Motion) --}}
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-10 border-t border-slate-200/80">
+            {{-- Guarantee 1 --}}
+            <div class="rounded-3xl border border-[#BFDBFE]/80 bg-gradient-to-b from-[#F0F7FF] to-[#E6F1FD] p-7 shadow-[0_14px_34px_-8px_rgba(37,99,235,0.15)] hover:shadow-[0_24px_48px_-10px_rgba(37,99,235,0.28)] hover:-translate-y-2 hover:border-blue-400 transition-all duration-300 group reveal">
+                <div class="flex items-center justify-between mb-5">
+                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-700 text-white flex items-center justify-center shadow-md shadow-blue-500/25 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                        </svg>
+                    </div>
+                    <span class="text-[0.6875rem] font-mono font-bold px-2.5 py-1 rounded-full text-blue-700 bg-blue-100/90 border border-blue-200">100% IP</span>
+                </div>
+                <h4 class="font-display font-bold text-slate-900 text-base mb-2 group-hover:text-blue-600 transition-colors">
+                    100% Code & IP Ownership
+                </h4>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                    Seluruh source code, arsitektur database, dan aset digital sepenuhnya menjadi milik perusahaan Anda tanpa lisensi terikat.
+                </p>
             </div>
-            <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-2xs reveal reveal-delay-1">
-                <div class="text-2xl mb-3">⏱️</div>
-                <h4 class="font-display font-bold text-slate-900 text-base mb-1">Milestone On-Time Guarantee</h4>
-                <p class="text-xs text-slate-600 leading-relaxed">Jadwal pengerjaan bertahap dengan demo sprint berkala agar implementasi selesai tepat waktu.</p>
+
+            {{-- Guarantee 2 --}}
+            <div class="rounded-3xl border border-[#E9D5FF]/80 bg-gradient-to-b from-[#FAF5FF] to-[#F3E8FF] p-7 shadow-[0_14px_34px_-8px_rgba(168,85,247,0.15)] hover:shadow-[0_24px_48px_-10px_rgba(168,85,247,0.28)] hover:-translate-y-2 hover:border-purple-400 transition-all duration-300 group reveal reveal-delay-1">
+                <div class="flex items-center justify-between mb-5">
+                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-500 to-purple-700 text-white flex items-center justify-center shadow-md shadow-purple-500/25 group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-300">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <span class="text-[0.6875rem] font-mono font-bold px-2.5 py-1 rounded-full text-purple-700 bg-purple-100/90 border border-purple-200">ON TIME</span>
+                </div>
+                <h4 class="font-display font-bold text-slate-900 text-base mb-2 group-hover:text-purple-600 transition-colors">
+                    Milestone On-Time Guarantee
+                </h4>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                    Jadwal pengerjaan bertahap dengan sprint review berkala untuk memastikan setiap milestone diserahkan tepat waktu.
+                </p>
             </div>
-            <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-2xs reveal reveal-delay-2">
-                <div class="text-2xl mb-3">🤝</div>
-                <h4 class="font-display font-bold text-slate-900 text-base mb-1">Post-Launch SLA & Support</h4>
-                <p class="text-xs text-slate-600 leading-relaxed">Kami mendampingi migrasi data, pelatihan tim operasional, dan pemeliharaan keamanan.</p>
+
+            {{-- Guarantee 3 --}}
+            <div class="rounded-3xl border border-[#FDE68A]/80 bg-gradient-to-b from-[#FFFDF5] to-[#FEF3C7] p-7 shadow-[0_14px_34px_-8px_rgba(217,119,6,0.15)] hover:shadow-[0_24px_48px_-10px_rgba(217,119,6,0.28)] hover:-translate-y-2 hover:border-amber-400 transition-all duration-300 group reveal reveal-delay-2">
+                <div class="flex items-center justify-between mb-5">
+                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-500 to-amber-600 text-white flex items-center justify-center shadow-md shadow-amber-500/25 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                        </svg>
+                    </div>
+                    <span class="text-[0.6875rem] font-mono font-bold px-2.5 py-1 rounded-full text-amber-800 bg-amber-100/90 border border-amber-200">SLA 24/7</span>
+                </div>
+                <h4 class="font-display font-bold text-slate-900 text-base mb-2 group-hover:text-amber-700 transition-colors">
+                    Post-Launch SLA & Support
+                </h4>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                    Pendampingan teknis penuh pasca-rilis, migrasi data, pelatihan staf, serta pemeliharaan keamanan berkala.
+                </p>
             </div>
         </div>
 
@@ -407,23 +479,97 @@ $metaDescription = 'Aldef Tech adalah software development partner terpercaya un
             </p>
         </div>
 
+        {{-- Methodology Grid (6 Structured Steps) --}}
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             @php
             $workflowSteps = [
-                ['01', 'Discovery & Requirements', 'Memahami pain point bisnis, model data, dan target luaran sistem melalui sesi interview mendalam.'],
-                ['02', 'Architecture & Strategy', 'Merancang skema database, pemetaan API, diagram alur sistem, dan pemilihan teknologi yang tepat.'],
-                ['03', 'UI/UX & Prototyping', 'Mendesain antarmuka yang intuitif dan mudah dipelajari oleh staf operasional maupun pengguna umum.'],
-                ['04', 'Agile Engineering', 'Membangun fungsionalitas dengan metodologi agile sprint dan update berkala setiap milestone.'],
-                ['05', 'Testing & Quality Assurance', 'Validasi keamanan data, pengetesan performa beban tinggi, dan User Acceptance Testing (UAT).'],
-                ['06', 'Launch, SLA & Scaling', 'Deployment ke server production, pendampingan go-live, pelatihan pengguna, dan maintenance berkesinambungan.'],
+                [
+                    'num' => '01',
+                    'title' => 'Discovery & Requirements',
+                    'desc' => 'Memahami pain point bisnis, model data, dan target luaran sistem melalui sesi interview mendalam.',
+                    'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>',
+                    'bg_class' => 'bg-gradient-to-b from-[#F0F9FF] to-[#E0F2FE] border-[#BAE6FD]/80 shadow-[0_14px_34px_-8px_rgba(14,165,233,0.15)] hover:shadow-[0_24px_48px_-10px_rgba(14,165,233,0.28)] hover:border-sky-400',
+                    'badge_bg' => 'bg-gradient-to-br from-sky-500 to-sky-700 text-white shadow-md shadow-sky-500/25',
+                    'num_pill' => 'text-sky-700 bg-sky-100/90 border border-sky-200',
+                    'accent_hover' => 'group-hover:text-sky-600'
+                ],
+                [
+                    'num' => '02',
+                    'title' => 'Architecture & Strategy',
+                    'desc' => 'Merancang skema database, pemetaan API, diagram alur sistem, dan pemilihan teknologi yang tepat.',
+                    'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>',
+                    'bg_class' => 'bg-gradient-to-b from-[#F0F7FF] to-[#E6F1FD] border-[#BFDBFE]/80 shadow-[0_14px_34px_-8px_rgba(37,99,235,0.15)] hover:shadow-[0_24px_48px_-10px_rgba(37,99,235,0.28)] hover:border-blue-400',
+                    'badge_bg' => 'bg-gradient-to-br from-blue-500 to-blue-700 text-white shadow-md shadow-blue-500/25',
+                    'num_pill' => 'text-blue-700 bg-blue-100/90 border border-blue-200',
+                    'accent_hover' => 'group-hover:text-blue-600'
+                ],
+                [
+                    'num' => '03',
+                    'title' => 'UI/UX & Prototyping',
+                    'desc' => 'Mendesain antarmuka yang intuitif dan mudah dipelajari oleh staf operasional maupun pengguna umum.',
+                    'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>',
+                    'bg_class' => 'bg-gradient-to-b from-[#F5F3FF] to-[#ECE7FD] border-[#DDD6FE]/80 shadow-[0_14px_34px_-8px_rgba(99,102,241,0.15)] hover:shadow-[0_24px_48px_-10px_rgba(99,102,241,0.28)] hover:border-indigo-400',
+                    'badge_bg' => 'bg-gradient-to-br from-indigo-500 to-indigo-700 text-white shadow-md shadow-indigo-500/25',
+                    'num_pill' => 'text-indigo-700 bg-indigo-100/90 border border-indigo-200',
+                    'accent_hover' => 'group-hover:text-indigo-600'
+                ],
+                [
+                    'num' => '04',
+                    'title' => 'Agile Engineering',
+                    'desc' => 'Membangun fungsionalitas dengan metodologi agile sprint dan update berkala setiap milestone.',
+                    'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>',
+                    'bg_class' => 'bg-gradient-to-b from-[#FAF5FF] to-[#F3E8FF] border-[#E9D5FF]/80 shadow-[0_14px_34px_-8px_rgba(168,85,247,0.15)] hover:shadow-[0_24px_48px_-10px_rgba(168,85,247,0.28)] hover:border-purple-400',
+                    'badge_bg' => 'bg-gradient-to-br from-purple-500 to-purple-700 text-white shadow-md shadow-purple-500/25',
+                    'num_pill' => 'text-purple-700 bg-purple-100/90 border border-purple-200',
+                    'accent_hover' => 'group-hover:text-purple-600'
+                ],
+                [
+                    'num' => '05',
+                    'title' => 'Testing & Quality Assurance',
+                    'desc' => 'Validasi keamanan data, pengetesan performa beban tinggi, dan User Acceptance Testing (UAT).',
+                    'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>',
+                    'bg_class' => 'bg-gradient-to-b from-[#FFFDF5] to-[#FEF3C7] border-[#FDE68A]/80 shadow-[0_14px_34px_-8px_rgba(217,119,6,0.15)] hover:shadow-[0_24px_48px_-10px_rgba(217,119,6,0.28)] hover:border-amber-400',
+                    'badge_bg' => 'bg-gradient-to-br from-amber-500 to-amber-600 text-white shadow-md shadow-amber-500/25',
+                    'num_pill' => 'text-amber-800 bg-amber-100/90 border border-amber-200',
+                    'accent_hover' => 'group-hover:text-amber-600'
+                ],
+                [
+                    'num' => '06',
+                    'title' => 'Launch, SLA & Scaling',
+                    'desc' => 'Deployment ke server production, pendampingan go-live, pelatihan pengguna, dan maintenance berkesinambungan.',
+                    'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>',
+                    'bg_class' => 'bg-gradient-to-b from-[#F0FDF4] to-[#DCFCE7] border-[#BBF7D0]/80 shadow-[0_14px_34px_-8px_rgba(16,185,129,0.15)] hover:shadow-[0_24px_48px_-10px_rgba(16,185,129,0.28)] hover:border-emerald-400',
+                    'badge_bg' => 'bg-gradient-to-br from-emerald-500 to-emerald-700 text-white shadow-md shadow-emerald-500/25',
+                    'num_pill' => 'text-emerald-800 bg-emerald-100/90 border border-emerald-200',
+                    'accent_hover' => 'group-hover:text-emerald-600'
+                ],
             ];
             @endphp
 
             @foreach($workflowSteps as $st)
-            <div class="premium-card p-8 lg:p-9 relative reveal">
-                <div class="step-number mb-4">{{ $st[0] }}</div>
-                <h3 class="text-lg font-display font-bold text-slate-900 mb-2.5">{{ $st[1] }}</h3>
-                <p class="text-slate-600 text-sm leading-relaxed">{{ $st[2] }}</p>
+            <div class="rounded-3xl border p-8 lg:p-9 flex flex-col justify-between group transition-all duration-300 hover:-translate-y-2 reveal {{ $st['bg_class'] }}">
+                <div>
+                    {{-- Top Step Row --}}
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="w-12 h-12 rounded-2xl flex items-center justify-center transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3 {{ $st['badge_bg'] }}">
+                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">{!! $st['icon'] !!}</svg>
+                        </div>
+                        <span class="text-xs font-mono font-bold px-3 py-1 rounded-full {{ $st['num_pill'] }} tracking-wider">STEP {{ $st['num'] }}</span>
+                    </div>
+
+                    {{-- Title & Description --}}
+                    <h3 class="text-lg lg:text-xl font-display font-bold text-slate-900 mb-3 transition-colors {{ $st['accent_hover'] }}">
+                        {{ $st['title'] }}
+                    </h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        {{ $st['desc'] }}
+                    </p>
+                </div>
+
+                <div class="pt-5 mt-6 border-t border-black/5 flex items-center justify-between text-xs font-medium text-slate-500">
+                    <span>Phase {{ $st['num'] }}</span>
+                    <span class="font-semibold text-slate-700 group-hover:text-slate-900 transition-colors">Standard SLA →</span>
+                </div>
             </div>
             @endforeach
         </div>
@@ -432,77 +578,112 @@ $metaDescription = 'Aldef Tech adalah software development partner terpercaya un
 </section>
 
 {{-- ============================================================
-     6. FEATURED CASE STUDIES / PORTFOLIO
+     6. THE PROJECT (FEATURED PORTFOLIO)
      ============================================================ --}}
 <section class="section-padding bg-slate-50/80 border-y border-slate-200/80" id="portfolio">
     <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
         
+        {{-- Section Header --}}
         <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
             <div>
-                <span class="section-eyebrow reveal">Case Studies</span>
+                <span class="section-eyebrow reveal">The Project</span>
                 <h2 class="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold text-slate-900 tracking-tight leading-tight reveal reveal-delay-1">
-                    Karya Nyata yang Menggerakkan Bisnis
+                    Karya & Sistem Nyata yang Kami Bangun
                 </h2>
+                <p class="text-slate-600 text-base lg:text-lg mt-3 max-w-2xl reveal reveal-delay-2">
+                    Showcase sistem enterprise, platform OTA, dan POS modern yang terbukti mengakselerasi transaksi serta operasional bisnis klien kami.
+                </p>
             </div>
             <a href="{{ route('portfolio') }}" class="btn-secondary self-start md:self-auto reveal">
-                <span>Semua Studi Kasus</span>
+                <span>Lihat Semua Portfolio</span>
                 <svg class="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
             </a>
         </div>
 
+        @php
+        $featuredProjects = [
+            [
+                'title' => 'Arahinn Mobile — OTA & Travel Platform',
+                'category' => 'Project OTA • Mobile Ecosystem',
+                'image' => 'images/portfolio/arahinn-mobile.webp',
+                'desc' => 'Aplikasi mobile Online Travel Agent modern dengan integrasi real-time inventory kamar, engine pencarian instan, payment gateway multi-channel otomatis, dan sistem loyalty rewards terpadu.',
+                'technologies' => ['Laravel API', 'Flutter / Mobile', 'PostgreSQL', 'Midtrans Gateway', 'Redis Cache'],
+                'bg_class' => 'bg-gradient-to-b from-[#F0F7FF] to-[#E6F1FD] border-[#BFDBFE]/80 shadow-[0_14px_34px_-8px_rgba(37,99,235,0.15)] hover:shadow-[0_24px_48px_-10px_rgba(37,99,235,0.28)] hover:border-blue-400',
+                'pill_class' => 'text-blue-700 bg-blue-100/90 border border-blue-200',
+                'accent_hover' => 'group-hover:text-blue-600',
+                'btn_class' => 'text-blue-600 hover:text-blue-800'
+            ],
+            [
+                'title' => 'Bamboe Oerip — Booking Engine & Hospitality OTA',
+                'category' => 'Project OTA • Hospitality Management',
+                'image' => 'images/portfolio/bamboe-oerip.webp',
+                'desc' => 'Sistem reservasi dan manajemen hospitality digital berbasis web dengan dynamic pricing engine, kalender okupansi interaktif, automated WhatsApp billing invoice, dan integrasi channel manager.',
+                'technologies' => ['Laravel 11', 'Vue.js 3', 'Tailwind CSS', 'MySQL', 'WhatsApp Business API'],
+                'bg_class' => 'bg-gradient-to-b from-[#F0FDF4] to-[#DCFCE7] border-[#BBF7D0]/80 shadow-[0_14px_34px_-8px_rgba(16,185,129,0.15)] hover:shadow-[0_24px_48px_-10px_rgba(16,185,129,0.28)] hover:border-emerald-400',
+                'pill_class' => 'text-emerald-800 bg-emerald-100/90 border border-emerald-200',
+                'accent_hover' => 'group-hover:text-emerald-600',
+                'btn_class' => 'text-emerald-700 hover:text-emerald-900'
+            ],
+            [
+                'title' => 'Aldef POS — Omnichannel Smart POS System',
+                'category' => 'Project POS Sistem • Multi-Outlet',
+                'image' => 'images/portfolio/aldeftech-pos.webp',
+                'desc' => 'Platform Point of Sale (POS) cloud omnichannel berkecepatan tinggi dengan sinkronisasi inventori multi-cabang, barcode scanning offline-ready, audit kasir real-time, dan analitik performa laba-rugi.',
+                'technologies' => ['Laravel', 'Electron / PWA', 'PostgreSQL', 'Thermal Printing', 'WebSockets'],
+                'bg_class' => 'bg-gradient-to-b from-[#F5F3FF] to-[#ECE7FD] border-[#DDD6FE]/80 shadow-[0_14px_34px_-8px_rgba(99,102,241,0.15)] hover:shadow-[0_24px_48px_-10px_rgba(99,102,241,0.28)] hover:border-indigo-400',
+                'pill_class' => 'text-indigo-700 bg-indigo-100/90 border border-indigo-200',
+                'accent_hover' => 'group-hover:text-indigo-600',
+                'btn_class' => 'text-indigo-600 hover:text-indigo-800'
+            ],
+        ];
+        @endphp
+
+        {{-- 3 Featured Project Cards --}}
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            @forelse($portfolios as $p)
-            <div class="premium-card overflow-hidden flex flex-col justify-between group reveal">
+            @foreach($featuredProjects as $p)
+            <div class="rounded-3xl border overflow-hidden flex flex-col justify-between group transition-all duration-300 hover:-translate-y-2 reveal {{ $p['bg_class'] }}">
                 <div>
-                    {{-- Thumbnail --}}
-                    <div class="aspect-[16/10] bg-slate-100 relative overflow-hidden border-b border-slate-100">
-                        @if($p->featured_image)
-                        <img src="{{ asset('storage/' . $p->featured_image) }}" alt="{{ $p->title }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
-                        @else
-                        <div class="w-full h-full flex flex-col items-center justify-center p-6 bg-gradient-to-br from-slate-100 to-slate-200 text-slate-400">
-                            <span class="text-3xl mb-2">💻</span>
-                            <span class="text-xs font-mono font-bold tracking-wider text-slate-500 uppercase">{{ $p->category->name ?? 'Software System' }}</span>
-                        </div>
-                        @endif
-                        <span class="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-white/90 backdrop-blur-md text-[0.6875rem] font-bold text-slate-700 shadow-xs">
-                            {{ $p->category->name ?? 'Enterprise' }}
+                    {{-- Featured Image with Zoom Effect --}}
+                    <div class="aspect-[16/10] bg-slate-900/5 relative overflow-hidden border-b border-black/5">
+                        <img src="{{ asset($p['image']) }}" alt="{{ $p['title'] }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-108" loading="lazy">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <span class="absolute top-3.5 left-3.5 px-3 py-1 rounded-full text-[0.6875rem] font-mono font-bold backdrop-blur-md shadow-xs {{ $p['pill_class'] }}">
+                            {{ $p['category'] }}
                         </span>
                     </div>
 
                     {{-- Body Content --}}
                     <div class="p-7">
-                        <h3 class="text-lg font-display font-bold text-slate-900 mb-2 group-hover:text-blue-600 transition-colors">
-                            {{ $p->title }}
+                        <h3 class="text-lg lg:text-xl font-display font-bold text-slate-900 mb-3 transition-colors {{ $p['accent_hover'] }}">
+                            {{ $p['title'] }}
                         </h3>
-                        <p class="text-slate-600 text-sm leading-relaxed mb-5 line-clamp-2">
-                            {{ $p->short_description }}
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6">
+                            {{ $p['desc'] }}
                         </p>
 
                         {{-- Tech badges --}}
-                        @if($p->technologies)
-                        <div class="flex flex-wrap gap-1.5 mb-2">
-                            @foreach(array_slice($p->technologies, 0, 4) as $tech)
-                            <span class="text-[0.6875rem] px-2.5 py-1 rounded-md bg-slate-100 text-slate-600 font-mono font-medium">
+                        <div class="flex flex-wrap gap-1.5 pt-1">
+                            @foreach($p['technologies'] as $tech)
+                            <span class="text-[0.6875rem] px-2.5 py-1 rounded-lg bg-white/85 border border-white/80 text-slate-700 font-mono font-medium shadow-2xs">
                                 {{ $tech }}
                             </span>
                             @endforeach
                         </div>
-                        @endif
                     </div>
                 </div>
 
-                <div class="px-7 pb-7 pt-2">
-                    <a href="{{ route('portfolio.show', $p->slug) }}" class="btn-link text-xs font-bold uppercase tracking-wider">
-                        <span>Lihat Studi Kasus</span>
-                        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                {{-- Action Row --}}
+                <div class="px-7 pb-7 pt-4 border-t border-black/5 flex items-center justify-between">
+                    <a href="{{ route('portfolio') }}" class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider transition-colors {{ $p['btn_class'] }}">
+                        <span>Lihat Portfolio</span>
+                        <svg class="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                    </a>
+                    <a href="{{ \App\Services\WhatsAppService::getUrl() }}?text=Halo%20Aldef%20Tech,%20saya%20tertarik%20dengan%20proyek%20serupa%20{{ urlencode($p['title']) }}" target="_blank" rel="noopener" class="text-[0.6875rem] font-semibold text-slate-500 hover:text-slate-800">
+                        Diskusi Serupa →
                     </a>
                 </div>
             </div>
-            @empty
-            <div class="col-span-3 text-center py-12 text-slate-400">
-                Portofolio sedang dalam proses update dokumentasi.
-            </div>
-            @endforelse
+            @endforeach
         </div>
 
     </div>
@@ -524,16 +705,100 @@ $metaDescription = 'Aldef Tech adalah software development partner terpercaya un
             </p>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            @foreach($solutions as $sol)
-            <div class="p-7 rounded-2xl bg-white border border-slate-200 hover:border-blue-400 hover:shadow-card transition-all duration-300 group reveal">
-                <div class="text-3xl mb-4 group-hover:scale-110 transition-transform">{{ $sol->icon ?? '📦' }}</div>
-                <h3 class="font-display font-bold text-slate-900 text-lg mb-2 group-hover:text-blue-600 transition-colors">
-                    {{ $sol->title }}
-                </h3>
-                <p class="text-slate-600 text-xs leading-relaxed">
-                    {{ $sol->short_description }}
-                </p>
+        @php
+        $solutionColors = [
+            [
+                'bg' => 'bg-gradient-to-b from-[#F0F7FF] to-[#E6F1FD] border-[#BFDBFE]/80 shadow-[0_12px_30px_-8px_rgba(37,99,235,0.14)] hover:shadow-[0_22px_44px_-10px_rgba(37,99,235,0.25)] hover:border-blue-400',
+                'icon_box' => 'bg-gradient-to-br from-blue-500 to-blue-700 text-white shadow-md shadow-blue-500/25',
+                'accent_hover' => 'group-hover:text-blue-600',
+                'badge' => 'text-blue-700 bg-blue-100/90 border border-blue-200',
+                'btn_class' => 'text-blue-600 hover:text-blue-800'
+            ],
+            [
+                'bg' => 'bg-gradient-to-b from-[#F5F3FF] to-[#ECE7FD] border-[#DDD6FE]/80 shadow-[0_12px_30px_-8px_rgba(99,102,241,0.14)] hover:shadow-[0_22px_44px_-10px_rgba(99,102,241,0.25)] hover:border-indigo-400',
+                'icon_box' => 'bg-gradient-to-br from-indigo-500 to-indigo-700 text-white shadow-md shadow-indigo-500/25',
+                'accent_hover' => 'group-hover:text-indigo-600',
+                'badge' => 'text-indigo-700 bg-indigo-100/90 border border-indigo-200',
+                'btn_class' => 'text-indigo-600 hover:text-indigo-800'
+            ],
+            [
+                'bg' => 'bg-gradient-to-b from-[#FAF5FF] to-[#F3E8FF] border-[#E9D5FF]/80 shadow-[0_12px_30px_-8px_rgba(168,85,247,0.14)] hover:shadow-[0_22px_44px_-10px_rgba(168,85,247,0.25)] hover:border-purple-400',
+                'icon_box' => 'bg-gradient-to-br from-purple-500 to-purple-700 text-white shadow-md shadow-purple-500/25',
+                'accent_hover' => 'group-hover:text-purple-600',
+                'badge' => 'text-purple-700 bg-purple-100/90 border border-purple-200',
+                'btn_class' => 'text-purple-600 hover:text-purple-800'
+            ],
+            [
+                'bg' => 'bg-gradient-to-b from-[#FFFDF5] to-[#FEF3C7] border-[#FDE68A]/80 shadow-[0_12px_30px_-8px_rgba(217,119,6,0.14)] hover:shadow-[0_22px_44px_-10px_rgba(217,119,6,0.25)] hover:border-amber-400',
+                'icon_box' => 'bg-gradient-to-br from-amber-500 to-amber-600 text-white shadow-md shadow-amber-500/25',
+                'accent_hover' => 'group-hover:text-amber-600',
+                'badge' => 'text-amber-800 bg-amber-100/90 border border-amber-200',
+                'btn_class' => 'text-amber-700 hover:text-amber-900'
+            ],
+            [
+                'bg' => 'bg-gradient-to-b from-[#F0FDF4] to-[#DCFCE7] border-[#BBF7D0]/80 shadow-[0_12px_30px_-8px_rgba(16,185,129,0.14)] hover:shadow-[0_22px_44px_-10px_rgba(16,185,129,0.25)] hover:border-emerald-400',
+                'icon_box' => 'bg-gradient-to-br from-emerald-500 to-emerald-700 text-white shadow-md shadow-emerald-500/25',
+                'accent_hover' => 'group-hover:text-emerald-600',
+                'badge' => 'text-emerald-800 bg-emerald-100/90 border border-emerald-200',
+                'btn_class' => 'text-emerald-700 hover:text-emerald-900'
+            ],
+            [
+                'bg' => 'bg-gradient-to-b from-[#ECFEFF] to-[#CEFAFE] border-[#A5F3FC]/80 shadow-[0_12px_30px_-8px_rgba(6,182,212,0.14)] hover:shadow-[0_22px_44px_-10px_rgba(6,182,212,0.25)] hover:border-cyan-400',
+                'icon_box' => 'bg-gradient-to-br from-cyan-500 to-cyan-700 text-white shadow-md shadow-cyan-500/25',
+                'accent_hover' => 'group-hover:text-cyan-600',
+                'badge' => 'text-cyan-800 bg-cyan-100/90 border border-cyan-200',
+                'btn_class' => 'text-cyan-700 hover:text-cyan-900'
+            ],
+        ];
+        @endphp
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7">
+            @foreach($solutions as $index => $sol)
+            @php
+                $style = $solutionColors[$index % count($solutionColors)];
+            @endphp
+            <div class="rounded-3xl border p-7 lg:p-8 flex flex-col justify-between group transition-all duration-300 hover:-translate-y-2 reveal {{ $style['bg'] }}">
+                <div>
+                    {{-- Icon & Badge Header --}}
+                    <div class="flex items-center justify-between mb-5">
+                        <div class="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3 {{ $style['icon_box'] }}">
+                            {{ $sol->icon ?? '⚡' }}
+                        </div>
+                        <span class="text-[0.6875rem] font-mono font-bold px-2.5 py-1 rounded-full {{ $style['badge'] }}">
+                            Enterprise Ready
+                        </span>
+                    </div>
+
+                    {{-- Title & Description --}}
+                    <h3 class="font-display font-bold text-slate-900 text-lg lg:text-xl mb-2.5 transition-colors {{ $style['accent_hover'] }}">
+                        {{ $sol->title }}
+                    </h3>
+                    <p class="text-slate-600 text-sm leading-relaxed mb-6">
+                        {{ $sol->short_description }}
+                    </p>
+
+                    @if($sol->features && count($sol->features))
+                    <div class="space-y-1.5 mb-6">
+                        @foreach(array_slice($sol->features, 0, 2) as $feat)
+                        <div class="flex items-center gap-2 text-xs text-slate-700 bg-white/80 border border-white/70 px-3 py-1.5 rounded-lg shadow-2xs">
+                            <svg class="w-3.5 h-3.5 text-emerald-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                            <span class="font-medium truncate">{{ $feat }}</span>
+                        </div>
+                        @endforeach
+                    </div>
+                    @endif
+                </div>
+
+                {{-- Bottom Action Link --}}
+                <div class="pt-4 border-t border-black/5 flex items-center justify-between">
+                    <a href="{{ route('solutions') }}" class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider transition-colors {{ $style['btn_class'] }}">
+                        <span>Jelajahi Solusi</span>
+                        <svg class="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                    </a>
+                    <a href="{{ \App\Services\WhatsAppService::getUrl() }}?text=Halo%20Aldef%20Tech,%20saya%20tertarik%20dengan%20solusi%20{{ urlencode($sol->title) }}" target="_blank" rel="noopener" class="text-[0.6875rem] font-semibold text-slate-500 hover:text-slate-800">
+                        Konsultasi →
+                    </a>
+                </div>
             </div>
             @endforeach
         </div>
@@ -542,196 +807,111 @@ $metaDescription = 'Aldef Tech adalah software development partner terpercaya un
 </section>
 
 {{-- ============================================================
-     8. TRANSPARENT PROJECT INVESTMENT & ESTIMATION
-     ============================================================ --}}
-<section class="section-padding bg-slate-50/80 border-t border-slate-200/80" id="pricing">
-    <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
-        
-        <div class="max-w-3xl mx-auto text-center mb-16">
-            <span class="section-eyebrow justify-center reveal">Investment Models</span>
-            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold text-slate-900 tracking-tight leading-tight mb-5 reveal reveal-delay-1">
-                Estimasi Investasi Transparan & Fleksibel
-            </h2>
-            <p class="text-slate-600 text-lg leading-relaxed reveal reveal-delay-2">
-                Setiap sistem dibangun custom. Kami menyediakan opsi paket dasar untuk memudahkan perencanaan anggaran teknologi Anda.
-            </p>
-        </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            
-            {{-- Tier 1: MVP / Starter System --}}
-            <div class="price-card reveal">
-                <h3 class="text-xl font-display font-bold text-slate-900 mb-2">MVP / Quick System</h3>
-                <p class="text-xs text-slate-500 mb-6">Cocok untuk validasi ide produk SaaS awal atau sistem operasional departemen mandiri.</p>
-                
-                <div class="pb-6 mb-6 border-b border-slate-100">
-                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider block">Mulai dari</span>
-                    <span class="text-3xl font-display font-extrabold text-slate-900">Custom Scope</span>
-                    <span class="text-xs text-slate-500 block mt-1">Estimasi 2 - 4 minggu</span>
-                </div>
-
-                <ul class="space-y-3 text-xs text-slate-600 mb-8 flex-1">
-                    <li class="flex items-center gap-2.5"><span class="text-emerald-500 font-bold">✓</span> Core Feature Architecture</li>
-                    <li class="flex items-center gap-2.5"><span class="text-emerald-500 font-bold">✓</span> Clean Responsive Dashboard</li>
-                    <li class="flex items-center gap-2.5"><span class="text-emerald-500 font-bold">✓</span> Essential Database & Auth</li>
-                    <li class="flex items-center gap-2.5"><span class="text-emerald-500 font-bold">✓</span> Production Deployment</li>
-                    <li class="flex items-center gap-2.5"><span class="text-emerald-500 font-bold">✓</span> 30 Hari Post-Launch Support</li>
-                </ul>
-
-                @php
-                    $waTextMvp = 'Halo Aldef Tech, saya ingin konsultasi mengenai pembuatan sistem MVP / Quick System.';
-                    $waUrlMvp = 'https://wa.me/' . preg_replace('/\D/', '', \App\Models\SiteSetting::get('whatsapp_number', '6281234567890')) . '?text=' . rawurlencode($waTextMvp);
-                @endphp
-                <a href="{{ $waUrlMvp }}" target="_blank" rel="noopener" class="btn-secondary w-full text-center py-3">
-                    Konsultasi Paket MVP →
-                </a>
-            </div>
-
-            {{-- Tier 2: Custom Business System (Featured) --}}
-            <div class="price-card featured reveal reveal-delay-1">
-                <span class="price-card-badge">Paling Banyak Dipilih</span>
-                <h3 class="text-xl font-display font-bold text-slate-900 mb-2">Custom Business System</h3>
-                <p class="text-xs text-slate-500 mb-6">Solusi komprehensif untuk otomatisasi ERP, CRM, POS, dan operasional bisnis terintegrasi.</p>
-                
-                <div class="pb-6 mb-6 border-b border-slate-100">
-                    <span class="text-xs font-semibold text-blue-600 uppercase tracking-wider block">Full Bespoke Solution</span>
-                    <span class="text-3xl font-display font-extrabold text-slate-900">Custom Architecture</span>
-                    <span class="text-xs text-slate-500 block mt-1">Estimasi 4 - 10 minggu</span>
-                </div>
-
-                <ul class="space-y-3 text-xs text-slate-700 mb-8 flex-1 font-medium">
-                    <li class="flex items-center gap-2.5"><span class="text-blue-600 font-bold">✓</span> Analisis Alur Bisnis Menyeluruh</li>
-                    <li class="flex items-center gap-2.5"><span class="text-blue-600 font-bold">✓</span> Multi-Role Granular Permissions</li>
-                    <li class="flex items-center gap-2.5"><span class="text-blue-600 font-bold">✓</span> WhatsApp / Payment Gateway API Sync</li>
-                    <li class="flex items-center gap-2.5"><span class="text-blue-600 font-bold">✓</span> Automated PDF / Excel Reporting</li>
-                    <li class="flex items-center gap-2.5"><span class="text-blue-600 font-bold">✓</span> Pelatihan Staf & Migrasi Data</li>
-                    <li class="flex items-center gap-2.5"><span class="text-blue-600 font-bold">✓</span> 90 Hari Garansi & SLA Support</li>
-                </ul>
-
-                @php
-                    $waTextBiz = 'Halo Aldef Tech, saya ingin konsultasi mengenai pembuatan Custom Business System / ERP.';
-                    $waUrlBiz = 'https://wa.me/' . preg_replace('/\D/', '', \App\Models\SiteSetting::get('whatsapp_number', '6281234567890')) . '?text=' . rawurlencode($waTextBiz);
-                @endphp
-                <a href="{{ $waUrlBiz }}" target="_blank" rel="noopener" class="btn-primary w-full text-center py-3 shadow-md">
-                    Diskusikan Custom System →
-                </a>
-            </div>
-
-            {{-- Tier 3: Enterprise & SaaS Platform --}}
-            <div class="price-card reveal reveal-delay-2">
-                <h3 class="text-xl font-display font-bold text-slate-900 mb-2">Enterprise & SaaS Platform</h3>
-                <p class="text-xs text-slate-500 mb-6">Arsitektur skala besar dengan AI capabilities, multi-tenant cloud, dan dedicated SLA.</p>
-                
-                <div class="pb-6 mb-6 border-b border-slate-100">
-                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider block">Enterprise Grade</span>
-                    <span class="text-3xl font-display font-extrabold text-slate-900">Dedicated Scope</span>
-                    <span class="text-xs text-slate-500 block mt-1">Timeline disesuaikan SLA</span>
-                </div>
-
-                <ul class="space-y-3 text-xs text-slate-600 mb-8 flex-1">
-                    <li class="flex items-center gap-2.5"><span class="text-emerald-500 font-bold">✓</span> Multi-Tenant SaaS Architecture</li>
-                    <li class="flex items-center gap-2.5"><span class="text-emerald-500 font-bold">✓</span> AI Engine / Agent Integration</li>
-                    <li class="flex items-center gap-2.5"><span class="text-emerald-500 font-bold">✓</span> High Concurrency & Redis Clustering</li>
-                    <li class="flex items-center gap-2.5"><span class="text-emerald-500 font-bold">✓</span> Automated CI/CD & Cloud Setup</li>
-                    <li class="flex items-center gap-2.5"><span class="text-emerald-500 font-bold">✓</span> Dedicated Lead Architect & Priority SLA</li>
-                </ul>
-
-                @php
-                    $waTextEnt = 'Halo Aldef Tech, saya ingin konsultasi mengenai solusi Enterprise / SaaS Platform.';
-                    $waUrlEnt = 'https://wa.me/' . preg_replace('/\D/', '', \App\Models\SiteSetting::get('whatsapp_number', '6281234567890')) . '?text=' . rawurlencode($waTextEnt);
-                @endphp
-                <a href="{{ $waUrlEnt }}" target="_blank" rel="noopener" class="btn-secondary w-full text-center py-3">
-                    Konsultasi Enterprise →
-                </a>
-            </div>
-
-        </div>
-
-    </div>
-</section>
-
-{{-- ============================================================
-     9. CEO SPOTLIGHT
+     8. LEADERSHIP & TECHNICAL ADVISORY (CEO SPOTLIGHT)
      ============================================================ --}}
 @if($ceoProfile)
-<section class="section-padding bg-white relative">
-    <div class="max-w-5xl mx-auto px-5 sm:px-8 lg:px-10">
-        <div class="bg-gradient-to-br from-slate-50 to-blue-50/40 border border-slate-200/90 rounded-3xl p-8 lg:p-12 shadow-elevated">
-            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12 items-center">
-                <div class="md:col-span-4 text-center md:text-left">
-                    <div class="w-32 h-32 lg:w-40 lg:h-40 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white flex items-center justify-center font-display font-bold text-4xl shadow-xl mx-auto md:mx-0">
-                        {{ strtoupper(substr($ceoProfile->name, 0, 1)) }}
+<section class="section-padding bg-slate-50/80 border-t border-slate-200/80 relative" id="leadership">
+    <div class="max-w-6xl mx-auto px-5 sm:px-8 lg:px-10">
+        
+        <div class="bg-gradient-to-br from-white via-slate-50/90 to-blue-50/40 border border-slate-200/90 rounded-3xl p-8 sm:p-10 lg:p-14 shadow-[0_20px_50px_-12px_rgba(15,23,42,0.09)] relative overflow-hidden reveal">
+            {{-- Ambient background light --}}
+            <div class="absolute -top-24 -right-24 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-24 -left-24 w-80 h-80 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center relative z-10">
+                {{-- CEO Photo (Prominent & Balanced) --}}
+                <div class="lg:col-span-5 flex justify-center">
+                    <div class="relative group w-full max-w-[320px] sm:max-w-[340px] lg:max-w-none">
+                        {{-- Outer Soft Glow Frame --}}
+                        <div class="absolute -inset-2 bg-gradient-to-tr from-blue-600 via-indigo-500 to-cyan-400 rounded-3xl opacity-20 blur-md group-hover:opacity-35 transition duration-500"></div>
+                        
+                        <div class="relative aspect-[4/5] w-full rounded-2xl overflow-hidden border-2 border-white shadow-2xl bg-slate-900">
+                            <img src="{{ asset('images/deni-afrizal.jpg') }}" alt="{{ $ceoProfile->name }}" class="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105">
+                            
+                            {{-- High-tech Glass Overlay Badge --}}
+                            <div class="absolute bottom-3.5 left-3.5 right-3.5 p-3.5 rounded-xl bg-slate-950/85 backdrop-blur-md border border-white/15 text-white flex items-center justify-between shadow-lg">
+                                <div>
+                                    <p class="text-sm font-display font-bold text-white leading-tight">{{ $ceoProfile->name }}</p>
+                                    <p class="text-[0.6875rem] text-blue-300 font-mono font-medium">{{ $ceoProfile->position }}</p>
+                                </div>
+                                <div class="flex items-center gap-1.5 px-2 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 text-[0.625rem] font-mono font-bold">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                                    <span>ACTIVE</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="md:col-span-8">
-                    <span class="section-eyebrow mb-2">Leadership & Technical Advisory</span>
-                    <h3 class="text-2xl lg:text-3xl font-display font-bold text-slate-900 mb-1">
+
+                {{-- Bio & Profile Details --}}
+                <div class="lg:col-span-7">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200/80 text-blue-700 text-xs font-mono font-bold tracking-wider mb-4">
+                        <span class="w-2 h-2 rounded-full bg-blue-600"></span>
+                        LEADERSHIP & TECHNICAL ADVISORY
+                    </div>
+                    
+                    <h3 class="text-2xl sm:text-3xl lg:text-4xl font-display font-extrabold text-slate-900 mb-1.5 tracking-tight">
                         {{ $ceoProfile->name }}
                     </h3>
-                    <p class="text-blue-600 text-sm font-semibold mb-4">{{ $ceoProfile->position }}</p>
-                    <p class="text-slate-600 text-sm leading-relaxed mb-6">
-                        {{ $ceoProfile->short_bio }}
+                    <p class="text-blue-600 font-semibold text-base sm:text-lg mb-5">
+                        {{ $ceoProfile->position }}
                     </p>
-                    <a href="{{ route('about') }}" class="btn-secondary btn-sm">
-                        <span>Tentang Kepemimpinan & Visi →</span>
-                    </a>
+                    
+                    <p class="text-slate-600 text-sm sm:text-base leading-relaxed mb-6">
+                        {{ $ceoProfile->full_bio ?? $ceoProfile->short_bio }}
+                    </p>
+
+                    {{-- Core Expertise Pills --}}
+                    <div class="mb-8">
+                        <span class="text-xs font-mono font-bold text-slate-400 uppercase tracking-wider block mb-3">Core Expertise & Capabilities</span>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="text-xs px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-700 font-medium shadow-2xs">System Architecture</span>
+                            <span class="text-xs px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-700 font-medium shadow-2xs">Custom Software Engineering</span>
+                            <span class="text-xs px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-700 font-medium shadow-2xs">SaaS & Multi-Tenant Platform</span>
+                            <span class="text-xs px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-700 font-medium shadow-2xs">Business Automation & AI</span>
+                            <span class="text-xs px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-700 font-medium shadow-2xs">IT Project Management</span>
+                        </div>
+                    </div>
+
+                    {{-- Action Buttons --}}
+                    <div class="flex flex-wrap items-center gap-4 pt-2 border-t border-slate-200/80">
+                        <a href="{{ route('about') }}" class="btn-primary">
+                            <span>Visi & Metodologi Lengkap</span>
+                            <svg class="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                        </a>
+                        <a href="{{ \App\Services\WhatsAppService::getUrl() }}?text=Halo%20Deni%20Afrizal,%20saya%20ingin%20konsultasi%20langsung%20mengenai%20arsitektur%20sistem%20bisnis%20saya." target="_blank" rel="noopener" class="btn-secondary">
+                            <span>Konsultasi Langsung via WhatsApp →</span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
+
     </div>
 </section>
 @endif
 
 {{-- ============================================================
-     10. FAQ SECTION
+     9. FINAL HIGH-CONTRAST CONVERSION CTA (BLACK, BLUE & RED LUXURY BLEND)
      ============================================================ --}}
-<section class="section-padding bg-slate-50/80 border-t border-slate-200/80" id="faq">
-    <div class="max-w-4xl mx-auto px-5 sm:px-8 lg:px-10">
-        
-        <div class="text-center mb-16">
-            <span class="section-eyebrow justify-center reveal">FAQ</span>
-            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold text-slate-900 tracking-tight leading-tight mb-5 reveal reveal-delay-1">
-                Pertanyaan yang Sering Diajukan
-            </h2>
-            <p class="text-slate-600 text-base lg:text-lg leading-relaxed reveal reveal-delay-2">
-                Punya pertanyaan lain? Hubungi kami langsung melalui WhatsApp untuk konsultasi teknis.
-            </p>
-        </div>
+<section class="py-24 lg:py-32 relative bg-[#060810] text-white overflow-hidden" id="contact">
+    {{-- Ambient Luxury Lighting: Black base + Royal Blue & Crimson Red Mesh Spheres --}}
+    <div class="absolute -top-32 -left-20 w-[520px] h-[520px] bg-gradient-to-br from-blue-600/30 via-indigo-600/20 to-transparent rounded-full blur-[130px] pointer-events-none"></div>
+    <div class="absolute -bottom-32 -right-20 w-[560px] h-[560px] bg-gradient-to-tl from-rose-600/25 via-red-600/20 to-transparent rounded-full blur-[140px] pointer-events-none"></div>
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-radial from-blue-600/15 via-red-700/10 to-transparent blur-[120px] pointer-events-none"></div>
 
-        <div class="space-y-4" x-data="{ activeFaq: 0 }">
-            @foreach($faqs as $index => $faq)
-            <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden transition-all shadow-2xs reveal">
-                <button @click="activeFaq = (activeFaq === {{ $index }} ? null : {{ $index }})"
-                        class="w-full px-6 py-5 text-left flex items-center justify-between gap-4 font-display font-bold text-slate-900 text-base">
-                    <span>{{ $faq->question }}</span>
-                    <span class="w-7 h-7 rounded-full bg-slate-100 flex items-center justify-center shrink-0 transition-transform duration-200"
-                          :class="activeFaq === {{ $index }} ? 'rotate-180 bg-blue-50 text-blue-600' : 'text-slate-400'">
-                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                    </span>
-                </button>
-                <div x-show="activeFaq === {{ $index }}" x-collapse
-                     class="px-6 pb-6 pt-1 text-slate-600 text-sm leading-relaxed border-t border-slate-100">
-                    {{ $faq->answer }}
-                </div>
-            </div>
-            @endforeach
-        </div>
-
-    </div>
-</section>
-
-{{-- ============================================================
-     11. FINAL HIGH-CONTRAST CONVERSION CTA (DEEP NAVY)
-     ============================================================ --}}
-<section class="py-24 lg:py-32 relative bg-[#090D16] text-white overflow-hidden" id="contact">
-    {{-- Ambient Lighting --}}
-    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-gradient-to-tr from-blue-600/15 via-indigo-600/10 to-transparent blur-[140px] pointer-events-none"></div>
+    {{-- Subtle Masked Grid --}}
+    <div class="absolute inset-0 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] pointer-events-none opacity-60"></div>
 
     <div class="max-w-5xl mx-auto px-5 sm:px-8 lg:px-10 text-center relative z-10">
-        <span class="section-eyebrow section-eyebrow-dark justify-center mb-4 reveal">Mulai Transformasi</span>
+        {{-- Section Eyebrow with Blue/Red Ambient Frame --}}
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gradient-to-r from-blue-950/80 via-slate-900/90 to-red-950/80 border border-white/15 text-xs font-mono font-bold tracking-wider mb-6 shadow-lg reveal">
+            <span class="w-2 h-2 rounded-full bg-gradient-to-r from-blue-400 to-rose-500 animate-pulse"></span>
+            <span class="bg-gradient-to-r from-blue-300 via-white to-rose-300 bg-clip-text text-transparent uppercase">Mulai Transformasi</span>
+        </div>
         
         <h2 class="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold text-white mb-6 leading-tight tracking-tight reveal reveal-delay-1">
-            Have a Business Challenge That Technology Can Solve?
+            Have a Business Challenge That <span class="bg-gradient-to-r from-blue-400 via-indigo-200 to-rose-400 bg-clip-text text-transparent">Technology Can Solve?</span>
         </h2>
         
         <p class="text-slate-300 text-lg lg:text-xl mb-10 max-w-2xl mx-auto leading-relaxed reveal reveal-delay-2">
@@ -740,11 +920,11 @@ $metaDescription = 'Aldef Tech adalah software development partner terpercaya un
 
         <div class="flex flex-wrap items-center justify-center gap-4 reveal reveal-delay-3">
             <a href="{{ \App\Services\WhatsAppService::getUrl() }}" target="_blank" rel="noopener"
-               class="btn-primary btn-lg shadow-xl font-bold">
+               class="btn-primary btn-lg shadow-xl font-bold bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 hover:from-blue-500 hover:to-indigo-600 border border-blue-400/30">
                 <span>Start a Conversation</span>
                 <svg class="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
             </a>
-            <a href="{{ route('contact') }}" class="btn-ghost-light btn-lg">
+            <a href="{{ route('contact') }}" class="btn-ghost-light btn-lg border border-white/20 hover:border-white/40">
                 <span>Isi Form Konsultasi Proyek</span>
             </a>
         </div>

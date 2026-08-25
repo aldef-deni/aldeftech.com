@@ -6,11 +6,8 @@
             {{-- Brand Column --}}
             <div class="lg:col-span-4">
                 <a href="{{ route('home') }}" class="inline-block mb-6 group">
-                    <img src="{{ asset('images/logo.png') }}" alt="{{ config('app.name') }}" class="h-10 w-auto transition-transform duration-300 group-hover:scale-105">
+                    <img src="{{ asset('images/logo.png') }}" alt="{{ config('app.name') }}" class="h-12 sm:h-14 lg:h-16 w-auto transition-transform duration-300 group-hover:scale-105">
                 </a>
-                <p class="text-xs font-semibold text-blue-400 tracking-wider uppercase mb-3">
-                    Software Development • SaaS • AI • Automation
-                </p>
                 <p class="text-slate-400 text-sm leading-relaxed mb-6 max-w-sm">
                     {{ \App\Models\SiteSetting::get('footer_description', \App\Models\SiteSetting::get('description', 'Enterprise-grade technology partner yang merancang dan membangun sistem digital, SaaS, aplikasi web, dan automasi AI untuk mengakselerasi pertumbuhan bisnis.')) }}
                 </p>
@@ -54,6 +51,7 @@
                     <li><a href="{{ route('services') }}" class="text-slate-400 hover:text-white transition-colors duration-200">Services</a></li>
                     <li><a href="{{ route('solutions') }}" class="text-slate-400 hover:text-white transition-colors duration-200">Solutions</a></li>
                     <li><a href="{{ route('portfolio') }}" class="text-slate-400 hover:text-white transition-colors duration-200">Portfolio</a></li>
+                    <li><a href="{{ route('faq') }}" class="text-slate-400 hover:text-white transition-colors duration-200">FAQ</a></li>
                     <li><a href="{{ route('blog') }}" class="text-slate-400 hover:text-white transition-colors duration-200">Blog & Insights</a></li>
                     <li><a href="{{ route('contact') }}" class="text-slate-400 hover:text-white transition-colors duration-200">Contact Us</a></li>
                 </ul>
@@ -85,13 +83,10 @@
             </div>
         </div>
 
-        {{-- Bottom Bar --}}
-        <div class="py-7 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+        {{-- Bottom Bar (Centered & Single Copyright) --}}
+        <div class="py-7 border-t border-slate-800/80 text-center text-xs text-slate-500">
             <p>
-                © {{ date('Y') }} {{ \App\Models\SiteSetting::get('copyright', config('app.name') . '. All rights reserved.') }}
-            </p>
-            <p class="font-medium tracking-wider uppercase text-slate-400">
-                Software Development • SaaS • AI • Automation
+                © {{ date('Y') }} {{ config('app.name', 'Aldef Tech') }}. All rights reserved.
             </p>
         </div>
     </div>

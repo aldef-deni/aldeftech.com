@@ -17,6 +17,7 @@
                     ['route' => 'solutions', 'label' => 'Solutions'],
                     ['route' => 'portfolio', 'label' => 'Portfolio'],
                     ['route' => 'about', 'label' => 'About'],
+                    ['route' => 'faq', 'label' => 'FAQ'],
                     ['route' => 'blog', 'label' => 'Insights'],
                     ['route' => 'contact', 'label' => 'Contact'],
                 ];
