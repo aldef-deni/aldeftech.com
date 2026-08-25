@@ -73,7 +73,7 @@
                 <h4 class="text-white font-semibold text-sm mb-5 uppercase tracking-wider">Contact</h4>
                 @php
                 $footerEmail = \App\Models\SiteSetting::get('email', 'aldeftech@gmail.com');
-                $footerWhatsapp = \App\Models\SiteSetting::get('whatsapp_number', '+62 822-7798-2997');
+                $footerWhatsapp = \App\Models\SiteSetting::get('whatsapp_number', '+62 812-8968-609');
                 $footerAddress = 'Rumah Chiara 2, Jl. Curug Induk, Bojong Kulur, Kec. Gunung Putri, Kab. Bogor';
                 $footerMapsUrl = 'https://www.google.com/maps/search/?api=1&query=' . urlencode('Rumah Chiara 2, jalan Curug Induk, Bojong kulur, Kecamatan Gunung Putri, Kab Bogor');
                 @endphp

@@ -42,16 +42,16 @@
     {{-- Schema.org (JSON-LD) --}}
     <script type="application/ld+json">
     {!! json_encode([
-        '@context' => 'https://schema.org',
+        '@' . 'context' => 'https://schema.org',
         '@type' => 'ProfessionalService',
         'name' => 'Aldef Tech',
         'alternateName' => 'Aldef Technology Studio',
-        'description' => 'Premium Software Development, SaaS Architecture, AI Solutions, and Business Automation Studio.',
+        'description' => 'Aldef Tech is a premium software engineering and AI technology company building custom applications, software systems, SaaS platforms, AI solutions, and business automation.',
         'url' => config('app.url'),
         'logo' => asset('images/logo.png'),
         'image' => asset('images/logo.png'),
         'email' => \App\Models\SiteSetting::get('email', 'info@aldeftech.com'),
-        'telephone' => '+' . preg_replace('/\D/', '', \App\Models\SiteSetting::get('whatsapp_number', '6281234567890')),
+        'telephone' => '+' . preg_replace('/\D/', '', \App\Models\SiteSetting::get('whatsapp_number', '628128968609')),
         'address' => [
             '@type' => 'PostalAddress',
             'addressCountry' => 'ID',

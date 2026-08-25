@@ -1,8 +1,6 @@
 ﻿@extends('layouts.app')
 @section('content')
 @php
-$pageTitle = 'Solusi Software Enterprise & AI — Aldef Tech';
-$metaDescription = 'Solusi sistem manajemen bisnis, SaaS platform, POS omnichannel, CRM sales funnel, hospitality booking engine, dan custom ERP enterprise.';
 
 $solutionCardStyles = [
     [
@@ -132,7 +130,7 @@ $solutionCardStyles = [
 
                 {{-- CTA Action Link --}}
                 <div class="pt-5 border-t border-black/10 flex items-center justify-between">
-                    <a href="{{ \App\Services\WhatsAppService::getUrl() }}?text=Halo%20Aldef%20Tech,%20saya%20tertarik%20dengan%20solusi%20{{ urlencode($solution->title) }}"
+                    <a href="{{ \App\Services\WhatsAppService::getUrl('Halo Aldef Tech, saya tertarik dengan solusi ' . $solution->title) }}"
                        target="_blank" rel="noopener"
                        class="text-xs font-bold uppercase tracking-wider inline-flex items-center gap-1.5 transition-colors group/link {{ $style['link'] }}">
                         <span>Konsultasi Solusi Ini</span>
@@ -172,7 +170,7 @@ $solutionCardStyles = [
         </p>
 
         <div class="flex flex-wrap items-center justify-center gap-4 reveal reveal-delay-3">
-            <a href="{{ \App\Services\WhatsAppService::getUrl() }}?text=Halo%20Aldef%20Tech,%20saya%20ingin%20berkonsultasi%20mengenai%20kebutuhan%20custom%20software%20enterprise%20untuk%20perusahaan%20saya."
+            <a href="{{ \App\Services\WhatsAppService::getUrl('Halo Aldef Tech, saya ingin berkonsultasi mengenai kebutuhan custom software enterprise untuk perusahaan saya.') }}"
                target="_blank" rel="noopener"
                class="btn-primary btn-lg shadow-xl font-bold bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 hover:from-blue-500 hover:to-indigo-600 border border-blue-400/30">
                 <span>Diskusikan Kebutuhan Custom</span>

@@ -109,6 +109,11 @@ class ServiceController extends Controller
             ]);
         }
 
-        return view('pages.services', ['services' => $services]);
+        return view('pages.services', [
+            'services' => $services,
+            'pageTitle' => 'Layanan Software Development, SaaS & AI — Aldef Tech',
+            'metaDescription' => 'Layanan custom software development, SaaS platform, AI solutions, business automation, system integration, website development, dan IT consulting dari Aldef Tech.',
+            'canonical' => route('services'),
+        ]);
     }
 }

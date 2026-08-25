@@ -4,7 +4,7 @@
 $pageTitle = 'Hubungi Aldef Tech — Konsultasi Project & Solusi Software';
 $metaDescription = 'Diskusikan kebutuhan custom software, SaaS, AI, dan sistem otomasi bisnis bersama tim engineer Aldef Tech.';
 
-$whatsappNumber = \App\Models\SiteSetting::get('whatsapp_number', '+62 822-7798-2997');
+$whatsappNumber = \App\Models\SiteSetting::get('whatsapp_number', '+62 812-8968-609');
 $emailAddress = \App\Models\SiteSetting::get('email', 'aldeftech@gmail.com');
 $fullAddress = 'Rumah Chiara 2, jalan Curug Induk, Bojong kulur, Kecamatan Gunung Putri, Kab Bogor';
 @endphp
@@ -62,7 +62,7 @@ $fullAddress = 'Rumah Chiara 2, jalan Curug Induk, Bojong kulur, Kecamatan Gunun
 
                 <div class="space-y-4">
                     {{-- 1. WhatsApp Card (Crisp Black Text) --}}
-                    <a href="{{ \App\Services\WhatsAppService::getUrl() }}?text=Halo%20Aldef%20Tech,%20saya%20ingin%20berkonsultasi%20mengenai%20project%20software."
+                    <a href="{{ \App\Services\WhatsAppService::getUrl('Halo Aldef Tech, saya ingin berkonsultasi mengenai project software.') }}"
                        target="_blank" rel="noopener"
                        class="p-5 rounded-2xl bg-white/95 border border-white/90 shadow-xl flex items-center gap-4 group hover:bg-emerald-50 hover:border-emerald-400 hover:-translate-y-1 hover:shadow-2xl transition-all duration-300 cursor-pointer block">
                         <div class="flex items-center gap-4">

@@ -41,6 +41,12 @@ class DatabaseSeeder extends Seeder
         $this->seedCeoProfile();
         $this->seedHomepageSections();
         $this->seedNavigation();
+        $this->call([
+            MarketingIntelligenceSeeder::class,
+            MarketingPainPointSeeder::class,
+            MarketingKeywordSeeder::class,
+            MarketingContentPillarSeeder::class,
+        ]);
     }
 
     private function seedRolesAndPermissions(): void
@@ -105,7 +111,7 @@ class DatabaseSeeder extends Seeder
             ['key' => 'site_favicon', 'value' => 'images/logo-square.png', 'type' => 'text', 'group' => 'general'],
             ['key' => 'email', 'value' => 'info@aldeftech.com', 'type' => 'text', 'group' => 'general'],
             ['key' => 'phone', 'value' => '+62 812-3456-7890', 'type' => 'text', 'group' => 'general'],
-            ['key' => 'whatsapp_number', 'value' => '6281234567890', 'type' => 'text', 'group' => 'general'],
+            ['key' => 'whatsapp_number', 'value' => '628128968609', 'type' => 'text', 'group' => 'general'],
             ['key' => 'address', 'value' => 'Indonesia', 'type' => 'text', 'group' => 'general'],
             ['key' => 'copyright', 'value' => '© ' . date('Y') . ' Aldef Tech. All rights reserved.', 'type' => 'text', 'group' => 'general'],
             ['key' => 'seo_default_title', 'value' => 'Aldef Tech — Jasa Pembuatan Sistem, Aplikasi, SaaS & AI', 'type' => 'text', 'group' => 'seo'],
