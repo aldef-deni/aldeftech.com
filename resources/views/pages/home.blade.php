@@ -1,133 +1,127 @@
 @extends('layouts.app')
 
 @section('content')
-{{-- ================================================================
-     HERO SECTION — Enterprise Tech & AI Studio
-     ================================================================ --}}
-<section class="hero-light-gradient relative overflow-hidden pt-12 pb-20 lg:pt-16 lg:pb-32 border-b border-slate-200/60">
-    {{-- Subtle decorative grid --}}
-    <div class="absolute inset-0 subtle-grid opacity-70 pointer-events-none"></div>
+@php
+$pageTitle = 'Aldef Tech — Premium Software Engineering, SaaS & AI Studio';
+$metaDescription = 'Aldef Tech adalah software development partner terpercaya untuk custom business systems, SaaS platforms, AI solutions, dan otomasi proses bisnis.';
+@endphp
 
-    {{-- Subtle ambient glow --}}
-    <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-blue-500/5 blur-[120px] rounded-full pointer-events-none"></div>
+{{-- ============================================================
+     1. HERO SECTION
+     ============================================================ --}}
+<section class="hero-light-gradient relative overflow-hidden pt-12 pb-20 lg:pt-20 lg:pb-32 border-b border-slate-200/60">
+    {{-- Ambient Light Grids --}}
+    <div class="absolute inset-0 subtle-grid opacity-60 pointer-events-none"></div>
+    <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-gradient-to-tr from-blue-500/10 via-indigo-500/5 to-transparent blur-[120px] rounded-full pointer-events-none"></div>
 
     <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 relative z-10">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
             
-            {{-- Left Content --}}
+            {{-- Left Column: Copy & Actions --}}
             <div class="lg:col-span-7">
-                {{-- Eyebrow Badge --}}
-                <div class="reveal mb-6">
-                    <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-blue-50 border border-blue-200/80 text-blue-700 shadow-2xs">
-                        <span class="w-2 h-2 rounded-full bg-blue-600 animate-pulse"></span>
-                        ALDEF TECH — Software & AI Studio
-                    </span>
+                {{-- Status Pill --}}
+                <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-blue-50/90 border border-blue-200/80 shadow-2xs mb-6 reveal">
+                    <span class="status-dot status-dot-pulse"></span>
+                    <span class="text-xs font-semibold text-blue-700 tracking-wide uppercase">Software Engineering & AI Studio</span>
                 </div>
 
                 {{-- Main Headline --}}
-                <h1 class="text-4xl sm:text-5xl lg:text-[4.25rem] font-display font-extrabold text-slate-900 tracking-tight leading-[1.08] mb-6 reveal reveal-delay-1">
-                    Build Smarter.<br>
-                    <span class="text-gradient-brand">Scale Faster.</span>
+                <h1 class="text-4xl sm:text-5xl lg:text-[3.65rem] font-display font-extrabold text-slate-900 tracking-tight leading-[1.1] mb-6 reveal reveal-delay-1">
+                    We Build Digital Products That <span class="text-gradient-blue">Move Your Business Forward.</span>
                 </h1>
 
                 {{-- Subheadline --}}
-                <p class="text-slate-600 text-lg sm:text-xl max-w-xl mb-10 leading-relaxed reveal reveal-delay-2 font-normal">
-                    Custom software, SaaS, AI, and business automation solutions built for modern businesses that prioritize speed, scale, and reliability.
+                <p class="text-slate-600 text-lg lg:text-xl leading-relaxed max-w-2xl mb-8 reveal reveal-delay-2">
+                    Custom software, scalable SaaS platforms, AI solutions, and intelligent business automation engineered around the exact way your business operates.
                 </p>
 
-                {{-- CTA Buttons --}}
-                <div class="flex flex-wrap items-center gap-4 reveal reveal-delay-3">
-                    <a href="{{ \App\Services\WhatsAppService::getUrl() }}" target="_blank" rel="noopener" class="btn-primary btn-lg shadow-md">
-                        <span>Start Your Project</span>
-                        <svg class="w-4 h-4 ml-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                {{-- Actions --}}
+                <div class="flex flex-wrap items-center gap-4 mb-12 reveal reveal-delay-3">
+                    <a href="{{ \App\Services\WhatsAppService::getUrl() }}" target="_blank" rel="noopener" class="btn-primary btn-lg shadow-md group">
+                        <span>Konsultasi Proyek Gratis</span>
+                        <svg class="w-4 h-4 ml-0.5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                     </a>
-                    <a href="{{ route('solutions') }}" class="btn-secondary btn-lg">
-                        Explore Our Solutions
+                    <a href="#portfolio" class="btn-secondary btn-lg">
+                        <span>Lihat Portofolio</span>
                     </a>
                 </div>
 
-                {{-- Trust Highlights --}}
-                <div class="mt-12 pt-8 border-t border-slate-200/80 grid grid-cols-3 gap-6 max-w-lg reveal reveal-delay-4">
+                {{-- Key Trust Metrics --}}
+                <div class="grid grid-cols-3 gap-6 pt-8 border-t border-slate-200/80 reveal reveal-delay-4">
                     <div>
-                        <div class="text-2xl font-bold font-display text-slate-900">50+</div>
-                        <div class="text-xs text-slate-500 font-medium mt-0.5">Projects Delivered</div>
+                        <div class="text-2xl lg:text-3xl font-display font-bold text-slate-900">99.9%</div>
+                        <div class="text-xs font-medium text-slate-500 mt-0.5">Uptime Architecture</div>
                     </div>
                     <div>
-                        <div class="text-2xl font-bold font-display text-slate-900">99.9%</div>
-                        <div class="text-xs text-slate-500 font-medium mt-0.5">System Reliability</div>
+                        <div class="text-2xl lg:text-3xl font-display font-bold text-slate-900">&lt; 45ms</div>
+                        <div class="text-xs font-medium text-slate-500 mt-0.5">P99 API Latency</div>
                     </div>
                     <div>
-                        <div class="text-2xl font-bold font-display text-slate-900">100%</div>
-                        <div class="text-xs text-slate-500 font-medium mt-0.5">Custom Architecture</div>
+                        <div class="text-2xl lg:text-3xl font-display font-bold text-slate-900">100%</div>
+                        <div class="text-xs font-medium text-slate-500 mt-0.5">Custom Tailored</div>
                     </div>
                 </div>
             </div>
 
-            {{-- Right Visual: Interactive Enterprise Tech Dashboard Card --}}
-            <div class="lg:col-span-5 reveal-right reveal-delay-2">
-                <div class="relative">
-                    {{-- Soft glow behind card --}}
-                    <div class="absolute -inset-2 rounded-3xl bg-gradient-to-tr from-blue-600/10 via-indigo-500/10 to-violet-500/10 blur-xl"></div>
-                    
-                    {{-- Main Tech Mockup Card --}}
-                    <div class="relative bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-7 shadow-elevated">
-                        {{-- Card Header --}}
-                        <div class="flex items-center justify-between pb-5 border-b border-slate-100">
-                            <div class="flex items-center gap-2.5">
-                                <div class="w-3 h-3 rounded-full bg-red-400"></div>
-                                <div class="w-3 h-3 rounded-full bg-amber-400"></div>
-                                <div class="w-3 h-3 rounded-full bg-emerald-400"></div>
-                                <span class="text-xs font-mono text-slate-400 ml-2">aldef-system.prod</span>
+            {{-- Right Column: Interactive System Architecture Mockup --}}
+            <div class="lg:col-span-5 relative reveal-scale reveal-delay-2">
+                {{-- Floating Badges --}}
+                <div class="float-badge float-badge-1 hidden sm:flex">
+                    <span class="w-6 h-6 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-xs">⚙️</span>
+                    <span>Custom System Architecture</span>
+                </div>
+                <div class="float-badge float-badge-2 hidden sm:flex">
+                    <span class="w-6 h-6 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center text-xs">🔒</span>
+                    <span>Enterprise Grade Security</span>
+                </div>
+
+                {{-- Mockup Window Container --}}
+                <div class="relative bg-white border border-slate-200/90 rounded-2xl shadow-elevated p-5 sm:p-6 overflow-hidden">
+                    {{-- Top Window Controls --}}
+                    <div class="flex items-center justify-between pb-4 mb-4 border-b border-slate-100">
+                        <div class="flex items-center gap-1.5">
+                            <span class="w-3 h-3 rounded-full bg-rose-400"></span>
+                            <span class="w-3 h-3 rounded-full bg-amber-400"></span>
+                            <span class="w-3 h-3 rounded-full bg-emerald-400"></span>
+                        </div>
+                        <div class="px-3 py-1 rounded-full bg-slate-50 border border-slate-200 text-[0.6875rem] font-mono text-slate-500">
+                            aldef-core-cluster // live
+                        </div>
+                    </div>
+
+                    {{-- Live Dashboard Metrics --}}
+                    <div class="space-y-4 font-mono text-xs">
+                        {{-- Pipeline Status Card --}}
+                        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200/80">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-slate-500 font-sans font-semibold">AI Workflow Pipeline</span>
+                                <span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[0.65rem] font-bold">ACTIVE</span>
                             </div>
-                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[0.6875rem] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                                Active Pipeline
-                            </span>
+                            <div class="text-slate-900 font-semibold font-sans text-sm mb-1">Automated Invoice & Data Extraction</div>
+                            <div class="text-slate-500 text-[0.6875rem]">Model: Aldef-OCR-Engine v2.4 • Accuracy: 99.8%</div>
                         </div>
 
-                        {{-- Metric Rows --}}
-                        <div class="py-5 space-y-4">
-                            {{-- Metric 1 --}}
-                            <div class="bg-slate-50 border border-slate-100 rounded-xl p-4 flex items-center justify-between">
-                                <div>
-                                    <div class="text-xs font-medium text-slate-500">AI Automation Engine</div>
-                                    <div class="text-sm font-bold text-slate-900 font-display mt-0.5">Autonomous Agent & OCR</div>
-                                </div>
-                                <div class="text-right">
-                                    <span class="text-xs font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-lg border border-blue-100">99.8% Accuracy</span>
-                                </div>
+                        {{-- Microservice Metrics Grid --}}
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80">
+                                <div class="text-[0.6875rem] text-slate-500 font-sans">API Response</div>
+                                <div class="text-base font-bold text-slate-900 font-sans mt-0.5">32ms</div>
+                                <div class="text-[0.65rem] text-emerald-600 font-semibold mt-1">● Optimal P99</div>
                             </div>
-
-                            {{-- Metric 2 --}}
-                            <div class="bg-slate-50 border border-slate-100 rounded-xl p-4 flex items-center justify-between">
-                                <div>
-                                    <div class="text-xs font-medium text-slate-500">System Performance</div>
-                                    <div class="text-sm font-bold text-slate-900 font-display mt-0.5">Latency & Response Time</div>
-                                </div>
-                                <div class="text-right">
-                                    <span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-100">&lt; 45ms P99</span>
-                                </div>
-                            </div>
-
-                            {{-- Metric 3 --}}
-                            <div class="bg-slate-50 border border-slate-100 rounded-xl p-4 flex items-center justify-between">
-                                <div>
-                                    <div class="text-xs font-medium text-slate-500">Multi-tenant Architecture</div>
-                                    <div class="text-sm font-bold text-slate-900 font-display mt-0.5">SaaS Core & Database Sync</div>
-                                </div>
-                                <div class="text-right">
-                                    <span class="text-xs font-bold text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-lg border border-indigo-100">Enterprise SLA</span>
-                                </div>
+                            <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80">
+                                <div class="text-[0.6875rem] text-slate-500 font-sans">Database Sync</div>
+                                <div class="text-base font-bold text-slate-900 font-sans mt-0.5">0.02s lag</div>
+                                <div class="text-[0.65rem] text-blue-600 font-semibold mt-1">● Multi-Region</div>
                             </div>
                         </div>
 
-                        {{-- Card Bottom Mini Tech Stack --}}
-                        <div class="pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-                            <span class="font-medium">Stack: Laravel • Python • AI</span>
-                            <span class="text-blue-600 font-semibold flex items-center gap-1">
-                                Ready for Scale
-                                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                            </span>
+                        {{-- Code Diagnostic Snippet --}}
+                        <div class="p-3.5 rounded-xl bg-[#0B1020] text-slate-300 font-mono text-[0.6875rem] leading-relaxed">
+                            <div class="text-blue-400">// Aldef Tech Scalable Architecture</div>
+                            <div class="text-slate-400">$service->deploy(<span class="text-emerald-300">'custom_erp'</span>, [</div>
+                            <div class="pl-3 text-slate-300"><span class="text-indigo-300">'cache'</span> => <span class="text-amber-300">'Redis::cluster'</span>,</div>
+                            <div class="pl-3 text-slate-300"><span class="text-indigo-300">'queue'</span> => <span class="text-amber-300">'Horizon::parallel'</span></div>
+                            <div class="text-slate-400">]); <span class="text-emerald-400">// Status: 200 OK</span></div>
                         </div>
                     </div>
                 </div>
@@ -137,475 +131,624 @@
     </div>
 </section>
 
-{{-- ================================================================
-     SERVICES SECTION
-     ================================================================ --}}
-@if($services->count())
-<section class="section-padding bg-slate-50/80 relative" id="services">
+{{-- ============================================================
+     2. TECHNOLOGY MARQUEE TRACK
+     ============================================================ --}}
+<section class="py-9 bg-slate-50/80 border-b border-slate-200/70 overflow-hidden">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8 mb-3 text-center">
+        <p class="text-[0.6875rem] font-display font-bold uppercase tracking-[0.2em] text-slate-600">
+            Enterprise Technology Stack & Modern Ecosystem
+        </p>
+    </div>
+
+    <div class="marquee-wrapper">
+        <div class="marquee-content">
+            @php
+            $techStack = [
+                'Laravel 11+', 'PHP 8.3', 'Python', 'OpenAI & AI Agents', 'Vue.js 3', 'React', 'Tailwind CSS',
+                'PostgreSQL', 'MySQL', 'Redis', 'Docker', 'REST & GraphQL APIs', 'AWS & Cloud Infrastructure',
+                'FastAPI', 'Microservices', 'Laravel 11+', 'PHP 8.3', 'Python', 'OpenAI & AI Agents', 'Vue.js 3', 'React', 'Tailwind CSS',
+                'PostgreSQL', 'MySQL', 'Redis', 'Docker', 'REST & GraphQL APIs', 'AWS & Cloud Infrastructure'
+            ];
+            @endphp
+            @foreach($techStack as $tech)
+            <span class="inline-flex items-center gap-2 font-display font-bold text-sm text-slate-600 tracking-tight">
+                <span class="w-1.5 h-1.5 rounded-full bg-blue-500/70"></span>
+                {{ $tech }}
+            </span>
+            @endforeach
+        </div>
+    </div>
+</section>
+
+{{-- ============================================================
+     3. CORE SERVICES (01 - 06)
+     ============================================================ --}}
+<section class="section-padding bg-white relative" id="services">
     <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
+        
         {{-- Section Header --}}
-        <div class="max-w-2xl mb-16 lg:mb-20">
-            <span class="section-eyebrow reveal">Services</span>
-            <h2 class="text-3xl sm:text-4xl lg:text-display-sm font-display font-bold text-slate-900 mb-4 reveal reveal-delay-1 tracking-tight">
-                Software & AI Engineering Services
+        <div class="max-w-3xl mx-auto text-center mb-16 lg:mb-20">
+            <span class="section-eyebrow justify-center reveal">Core Capabilities</span>
+            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold text-slate-900 tracking-tight leading-tight mb-5 reveal reveal-delay-1">
+                Solusi Lengkap dari Analisis hingga Rilis
             </h2>
             <p class="text-slate-600 text-lg leading-relaxed reveal reveal-delay-2">
-                Kami merancang dan membangun arsitektur digital komprehensif yang disesuaikan secara presisi dengan kebutuhan bisnis Anda.
+                Kami menangani seluruh siklus rekayasa perangkat lunak, sehingga Anda dapat fokus sepenuhnya pada akselerasi bisnis.
             </p>
         </div>
 
-        {{-- Service Grid --}}
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            @foreach($services as $service)
-            <div class="premium-card p-7 group flex flex-col justify-between reveal reveal-delay-{{ $loop->iteration < 5 ? $loop->iteration : 1 }}">
+        {{-- Services Grid (6 Core Services) --}}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            @php
+            $coreServices = [
+                [
+                    'num' => '01',
+                    'title' => 'Custom Software Development',
+                    'desc' => 'Perancangan sistem enterprise khusus yang disesuaikan 100% dengan alur operasional dan aturan bisnis perusahaan Anda.',
+                    'features' => ['Analisis Proses Bisnis', 'Arsitektur Database Terukur', 'Clean Code & Dokumentasi', 'API Integration Ready'],
+                    'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>'
+                ],
+                [
+                    'num' => '02',
+                    'title' => 'SaaS Platform Engineering',
+                    'desc' => 'Membangun platform SaaS dari tahap MVP hingga production skala besar dengan arsitektur multi-tenant dan billing terintegrasi.',
+                    'features' => ['Multi-tenant Architecture', 'Subscription & Payment Gateway', 'Role & Permission Granular', 'Admin Telemetry Dashboard'],
+                    'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/>'
+                ],
+                [
+                    'num' => '03',
+                    'title' => 'AI & Intelligent Automation',
+                    'desc' => 'Integrasi AI Agent, LLM, knowledge base perusahaan, dan asisten cerdas untuk mengotomasi interaksi serta keputusan operasional.',
+                    'features' => ['AI Chatbot & Knowledge Base', 'OCR & Document Processing', 'Autonomous AI Agents', 'Data Sentiment & Prediction'],
+                    'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M13 10V3L4 14h7v7l9-11h-7z"/>'
+                ],
+                [
+                    'num' => '04',
+                    'title' => 'Business Process Automation',
+                    'desc' => 'Menghilangkan pekerjaan manual yang berulang melalui integrasi alur kerja otomatis antar berbagai divisi dan platform.',
+                    'features' => ['Automated Invoicing & Sync', 'Multi-System Data Pipeline', 'WhatsApp & Email Triggers', 'Real-time Approval Flow'],
+                    'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>'
+                ],
+                [
+                    'num' => '05',
+                    'title' => 'Web Application Development',
+                    'desc' => 'Aplikasi web interaktif dengan performa tinggi, responsive di setiap ukuran layar, dan keamanan berlapis untuk bisnis modern.',
+                    'features' => ['Single Page Applications', 'PWA & Mobile-First UX', 'Zero-Downtime Deployment', 'Automated Testing & QA'],
+                    'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>'
+                ],
+                [
+                    'num' => '06',
+                    'title' => 'System Integration & APIs',
+                    'desc' => 'Menghubungkan ekosistem perangkat lunak Anda dengan payment gateway, logistik, WhatsApp API, ERP pusat, dan pihak ketiga.',
+                    'features' => ['Payment Gateway & Banking', 'WhatsApp Business API', 'PPOB & Third-party Sync', 'Webhook & Event Brokers'],
+                    'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>'
+                ],
+            ];
+            @endphp
+
+            @foreach($coreServices as $s)
+            <div class="premium-card p-8 lg:p-9 flex flex-col justify-between group reveal">
                 <div>
-                    {{-- Icon Badge --}}
-                    <div class="w-12 h-12 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600 text-xl mb-6 transition-all duration-300 group-hover:bg-blue-600 group-hover:text-white group-hover:scale-105 shadow-2xs">
-                        {{ $service->icon ?? '⚡' }}
+                    {{-- Top Number & Icon --}}
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center transition-all duration-300 group-hover:bg-blue-600 group-hover:text-white shadow-2xs">
+                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">{!! $s['icon'] !!}</svg>
+                        </div>
+                        <span class="text-xs font-mono font-bold text-slate-600 tracking-wider">{{ $s['num'] }}</span>
                     </div>
-                    
-                    <h3 class="text-lg font-display font-bold text-slate-900 mb-2.5 group-hover:text-blue-600 transition-colors">
-                        {{ $service->title }}
+
+                    {{-- Title & Description --}}
+                    <h3 class="text-xl font-display font-bold text-slate-900 mb-3 group-hover:text-blue-600 transition-colors">
+                        {{ $s['title'] }}
                     </h3>
-                    
                     <p class="text-slate-600 text-sm leading-relaxed mb-6">
-                        {{ $service->short_description }}
+                        {{ $s['desc'] }}
                     </p>
+
+                    {{-- Feature Checklist --}}
+                    <ul class="space-y-2.5 mb-8">
+                        @foreach($s['features'] as $feat)
+                        <li class="flex items-center gap-2.5 text-xs text-slate-600 font-medium">
+                            <svg class="w-4 h-4 text-emerald-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                            <span>{{ $feat }}</span>
+                        </li>
+                        @endforeach
+                    </ul>
                 </div>
 
                 {{-- Action Link --}}
-                <div class="pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-blue-600 group-hover:text-blue-700">
-                    <span>Lihat Detail</span>
-                    <svg class="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                <div class="pt-5 border-t border-slate-100">
+                    <a href="{{ route('services') }}" class="btn-link text-xs uppercase tracking-wider">
+                        <span>Detail Layanan</span>
+                        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                    </a>
                 </div>
             </div>
             @endforeach
         </div>
+
     </div>
 </section>
-@endif
 
-{{-- ================================================================
-     SOLUTIONS SECTION
-     ================================================================ --}}
-@if($solutions->count())
-<section class="section-padding bg-white relative" id="solutions">
+{{-- ============================================================
+     4. WHY ALDEF TECH / THE ENGINEERING ADVANTAGE
+     ============================================================ --}}
+<section class="section-padding bg-slate-50/80 relative border-y border-slate-200/80" id="why-us">
     <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
-        {{-- Section Header --}}
-        <div class="max-w-2xl mb-16 lg:mb-20">
-            <span class="section-eyebrow reveal">Solutions</span>
-            <h2 class="text-3xl sm:text-4xl lg:text-display-sm font-display font-bold text-slate-900 mb-4 reveal reveal-delay-1 tracking-tight">
-                Sistem yang Kami Bangun
+        
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center mb-16">
+            
+            {{-- Left Column: Visual Diagnostic Card --}}
+            <div class="lg:col-span-5 reveal">
+                <div class="bg-white border border-slate-200/90 rounded-2xl p-7 shadow-elevated">
+                    <div class="flex items-center gap-3 pb-4 mb-5 border-b border-slate-100">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-sm">
+                            AT
+                        </div>
+                        <div>
+                            <div class="font-display font-bold text-slate-900 text-sm">The Aldef Tech Standard</div>
+                            <div class="text-[0.6875rem] text-slate-500 font-medium">Enterprise Software Quality Checklist</div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="p-3.5 rounded-xl bg-emerald-50/70 border border-emerald-100 flex items-start gap-3">
+                            <svg class="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            <div>
+                                <div class="text-xs font-bold text-slate-900">Zero Technical Debt Strategy</div>
+                                <div class="text-[0.6875rem] text-slate-600 mt-0.5">Kode terstruktur rapi dan mudah dilanjutkan oleh developer internal Anda.</div>
+                            </div>
+                        </div>
+
+                        <div class="p-3.5 rounded-xl bg-blue-50/70 border border-blue-100 flex items-start gap-3">
+                            <svg class="w-5 h-5 text-blue-600 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                            <div>
+                                <div class="text-xs font-bold text-slate-900">Strict Data Privacy & Security</div>
+                                <div class="text-[0.6875rem] text-slate-600 mt-0.5">Enkripsi data, sanitasi input ketat, dan perlindungan kerentanan OWASP Top 10.</div>
+                            </div>
+                        </div>
+
+                        <div class="p-3.5 rounded-xl bg-indigo-50/70 border border-indigo-100 flex items-start gap-3">
+                            <svg class="w-5 h-5 text-indigo-600 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                            <div>
+                                <div class="text-xs font-bold text-slate-900">High-Performance Benchmarking</div>
+                                <div class="text-[0.6875rem] text-slate-600 mt-0.5">Query optimization, Redis caching, dan index database untuk kecepatan instan.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Right Column: Copywriting & Pillars --}}
+            <div class="lg:col-span-7 reveal-right">
+                <span class="section-eyebrow">The Engineering Advantage</span>
+                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold text-slate-900 tracking-tight leading-tight mb-6">
+                    Bukan Sekadar Coding — Kami Bangun Solusi Bisnis
+                </h2>
+                <p class="text-slate-600 text-base lg:text-lg leading-relaxed mb-8">
+                    Teknologi hanyalah sarana. Yang terpenting adalah dampaknya terhadap pertumbuhan bisnis Anda: alur kerja menjadi lebih ringkas, biaya operasional berkurang, dan produktivitas tim meningkat secara nyata.
+                </p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
+                    <div class="flex items-start gap-3.5">
+                        <div class="w-8 h-8 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-sm shrink-0">✓</div>
+                        <div>
+                            <h4 class="font-display font-bold text-slate-900 text-sm">Business-First Approach</h4>
+                            <p class="text-xs text-slate-500 mt-1 leading-relaxed">Merancang sistem berdasarkan pemahaman alur kerja nyata bisnis Anda.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3.5">
+                        <div class="w-8 h-8 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-sm shrink-0">✓</div>
+                        <div>
+                            <h4 class="font-display font-bold text-slate-900 text-sm">Transparent Communication</h4>
+                            <p class="text-xs text-slate-500 mt-1 leading-relaxed">Update progres berkala dan sprint review tanpa istilah teknis membingungkan.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3.5">
+                        <div class="w-8 h-8 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-sm shrink-0">✓</div>
+                        <div>
+                            <h4 class="font-display font-bold text-slate-900 text-sm">On-Time & On-Budget</h4>
+                            <p class="text-xs text-slate-500 mt-1 leading-relaxed">Ruang lingkup dan estimasi disepakati di awal tanpa biaya tersembunyi.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3.5">
+                        <div class="w-8 h-8 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-sm shrink-0">✓</div>
+                        <div>
+                            <h4 class="font-display font-bold text-slate-900 text-sm">Post-Launch Warranty</h4>
+                            <p class="text-xs text-slate-500 mt-1 leading-relaxed">Dukungan teknis dan garansi operasional pasca-rilis sistem.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <a href="{{ \App\Services\WhatsAppService::getUrl() }}" target="_blank" rel="noopener" class="btn-primary btn-md">
+                    <span>Ajak Diskusi Kebutuhan Anda</span>
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                </a>
+            </div>
+
+        </div>
+
+        {{-- 3 Guarantee Badges --}}
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-10 border-t border-slate-200">
+            <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-2xs reveal">
+                <div class="text-2xl mb-3">🛡️</div>
+                <h4 class="font-display font-bold text-slate-900 text-base mb-1">100% Code & IP Ownership</h4>
+                <p class="text-xs text-slate-600 leading-relaxed">Seluruh source code, arsitektur database, dan aset digital sepenuhnya menjadi milik perusahaan Anda.</p>
+            </div>
+            <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-2xs reveal reveal-delay-1">
+                <div class="text-2xl mb-3">⏱️</div>
+                <h4 class="font-display font-bold text-slate-900 text-base mb-1">Milestone On-Time Guarantee</h4>
+                <p class="text-xs text-slate-600 leading-relaxed">Jadwal pengerjaan bertahap dengan demo sprint berkala agar implementasi selesai tepat waktu.</p>
+            </div>
+            <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-2xs reveal reveal-delay-2">
+                <div class="text-2xl mb-3">🤝</div>
+                <h4 class="font-display font-bold text-slate-900 text-base mb-1">Post-Launch SLA & Support</h4>
+                <p class="text-xs text-slate-600 leading-relaxed">Kami mendampingi migrasi data, pelatihan tim operasional, dan pemeliharaan keamanan.</p>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+{{-- ============================================================
+     5. HOW WE WORK (01 - 06 STRUCTURED ROADMAP)
+     ============================================================ --}}
+<section class="section-padding bg-white relative" id="process">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
+        
+        <div class="max-w-3xl mx-auto text-center mb-16 lg:mb-20">
+            <span class="section-eyebrow justify-center reveal">Methodology</span>
+            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold text-slate-900 tracking-tight leading-tight mb-5 reveal reveal-delay-1">
+                Proses Pengembangan Terukur & Transparan
             </h2>
             <p class="text-slate-600 text-lg leading-relaxed reveal reveal-delay-2">
-                Solusi enterprise software yang siap diadaptasi untuk meningkatkan efisiensi dan otomasi operasional bisnis.
+                Enam langkah terstruktur dari eksplorasi ide pertama hingga sistem Anda mengudara dan beroperasi di production.
             </p>
         </div>
 
-        {{-- Solutions Grid --}}
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            @foreach($solutions as $solution)
-            <div class="premium-card p-7 flex items-start gap-5 group reveal reveal-delay-{{ min($loop->iteration, 3) }}">
-                <div class="w-11 h-11 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 text-lg shrink-0 transition-transform duration-300 group-hover:scale-105 shadow-2xs">
-                    {{ $solution->icon ?? '📦' }}
-                </div>
-                <div>
-                    <h3 class="font-display font-bold text-slate-900 text-base mb-1.5 group-hover:text-blue-600 transition-colors">
-                        {{ $solution->title }}
-                    </h3>
-                    <p class="text-slate-600 text-sm leading-relaxed">
-                        {{ $solution->short_description }}
-                    </p>
-                </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            @php
+            $workflowSteps = [
+                ['01', 'Discovery & Requirements', 'Memahami pain point bisnis, model data, dan target luaran sistem melalui sesi interview mendalam.'],
+                ['02', 'Architecture & Strategy', 'Merancang skema database, pemetaan API, diagram alur sistem, dan pemilihan teknologi yang tepat.'],
+                ['03', 'UI/UX & Prototyping', 'Mendesain antarmuka yang intuitif dan mudah dipelajari oleh staf operasional maupun pengguna umum.'],
+                ['04', 'Agile Engineering', 'Membangun fungsionalitas dengan metodologi agile sprint dan update berkala setiap milestone.'],
+                ['05', 'Testing & Quality Assurance', 'Validasi keamanan data, pengetesan performa beban tinggi, dan User Acceptance Testing (UAT).'],
+                ['06', 'Launch, SLA & Scaling', 'Deployment ke server production, pendampingan go-live, pelatihan pengguna, dan maintenance berkesinambungan.'],
+            ];
+            @endphp
+
+            @foreach($workflowSteps as $st)
+            <div class="premium-card p-8 lg:p-9 relative reveal">
+                <div class="step-number mb-4">{{ $st[0] }}</div>
+                <h3 class="text-lg font-display font-bold text-slate-900 mb-2.5">{{ $st[1] }}</h3>
+                <p class="text-slate-600 text-sm leading-relaxed">{{ $st[2] }}</p>
             </div>
             @endforeach
         </div>
+
     </div>
 </section>
-@endif
 
-{{-- ================================================================
-     FEATURED PORTFOLIO
-     ================================================================ --}}
-@if($portfolios->count())
-<section class="section-padding bg-slate-50/80 relative" id="portfolio">
+{{-- ============================================================
+     6. FEATURED CASE STUDIES / PORTFOLIO
+     ============================================================ --}}
+<section class="section-padding bg-slate-50/80 border-y border-slate-200/80" id="portfolio">
     <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
-        {{-- Section Header --}}
-        <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-14 lg:mb-16 gap-4">
-            <div class="max-w-xl">
-                <span class="section-eyebrow reveal">Portfolio</span>
-                <h2 class="text-3xl sm:text-4xl lg:text-display-sm font-display font-bold text-slate-900 tracking-tight reveal reveal-delay-1">
-                    Featured Projects
+        
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+            <div>
+                <span class="section-eyebrow reveal">Case Studies</span>
+                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold text-slate-900 tracking-tight leading-tight reveal reveal-delay-1">
+                    Karya Nyata yang Menggerakkan Bisnis
                 </h2>
             </div>
-            <a href="{{ route('portfolio') }}" class="btn-link font-semibold reveal reveal-delay-2 inline-flex items-center gap-1.5">
-                <span>Lihat Semua Project</span>
-                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+            <a href="{{ route('portfolio') }}" class="btn-secondary self-start md:self-auto reveal">
+                <span>Semua Studi Kasus</span>
+                <svg class="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
             </a>
         </div>
 
-        {{-- Portfolio Grid --}}
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-7">
-            @foreach($portfolios as $item)
-            <a href="{{ route('portfolio.show', $item->slug) }}" class="premium-card overflow-hidden group flex flex-col justify-between reveal reveal-delay-{{ $loop->iteration }}">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            @forelse($portfolios as $p)
+            <div class="premium-card overflow-hidden flex flex-col justify-between group reveal">
                 <div>
-                    <div class="aspect-[16/10] bg-slate-100 overflow-hidden relative border-b border-slate-100">
-                        @if($item->featured_image)
-                        <img src="{{ asset('storage/' . $item->featured_image) }}" alt="{{ $item->title }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
+                    {{-- Thumbnail --}}
+                    <div class="aspect-[16/10] bg-slate-100 relative overflow-hidden border-b border-slate-100">
+                        @if($p->featured_image)
+                        <img src="{{ asset('storage/' . $p->featured_image) }}" alt="{{ $p->title }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                         @else
-                        <div class="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 text-slate-400 p-6 text-center">
-                            <div class="w-12 h-12 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600 mb-2">
-                                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                            </div>
-                            <span class="text-xs font-semibold text-slate-600">{{ $item->category->name ?? 'Software System' }}</span>
+                        <div class="w-full h-full flex flex-col items-center justify-center p-6 bg-gradient-to-br from-slate-100 to-slate-200 text-slate-400">
+                            <span class="text-3xl mb-2">💻</span>
+                            <span class="text-xs font-mono font-bold tracking-wider text-slate-500 uppercase">{{ $p->category->name ?? 'Software System' }}</span>
                         </div>
                         @endif
+                        <span class="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-white/90 backdrop-blur-md text-[0.6875rem] font-bold text-slate-700 shadow-xs">
+                            {{ $p->category->name ?? 'Enterprise' }}
+                        </span>
                     </div>
-                    
-                    <div class="p-6 lg:p-7">
-                        <div class="text-[0.6875rem] font-bold tracking-wider text-blue-600 uppercase mb-2">
-                            {{ $item->category->name ?? 'Project' }}
-                        </div>
-                        <h3 class="font-display font-bold text-slate-900 text-lg mb-2 group-hover:text-blue-600 transition-colors">
-                            {{ $item->title }}
+
+                    {{-- Body Content --}}
+                    <div class="p-7">
+                        <h3 class="text-lg font-display font-bold text-slate-900 mb-2 group-hover:text-blue-600 transition-colors">
+                            {{ $p->title }}
                         </h3>
-                        <p class="text-slate-600 text-sm leading-relaxed line-clamp-2">
-                            {{ $item->short_description }}
+                        <p class="text-slate-600 text-sm leading-relaxed mb-5 line-clamp-2">
+                            {{ $p->short_description }}
                         </p>
 
-                        @if($item->technologies)
-                        <div class="flex flex-wrap gap-1.5 mt-5">
-                            @foreach(array_slice($item->technologies, 0, 3) as $tech)
-                            <span class="tag text-[0.6875rem]">{{ $tech }}</span>
+                        {{-- Tech badges --}}
+                        @if($p->technologies)
+                        <div class="flex flex-wrap gap-1.5 mb-2">
+                            @foreach(array_slice($p->technologies, 0, 4) as $tech)
+                            <span class="text-[0.6875rem] px-2.5 py-1 rounded-md bg-slate-100 text-slate-600 font-mono font-medium">
+                                {{ $tech }}
+                            </span>
                             @endforeach
                         </div>
                         @endif
                     </div>
                 </div>
 
-                <div class="px-6 lg:px-7 pb-6 pt-2 flex items-center justify-between text-xs font-semibold text-blue-600 group-hover:text-blue-700">
-                    <span>View Case Study</span>
-                    <svg class="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                <div class="px-7 pb-7 pt-2">
+                    <a href="{{ route('portfolio.show', $p->slug) }}" class="btn-link text-xs font-bold uppercase tracking-wider">
+                        <span>Lihat Studi Kasus</span>
+                        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                    </a>
                 </div>
-            </a>
-            @endforeach
+            </div>
+            @empty
+            <div class="col-span-3 text-center py-12 text-slate-400">
+                Portofolio sedang dalam proses update dokumentasi.
+            </div>
+            @endforelse
         </div>
+
     </div>
 </section>
-@endif
 
-{{-- ================================================================
-     PROCESS SECTION — How We Work
-     ================================================================ --}}
-<section class="section-padding bg-white relative" id="process">
+{{-- ============================================================
+     7. BUSINESS SOLUTIONS MATRIX
+     ============================================================ --}}
+<section class="section-padding bg-white relative" id="solutions">
     <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
-        {{-- Section Header --}}
-        <div class="max-w-2xl mb-16 lg:mb-20">
-            <span class="section-eyebrow reveal">How We Work</span>
-            <h2 class="text-3xl sm:text-4xl lg:text-display-sm font-display font-bold text-slate-900 mb-4 reveal reveal-delay-1 tracking-tight">
-                Proses Delivery Terstruktur
+        
+        <div class="max-w-3xl mx-auto text-center mb-16 lg:mb-20">
+            <span class="section-eyebrow justify-center reveal">Enterprise Solutions</span>
+            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold text-slate-900 tracking-tight leading-tight mb-5 reveal reveal-delay-1">
+                Sistem Bisnis Siap Adaptasi
             </h2>
             <p class="text-slate-600 text-lg leading-relaxed reveal reveal-delay-2">
-                Metodologi agile yang teruji untuk memastikan setiap proyek selesai tepat waktu, aman, dan sesuai target bisnis.
+                Fondasi arsitektur siap pakai yang kami kustomisasi secara mendalam sesuai model bisnis spesifik perusahaan Anda.
             </p>
         </div>
 
-        {{-- Steps Grid --}}
-        @php
-        $defaultSteps = [
-            ['num' => '01', 'title' => 'Discover', 'desc' => 'Analisis mendalam terhadap proses bisnis, kebutuhan pengguna, dan target objektif.'],
-            ['num' => '02', 'title' => 'Plan', 'desc' => 'Perancangan arsitektur sistem, pemilihan teknologi, dan timeline pengerjaan yang jelas.'],
-            ['num' => '03', 'title' => 'Design', 'desc' => 'Pembuatan rancangan UI/UX intuitif serta pemodelan skema database yang scalable.'],
-            ['num' => '04', 'title' => 'Build', 'desc' => 'Pengembangan kode bersih dengan standar enterprise, modular, dan iterative sprint.'],
-            ['num' => '05', 'title' => 'Launch', 'desc' => 'Pengujian menyeluruh (QA & Security) serta deployment zero-downtime ke server produksi.'],
-            ['num' => '06', 'title' => 'Scale', 'desc' => 'Pemeliharaan berkelanjutan, monitoring performa, dan optimasi kapasitas sistem.'],
-        ];
-        @endphp
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            @foreach($defaultSteps as $step)
-            <div class="bg-slate-50/80 border border-slate-200/80 rounded-2xl p-7 relative hover:bg-white hover:border-slate-300 hover:shadow-card transition-all duration-300 reveal reveal-delay-{{ min($loop->iteration, 4) }}">
-                <div class="text-3xl font-display font-black text-blue-600/30 mb-3 tracking-tighter">{{ $step['num'] }}</div>
-                <h3 class="font-display font-bold text-slate-900 text-lg mb-2">{{ $step['title'] }}</h3>
-                <p class="text-slate-600 text-sm leading-relaxed">{{ $step['desc'] }}</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            @foreach($solutions as $sol)
+            <div class="p-7 rounded-2xl bg-white border border-slate-200 hover:border-blue-400 hover:shadow-card transition-all duration-300 group reveal">
+                <div class="text-3xl mb-4 group-hover:scale-110 transition-transform">{{ $sol->icon ?? '📦' }}</div>
+                <h3 class="font-display font-bold text-slate-900 text-lg mb-2 group-hover:text-blue-600 transition-colors">
+                    {{ $sol->title }}
+                </h3>
+                <p class="text-slate-600 text-xs leading-relaxed">
+                    {{ $sol->short_description }}
+                </p>
             </div>
             @endforeach
         </div>
+
     </div>
 </section>
 
-{{-- ================================================================
-     TECHNOLOGY STACK SECTION
-     ================================================================ --}}
-<section class="py-16 lg:py-20 bg-slate-50/80 border-t border-b border-slate-200/80">
+{{-- ============================================================
+     8. TRANSPARENT PROJECT INVESTMENT & ESTIMATION
+     ============================================================ --}}
+<section class="section-padding bg-slate-50/80 border-t border-slate-200/80" id="pricing">
     <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
-        <div class="text-center max-w-xl mx-auto mb-10">
-            <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Enterprise-Grade Stack</span>
-            <h3 class="text-xl font-display font-bold text-slate-800 mt-1">Teknologi Modern yang Kami Gunakan</h3>
+        
+        <div class="max-w-3xl mx-auto text-center mb-16">
+            <span class="section-eyebrow justify-center reveal">Investment Models</span>
+            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold text-slate-900 tracking-tight leading-tight mb-5 reveal reveal-delay-1">
+                Estimasi Investasi Transparan & Fleksibel
+            </h2>
+            <p class="text-slate-600 text-lg leading-relaxed reveal reveal-delay-2">
+                Setiap sistem dibangun custom. Kami menyediakan opsi paket dasar untuk memudahkan perencanaan anggaran teknologi Anda.
+            </p>
         </div>
 
-        @php
-        $techStacks = ['Laravel', 'PHP', 'Python', 'Vue.js', 'Alpine.js', 'Tailwind CSS', 'MySQL', 'PostgreSQL', 'Redis', 'Docker', 'AI & OpenAI', 'REST API'];
-        @endphp
-        <div class="flex flex-wrap items-center justify-center gap-3 max-w-3xl mx-auto">
-            @foreach($techStacks as $tech)
-            <div class="px-4 py-2 rounded-xl bg-white border border-slate-200 text-slate-700 text-sm font-semibold shadow-2xs hover:border-blue-400 hover:text-blue-600 transition-colors">
-                {{ $tech }}
-            </div>
-            @endforeach
-        </div>
-    </div>
-</section>
-
-{{-- ================================================================
-     CEO PROFILE / LEADERSHIP
-     ================================================================ --}}
-@if($ceoProfile)
-<section class="section-padding bg-white relative">
-    <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             
-            {{-- Left Content --}}
-            <div class="lg:col-span-7 reveal">
-                <span class="section-eyebrow">Leadership</span>
-                <h2 class="text-3xl sm:text-4xl font-display font-bold text-slate-900 mb-2">
-                    {{ $ceoProfile->name }}
-                </h2>
-                <p class="text-blue-600 font-display font-semibold text-lg mb-6">
-                    {{ $ceoProfile->position }}
-                </p>
-                <p class="text-slate-600 leading-relaxed mb-8 text-base lg:text-lg">
-                    {{ $ceoProfile->short_bio }}
-                </p>
-
-                @if($ceoProfile->skills && count($ceoProfile->skills))
-                <div class="flex flex-wrap gap-2 mb-8">
-                    @foreach($ceoProfile->skills as $skill)
-                    <span class="tag tag-accent">{{ $skill }}</span>
-                    @endforeach
+            {{-- Tier 1: MVP / Starter System --}}
+            <div class="price-card reveal">
+                <h3 class="text-xl font-display font-bold text-slate-900 mb-2">MVP / Quick System</h3>
+                <p class="text-xs text-slate-500 mb-6">Cocok untuk validasi ide produk SaaS awal atau sistem operasional departemen mandiri.</p>
+                
+                <div class="pb-6 mb-6 border-b border-slate-100">
+                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider block">Mulai dari</span>
+                    <span class="text-3xl font-display font-extrabold text-slate-900">Custom Scope</span>
+                    <span class="text-xs text-slate-500 block mt-1">Estimasi 2 - 4 minggu</span>
                 </div>
-                @endif
 
-                <a href="{{ \App\Services\WhatsAppService::getUrl() }}" target="_blank" rel="noopener" class="btn-primary shadow-sm">
-                    <span>Diskusikan Project Bersama {{ $ceoProfile->name }}</span>
-                    <svg class="w-4 h-4 ml-1 opacity-80" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                <ul class="space-y-3 text-xs text-slate-600 mb-8 flex-1">
+                    <li class="flex items-center gap-2.5"><span class="text-emerald-500 font-bold">✓</span> Core Feature Architecture</li>
+                    <li class="flex items-center gap-2.5"><span class="text-emerald-500 font-bold">✓</span> Clean Responsive Dashboard</li>
+                    <li class="flex items-center gap-2.5"><span class="text-emerald-500 font-bold">✓</span> Essential Database & Auth</li>
+                    <li class="flex items-center gap-2.5"><span class="text-emerald-500 font-bold">✓</span> Production Deployment</li>
+                    <li class="flex items-center gap-2.5"><span class="text-emerald-500 font-bold">✓</span> 30 Hari Post-Launch Support</li>
+                </ul>
+
+                @php
+                    $waTextMvp = 'Halo Aldef Tech, saya ingin konsultasi mengenai pembuatan sistem MVP / Quick System.';
+                    $waUrlMvp = 'https://wa.me/' . preg_replace('/\D/', '', \App\Models\SiteSetting::get('whatsapp_number', '6281234567890')) . '?text=' . rawurlencode($waTextMvp);
+                @endphp
+                <a href="{{ $waUrlMvp }}" target="_blank" rel="noopener" class="btn-secondary w-full text-center py-3">
+                    Konsultasi Paket MVP →
                 </a>
             </div>
 
-            {{-- Right Photo / Visual --}}
-            <div class="lg:col-span-5 reveal-right reveal-delay-2">
-                @if($ceoProfile->profile_photo)
-                <div class="relative">
-                    <img src="{{ asset('storage/' . $ceoProfile->profile_photo) }}" alt="{{ $ceoProfile->name }}" class="rounded-2xl w-full max-w-md mx-auto border border-slate-200 shadow-card">
+            {{-- Tier 2: Custom Business System (Featured) --}}
+            <div class="price-card featured reveal reveal-delay-1">
+                <span class="price-card-badge">Paling Banyak Dipilih</span>
+                <h3 class="text-xl font-display font-bold text-slate-900 mb-2">Custom Business System</h3>
+                <p class="text-xs text-slate-500 mb-6">Solusi komprehensif untuk otomatisasi ERP, CRM, POS, dan operasional bisnis terintegrasi.</p>
+                
+                <div class="pb-6 mb-6 border-b border-slate-100">
+                    <span class="text-xs font-semibold text-blue-600 uppercase tracking-wider block">Full Bespoke Solution</span>
+                    <span class="text-3xl font-display font-extrabold text-slate-900">Custom Architecture</span>
+                    <span class="text-xs text-slate-500 block mt-1">Estimasi 4 - 10 minggu</span>
                 </div>
-                @else
-                <div class="aspect-[4/3] bg-slate-50 border border-slate-200 rounded-2xl flex items-center justify-center max-w-md mx-auto p-8 shadow-card">
-                    <div class="text-center">
-                        <div class="w-24 h-24 rounded-2xl bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-600 text-4xl font-display font-extrabold mx-auto mb-4 shadow-sm">
-                            {{ substr($ceoProfile->name, 0, 1) }}
-                        </div>
-                        <div class="text-slate-900 font-bold font-display text-lg">{{ $ceoProfile->name }}</div>
-                        <div class="text-slate-500 text-sm mt-0.5">{{ $ceoProfile->position }}</div>
-                    </div>
+
+                <ul class="space-y-3 text-xs text-slate-700 mb-8 flex-1 font-medium">
+                    <li class="flex items-center gap-2.5"><span class="text-blue-600 font-bold">✓</span> Analisis Alur Bisnis Menyeluruh</li>
+                    <li class="flex items-center gap-2.5"><span class="text-blue-600 font-bold">✓</span> Multi-Role Granular Permissions</li>
+                    <li class="flex items-center gap-2.5"><span class="text-blue-600 font-bold">✓</span> WhatsApp / Payment Gateway API Sync</li>
+                    <li class="flex items-center gap-2.5"><span class="text-blue-600 font-bold">✓</span> Automated PDF / Excel Reporting</li>
+                    <li class="flex items-center gap-2.5"><span class="text-blue-600 font-bold">✓</span> Pelatihan Staf & Migrasi Data</li>
+                    <li class="flex items-center gap-2.5"><span class="text-blue-600 font-bold">✓</span> 90 Hari Garansi & SLA Support</li>
+                </ul>
+
+                @php
+                    $waTextBiz = 'Halo Aldef Tech, saya ingin konsultasi mengenai pembuatan Custom Business System / ERP.';
+                    $waUrlBiz = 'https://wa.me/' . preg_replace('/\D/', '', \App\Models\SiteSetting::get('whatsapp_number', '6281234567890')) . '?text=' . rawurlencode($waTextBiz);
+                @endphp
+                <a href="{{ $waUrlBiz }}" target="_blank" rel="noopener" class="btn-primary w-full text-center py-3 shadow-md">
+                    Diskusikan Custom System →
+                </a>
+            </div>
+
+            {{-- Tier 3: Enterprise & SaaS Platform --}}
+            <div class="price-card reveal reveal-delay-2">
+                <h3 class="text-xl font-display font-bold text-slate-900 mb-2">Enterprise & SaaS Platform</h3>
+                <p class="text-xs text-slate-500 mb-6">Arsitektur skala besar dengan AI capabilities, multi-tenant cloud, dan dedicated SLA.</p>
+                
+                <div class="pb-6 mb-6 border-b border-slate-100">
+                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider block">Enterprise Grade</span>
+                    <span class="text-3xl font-display font-extrabold text-slate-900">Dedicated Scope</span>
+                    <span class="text-xs text-slate-500 block mt-1">Timeline disesuaikan SLA</span>
                 </div>
-                @endif
+
+                <ul class="space-y-3 text-xs text-slate-600 mb-8 flex-1">
+                    <li class="flex items-center gap-2.5"><span class="text-emerald-500 font-bold">✓</span> Multi-Tenant SaaS Architecture</li>
+                    <li class="flex items-center gap-2.5"><span class="text-emerald-500 font-bold">✓</span> AI Engine / Agent Integration</li>
+                    <li class="flex items-center gap-2.5"><span class="text-emerald-500 font-bold">✓</span> High Concurrency & Redis Clustering</li>
+                    <li class="flex items-center gap-2.5"><span class="text-emerald-500 font-bold">✓</span> Automated CI/CD & Cloud Setup</li>
+                    <li class="flex items-center gap-2.5"><span class="text-emerald-500 font-bold">✓</span> Dedicated Lead Architect & Priority SLA</li>
+                </ul>
+
+                @php
+                    $waTextEnt = 'Halo Aldef Tech, saya ingin konsultasi mengenai solusi Enterprise / SaaS Platform.';
+                    $waUrlEnt = 'https://wa.me/' . preg_replace('/\D/', '', \App\Models\SiteSetting::get('whatsapp_number', '6281234567890')) . '?text=' . rawurlencode($waTextEnt);
+                @endphp
+                <a href="{{ $waUrlEnt }}" target="_blank" rel="noopener" class="btn-secondary w-full text-center py-3">
+                    Konsultasi Enterprise →
+                </a>
             </div>
 
         </div>
-    </div>
-</section>
-@endif
 
-{{-- ================================================================
-     WHY BUSINESSES CHOOSE US / TESTIMONIALS
-     ================================================================ --}}
-<section class="section-padding bg-slate-50/80 relative">
-    <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
-        @if($testimonials->count())
-            {{-- Testimonials Mode --}}
-            <div class="max-w-2xl mb-16 lg:mb-20">
-                <span class="section-eyebrow reveal">Testimonials</span>
-                <h2 class="text-3xl sm:text-4xl lg:text-display-sm font-display font-bold text-slate-900 reveal reveal-delay-1 tracking-tight">Kata Klien Kami</h2>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                @foreach($testimonials as $testimonial)
-                <div class="premium-card p-7 lg:p-8 flex flex-col justify-between reveal reveal-delay-{{ min($loop->iteration, 3) }}">
-                    <div>
-                        <div class="flex gap-1 text-amber-400 mb-4">
-                            @for($i = 0; $i < ($testimonial->rating ?? 5); $i++)
-                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                            @endfor
-                        </div>
-                        <p class="text-slate-700 text-sm leading-relaxed italic mb-6">"{{ $testimonial->testimonial }}"</p>
-                    </div>
-
-                    <div class="flex items-center gap-3.5 pt-4 border-t border-slate-100">
-                        <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-700 font-bold flex items-center justify-center text-sm font-display">
-                            {{ substr($testimonial->client_name, 0, 1) }}
-                        </div>
-                        <div>
-                            <div class="text-sm font-bold text-slate-900">{{ $testimonial->client_name }}</div>
-                            <div class="text-xs text-slate-500">{{ $testimonial->position }}{{ $testimonial->company ? ' • ' . $testimonial->company : '' }}</div>
-                        </div>
-                    </div>
-                </div>
-                @endforeach
-            </div>
-        @else
-            {{-- Value Proposition Mode (No fake testimonials) --}}
-            <div class="max-w-2xl mb-16 lg:mb-20">
-                <span class="section-eyebrow reveal">Why Choose Us</span>
-                <h2 class="text-3xl sm:text-4xl lg:text-display-sm font-display font-bold text-slate-900 reveal reveal-delay-1 tracking-tight">
-                    Why Businesses Choose Aldef Tech
-                </h2>
-                <p class="text-slate-600 text-lg leading-relaxed reveal reveal-delay-2">
-                    Kami memadukan pemahaman bisnis mendalam dengan standar engineering kelas enterprise.
-                </p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="premium-card p-8 reveal">
-                    <div class="w-12 h-12 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600 text-xl mb-5 font-bold">
-                        01
-                    </div>
-                    <h3 class="font-display font-bold text-slate-900 text-lg mb-2">100% Tailored Engineering</h3>
-                    <p class="text-slate-600 text-sm leading-relaxed">Kami tidak memaksakan template generic. Setiap modul dibangun sesuai alur operasional dan kebutuhan unik perusahaan Anda.</p>
-                </div>
-
-                <div class="premium-card p-8 reveal reveal-delay-1">
-                    <div class="w-12 h-12 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 text-xl mb-5 font-bold">
-                        02
-                    </div>
-                    <h3 class="font-display font-bold text-slate-900 text-lg mb-2">Clean, Scalable Architecture</h3>
-                    <p class="text-slate-600 text-sm leading-relaxed">Arsitektur terstruktur, terdokumentasi, dan mudah dikembangkan untuk mendukung pertumbuhan volume transaksi bisnis Anda.</p>
-                </div>
-
-                <div class="premium-card p-8 reveal reveal-delay-2">
-                    <div class="w-12 h-12 rounded-xl bg-violet-50 border border-violet-100 flex items-center justify-center text-violet-600 text-xl mb-5 font-bold">
-                        03
-                    </div>
-                    <h3 class="font-display font-bold text-slate-900 text-lg mb-2">Direct Technical Consultation</h3>
-                    <p class="text-slate-600 text-sm leading-relaxed">Komunikasi langsung dengan lead architect dan engineer tanpa birokrasi berbelit, memastikan keputusan teknis yang tepat dan cepat.</p>
-                </div>
-            </div>
-        @endif
     </div>
 </section>
 
-{{-- ================================================================
-     LATEST INSIGHTS
-     ================================================================ --}}
-@if($latestPosts->count())
+{{-- ============================================================
+     9. CEO SPOTLIGHT
+     ============================================================ --}}
+@if($ceoProfile)
 <section class="section-padding bg-white relative">
-    <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
-        <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-14 lg:mb-16 gap-4">
-            <div class="max-w-xl">
-                <span class="section-eyebrow reveal">Insights</span>
-                <h2 class="text-3xl sm:text-4xl lg:text-display-sm font-display font-bold text-slate-900 tracking-tight reveal reveal-delay-1">Latest Articles</h2>
+    <div class="max-w-5xl mx-auto px-5 sm:px-8 lg:px-10">
+        <div class="bg-gradient-to-br from-slate-50 to-blue-50/40 border border-slate-200/90 rounded-3xl p-8 lg:p-12 shadow-elevated">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12 items-center">
+                <div class="md:col-span-4 text-center md:text-left">
+                    <div class="w-32 h-32 lg:w-40 lg:h-40 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white flex items-center justify-center font-display font-bold text-4xl shadow-xl mx-auto md:mx-0">
+                        {{ strtoupper(substr($ceoProfile->name, 0, 1)) }}
+                    </div>
+                </div>
+                <div class="md:col-span-8">
+                    <span class="section-eyebrow mb-2">Leadership & Technical Advisory</span>
+                    <h3 class="text-2xl lg:text-3xl font-display font-bold text-slate-900 mb-1">
+                        {{ $ceoProfile->name }}
+                    </h3>
+                    <p class="text-blue-600 text-sm font-semibold mb-4">{{ $ceoProfile->position }}</p>
+                    <p class="text-slate-600 text-sm leading-relaxed mb-6">
+                        {{ $ceoProfile->short_bio }}
+                    </p>
+                    <a href="{{ route('about') }}" class="btn-secondary btn-sm">
+                        <span>Tentang Kepemimpinan & Visi →</span>
+                    </a>
+                </div>
             </div>
-            <a href="{{ route('blog') }}" class="btn-link font-semibold reveal reveal-delay-2 inline-flex items-center gap-1.5">
-                <span>Lihat Semua Artikel</span>
-                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-            </a>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-7">
-            @foreach($latestPosts as $post)
-            <a href="{{ route('blog.show', $post->slug) }}" class="premium-card overflow-hidden group flex flex-col justify-between reveal reveal-delay-{{ $loop->iteration }}">
-                <div>
-                    <div class="aspect-[16/10] bg-slate-100 overflow-hidden relative border-b border-slate-100">
-                        @if($post->featured_image)
-                        <img src="{{ asset('storage/' . $post->featured_image) }}" alt="{{ $post->title }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
-                        @else
-                        <div class="w-full h-full flex items-center justify-center bg-slate-50 text-slate-400">
-                            <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Technology Insight</span>
-                        </div>
-                        @endif
-                    </div>
-                    <div class="p-6 lg:p-7">
-                        @if($post->category)
-                        <span class="text-[0.6875rem] font-bold tracking-wider text-blue-600 uppercase">{{ $post->category->name }}</span>
-                        @endif
-                        <h3 class="font-display font-bold text-slate-900 text-lg mt-2 mb-2 group-hover:text-blue-600 transition-colors">
-                            {{ $post->title }}
-                        </h3>
-                        <p class="text-slate-600 text-sm line-clamp-2 leading-relaxed">
-                            {{ $post->excerpt }}
-                        </p>
-                    </div>
-                </div>
-
-                <div class="px-6 lg:px-7 pb-6 pt-2 text-xs text-slate-400 font-medium border-t border-slate-50">
-                    {{ $post->published_at->format('d M Y') }}
-                </div>
-            </a>
-            @endforeach
         </div>
     </div>
 </section>
 @endif
 
-{{-- ================================================================
-     FAQ ACCORDION
-     ================================================================ --}}
-@if($faqs->count())
-<section class="section-padding bg-slate-50/80 relative" id="faq">
-    <div class="max-w-3xl mx-auto px-5 sm:px-8 lg:px-10">
-        <div class="text-center mb-14">
+{{-- ============================================================
+     10. FAQ SECTION
+     ============================================================ --}}
+<section class="section-padding bg-slate-50/80 border-t border-slate-200/80" id="faq">
+    <div class="max-w-4xl mx-auto px-5 sm:px-8 lg:px-10">
+        
+        <div class="text-center mb-16">
             <span class="section-eyebrow justify-center reveal">FAQ</span>
-            <h2 class="text-3xl sm:text-4xl font-display font-bold text-slate-900 tracking-tight reveal reveal-delay-1">Pertanyaan Umum</h2>
+            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold text-slate-900 tracking-tight leading-tight mb-5 reveal reveal-delay-1">
+                Pertanyaan yang Sering Diajukan
+            </h2>
+            <p class="text-slate-600 text-base lg:text-lg leading-relaxed reveal reveal-delay-2">
+                Punya pertanyaan lain? Hubungi kami langsung melalui WhatsApp untuk konsultasi teknis.
+            </p>
         </div>
 
-        <div class="space-y-3.5" x-data="{ activeFaq: null }">
-            @foreach($faqs as $faq)
-            <div class="bg-white border border-slate-200/90 rounded-2xl overflow-hidden shadow-2xs transition-all duration-200 hover:border-slate-300">
-                <button @click="activeFaq === {{ $faq->id }} ? activeFaq = null : activeFaq = {{ $faq->id }}"
-                        class="w-full flex items-center justify-between px-6 py-5 text-left group">
-                    <span class="text-base font-semibold text-slate-900 pr-4 group-hover:text-blue-600 transition-colors">{{ $faq->question }}</span>
-                    <svg class="w-4 h-4 text-slate-400 shrink-0 transition-transform duration-300" :class="activeFaq === {{ $faq->id }} ? 'rotate-180 text-blue-600' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        <div class="space-y-4" x-data="{ activeFaq: 0 }">
+            @foreach($faqs as $index => $faq)
+            <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden transition-all shadow-2xs reveal">
+                <button @click="activeFaq = (activeFaq === {{ $index }} ? null : {{ $index }})"
+                        class="w-full px-6 py-5 text-left flex items-center justify-between gap-4 font-display font-bold text-slate-900 text-base">
+                    <span>{{ $faq->question }}</span>
+                    <span class="w-7 h-7 rounded-full bg-slate-100 flex items-center justify-center shrink-0 transition-transform duration-200"
+                          :class="activeFaq === {{ $index }} ? 'rotate-180 bg-blue-50 text-blue-600' : 'text-slate-400'">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </span>
                 </button>
-                <div x-show="activeFaq === {{ $faq->id }}" x-collapse>
-                    <div class="px-6 pb-6 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-4">
-                        {{ $faq->answer }}
-                    </div>
+                <div x-show="activeFaq === {{ $index }}" x-collapse
+                     class="px-6 pb-6 pt-1 text-slate-600 text-sm leading-relaxed border-t border-slate-100">
+                    {{ $faq->answer }}
                 </div>
             </div>
             @endforeach
         </div>
+
     </div>
 </section>
-@endif
 
-{{-- ================================================================
-     FINAL STRIKING DARK CTA SECTION (High-contrast focal point)
-     ================================================================ --}}
-<section class="py-20 lg:py-28 relative bg-[#090D16] text-white overflow-hidden">
-    {{-- Ambient light glow --}}
-    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-blue-600/15 blur-[120px] rounded-full pointer-events-none"></div>
+{{-- ============================================================
+     11. FINAL HIGH-CONTRAST CONVERSION CTA (DEEP NAVY)
+     ============================================================ --}}
+<section class="py-24 lg:py-32 relative bg-[#090D16] text-white overflow-hidden" id="contact">
+    {{-- Ambient Lighting --}}
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-gradient-to-tr from-blue-600/15 via-indigo-600/10 to-transparent blur-[140px] pointer-events-none"></div>
 
-    <div class="max-w-4xl mx-auto px-5 sm:px-8 lg:px-10 text-center relative z-10">
-        <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-blue-900/60 border border-blue-700/50 text-blue-300 mb-6 shadow-xs">
-            Let's Collaborate
-        </span>
-
-        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold text-white mb-6 leading-tight tracking-tight reveal">
-            Have an idea? Let's build it.
+    <div class="max-w-5xl mx-auto px-5 sm:px-8 lg:px-10 text-center relative z-10">
+        <span class="section-eyebrow section-eyebrow-dark justify-center mb-4 reveal">Mulai Transformasi</span>
+        
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold text-white mb-6 leading-tight tracking-tight reveal reveal-delay-1">
+            Have a Business Challenge That Technology Can Solve?
         </h2>
-
-        <p class="text-slate-300 text-lg lg:text-xl mb-10 max-w-2xl mx-auto reveal reveal-delay-1 leading-relaxed">
-            Turn your business challenges into scalable, high-performance digital solutions. Konsultasikan kebutuhan sistem Anda secara gratis.
+        
+        <p class="text-slate-300 text-lg lg:text-xl mb-10 max-w-2xl mx-auto leading-relaxed reveal reveal-delay-2">
+            Mari wujudkan ide, alur kerja, atau tantangan bisnis Anda menjadi aset digital yang andal, scalable, dan berperforma tinggi.
         </p>
 
-        <div class="flex flex-wrap items-center justify-center gap-4 reveal reveal-delay-2">
-            <a href="{{ \App\Services\WhatsAppService::getUrl() }}" target="_blank" rel="noopener" class="btn-primary btn-lg shadow-lg">
+        <div class="flex flex-wrap items-center justify-center gap-4 reveal reveal-delay-3">
+            <a href="{{ \App\Services\WhatsAppService::getUrl() }}" target="_blank" rel="noopener"
+               class="btn-primary btn-lg shadow-xl font-bold">
                 <span>Start a Conversation</span>
-                <svg class="w-4 h-4 ml-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                <svg class="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
             </a>
-            <a href="{{ route('contact') }}" class="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl border border-slate-700 bg-slate-900/60 text-white font-semibold text-sm hover:bg-slate-800 hover:border-slate-600 transition-all">
-                Contact Form
+            <a href="{{ route('contact') }}" class="btn-ghost-light btn-lg">
+                <span>Isi Form Konsultasi Proyek</span>
             </a>
         </div>
     </div>
 </section>
+
 @endsection

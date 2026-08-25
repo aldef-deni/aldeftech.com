@@ -1,8 +1,8 @@
 @extends('layouts.app')
 @section('content')
 @php
-$pageTitle = 'About Aldef Tech — Software & AI Studio';
-$metaDescription = 'Aldef Tech adalah technology studio yang membantu bisnis membangun custom software, SaaS, AI, dan sistem otomasi enterprise.';
+$pageTitle = 'About Aldef Tech — Premium Software Engineering & AI Studio';
+$metaDescription = 'Aldef Tech adalah software engineering studio yang membantu bisnis membangun custom software, SaaS, AI, dan sistem otomasi enterprise.';
 @endphp
 
 {{-- Hero Section --}}
@@ -83,26 +83,15 @@ $metaDescription = 'Aldef Tech adalah technology studio yang membantu bisnis mem
     </div>
 </section>
 
-{{-- Rich Content Section (CMS) --}}
-@if(\App\Models\SiteSetting::get('about_content'))
-<section class="section-padding bg-slate-50/80 border-t border-slate-200/80">
-    <div class="max-w-4xl mx-auto px-5 sm:px-8 lg:px-10">
-        <div class="prose-light leading-relaxed text-lg reveal bg-white p-8 lg:p-12 rounded-2xl border border-slate-200 shadow-sm">
-            {!! \App\Models\SiteSetting::get('about_content') !!}
-        </div>
-    </div>
-</section>
-@endif
-
 {{-- CEO / Leadership Section --}}
 @if($ceoProfile)
-<section class="section-padding bg-white relative">
+<section class="section-padding bg-slate-50/80 border-t border-slate-200/80 relative">
     <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
             
             {{-- Bio --}}
             <div class="lg:col-span-7 reveal">
-                <span class="section-ey">Leadership</span>
+                <span class="section-eyebrow">Leadership</span>
                 <h2 class="text-3xl sm:text-4xl font-display font-bold text-slate-900 mb-2">
                     {{ $ceoProfile->name }}
                 </h2>
@@ -118,7 +107,7 @@ $metaDescription = 'Aldef Tech adalah technology studio yang membantu bisnis mem
                     <h3 class="text-sm font-display font-bold text-slate-800 mb-3">Skills & Technical Expertise</h3>
                     <div class="flex flex-wrap gap-2">
                         @foreach($ceoProfile->skills as $skill)
-                        <span class="tag tag-accent">{{ $skill }}</span>
+                        <span class="text-xs font-mono font-medium px-3 py-1.5 rounded-lg bg-blue-50 text-blue-700 border border-blue-200/60">{{ $skill }}</span>
                         @endforeach
                     </div>
                 </div>
@@ -137,7 +126,7 @@ $metaDescription = 'Aldef Tech adalah technology studio yang membantu bisnis mem
                     <img src="{{ asset('storage/' . $ceoProfile->profile_photo) }}" alt="{{ $ceoProfile->name }}" class="rounded-2xl w-full max-w-md mx-auto border border-slate-200 shadow-card">
                 </div>
                 @else
-                <div class="aspect-[4/3] bg-slate-50 border border-slate-200 rounded-2xl flex items-center justify-center max-w-md mx-auto p-8 shadow-card">
+                <div class="aspect-[4/3] bg-white border border-slate-200 rounded-2xl flex items-center justify-center max-w-md mx-auto p-8 shadow-card">
                     <div class="text-center">
                         <div class="w-24 h-24 rounded-2xl bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-600 text-4xl font-display font-extrabold mx-auto mb-4">
                             {{ substr($ceoProfile->name, 0, 1) }}

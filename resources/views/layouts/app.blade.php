@@ -6,13 +6,13 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     {{-- SEO Meta --}}
-    <title>{{ $metaTitle ?? config('aldeftech.seo.default_title') }}</title>
+    <title>{{ $pageTitle ?? $metaTitle ?? config('aldeftech.seo.default_title') }}</title>
     <meta name="description" content="{{ $metaDescription ?? config('aldeftech.seo.default_description') }}">
     <link rel="canonical" href="{{ $canonical ?? url()->current() }}">
 
     {{-- Open Graph --}}
     <meta property="og:type" content="{{ $ogType ?? 'website' }}">
-    <meta property="og:title" content="{{ $metaTitle ?? config('aldeftech.seo.default_title') }}">
+    <meta property="og:title" content="{{ $pageTitle ?? $metaTitle ?? config('aldeftech.seo.default_title') }}">
     <meta property="og:description" content="{{ $metaDescription ?? config('aldeftech.seo.default_description') }}">
     <meta property="og:image" content="{{ $ogImage ?? asset(config('aldeftech.seo.default_image')) }}">
     <meta property="og:url" content="{{ url()->current() }}">
@@ -21,7 +21,7 @@
 
     {{-- Twitter Card --}}
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="{{ $metaTitle ?? config('aldeftech.seo.default_title') }}">
+    <meta name="twitter:title" content="{{ $pageTitle ?? $metaTitle ?? config('aldeftech.seo.default_title') }}">
     <meta name="twitter:description" content="{{ $metaDescription ?? config('aldeftech.seo.default_description') }}">
     <meta name="twitter:image" content="{{ $ogImage ?? asset(config('aldeftech.seo.default_image')) }}">
 
@@ -34,16 +34,41 @@
         <meta name="google-site-verification" content="{{ $googleVerification }}">
     @endif
 
-    {{-- Schema.org --}}
-    @stack('schema')
-
-    {{-- Google Fonts – Inter + Space Grotesk --}}
+    {{-- Google Fonts --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+    {{-- Schema.org (JSON-LD) --}}
+    <script type="application/ld+json">
+    {!! json_encode([
+        '@context' => 'https://schema.org',
+        '@type' => 'ProfessionalService',
+        'name' => 'Aldef Tech',
+        'alternateName' => 'Aldef Technology Studio',
+        'description' => 'Premium Software Development, SaaS Architecture, AI Solutions, and Business Automation Studio.',
+        'url' => config('app.url'),
+        'logo' => asset('images/logo.png'),
+        'image' => asset('images/logo.png'),
+        'email' => \App\Models\SiteSetting::get('email', 'info@aldeftech.com'),
+        'telephone' => '+' . preg_replace('/\D/', '', \App\Models\SiteSetting::get('whatsapp_number', '6281234567890')),
+        'address' => [
+            '@type' => 'PostalAddress',
+            'addressCountry' => 'ID',
+            'addressLocality' => \App\Models\SiteSetting::get('address', 'Indonesia')
+        ],
+        'priceRange' => '$$$',
+        'sameAs' => array_values(array_filter([
+            \App\Models\SiteSetting::get('linkedin'),
+            \App\Models\SiteSetting::get('github'),
+            \App\Models\SiteSetting::get('instagram')
+        ]))
+    ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}
+    </script>
+    @stack('schema')
 
     {{-- Vite Assets --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-
     @stack('styles')
 
     {{-- Google Tag Manager --}}
@@ -65,24 +90,8 @@
         gtag('config', '{{ $gaId }}');
     </script>
     @endif
-
-    {{-- Meta Pixel --}}
-    @if($pixelId = \App\Models\SiteSetting::get('meta_pixel_id'))
-    <script>
-        !function(f,b,e,v,n,t,s)
-        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-        n.queue=[];t=b.createElement(e);t.async=!0;
-        t.src=v;s=b.getElementsByTagName(e)[0];
-        s.parentNode.insertBefore(t,s)}(window, document,'script',
-        'https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', '{{ $pixelId }}');
-        fbq('track', 'PageView');
-    </script>
-    @endif
 </head>
-<body class="bg-brand-bg text-text-primary font-sans antialiased" x-data="{ mobileMenuOpen: false }">
+<body class="bg-white text-slate-700 font-sans antialiased selection:bg-blue-600 selection:text-white" x-data="{ mobileMenuOpen: false }">
     {{-- GTM Noscript --}}
     @if($gtmId = \App\Models\SiteSetting::get('google_tag_manager_id'))
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ $gtmId }}" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -92,7 +101,7 @@
     @include('layouts.partials.navbar')
 
     {{-- Main Content --}}
-    <main>
+    <main class="min-h-screen">
         {{ $slot ?? '' }}
         @yield('content')
     </main>
@@ -100,17 +109,18 @@
     {{-- Footer --}}
     @include('layouts.partials.footer')
 
-    {{-- Floating WhatsApp Button --}}
+    {{-- Floating WhatsApp Widget --}}
     @include('layouts.partials.whatsapp-button')
 
-    {{-- Flash Messages --}}
+    {{-- Flash Toast Notification --}}
     @if(session('success'))
     <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 5000)"
          x-transition:leave="transition ease-in duration-300"
          x-transition:leave-start="opacity-100 translate-y-0"
          x-transition:leave-end="opacity-0 -translate-y-2"
-         class="fixed top-6 right-6 z-[100] border border-success/30 bg-success/10 text-success backdrop-blur-lg px-6 py-4 rounded-xl shadow-elevated font-medium">
-        {{ session('success') }}
+         class="fixed top-6 right-6 z-[100] border border-emerald-200 bg-white/95 text-emerald-800 backdrop-blur-lg px-6 py-4 rounded-2xl shadow-xl font-medium flex items-center gap-3">
+        <svg class="w-5 h-5 text-emerald-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+        <span>{{ session('success') }}</span>
     </div>
     @endif
 
@@ -119,8 +129,9 @@
          x-transition:leave="transition ease-in duration-300"
          x-transition:leave-start="opacity-100 translate-y-0"
          x-transition:leave-end="opacity-0 -translate-y-2"
-         class="fixed top-6 right-6 z-[100] border border-danger/30 bg-danger/10 text-danger backdrop-blur-lg px-6 py-4 rounded-xl shadow-elevated font-medium">
-        {{ session('error') }}
+         class="fixed top-6 right-6 z-[100] border border-red-200 bg-white/95 text-red-800 backdrop-blur-lg px-6 py-4 rounded-2xl shadow-xl font-medium flex items-center gap-3">
+        <svg class="w-5 h-5 text-red-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        <span>{{ session('error') }}</span>
     </div>
     @endif
 
