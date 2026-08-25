@@ -41,31 +41,29 @@ $featuredProjects = [
 ];
 @endphp
 
-{{-- Hero Section (Dominant Cyan & Blue Blend) --}}
-<section class="section-padding pt-16 lg:pt-24 pb-20 lg:pb-28 relative overflow-hidden border-b border-cyan-500/30 bg-gradient-to-br from-[#082f49] via-[#0e7490] to-[#06b6d4] text-white">
-    {{-- Cyan Ambient Mesh Glows --}}
-    <div class="absolute inset-0 hero-grid-dark pointer-events-none opacity-40"></div>
-    <div class="absolute -top-24 -right-24 w-[550px] h-[550px] bg-cyan-300/35 blur-[130px] rounded-full pointer-events-none"></div>
-    <div class="absolute -bottom-24 -left-24 w-[500px] h-[500px] bg-sky-400/30 blur-[130px] rounded-full pointer-events-none"></div>
-    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-cyan-400/20 blur-[140px] pointer-events-none"></div>
+{{-- Hero Section (Signature Aldef Dark & Navy Tech Hero — Matching Services) --}}
+<section class="hero-premium-dark section-padding pt-16 lg:pt-24 pb-20 lg:pb-28 relative overflow-hidden border-b border-slate-800/80">
+    <div class="absolute inset-0 hero-grid-dark pointer-events-none opacity-60"></div>
+    <div class="absolute -top-24 -right-24 w-[500px] h-[500px] bg-blue-600/25 blur-[130px] rounded-full pointer-events-none"></div>
+    <div class="absolute -bottom-24 -left-24 w-[500px] h-[500px] bg-cyan-500/20 blur-[130px] rounded-full pointer-events-none"></div>
 
     <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 relative z-10">
         {{-- Breadcrumb --}}
-        <div class="flex items-center justify-center gap-2 text-xs font-mono text-cyan-100 mb-6 reveal">
-            <a href="{{ route('home') }}" class="hover:text-white transition-colors">HOME</a>
+        <div class="flex items-center justify-center gap-2 text-xs font-mono text-slate-400 mb-6 reveal">
+            <a href="{{ route('home') }}" class="hover:text-blue-400 transition-colors">HOME</a>
             <span>/</span>
-            <span class="text-white font-bold">PORTFOLIO</span>
+            <span class="text-blue-400 font-semibold">PORTFOLIO</span>
         </div>
 
         <div class="max-w-3xl mx-auto text-center">
-            <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/15 border border-white/25 backdrop-blur-md shadow-2xs mb-6 reveal">
-                <span class="status-dot status-dot-pulse bg-cyan-200"></span>
-                <span class="text-xs font-semibold text-white tracking-wide uppercase">The Project Portfolio</span>
+            <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/[0.08] border border-white/15 backdrop-blur-md shadow-2xs mb-6 reveal">
+                <span class="status-dot status-dot-pulse"></span>
+                <span class="text-xs font-semibold text-blue-200 tracking-wide uppercase">The Project Portfolio</span>
             </div>
             <h1 class="text-4xl sm:text-5xl lg:text-[3.5rem] font-display font-extrabold text-white tracking-tight leading-[1.1] mb-6 reveal reveal-delay-1">
-                Karya & <span class="bg-gradient-to-r from-white via-cyan-100 to-sky-100 bg-clip-text text-transparent">Studi Kasus Kami</span>
+                Karya & <span class="bg-gradient-to-r from-blue-300 via-indigo-200 to-cyan-300 bg-clip-text text-transparent">Studi Kasus Kami</span>
             </h1>
-            <p class="text-cyan-50 text-lg lg:text-xl leading-relaxed reveal reveal-delay-2">
+            <p class="text-slate-300 text-lg lg:text-xl leading-relaxed reveal reveal-delay-2">
                 Lihat bagaimana rekayasa perangkat lunak, sistem OTA, dan POS modern kami memberikan efisiensi nyata pada berbagai lini bisnis klien.
             </p>
         </div>

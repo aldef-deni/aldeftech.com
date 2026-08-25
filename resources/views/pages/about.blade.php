@@ -5,74 +5,72 @@ $pageTitle = 'About Aldef Tech — Premium Software Engineering & AI Studio';
 $metaDescription = 'Aldef Tech adalah software engineering partner yang membantu bisnis membangun custom software, SaaS platform, AI & Machine Learning, dan sistem otomasi enterprise.';
 @endphp
 
-{{-- Hero Section (Red & Orange Luxury Blend) --}}
-<section class="section-padding pt-16 lg:pt-24 pb-20 lg:pb-28 relative overflow-hidden border-b border-orange-500/30 bg-gradient-to-br from-[#7f1d1d] via-[#c2410c] to-[#ea580c] text-white">
-    {{-- Ambient Glows --}}
-    <div class="absolute inset-0 hero-grid-dark pointer-events-none opacity-30"></div>
-    <div class="absolute -top-24 -right-24 w-[550px] h-[550px] bg-orange-400/30 blur-[130px] rounded-full pointer-events-none"></div>
-    <div class="absolute -bottom-24 -left-24 w-[500px] h-[500px] bg-rose-500/30 blur-[130px] rounded-full pointer-events-none"></div>
-    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-amber-400/20 blur-[140px] pointer-events-none"></div>
+{{-- Hero Section (Signature Aldef Dark & Navy Tech Hero — Matching Services) --}}
+<section class="hero-premium-dark section-padding pt-16 lg:pt-24 pb-20 lg:pb-28 relative overflow-hidden border-b border-slate-800/80">
+    <div class="absolute inset-0 hero-grid-dark pointer-events-none opacity-60"></div>
+    <div class="absolute -top-24 -right-24 w-[500px] h-[500px] bg-blue-600/25 blur-[130px] rounded-full pointer-events-none"></div>
+    <div class="absolute -bottom-24 -left-24 w-[500px] h-[500px] bg-cyan-500/20 blur-[130px] rounded-full pointer-events-none"></div>
 
     <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 relative z-10">
         {{-- Breadcrumb --}}
-        <div class="flex items-center justify-center gap-2 text-xs font-mono text-orange-100 mb-6 reveal">
-            <a href="{{ route('home') }}" class="hover:text-white transition-colors">HOME</a>
+        <div class="flex items-center justify-center gap-2 text-xs font-mono text-slate-400 mb-6 reveal">
+            <a href="{{ route('home') }}" class="hover:text-blue-400 transition-colors">HOME</a>
             <span>/</span>
-            <span class="text-white font-bold">ABOUT US</span>
+            <span class="text-blue-400 font-semibold">ABOUT US</span>
         </div>
 
         <div class="max-w-3xl mx-auto text-center">
-            <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/15 border border-white/25 backdrop-blur-md shadow-2xs mb-6 reveal">
-                <span class="status-dot status-dot-pulse bg-orange-200"></span>
-                <span class="text-xs font-semibold text-white tracking-wide uppercase">Software Engineering & AI Technology</span>
+            <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/[0.08] border border-white/15 backdrop-blur-md shadow-2xs mb-6 reveal">
+                <span class="status-dot status-dot-pulse"></span>
+                <span class="text-xs font-semibold text-blue-200 tracking-wide uppercase">Software Engineering & AI Technology</span>
             </div>
             <h1 class="text-4xl sm:text-5xl lg:text-[3.5rem] font-display font-extrabold text-white tracking-tight leading-[1.1] mb-6 reveal reveal-delay-1">
-                Engineering Technology for <span class="bg-gradient-to-r from-white via-amber-100 to-orange-100 bg-clip-text text-transparent">Real Business Impact.</span>
+                Engineering Technology for <span class="bg-gradient-to-r from-blue-300 via-indigo-200 to-cyan-300 bg-clip-text text-transparent">Real Business Impact.</span>
             </h1>
-            <p class="text-orange-50 text-lg lg:text-xl leading-relaxed reveal reveal-delay-2">
+            <p class="text-slate-300 text-lg lg:text-xl leading-relaxed reveal reveal-delay-2">
                 {{ \App\Models\SiteSetting::get('about_subtitle', 'Aldef Tech adalah technology partner yang merancang dan membangun custom software, SaaS, aplikasi web, dan automasi AI untuk mengakselerasi transformasi digital bisnis Anda.') }}
             </p>
         </div>
     </div>
 </section>
 
-{{-- Mission & Vision Section (Red & Orange Background with Crisp Black Text on White Cards) --}}
-<section class="section-padding bg-gradient-to-b from-[#7f1d1d] via-[#9a3412] to-[#c2410c] relative border-b border-orange-500/30 overflow-hidden">
+{{-- Mission & Vision Section (Soft Pastel Elevated Cards on Aldef Signature Dark Theme) --}}
+<section class="section-padding bg-gradient-to-b from-[#090E1A] via-[#0C1427] to-[#080D18] relative border-b border-slate-800/80 overflow-hidden">
     {{-- Ambient Lighting --}}
-    <div class="absolute top-1/4 left-0 w-96 h-96 bg-orange-500/20 blur-[120px] rounded-full pointer-events-none"></div>
-    <div class="absolute bottom-1/4 right-0 w-96 h-96 bg-rose-600/20 blur-[120px] rounded-full pointer-events-none"></div>
-    <div class="absolute inset-0 subtle-grid opacity-15 pointer-events-none"></div>
+    <div class="absolute top-1/4 left-0 w-96 h-96 bg-blue-600/10 blur-[120px] rounded-full pointer-events-none"></div>
+    <div class="absolute bottom-1/4 right-0 w-96 h-96 bg-indigo-600/10 blur-[120px] rounded-full pointer-events-none"></div>
+    <div class="absolute inset-0 subtle-grid opacity-10 pointer-events-none"></div>
 
     <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 relative z-10">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
-            {{-- Mission (Crisp Black Text) --}}
-            <div class="bg-white/95 border border-white/90 rounded-3xl p-8 lg:p-12 shadow-[0_20px_50px_-10px_rgba(0,0,0,0.3)] hover:-translate-y-1.5 transition-all duration-300 group reveal">
-                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-rose-600 to-red-700 text-white flex items-center justify-center text-2xl mb-6 shadow-lg shadow-rose-600/25 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
+            {{-- Mission (Soft Rose Pastel Card) --}}
+            <div class="rounded-3xl p-8 lg:p-12 border bg-gradient-to-b from-[#FFF1F2] via-[#FFE4E6] to-[#FECDD3] border-rose-200/90 shadow-[0_14px_34px_-8px_rgba(244,63,94,0.18)] hover:shadow-[0_24px_48px_-10px_rgba(244,63,94,0.3)] hover:border-rose-400 hover:-translate-y-2 transition-all duration-300 group reveal">
+                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-rose-600 to-red-700 text-white flex items-center justify-center text-2xl mb-6 shadow-md shadow-rose-500/25 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
                     🎯
                 </div>
-                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-rose-100 text-rose-800 border border-rose-200 text-xs font-mono font-bold uppercase tracking-wider mb-4">
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-rose-100/90 text-rose-900 border border-rose-200 text-xs font-mono font-bold uppercase tracking-wider mb-4">
                     <span>Our Mission</span>
                 </div>
                 <h3 class="text-2xl lg:text-3xl font-display font-extrabold text-slate-900 mb-4 group-hover:text-rose-600 transition-colors">
                     Empowering Digital Operations
                 </h3>
-                <p class="text-slate-800 leading-relaxed text-base font-normal">
+                <p class="text-slate-700 leading-relaxed text-base font-normal">
                     {{ \App\Models\SiteSetting::get('about_mission', 'Membantu bisnis membangun sistem digital yang handal, scalable, dan terintegrasi secara mulus dengan alur kerja nyata perusahaan untuk memangkas biaya dan mempercepat pertumbuhan.') }}
                 </p>
             </div>
 
-            {{-- Vision (Crisp Black Text) --}}
-            <div class="bg-white/95 border border-white/90 rounded-3xl p-8 lg:p-12 shadow-[0_20px_50px_-10px_rgba(0,0,0,0.3)] hover:-translate-y-1.5 transition-all duration-300 group reveal reveal-delay-1">
-                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 text-white flex items-center justify-center text-2xl mb-6 shadow-lg shadow-orange-500/25 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
+            {{-- Vision (Soft Amber Pastel Card) --}}
+            <div class="rounded-3xl p-8 lg:p-12 border bg-gradient-to-b from-[#FFFBEB] via-[#FEF3C7] to-[#FDE68A] border-amber-200/90 shadow-[0_14px_34px_-8px_rgba(245,158,11,0.18)] hover:shadow-[0_24px_48px_-10px_rgba(245,158,11,0.3)] hover:border-amber-400 hover:-translate-y-2 transition-all duration-300 group reveal reveal-delay-1">
+                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 text-white flex items-center justify-center text-2xl mb-6 shadow-md shadow-amber-500/25 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
                     🔭
                 </div>
-                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-100 text-amber-900 border border-amber-200 text-xs font-mono font-bold uppercase tracking-wider mb-4">
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-100/90 text-amber-900 border border-amber-200 text-xs font-mono font-bold uppercase tracking-wider mb-4">
                     <span>Our Vision</span>
                 </div>
                 <h3 class="text-2xl lg:text-3xl font-display font-extrabold text-slate-900 mb-4 group-hover:text-orange-600 transition-colors">
                     Leading Technology Partner
                 </h3>
-                <p class="text-slate-800 leading-relaxed text-base font-normal">
+                <p class="text-slate-700 leading-relaxed text-base font-normal">
                     {{ \App\Models\SiteSetting::get('about_vision', 'Menjadi mitra teknologi terpercaya yang memimpin standar software development berkualitas tinggi, arsitektur tanpa utang teknis, dan adopsi kecerdasan buatan terdepan di Indonesia.') }}
                 </p>
             </div>

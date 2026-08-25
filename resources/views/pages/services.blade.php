@@ -6,40 +6,52 @@ $metaDescription = 'Layanan lengkap pembuatan custom software, SaaS platform, AI
 
 $serviceCardStyles = [
     [
-        'card_bg' => 'bg-gradient-to-br from-[#111A2E]/95 via-[#1E3A8A]/40 to-[#0F172A]/95 border-blue-500/40 shadow-[0_16px_40px_-10px_rgba(37,99,235,0.25)] hover:border-blue-400 hover:shadow-[0_24px_50px_-10px_rgba(37,99,235,0.4)]',
-        'icon_box' => 'bg-gradient-to-br from-blue-500 to-blue-700 text-white shadow-lg shadow-blue-500/30',
-        'feat_box' => 'bg-blue-950/60 border-blue-400/30',
-        'badge' => 'text-blue-200 bg-blue-950/80 border-blue-700/60',
+        'card_bg' => 'bg-gradient-to-b from-[#F0F7FF] via-[#E6F1FD] to-[#DCEAFB] border-blue-200/90 shadow-[0_14px_34px_-8px_rgba(37,99,235,0.18)] hover:shadow-[0_24px_48px_-10px_rgba(37,99,235,0.3)] hover:border-blue-400',
+        'icon_box' => 'bg-gradient-to-br from-blue-600 to-indigo-700 text-white shadow-md shadow-blue-500/25',
+        'feat_box' => 'bg-white/85 border-blue-200/80',
+        'feat_pill' => 'bg-blue-50/90 border-blue-200 text-slate-800',
+        'badge' => 'text-blue-800 bg-blue-100/90 border-blue-200',
+        'check_icon' => 'text-blue-600',
     ],
     [
-        'card_bg' => 'bg-gradient-to-br from-[#111A2E]/95 via-[#065F46]/40 to-[#0F172A]/95 border-emerald-500/40 shadow-[0_16px_40px_-10px_rgba(16,185,129,0.25)] hover:border-emerald-400 hover:shadow-[0_24px_50px_-10px_rgba(16,185,129,0.4)]',
-        'icon_box' => 'bg-gradient-to-br from-emerald-500 to-emerald-700 text-white shadow-lg shadow-emerald-500/30',
-        'feat_box' => 'bg-emerald-950/60 border-emerald-400/30',
-        'badge' => 'text-emerald-200 bg-emerald-950/80 border-emerald-700/60',
+        'card_bg' => 'bg-gradient-to-b from-[#F0FDF4] via-[#DCFCE7] to-[#D1FAE5] border-emerald-200/90 shadow-[0_14px_34px_-8px_rgba(16,185,129,0.18)] hover:shadow-[0_24px_48px_-10px_rgba(16,185,129,0.3)] hover:border-emerald-400',
+        'icon_box' => 'bg-gradient-to-br from-emerald-600 to-teal-700 text-white shadow-md shadow-emerald-500/25',
+        'feat_box' => 'bg-white/85 border-emerald-200/80',
+        'feat_pill' => 'bg-emerald-50/90 border-emerald-200 text-slate-800',
+        'badge' => 'text-emerald-800 bg-emerald-100/90 border-emerald-200',
+        'check_icon' => 'text-emerald-600',
     ],
     [
-        'card_bg' => 'bg-gradient-to-br from-[#111A2E]/95 via-[#581C87]/40 to-[#0F172A]/95 border-purple-500/40 shadow-[0_16px_40px_-10px_rgba(168,85,247,0.25)] hover:border-purple-400 hover:shadow-[0_24px_50px_-10px_rgba(168,85,247,0.4)]',
-        'icon_box' => 'bg-gradient-to-br from-purple-500 to-purple-700 text-white shadow-lg shadow-purple-500/30',
-        'feat_box' => 'bg-purple-950/60 border-purple-400/30',
-        'badge' => 'text-purple-200 bg-purple-950/80 border-purple-700/60',
+        'card_bg' => 'bg-gradient-to-b from-[#FAF5FF] via-[#F3E8FF] to-[#E9D5FF] border-purple-200/90 shadow-[0_14px_34px_-8px_rgba(168,85,247,0.18)] hover:shadow-[0_24px_48px_-10px_rgba(168,85,247,0.3)] hover:border-purple-400',
+        'icon_box' => 'bg-gradient-to-br from-purple-600 to-violet-700 text-white shadow-md shadow-purple-500/25',
+        'feat_box' => 'bg-white/85 border-purple-200/80',
+        'feat_pill' => 'bg-purple-50/90 border-purple-200 text-slate-800',
+        'badge' => 'text-purple-800 bg-purple-100/90 border-purple-200',
+        'check_icon' => 'text-purple-600',
     ],
     [
-        'card_bg' => 'bg-gradient-to-br from-[#111A2E]/95 via-[#78350F]/40 to-[#0F172A]/95 border-amber-500/40 shadow-[0_16px_40px_-10px_rgba(245,158,11,0.25)] hover:border-amber-400 hover:shadow-[0_24px_50px_-10px_rgba(245,158,11,0.4)]',
-        'icon_box' => 'bg-gradient-to-br from-amber-500 to-amber-700 text-white shadow-lg shadow-amber-500/30',
-        'feat_box' => 'bg-amber-950/60 border-amber-400/30',
-        'badge' => 'text-amber-200 bg-amber-950/80 border-amber-700/60',
+        'card_bg' => 'bg-gradient-to-b from-[#FFFBEB] via-[#FEF3C7] to-[#FDE68A] border-amber-200/90 shadow-[0_14px_34px_-8px_rgba(245,158,11,0.18)] hover:shadow-[0_24px_48px_-10px_rgba(245,158,11,0.3)] hover:border-amber-400',
+        'icon_box' => 'bg-gradient-to-br from-amber-500 to-orange-600 text-white shadow-md shadow-amber-500/25',
+        'feat_box' => 'bg-white/85 border-amber-200/80',
+        'feat_pill' => 'bg-amber-50/90 border-amber-200 text-slate-800',
+        'badge' => 'text-amber-900 bg-amber-100/90 border-amber-200',
+        'check_icon' => 'text-amber-600',
     ],
     [
-        'card_bg' => 'bg-gradient-to-br from-[#111A2E]/95 via-[#155E75]/40 to-[#0F172A]/95 border-cyan-500/40 shadow-[0_16px_40px_-10px_rgba(6,182,212,0.25)] hover:border-cyan-400 hover:shadow-[0_24px_50px_-10px_rgba(6,182,212,0.4)]',
-        'icon_box' => 'bg-gradient-to-br from-cyan-500 to-cyan-700 text-white shadow-lg shadow-cyan-500/30',
-        'feat_box' => 'bg-cyan-950/60 border-cyan-400/30',
-        'badge' => 'text-cyan-200 bg-cyan-950/80 border-cyan-700/60',
+        'card_bg' => 'bg-gradient-to-b from-[#ECFEFF] via-[#CFFAFE] to-[#BAE6FD] border-cyan-200/90 shadow-[0_14px_34px_-8px_rgba(6,182,212,0.18)] hover:shadow-[0_24px_48px_-10px_rgba(6,182,212,0.3)] hover:border-cyan-400',
+        'icon_box' => 'bg-gradient-to-br from-cyan-600 to-sky-700 text-white shadow-md shadow-cyan-500/25',
+        'feat_box' => 'bg-white/85 border-cyan-200/80',
+        'feat_pill' => 'bg-cyan-50/90 border-cyan-200 text-slate-800',
+        'badge' => 'text-cyan-900 bg-cyan-100/90 border-cyan-200',
+        'check_icon' => 'text-cyan-600',
     ],
     [
-        'card_bg' => 'bg-gradient-to-br from-[#111A2E]/95 via-[#881337]/40 to-[#0F172A]/95 border-rose-500/40 shadow-[0_16px_40px_-10px_rgba(244,63,94,0.25)] hover:border-rose-400 hover:shadow-[0_24px_50px_-10px_rgba(244,63,94,0.4)]',
-        'icon_box' => 'bg-gradient-to-br from-rose-500 to-rose-700 text-white shadow-lg shadow-rose-500/30',
-        'feat_box' => 'bg-rose-950/60 border-rose-400/30',
-        'badge' => 'text-rose-200 bg-rose-950/80 border-rose-700/60',
+        'card_bg' => 'bg-gradient-to-b from-[#FFF1F2] via-[#FFE4E6] to-[#FECDD3] border-rose-200/90 shadow-[0_14px_34px_-8px_rgba(244,63,94,0.18)] hover:shadow-[0_24px_48px_-10px_rgba(244,63,94,0.3)] hover:border-rose-400',
+        'icon_box' => 'bg-gradient-to-br from-rose-600 to-red-700 text-white shadow-md shadow-rose-500/25',
+        'feat_box' => 'bg-white/85 border-rose-200/80',
+        'feat_pill' => 'bg-rose-50/90 border-rose-200 text-slate-800',
+        'badge' => 'text-rose-900 bg-rose-100/90 border-rose-200',
+        'check_icon' => 'text-rose-600',
     ],
 ];
 @endphp
@@ -73,8 +85,8 @@ $serviceCardStyles = [
     </div>
 </section>
 
-{{-- Services Grid (Distinct Soft-Colored Backgrounds with White Text) --}}
-<section class="section-padding bg-gradient-to-b from-[#090E1A] via-[#0C1427] to-[#080D18] relative text-white border-b border-slate-800/80">
+{{-- Services Grid (Soft Elegant Colored Cards with High Legibility) --}}
+<section class="section-padding bg-gradient-to-b from-[#090E1A] via-[#0C1427] to-[#080D18] relative text-slate-900 border-b border-slate-800/80">
     {{-- Ambient Lighting --}}
     <div class="absolute top-1/4 left-0 w-96 h-96 bg-blue-600/10 blur-[120px] rounded-full pointer-events-none"></div>
     <div class="absolute bottom-1/4 right-0 w-96 h-96 bg-indigo-600/10 blur-[120px] rounded-full pointer-events-none"></div>
@@ -86,7 +98,7 @@ $serviceCardStyles = [
             @php
                 $style = $serviceCardStyles[$index % count($serviceCardStyles)];
             @endphp
-            <div class="rounded-3xl p-8 lg:p-12 border backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 group reveal reveal-delay-{{ min($loop->iteration, 3) }} {{ $style['card_bg'] }}" id="{{ $service->slug }}">
+            <div class="rounded-3xl p-8 lg:p-12 border transition-all duration-300 hover:-translate-y-2 group reveal reveal-delay-{{ min($loop->iteration, 3) }} {{ $style['card_bg'] }}" id="{{ $service->slug }}">
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
                     
                     {{-- Service Header & Icon --}}
@@ -94,10 +106,10 @@ $serviceCardStyles = [
                         <div class="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mb-6 group-hover:scale-105 transition-transform duration-300 {{ $style['icon_box'] }}">
                             {{ $service->icon ?? '⚡' }}
                         </div>
-                        <h2 class="text-2xl lg:text-3xl font-display font-extrabold text-white mb-3 tracking-tight">
+                        <h2 class="text-2xl lg:text-3xl font-display font-extrabold text-slate-900 mb-3 tracking-tight">
                             {{ $service->title }}
                         </h2>
-                        <p class="text-white/90 text-sm sm:text-base leading-relaxed mb-8 font-normal">
+                        <p class="text-slate-700 text-sm sm:text-base leading-relaxed mb-8 font-normal">
                             {{ $service->short_description }}
                         </p>
                         
@@ -110,10 +122,10 @@ $serviceCardStyles = [
                         </a>
                     </div>
 
-                    {{-- Service Details & Features (Clean White Text) --}}
-                    <div class="lg:col-span-8 rounded-2xl p-6 lg:p-8 border backdrop-blur-md shadow-md {{ $style['feat_box'] }}">
+                    {{-- Service Details & Features --}}
+                    <div class="lg:col-span-8 rounded-2xl p-6 lg:p-8 border shadow-sm {{ $style['feat_box'] }}">
                         @if($service->description)
-                        <div class="text-white text-sm sm:text-base leading-relaxed mb-6 font-normal">
+                        <div class="text-slate-800 text-sm sm:text-base leading-relaxed mb-6 font-normal">
                             {!! nl2br(e($service->description)) !!}
                         </div>
                         @endif
@@ -126,9 +138,9 @@ $serviceCardStyles = [
                             </div>
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                 @foreach($service->features as $feature)
-                                <div class="flex items-center gap-2.5 text-xs sm:text-sm text-white bg-white/10 border border-white/20 px-3.5 py-2.5 rounded-xl shadow-2xs">
-                                    <svg class="w-4 h-4 text-cyan-300 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-                                    <span class="font-medium">{{ $feature }}</span>
+                                <div class="flex items-center gap-2.5 text-xs sm:text-sm text-slate-800 px-3.5 py-2.5 rounded-xl border shadow-2xs {{ $style['feat_pill'] }}">
+                                    <svg class="w-4 h-4 shrink-0 {{ $style['check_icon'] }}" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                    <span class="font-semibold">{{ $feature }}</span>
                                 </div>
                                 @endforeach
                             </div>
@@ -139,7 +151,7 @@ $serviceCardStyles = [
                 </div>
             </div>
             @empty
-            <div class="text-center py-20 text-white/70 bg-slate-900/50 rounded-3xl border border-white/10">
+            <div class="text-center py-20 text-slate-400 bg-slate-900/50 rounded-3xl border border-white/10">
                 Layanan akan segera diperbarui.
             </div>
             @endforelse
