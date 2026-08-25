@@ -1,4 +1,4 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 @section('content')
 @php
 $pageTitle = 'Frequently Asked Questions (FAQ) — Aldef Tech';
@@ -183,21 +183,24 @@ $faqCardStyles = [
             @endforelse
         </div>
 
-        {{-- 4. Still Have Questions CTA Card (Ultra-Luxury Glowing Dark Glassmorphic Card) --}}
-        <div class="mt-16 sm:mt-20 relative overflow-hidden rounded-3xl p-8 sm:p-12 border border-white/15 bg-gradient-to-br from-[#0B132B] via-[#0E1A38] to-[#080E1E] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.7)] text-center reveal text-white group">
-            {{-- Ambient Internal Glows --}}
-            <div class="absolute -top-24 -left-24 w-64 h-64 bg-blue-600/25 blur-3xl rounded-full pointer-events-none"></div>
-            <div class="absolute -bottom-24 -right-24 w-64 h-64 bg-cyan-500/20 blur-3xl rounded-full pointer-events-none"></div>
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-40 bg-indigo-500/15 blur-3xl rounded-full pointer-events-none"></div>
+        {{-- 4. Still Have Questions CTA Card (Ultra-Elegant Soft Luxury Gradient Card) --}}
+        <div class="mt-16 sm:mt-20 relative overflow-hidden rounded-3xl p-8 sm:p-12 border-2 border-blue-200/90 bg-gradient-to-br from-[#F8FAFC] via-[#EEF4FF] to-[#E0E7FF] shadow-[0_22px_55px_-12px_rgba(37,99,235,0.22)] text-center reveal text-slate-900 group">
+            {{-- Ambient Soft Glows --}}
+            <div class="absolute -top-24 -left-24 w-64 h-64 bg-blue-300/30 blur-3xl rounded-full pointer-events-none"></div>
+            <div class="absolute -bottom-24 -right-24 w-64 h-64 bg-indigo-300/30 blur-3xl rounded-full pointer-events-none"></div>
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-40 bg-cyan-200/30 blur-3xl rounded-full pointer-events-none"></div>
 
             <div class="relative z-10">
-                <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 via-indigo-500 to-cyan-400 text-white flex items-center justify-center text-3xl mx-auto mb-6 shadow-xl shadow-blue-500/30 group-hover:scale-105 transition-transform duration-300">
+                <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-600 via-indigo-600 to-blue-700 text-white flex items-center justify-center text-3xl mx-auto mb-6 shadow-xl shadow-blue-500/30 group-hover:scale-105 transition-transform duration-300">
                     💬
                 </div>
-                <h3 class="text-2xl sm:text-3xl font-display font-extrabold text-white mb-3 tracking-tight">
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-100/90 border border-blue-200 text-blue-800 text-xs font-mono font-bold uppercase tracking-wider mb-4">
+                    <span>Direct Technical Advisory</span>
+                </div>
+                <h3 class="text-2xl sm:text-3xl font-display font-extrabold text-slate-900 mb-3 tracking-tight">
                     Punya Pertanyaan Spesifik Terkait Sistem Anda?
                 </h3>
-                <p class="text-slate-300 text-sm sm:text-base max-w-xl mx-auto mb-8 leading-relaxed">
+                <p class="text-slate-700 text-sm sm:text-base max-w-xl mx-auto mb-8 leading-relaxed font-normal">
                     Tim lead engineer kami siap membantu menganalisis tantangan sistem, arsitektur, integrasi API, atau estimasi timeline proyek Anda.
                 </p>
 
