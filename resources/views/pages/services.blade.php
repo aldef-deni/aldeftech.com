@@ -1,4 +1,4 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 @section('content')
 @php
 $pageTitle = 'Layanan Software Development, SaaS & AI — Aldef Tech';
@@ -93,7 +93,7 @@ $serviceCardStyles = [
     <div class="absolute inset-0 subtle-grid opacity-10 pointer-events-none"></div>
 
     <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 relative z-10">
-        <div class="space-y-10">
+        <div class="flex flex-col gap-12 lg:gap-16">
             @forelse($services as $index => $service)
             @php
                 $style = $serviceCardStyles[$index % count($serviceCardStyles)];

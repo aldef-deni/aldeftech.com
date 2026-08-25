@@ -647,13 +647,10 @@ $metaDescription = 'Aldef Tech adalah software development partner terpercaya un
             @foreach($featuredProjects as $p)
             <div class="rounded-3xl border overflow-hidden flex flex-col justify-between group transition-all duration-300 hover:-translate-y-2 reveal {{ $p['bg_class'] }}">
                 <div>
-                    {{-- Featured Image with Zoom Effect --}}
+                    {{-- Featured Image with Zoom Effect (Clean, No Overlay Tag) --}}
                     <div class="aspect-[16/10] bg-slate-900/5 relative overflow-hidden border-b border-black/5">
                         <img src="{{ asset($p['image']) }}" alt="{{ $p['title'] }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-108" loading="lazy">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                        <span class="absolute top-3.5 left-3.5 px-3 py-1 rounded-full text-[0.6875rem] font-mono font-bold backdrop-blur-md shadow-xs {{ $p['pill_class'] }}">
-                            {{ $p['category'] }}
-                        </span>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </div>
 
                     {{-- Body Content --}}
