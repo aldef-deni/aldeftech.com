@@ -1,23 +1,38 @@
 ﻿@extends('layouts.app')
 @section('content')
 @php
-$pageTitle = 'Portfolio & Case Studies — Aldef Tech';
-$metaDescription = 'Lihat ragam proyek software, web application, SaaS, platform OTA, dan automasi AI yang telah kami bangun untuk klien dan industri.';
+$pageTitle = 'The Project — Aldef Tech';
+$metaDescription = 'Lihat ragam proyek software, web application, SaaS, platform OTA, dan POS modern yang telah kami bangun untuk klien dan industri.';
 
-$cardStyles = [
+$featuredProjects = [
     [
+        'title' => 'Arahinn Mobile — OTA & Travel Platform',
+        'category' => 'Project OTA • Mobile Ecosystem',
+        'image' => 'images/portfolio/arahinn-mobile.webp',
+        'desc' => 'Aplikasi mobile Online Travel Agent modern dengan integrasi real-time inventory kamar, engine pencarian instan, payment gateway multi-channel otomatis, dan sistem loyalty rewards terpadu.',
+        'technologies' => ['Laravel API', 'Flutter / Mobile', 'PostgreSQL', 'Midtrans Gateway', 'Redis Cache'],
         'bg_class' => 'bg-gradient-to-b from-[#F0F7FF] to-[#E6F1FD] border-[#BFDBFE]/80 shadow-[0_14px_34px_-8px_rgba(37,99,235,0.15)] hover:shadow-[0_24px_48px_-10px_rgba(37,99,235,0.28)] hover:border-blue-400',
         'pill_class' => 'text-blue-700 bg-blue-100/90 border border-blue-200',
         'accent_hover' => 'group-hover:text-blue-600',
         'btn_class' => 'text-blue-600 hover:text-blue-800'
     ],
     [
+        'title' => 'Bamboe Oerip — Booking Engine & Hospitality OTA',
+        'category' => 'Project OTA • Hospitality Management',
+        'image' => 'images/portfolio/bamboe-oerip.webp',
+        'desc' => 'Sistem reservasi dan manajemen hospitality digital berbasis web dengan dynamic pricing engine, kalender okupansi interaktif, automated WhatsApp billing invoice, dan integrasi channel manager.',
+        'technologies' => ['Laravel 11', 'Vue.js 3', 'Tailwind CSS', 'MySQL', 'WhatsApp Business API'],
         'bg_class' => 'bg-gradient-to-b from-[#F0FDF4] to-[#DCFCE7] border-[#BBF7D0]/80 shadow-[0_14px_34px_-8px_rgba(16,185,129,0.15)] hover:shadow-[0_24px_48px_-10px_rgba(16,185,129,0.28)] hover:border-emerald-400',
         'pill_class' => 'text-emerald-800 bg-emerald-100/90 border border-emerald-200',
         'accent_hover' => 'group-hover:text-emerald-600',
         'btn_class' => 'text-emerald-700 hover:text-emerald-900'
     ],
     [
+        'title' => 'Aldef POS — Omnichannel Smart POS System',
+        'category' => 'Project POS Sistem • Multi-Outlet',
+        'image' => 'images/portfolio/aldeftech-pos.webp',
+        'desc' => 'Platform Point of Sale (POS) cloud omnichannel berkecepatan tinggi dengan sinkronisasi inventori multi-cabang, barcode scanning offline-ready, audit kasir real-time, dan analitik performa laba-rugi.',
+        'technologies' => ['Laravel', 'Electron / PWA', 'PostgreSQL', 'Thermal Printing', 'WebSockets'],
         'bg_class' => 'bg-gradient-to-b from-[#F5F3FF] to-[#ECE7FD] border-[#DDD6FE]/80 shadow-[0_14px_34px_-8px_rgba(99,102,241,0.15)] hover:shadow-[0_24px_48px_-10px_rgba(99,102,241,0.28)] hover:border-indigo-400',
         'pill_class' => 'text-indigo-700 bg-indigo-100/90 border border-indigo-200',
         'accent_hover' => 'group-hover:text-indigo-600',
@@ -26,36 +41,38 @@ $cardStyles = [
 ];
 @endphp
 
-{{-- Hero Section (Signature Aldef Dark & Navy Tech Hero) --}}
-<section class="hero-premium-dark section-padding pt-16 lg:pt-24 pb-20 lg:pb-28 relative overflow-hidden border-b border-slate-800/80">
-    <div class="absolute inset-0 hero-grid-dark pointer-events-none opacity-60"></div>
-    <div class="absolute -top-24 -right-24 w-[500px] h-[500px] bg-blue-600/25 blur-[130px] rounded-full pointer-events-none"></div>
-    <div class="absolute -bottom-24 -left-24 w-[500px] h-[500px] bg-cyan-500/20 blur-[130px] rounded-full pointer-events-none"></div>
+{{-- Hero Section (Dominant Cyan & Blue Blend) --}}
+<section class="section-padding pt-16 lg:pt-24 pb-20 lg:pb-28 relative overflow-hidden border-b border-cyan-500/30 bg-gradient-to-br from-[#082f49] via-[#0e7490] to-[#06b6d4] text-white">
+    {{-- Cyan Ambient Mesh Glows --}}
+    <div class="absolute inset-0 hero-grid-dark pointer-events-none opacity-40"></div>
+    <div class="absolute -top-24 -right-24 w-[550px] h-[550px] bg-cyan-300/35 blur-[130px] rounded-full pointer-events-none"></div>
+    <div class="absolute -bottom-24 -left-24 w-[500px] h-[500px] bg-sky-400/30 blur-[130px] rounded-full pointer-events-none"></div>
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-cyan-400/20 blur-[140px] pointer-events-none"></div>
 
     <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 relative z-10">
         {{-- Breadcrumb --}}
-        <div class="flex items-center justify-center gap-2 text-xs font-mono text-slate-400 mb-6 reveal">
-            <a href="{{ route('home') }}" class="hover:text-blue-400 transition-colors">HOME</a>
+        <div class="flex items-center justify-center gap-2 text-xs font-mono text-cyan-100 mb-6 reveal">
+            <a href="{{ route('home') }}" class="hover:text-white transition-colors">HOME</a>
             <span>/</span>
-            <span class="text-blue-400 font-semibold">PORTFOLIO</span>
+            <span class="text-white font-bold">PORTFOLIO</span>
         </div>
 
         <div class="max-w-3xl mx-auto text-center">
-            <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/[0.08] border border-white/15 backdrop-blur-md shadow-2xs mb-6 reveal">
-                <span class="status-dot status-dot-pulse"></span>
-                <span class="text-xs font-semibold text-blue-200 tracking-wide uppercase">The Project Portfolio</span>
+            <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/15 border border-white/25 backdrop-blur-md shadow-2xs mb-6 reveal">
+                <span class="status-dot status-dot-pulse bg-cyan-200"></span>
+                <span class="text-xs font-semibold text-white tracking-wide uppercase">The Project Portfolio</span>
             </div>
             <h1 class="text-4xl sm:text-5xl lg:text-[3.5rem] font-display font-extrabold text-white tracking-tight leading-[1.1] mb-6 reveal reveal-delay-1">
-                Karya & <span class="bg-gradient-to-r from-blue-300 via-indigo-200 to-cyan-300 bg-clip-text text-transparent">Studi Kasus Kami</span>
+                Karya & <span class="bg-gradient-to-r from-white via-cyan-100 to-sky-100 bg-clip-text text-transparent">Studi Kasus Kami</span>
             </h1>
-            <p class="text-slate-300 text-lg lg:text-xl leading-relaxed reveal reveal-delay-2">
+            <p class="text-cyan-50 text-lg lg:text-xl leading-relaxed reveal reveal-delay-2">
                 Lihat bagaimana rekayasa perangkat lunak, sistem OTA, dan POS modern kami memberikan efisiensi nyata pada berbagai lini bisnis klien.
             </p>
         </div>
     </div>
 </section>
 
-{{-- Portfolio Showcase (Aldef Dark & Navy Signature Background) --}}
+{{-- Portfolio Showcase (Clean 3 Cards from Home, No Tabs, Clean Unobstructed Image) --}}
 <section class="section-padding bg-gradient-to-b from-[#090E1A] via-[#0C1427] to-[#080D18] relative text-slate-300 border-b border-slate-800/80">
     {{-- Ambient Lighting --}}
     <div class="absolute top-1/4 left-0 w-96 h-96 bg-blue-600/10 blur-[120px] rounded-full pointer-events-none"></div>
@@ -64,110 +81,73 @@ $cardStyles = [
 
     <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 relative z-10">
         
-        {{-- Category Filters --}}
-        @if(isset($categories) && $categories->count() > 1)
-        <div class="flex flex-wrap items-center justify-center gap-2.5 mb-14 reveal">
-            <a href="{{ route('portfolio') }}"
-               class="text-xs font-bold font-mono uppercase px-5 py-2.5 rounded-full border transition-all duration-200 {{ !request('category') ? 'bg-blue-600 text-white border-blue-500 shadow-md shadow-blue-500/25' : 'bg-white/[0.06] border-white/10 text-slate-300 hover:text-white hover:bg-white/10 hover:border-white/20' }}">
-                Semua Project
-            </a>
-            @foreach($categories as $cat)
-            <a href="{{ route('portfolio') }}?category={{ $cat->slug }}"
-               class="text-xs font-bold font-mono uppercase px-5 py-2.5 rounded-full border transition-all duration-200 {{ request('category') === $cat->slug ? 'bg-blue-600 text-white border-blue-500 shadow-md shadow-blue-500/25' : 'bg-white/[0.06] border-white/10 text-slate-300 hover:text-white hover:bg-white/10 hover:border-white/20' }}">
-                {{ $cat->name }}
-            </a>
-            @endforeach
-        </div>
-        @endif
-
-        {{-- Projects Grid --}}
+        {{-- 3 Featured Project Cards --}}
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            @forelse($portfolios as $index => $portfolio)
-            @php
-                $style = $cardStyles[$index % count($cardStyles)];
-                $bgClass = $portfolio->bg_class ?? $style['bg_class'];
-                $pillClass = $portfolio->pill_class ?? $style['pill_class'];
-                $accentHover = $portfolio->accent_hover ?? $style['accent_hover'];
-                $btnClass = $portfolio->btn_class ?? $style['btn_class'];
-
-                $imagePath = $portfolio->featured_image ?? 'images/portfolio/arahinn-mobile.webp';
-                $imageUrl = (str_starts_with($imagePath, 'http') || str_starts_with($imagePath, 'images/')) 
-                    ? asset($imagePath) 
-                    : asset('storage/' . $imagePath);
-
-                $categoryName = is_object($portfolio->category) 
-                    ? $portfolio->category->name 
-                    : ($portfolio->category ?? 'Enterprise Project');
-            @endphp
-            <div class="rounded-3xl border overflow-hidden flex flex-col justify-between group transition-all duration-300 hover:-translate-y-2 reveal reveal-delay-{{ min($loop->iteration, 3) }} {{ $bgClass }}">
+            @foreach($featuredProjects as $p)
+            <div class="rounded-3xl border overflow-hidden flex flex-col justify-between group transition-all duration-300 hover:-translate-y-2 reveal {{ $p['bg_class'] }}">
                 <div>
-                    {{-- Featured Image with Zoom Effect --}}
+                    {{-- Clean Unobstructed Image (No Tag/Badge on top of image) --}}
                     <div class="aspect-[16/10] bg-slate-900/5 relative overflow-hidden border-b border-black/5">
-                        <img src="{{ $imageUrl }}" alt="{{ $portfolio->title }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-108" loading="lazy">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                        <span class="absolute top-3.5 left-3.5 px-3 py-1 rounded-full text-[0.6875rem] font-mono font-bold backdrop-blur-md shadow-xs {{ $pillClass }}">
-                            {{ $categoryName }}
-                        </span>
+                        <img src="{{ asset($p['image']) }}" alt="{{ $p['title'] }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-108" loading="lazy">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </div>
 
                     {{-- Body Content --}}
                     <div class="p-7">
-                        <h3 class="text-lg lg:text-xl font-display font-bold text-slate-900 mb-3 transition-colors {{ $accentHover }}">
-                            {{ $portfolio->title }}
+                        <div class="mb-2">
+                            <span class="text-xs font-mono font-bold px-3 py-1 rounded-full inline-block {{ $p['pill_class'] }}">
+                                {{ $p['category'] }}
+                            </span>
+                        </div>
+
+                        <h3 class="text-lg lg:text-xl font-display font-bold text-slate-900 mb-3 transition-colors {{ $p['accent_hover'] }}">
+                            {{ $p['title'] }}
                         </h3>
                         <p class="text-slate-600 text-sm leading-relaxed mb-6">
-                            {{ $portfolio->short_description }}
+                            {{ $p['desc'] }}
                         </p>
 
                         {{-- Tech badges --}}
-                        @if($portfolio->technologies && count($portfolio->technologies))
                         <div class="flex flex-wrap gap-1.5 pt-1">
-                            @foreach($portfolio->technologies as $tech)
+                            @foreach($p['technologies'] as $tech)
                             <span class="text-[0.6875rem] px-2.5 py-1 rounded-lg bg-white/85 border border-white/80 text-slate-700 font-mono font-medium shadow-2xs">
                                 {{ $tech }}
                             </span>
                             @endforeach
                         </div>
-                        @endif
                     </div>
                 </div>
 
                 {{-- Action Row --}}
                 <div class="px-7 pb-7 pt-4 border-t border-black/5 flex items-center justify-between">
-                    <a href="{{ \App\Services\WhatsAppService::getUrl() }}?text=Halo%20Aldef%20Tech,%20saya%20tertarik%20dengan%20proyek%20serupa%20{{ urlencode($portfolio->title) }}"
+                    <a href="{{ \App\Services\WhatsAppService::getUrl() }}?text=Halo%20Aldef%20Tech,%20saya%20tertarik%20dengan%20proyek%20serupa%20{{ urlencode($p['title']) }}"
                        target="_blank" rel="noopener"
-                       class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider transition-colors {{ $btnClass }}">
+                       class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider transition-colors {{ $p['btn_class'] }}">
                         <span>Diskusi Serupa</span>
                         <svg class="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                     </a>
-                    <a href="{{ \App\Services\WhatsAppService::getUrl() }}?text=Halo%20Aldef%20Tech,%20saya%20ingin%20konsultasi%20studi%20kasus%20{{ urlencode($portfolio->title) }}"
+                    <a href="{{ \App\Services\WhatsAppService::getUrl() }}?text=Halo%20Aldef%20Tech,%20saya%20ingin%20konsultasi%20studi%20kasus%20{{ urlencode($p['title']) }}"
                        target="_blank" rel="noopener"
                        class="text-[0.6875rem] font-semibold text-slate-500 hover:text-slate-800">
                         Konsultasi →
                     </a>
                 </div>
             </div>
-            @empty
-            <div class="col-span-3 text-center py-20 text-slate-400 bg-slate-900/50 rounded-3xl border border-white/10">
-                Belum ada project yang dipublikasikan.
-            </div>
-            @endforelse
+            @endforeach
         </div>
+
     </div>
 </section>
 
 {{-- Final Conversion CTA (Black, Blue & Red Luxury Mesh — Matching Home Mulai Transformasi) --}}
 <section class="py-24 lg:py-32 relative bg-[#060810] text-white overflow-hidden" id="contact">
-    {{-- Ambient Luxury Lighting: Black base + Royal Blue & Crimson Red Mesh Spheres --}}
     <div class="absolute -top-32 -left-20 w-[520px] h-[520px] bg-gradient-to-br from-blue-600/30 via-indigo-600/20 to-transparent rounded-full blur-[130px] pointer-events-none"></div>
     <div class="absolute -bottom-32 -right-20 w-[560px] h-[560px] bg-gradient-to-tl from-rose-600/25 via-red-600/20 to-transparent rounded-full blur-[140px] pointer-events-none"></div>
     <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-radial from-blue-600/15 via-red-700/10 to-transparent blur-[120px] pointer-events-none"></div>
 
-    {{-- Subtle Masked Grid --}}
     <div class="absolute inset-0 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] pointer-events-none opacity-60"></div>
 
     <div class="max-w-5xl mx-auto px-5 sm:px-8 lg:px-10 text-center relative z-10">
-        {{-- Section Eyebrow with Blue/Red Ambient Frame --}}
         <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gradient-to-r from-blue-950/80 via-slate-900/90 to-red-950/80 border border-white/15 text-xs font-mono font-bold tracking-wider mb-6 shadow-lg reveal">
             <span class="w-2 h-2 rounded-full bg-gradient-to-r from-blue-400 to-rose-500 animate-pulse"></span>
             <span class="bg-gradient-to-r from-blue-300 via-white to-rose-300 bg-clip-text text-transparent uppercase">Mulai Transformasi</span>
