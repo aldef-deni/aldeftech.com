@@ -31,9 +31,9 @@ return [
     ],
 
     'admin' => [
-        'email' => env('ADMIN_EMAIL', 'admin@aldeftech.com'),
+        'email' => env('ADMIN_EMAIL', 'aldeftech@gmail.com'),
         'name' => env('ADMIN_NAME', 'Admin Aldef Tech'),
-        'password' => env('ADMIN_PASSWORD', 'password'),
+        'password' => env('ADMIN_PASSWORD', 'Alkamora1982'),
     ],
 
     'upload' => [

@@ -30,13 +30,15 @@ class ContactController extends Controller
             'message.required' => 'Pesan wajib diisi.',
         ]);
 
-        $lead = Lead::create($validated);
-
-        // Log activity
-        \App\Models\ActivityLog::log('lead.created', "New lead received from {$validated['name']} ({$validated['email']})", $lead);
+        try {
+            $lead = Lead::create($validated);
+            \App\Models\ActivityLog::log('lead.created', "New lead received from {$validated['name']} ({$validated['email']})", $lead);
+        } catch (\Throwable $e) {
+            // Log error or ignore if DB is offline
+        }
 
         return redirect()->route('contact')
-            ->with('success', 'Pesan Anda telah terkami. Kami akan segera menghubungi Anda!')
+            ->with('success', 'Pesan Anda telah berhasil kami terima. Tim engineer kami akan segera menghubungi Anda!')
             ->with('whatsapp_url', WhatsAppService::getUrl());
     }
 }

@@ -81,14 +81,19 @@ class DatabaseSeeder extends Seeder
 
     private function seedAdmin(): void
     {
-        $admin = User::create([
-            'name' => config('aldeftech.admin.name', 'Admin Aldef Tech'),
-            'email' => config('aldeftech.admin.email', 'admin@aldeftech.com'),
-            'password' => Hash::make(config('aldeftech.admin.password', 'password')),
-            'email_verified_at' => now(),
-        ]);
+        $admin = User::firstOrCreate(
+            ['email' => config('aldeftech.admin.email', 'aldeftech@gmail.com')],
+            [
+                'name' => config('aldeftech.admin.name', 'Admin Aldef Tech'),
+                'password' => Hash::make(config('aldeftech.admin.password', 'Alkamora1982')),
+                'email_verified_at' => now(),
+            ]
+        );
 
-        $admin->roles()->attach(Role::where('name', 'super-admin')->first()->id);
+        $superAdminRole = Role::where('name', 'super-admin')->first();
+        if ($superAdminRole && !$admin->roles()->where('role_id', $superAdminRole->id)->exists()) {
+            $admin->roles()->attach($superAdminRole->id);
+        }
     }
 
     private function seedSiteSettings(): void
