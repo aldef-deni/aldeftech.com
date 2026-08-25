@@ -26,7 +26,8 @@
     <meta name="twitter:image" content="{{ $ogImage ?? asset(config('aldeftech.seo.default_image')) }}">
 
     {{-- Favicon --}}
-    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+    <link rel="icon" type="image/png" href="{{ asset('images/logo-square.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset('images/logo-square.png') }}">
 
     {{-- Google Search Console --}}
     @if($googleVerification = \App\Models\SiteSetting::get('google_search_console_verification'))

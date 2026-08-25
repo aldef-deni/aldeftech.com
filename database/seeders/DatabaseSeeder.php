@@ -96,7 +96,12 @@ class DatabaseSeeder extends Seeder
         $settings = [
             ['key' => 'site_name', 'value' => 'Aldef Tech', 'type' => 'text', 'group' => 'general'],
             ['key' => 'site_tagline', 'value' => 'Bangun Sistem Digital yang Menggerakkan Bisnis.', 'type' => 'text', 'group' => 'general'],
+            ['key' => 'site_logo', 'value' => 'images/logo.png', 'type' => 'text', 'group' => 'general'],
+            ['key' => 'site_favicon', 'value' => 'images/logo-square.png', 'type' => 'text', 'group' => 'general'],
             ['key' => 'email', 'value' => 'info@aldeftech.com', 'type' => 'text', 'group' => 'general'],
+            ['key' => 'phone', 'value' => '+62 812-3456-7890', 'type' => 'text', 'group' => 'general'],
+            ['key' => 'whatsapp_number', 'value' => '6281234567890', 'type' => 'text', 'group' => 'general'],
+            ['key' => 'address', 'value' => 'Indonesia', 'type' => 'text', 'group' => 'general'],
             ['key' => 'copyright', 'value' => '© ' . date('Y') . ' Aldef Tech. All rights reserved.', 'type' => 'text', 'group' => 'general'],
             ['key' => 'seo_default_title', 'value' => 'Aldef Tech — Jasa Pembuatan Sistem, Aplikasi, SaaS & AI', 'type' => 'text', 'group' => 'seo'],
             ['key' => 'seo_default_description', 'value' => 'Aldef Tech membantu bisnis membangun sistem, aplikasi custom, SaaS, website, AI, dan automasi bisnis sesuai kebutuhan.', 'type' => 'textarea', 'group' => 'seo'],

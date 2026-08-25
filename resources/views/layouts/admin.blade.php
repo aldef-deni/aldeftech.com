@@ -5,164 +5,156 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ $pageTitle ?? 'Admin' }} — {{ config('app.name') }}</title>
+    <link rel="icon" type="image/png" href="{{ asset('images/logo-square.png') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <style>
-        .admin-scroll::-webkit-scrollbar { width: 6px; }
-        .admin-scroll::-webkit-scrollbar-track { background: transparent; }
-        .admin-scroll::-webkit-scrollbar-thumb { background: #2A2D35; border-radius: 3px; }
-    </style>
     @stack('styles')
 </head>
 <body class="bg-brand-bg text-text-primary font-sans antialiased">
-    <div class="flex min-h-screen" x-data="{ sidebarOpen: @js(!request()->is('admin/login')) }">
+    <div class="flex min-h-screen" x-data="{ sidebarOpen: true, sidebarCollapsed: false }">
 
         {{-- Sidebar --}}
         @if(request()->is('admin/login'))
             @yield('content')
         @else
-        <aside class="admin-sidebar fixed inset-y-0 left-0 z-40 w-64 transform transition-transform duration-300 lg:translate-x-0"
-               :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
+        <aside class="admin-sidebar fixed inset-y-0 left-0 z-40 transform transition-all duration-300 lg:translate-x-0 overflow-hidden"
+               :class="[sidebarOpen ? 'translate-x-0' : '-translate-x-full', sidebarCollapsed ? 'w-[4.5rem]' : 'w-[16.5rem]']"
                x-show="true">
             <div class="flex flex-col h-full">
                 {{-- Logo --}}
-                <div class="flex items-center gap-3 px-6 py-5 border-b border-brand-border">
-                    <div class="w-8 h-8 rounded-lg bg-accent flex items-center justify-center">
-                        <span class="text-white font-bold text-sm">A</span>
-                    </div>
-                    <div>
-                        <div class="font-semibold text-sm text-text-primary">Aldef Tech</div>
-                        <div class="text-xs text-text-muted">Admin Panel</div>
+                <div class="flex items-center gap-3 px-5 py-5 border-b border-brand-border shrink-0">
+                    <img src="{{ asset('images/logo-square.png') }}" alt="Aldef Tech" class="w-9 h-9 rounded-lg object-contain shrink-0">
+                    <div x-show="!sidebarCollapsed" x-transition class="overflow-hidden">
+                        <div class="font-display font-semibold text-sm text-text-primary tracking-tight whitespace-nowrap">Aldef Tech</div>
+                        <div class="text-[0.65rem] text-accent-light font-medium uppercase tracking-wider whitespace-nowrap">Admin Panel</div>
                     </div>
                 </div>
 
                 {{-- Navigation --}}
-                <nav class="flex-1 overflow-y-auto admin-scroll py-4 px-3">
-                    <div class="space-y-1">
-                        {{-- Dashboard --}}
-                        <a href="{{ route('admin.dashboard') }}"
-                           class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors {{ request()->routeIs('admin.dashboard') ? 'bg-accent/10 text-accent' : 'text-text-muted hover:text-text-primary hover:bg-brand-surface-2' }}">
-                            <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-                            Dashboard
-                        </a>
+                <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-1" style="scrollbar-width: thin; scrollbar-color: #1A1E2E transparent;">
+                    {{-- Dashboard --}}
+                    <a href="{{ route('admin.dashboard') }}"
+                       class="admin-sidebar-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                        <svg class="icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 5a1 1 0 011-1h4a1 1 0 011 1v5a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM14 5a1 1 0 011-1h4a1 1 0 011 1v2a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1v-4zM14 12a1 1 0 011-1h4a1 1 0 011 1v7a1 1 0 01-1 1h-4a1 1 0 01-1-1v-7z"/></svg>
+                        <span x-show="!sidebarCollapsed" x-transition class="whitespace-nowrap">Dashboard</span>
+                    </a>
 
-                        {{-- CONTENT --}}
-                        <div class="pt-4 pb-2 px-3">
-                            <span class="text-xs font-semibold text-text-dark uppercase tracking-wider">Content</span>
-                        </div>
-                        @php
-                        $contentLinks = [
-                            ['route' => 'admin.homepage.index', 'label' => 'Homepage', 'icon' => 'home'],
-                            ['route' => 'admin.about.edit', 'label' => 'About', 'icon' => 'info'],
-                            ['route' => 'admin.services.index', 'label' => 'Services', 'icon' => 'cog'],
-                            ['route' => 'admin.solutions.index', 'label' => 'Solutions', 'icon' => 'lightbulb'],
-                            ['route' => 'admin.portfolio.index', 'label' => 'Portfolio', 'icon' => 'briefcase'],
-                            ['route' => 'admin.testimonials.index', 'label' => 'Testimonials', 'icon' => 'star'],
-                            ['route' => 'admin.faq.index', 'label' => 'FAQ', 'icon' => 'question'],
-                            ['route' => 'admin.blog.index', 'label' => 'Blog', 'icon' => 'pencil'],
-                            ['route' => 'admin.categories.index', 'label' => 'Categories', 'icon' => 'tag'],
-                            ['route' => 'admin.tags.index', 'label' => 'Tags', 'icon' => 'bookmark'],
-                        ];
-                        @endphp
-                        @foreach($contentLinks as $link)
-                        <a href="{{ route($link['route']) }}"
-                           class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors {{ request()->routeIs($link['route'].'*') ? 'bg-accent/10 text-accent' : 'text-text-muted hover:text-text-primary hover:bg-brand-surface-2' }}">
-                            <span class="w-5 h-5 shrink-0 text-center text-xs opacity-60">●</span>
-                            {{ $link['label'] }}
-                        </a>
-                        @endforeach
-
-                        {{-- LEADS --}}
-                        <div class="pt-4 pb-2 px-3">
-                            <span class="text-xs font-semibold text-text-dark uppercase tracking-wider">Leads</span>
-                        </div>
-                        <a href="{{ route('admin.leads.index') }}"
-                           class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors {{ request()->routeIs('admin.leads*') ? 'bg-accent/10 text-accent' : 'text-text-muted hover:text-text-primary hover:bg-brand-surface-2' }}">
-                            <span class="w-5 h-5 shrink-0 text-center text-xs opacity-60">●</span>
-                            Leads
-                        </a>
-
-                        {{-- COMPANY --}}
-                        <div class="pt-4 pb-2 px-3">
-                            <span class="text-xs font-semibold text-text-dark uppercase tracking-wider">Company</span>
-                        </div>
-                        <a href="{{ route('admin.ceo.edit') }}"
-                           class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors {{ request()->routeIs('admin.ceo.*') ? 'bg-accent/10 text-accent' : 'text-text-muted hover:text-text-primary hover:bg-brand-surface-2' }}">
-                            <span class="w-5 h-5 shrink-0 text-center text-xs opacity-60">●</span>
-                            CEO Profile
-                        </a>
-                        <a href="{{ route('admin.process-steps.index') }}"
-                           class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors {{ request()->routeIs('admin.process-steps*') ? 'bg-accent/10 text-accent' : 'text-text-muted hover:text-text-primary hover:bg-brand-surface-2' }}">
-                            <span class="w-5 h-5 shrink-0 text-center text-xs opacity-60">●</span>
-                            Process Steps
-                        </a>
-                        <a href="{{ route('admin.social-media.index') }}"
-                           class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors {{ request()->routeIs('admin.social-media*') ? 'bg-accent/10 text-accent' : 'text-text-muted hover:text-text-primary hover:bg-brand-surface-2' }}">
-                            <span class="w-5 h-5 shrink-0 text-center text-xs opacity-60">●</span>
-                            Social Media
-                        </a>
-
-                        {{-- SETTINGS --}}
-                        <div class="pt-4 pb-2 px-3">
-                            <span class="text-xs font-semibold text-text-dark uppercase tracking-wider">Settings</span>
-                        </div>
-                        <a href="{{ route('admin.settings.site') }}"
-                           class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors {{ request()->routeIs('admin.settings.site') ? 'bg-accent/10 text-accent' : 'text-text-muted hover:text-text-primary hover:bg-brand-surface-2' }}">
-                            <span class="w-5 h-5 shrink-0 text-center text-xs opacity-60">●</span>
-                            Site Settings
-                        </a>
-                        <a href="{{ route('admin.settings.seo') }}"
-                           class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors {{ request()->routeIs('admin.settings.seo') ? 'bg-accent/10 text-accent' : 'text-text-muted hover:text-text-primary hover:bg-brand-surface-2' }}">
-                            <span class="w-5 h-5 shrink-0 text-center text-xs opacity-60">●</span>
-                            SEO Settings
-                        </a>
-                        <a href="{{ route('admin.settings.whatsapp') }}"
-                           class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors {{ request()->routeIs('admin.settings.whatsapp') ? 'bg-accent/10 text-accent' : 'text-text-muted hover:text-text-primary hover:bg-brand-surface-2' }}">
-                            <span class="w-5 h-5 shrink-0 text-center text-xs opacity-60">●</span>
-                            WhatsApp
-                        </a>
-                        <a href="{{ route('admin.settings.analytics') }}"
-                           class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors {{ request()->routeIs('admin.settings.analytics') ? 'bg-accent/10 text-accent' : 'text-text-muted hover:text-text-primary hover:bg-brand-surface-2' }}">
-                            <span class="w-5 h-5 shrink-0 text-center text-xs opacity-60">●</span>
-                            Analytics
-                        </a>
-                        <a href="{{ route('admin.media.index') }}"
-                           class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors {{ request()->routeIs('admin.media*') ? 'bg-accent/10 text-accent' : 'text-text-muted hover:text-text-primary hover:bg-brand-surface-2' }}">
-                            <span class="w-5 h-5 shrink-0 text-center text-xs opacity-60">●</span>
-                            Media
-                        </a>
-
-                        {{-- SYSTEM --}}
-                        <div class="pt-4 pb-2 px-3">
-                            <span class="text-xs font-semibold text-text-dark uppercase tracking-wider">System</span>
-                        </div>
-                        @if(auth()->user()->hasRole('super-admin'))
-                        <a href="{{ route('admin.users.index') }}"
-                           class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors {{ request()->routeIs('admin.users*') ? 'bg-accent/10 text-accent' : 'text-text-muted hover:text-text-primary hover:bg-brand-surface-2' }}">
-                            <span class="w-5 h-5 shrink-0 text-center text-xs opacity-60">●</span>
-                            Users
-                        </a>
-                        @endif
-                        <a href="{{ route('admin.activity-logs.index') }}"
-                           class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors {{ request()->routeIs('admin.activity-logs*') ? 'bg-accent/10 text-accent' : 'text-text-muted hover:text-text-primary hover:bg-brand-surface-2' }}">
-                            <span class="w-5 h-5 shrink-0 text-center text-xs opacity-60">●</span>
-                            Activity Logs
-                        </a>
+                    {{-- CONTENT Section --}}
+                    <div class="pt-5 pb-2 px-2">
+                        <span class="text-[0.6rem] font-bold text-text-dark/70 uppercase tracking-[0.2em]" x-show="!sidebarCollapsed" x-transition>Content</span>
+                        <div class="h-px bg-brand-border mt-2" x-show="sidebarCollapsed"></div>
                     </div>
+
+                    @php
+                    $contentLinks = [
+                        ['route' => 'admin.homepage.index', 'label' => 'Homepage', 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>'],
+                        ['route' => 'admin.about.edit', 'label' => 'About', 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>'],
+                        ['route' => 'admin.services.index', 'label' => 'Services', 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>'],
+                        ['route' => 'admin.solutions.index', 'label' => 'Solutions', 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>'],
+                        ['route' => 'admin.portfolio.index', 'label' => 'Portfolio', 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>'],
+                        ['route' => 'admin.testimonials.index', 'label' => 'Testimonials', 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>'],
+                        ['route' => 'admin.faq.index', 'label' => 'FAQ', 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>'],
+                        ['route' => 'admin.blog.index', 'label' => 'Blog', 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>'],
+                        ['route' => 'admin.categories.index', 'label' => 'Categories', 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>'],
+                        ['route' => 'admin.tags.index', 'label' => 'Tags', 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>'],
+                    ];
+                    @endphp
+
+                    @foreach($contentLinks as $link)
+                    <a href="{{ route($link['route']) }}"
+                       class="admin-sidebar-link {{ request()->routeIs($link['route'].'*') ? 'active' : '' }}">
+                        <svg class="icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">{!! $link['icon'] !!}</svg>
+                        <span x-show="!sidebarCollapsed" x-transition class="whitespace-nowrap">{{ $link['label'] }}</span>
+                    </a>
+                    @endforeach
+
+                    {{-- LEADS --}}
+                    <div class="pt-5 pb-2 px-2">
+                        <span class="text-[0.6rem] font-bold text-text-dark/70 uppercase tracking-[0.2em]" x-show="!sidebarCollapsed" x-transition>Leads & CRM</span>
+                        <div class="h-px bg-brand-border mt-2" x-show="sidebarCollapsed"></div>
+                    </div>
+                    <a href="{{ route('admin.leads.index') }}"
+                       class="admin-sidebar-link {{ request()->routeIs('admin.leads*') ? 'active' : '' }}">
+                        <svg class="icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                        <span x-show="!sidebarCollapsed" x-transition class="whitespace-nowrap">Leads</span>
+                    </a>
+
+                    {{-- COMPANY --}}
+                    <div class="pt-5 pb-2 px-2">
+                        <span class="text-[0.6rem] font-bold text-text-dark/70 uppercase tracking-[0.2em]" x-show="!sidebarCollapsed" x-transition>Company</span>
+                        <div class="h-px bg-brand-border mt-2" x-show="sidebarCollapsed"></div>
+                    </div>
+                    <a href="{{ route('admin.ceo.edit') }}"
+                       class="admin-sidebar-link {{ request()->routeIs('admin.ceo.*') ? 'active' : '' }}">
+                        <svg class="icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                        <span x-show="!sidebarCollapsed" x-transition class="whitespace-nowrap">CEO Profile</span>
+                    </a>
+                    <a href="{{ route('admin.process-steps.index') }}"
+                       class="admin-sidebar-link {{ request()->routeIs('admin.process-steps*') ? 'active' : '' }}">
+                        <svg class="icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
+                        <span x-show="!sidebarCollapsed" x-transition class="whitespace-nowrap">Process Steps</span>
+                    </a>
+                    <a href="{{ route('admin.social-media.index') }}"
+                       class="admin-sidebar-link {{ request()->routeIs('admin.social-media*') ? 'active' : '' }}">
+                        <svg class="icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
+                        <span x-show="!sidebarCollapsed" x-transition class="whitespace-nowrap">Social Media</span>
+                    </a>
+
+                    {{-- SETTINGS --}}
+                    <div class="pt-5 pb-2 px-2">
+                        <span class="text-[0.6rem] font-bold text-text-dark/70 uppercase tracking-[0.2em]" x-show="!sidebarCollapsed" x-transition>Settings</span>
+                        <div class="h-px bg-brand-border mt-2" x-show="sidebarCollapsed"></div>
+                    </div>
+
+                    @php
+                    $settingsLinks = [
+                        ['route' => 'admin.settings.site', 'label' => 'Site Settings', 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>'],
+                        ['route' => 'admin.settings.seo', 'label' => 'SEO Settings', 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>'],
+                        ['route' => 'admin.settings.whatsapp', 'label' => 'WhatsApp', 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>'],
+                        ['route' => 'admin.settings.analytics', 'label' => 'Analytics', 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>'],
+                        ['route' => 'admin.media.index', 'label' => 'Media', 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>'],
+                    ];
+                    @endphp
+
+                    @foreach($settingsLinks as $link)
+                    <a href="{{ route($link['route']) }}"
+                       class="admin-sidebar-link {{ request()->routeIs($link['route']) ? 'active' : '' }}">
+                        <svg class="icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">{!! $link['icon'] !!}</svg>
+                        <span x-show="!sidebarCollapsed" x-transition class="whitespace-nowrap">{{ $link['label'] }}</span>
+                    </a>
+                    @endforeach
+
+                    {{-- SYSTEM --}}
+                    <div class="pt-5 pb-2 px-2">
+                        <span class="text-[0.6rem] font-bold text-text-dark/70 uppercase tracking-[0.2em]" x-show="!sidebarCollapsed" x-transition>System</span>
+                        <div class="h-px bg-brand-border mt-2" x-show="sidebarCollapsed"></div>
+                    </div>
+                    @if(auth()->user()->hasRole('super-admin'))
+                    <a href="{{ route('admin.users.index') }}"
+                       class="admin-sidebar-link {{ request()->routeIs('admin.users*') ? 'active' : '' }}">
+                        <svg class="icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                        <span x-show="!sidebarCollapsed" x-transition class="whitespace-nowrap">Users</span>
+                    </a>
+                    @endif
+                    <a href="{{ route('admin.activity-logs.index') }}"
+                       class="admin-sidebar-link {{ request()->routeIs('admin.activity-logs*') ? 'active' : '' }}">
+                        <svg class="icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        <span x-show="!sidebarCollapsed" x-transition class="whitespace-nowrap">Activity Logs</span>
+                    </a>
                 </nav>
 
                 {{-- User Info --}}
-                <div class="border-t border-brand-border px-4 py-3">
+                <div class="border-t border-brand-border px-4 py-3.5 shrink-0">
                     <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center text-accent text-sm font-semibold">
+                        <div class="w-9 h-9 rounded-full bg-gradient-to-br from-accent/20 to-brand-cyan/10 border border-accent/15 flex items-center justify-center text-accent text-sm font-display font-semibold shrink-0">
                             {{ substr(auth()->user()->name, 0, 1) }}
                         </div>
-                        <div class="flex-1 min-w-0">
+                        <div class="flex-1 min-w-0" x-show="!sidebarCollapsed" x-transition>
                             <div class="text-sm font-medium text-text-primary truncate">{{ auth()->user()->name }}</div>
-                            <div class="text-xs text-text-muted truncate">{{ ucfirst(str_replace('-', ' ', auth()->user()->roles->first()->name ?? 'user')) }}</div>
+                            <div class="text-[0.65rem] text-text-muted truncate">{{ ucfirst(str_replace('-', ' ', auth()->user()->roles->first()->name ?? 'user')) }}</div>
                         </div>
-                        <form method="POST" action="{{ route('admin.logout') }}">
+                        <form method="POST" action="{{ route('admin.logout') }}" x-show="!sidebarCollapsed" x-transition>
                             @csrf
-                            <button type="submit" class="text-text-muted hover:text-danger transition-colors" title="Logout">
+                            <button type="submit" class="text-text-muted hover:text-danger transition-colors p-1 rounded-lg hover:bg-danger/10" title="Logout">
                                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
                             </button>
                         </form>
@@ -172,18 +164,23 @@
         </aside>
 
         {{-- Main Content --}}
-        <div class="flex-1 lg:ml-64">
+        <div class="flex-1 transition-all duration-300" :class="sidebarCollapsed ? 'lg:ml-[4.5rem]' : 'lg:ml-[16.5rem]'">
             {{-- Top Bar --}}
-            <header class="sticky top-0 z-30 bg-brand-bg/80 backdrop-blur-lg border-b border-brand-border">
-                <div class="flex items-center justify-between px-4 lg:px-6 py-3">
-                    <button @click="sidebarOpen = !sidebarOpen" class="lg:hidden text-text-muted hover:text-text-primary">
-                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"/></svg>
-                    </button>
-                    <div class="flex-1 lg:flex-none">
-                        <h1 class="text-lg font-semibold">{{ $pageTitle ?? 'Dashboard' }}</h1>
+            <header class="sticky top-0 z-30 bg-brand-bg/80 backdrop-blur-xl border-b border-brand-border">
+                <div class="flex items-center justify-between px-5 lg:px-8 py-3.5">
+                    <div class="flex items-center gap-4">
+                        <button @click="sidebarOpen = !sidebarOpen" class="lg:hidden text-text-muted hover:text-text-primary p-1 rounded-lg hover:bg-white/[0.03]">
+                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                        </button>
+                        <button @click="sidebarCollapsed = !sidebarCollapsed" class="hidden lg:block text-text-muted hover:text-text-primary p-1 rounded-lg hover:bg-white/[0.03] transition-colors">
+                            <svg class="w-4 h-4 transition-transform" :class="sidebarCollapsed ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 19l-7-7 7-7m8 14l-7-7 7-7"/></svg>
+                        </button>
+                        <div>
+                            <h1 class="text-lg font-display font-semibold">{{ $pageTitle ?? 'Dashboard' }}</h1>
+                        </div>
                     </div>
-                    <div class="flex items-center gap-3">
-                        <a href="{{ route('home') }}" target="_blank" class="text-text-muted hover:text-accent text-sm flex items-center gap-1 transition-colors">
+                    <div class="flex items-center gap-4">
+                        <a href="{{ route('home') }}" target="_blank" class="text-text-muted hover:text-accent-light text-sm flex items-center gap-1.5 transition-colors px-3 py-1.5 rounded-lg hover:bg-accent/5">
                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
                             View Site
                         </a>
@@ -192,14 +189,14 @@
             </header>
 
             {{-- Page Content --}}
-            <main class="p-4 lg:p-6">
+            <main class="p-5 lg:p-8">
                 {{-- Flash Messages --}}
                 @if(session('success'))
                 <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 5000)"
                      x-transition:leave="transition ease-in duration-300"
                      x-transition:leave-start="opacity-100 translate-y-0"
                      x-transition:leave-end="opacity-0 -translate-y-2"
-                     class="mb-4 bg-green-500/10 border border-green-500/20 text-green-400 px-4 py-3 rounded-xl text-sm flex items-center gap-2">
+                     class="mb-6 bg-success/5 border border-success/20 text-success px-5 py-3.5 rounded-xl text-sm flex items-center gap-3 backdrop-blur-sm">
                     <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 13l4 4L19 7"/></svg>
                     {{ session('success') }}
                 </div>
@@ -207,15 +204,15 @@
 
                 @if(session('error'))
                 <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 5000)"
-                     class="mb-4 bg-red-500/10 border border-red-500/20 text-red-400 px-4 py-3 rounded-xl text-sm flex items-center gap-2">
+                     class="mb-6 bg-danger/5 border border-danger/20 text-danger px-5 py-3.5 rounded-xl text-sm flex items-center gap-3 backdrop-blur-sm">
                     <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"/></svg>
                     {{ session('error') }}
                 </div>
                 @endif
 
                 @if($errors->any())
-                <div class="mb-4 bg-red-500/10 border border-red-500/20 text-red-400 px-4 py-3 rounded-xl text-sm">
-                    <ul class="list-disc list-inside">
+                <div class="mb-6 bg-danger/5 border border-danger/20 text-danger px-5 py-3.5 rounded-xl text-sm">
+                    <ul class="list-disc list-inside space-y-1">
                         @foreach($errors->all() as $error)
                             <li>{{ $error }}</li>
                         @endforeach
