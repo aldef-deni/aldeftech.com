@@ -17,8 +17,11 @@ class MarketingContent extends Model
         'seo_title',
         'seo_description',
         'seo_keywords',
+<<<<<<< HEAD
         'platform_posts',
         'distribution_checklist',
+=======
+>>>>>>> a4f16a9b4c3a6b5d155af1e7ac7ccd6e601bdec4
         'content_type',
         'funnel_stage',
         'status',
@@ -27,12 +30,18 @@ class MarketingContent extends Model
         'generated_at',
         'approved_at',
         'published_at',
+<<<<<<< HEAD
         'published_blog_post_id',
     ];
 
     protected $casts = [
         'platform_posts' => 'array',
         'distribution_checklist' => 'array',
+=======
+    ];
+
+    protected $casts = [
+>>>>>>> a4f16a9b4c3a6b5d155af1e7ac7ccd6e601bdec4
         'generated_at' => 'datetime',
         'approved_at' => 'datetime',
         'published_at' => 'datetime',
@@ -53,6 +62,7 @@ class MarketingContent extends Model
             'marketing_campaign_id'
         );
     }
+<<<<<<< HEAD
 
     public function blogPost(): BelongsTo
     {
@@ -61,4 +71,6 @@ class MarketingContent extends Model
             'published_blog_post_id'
         );
     }
+=======
+>>>>>>> a4f16a9b4c3a6b5d155af1e7ac7ccd6e601bdec4
 }

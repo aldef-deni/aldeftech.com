@@ -14,6 +14,7 @@ class VertexAiService
         $model = config('services.vertex_ai.model');
         $timeout = (int) config('services.vertex_ai.timeout', 120);
 
+<<<<<<< HEAD
         if ($project && $location && $model) {
             return $this->generateViaVertex(
                 $prompt,
@@ -40,6 +41,14 @@ class VertexAiService
         string $model,
         int $timeout
     ): string {
+=======
+        if (!$project || !$location || !$model) {
+            throw new RuntimeException(
+                'Vertex AI configuration is incomplete.'
+            );
+        }
+
+>>>>>>> a4f16a9b4c3a6b5d155af1e7ac7ccd6e601bdec4
         $token = $this->getAccessToken();
 
         $url = sprintf(
@@ -90,6 +99,7 @@ class VertexAiService
         return trim($text);
     }
 
+<<<<<<< HEAD
     protected function generateViaGeminiApi(string $prompt): string
     {
         $apiKey = config('services.gemini.api_key');
@@ -140,6 +150,8 @@ class VertexAiService
         return trim($text);
     }
 
+=======
+>>>>>>> a4f16a9b4c3a6b5d155af1e7ac7ccd6e601bdec4
     protected function getAccessToken(): string
     {
         $response = Http::timeout(10)
