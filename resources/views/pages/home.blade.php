@@ -751,7 +751,9 @@ $metaDescription = 'Aldef Tech adalah software development partner terpercaya un
                 'btn_class' => 'text-cyan-700 hover:text-cyan-900'
             ],
         ];
-        @php
+        @endphp
+
+	@php
         $filteredSolutions = $solutions->reject(function($sol) {
             $t = strtolower($sol->title ?? '');
             $s = strtolower($sol->slug ?? '');
