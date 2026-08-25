@@ -1,6 +1,6 @@
 {{-- Floating WhatsApp Interactive Widget --}}
 @php
-    $whatsappNumber = \App\Models\SiteSetting::get('whatsapp_number', config('aldeftech.whatsapp.default_number', '6281234567890'));
+    $whatsappNumber = \App\Models\SiteSetting::get('whatsapp_number', config('aldeftech.whatsapp.default_number', '628128968609'));
     $email = \App\Models\SiteSetting::get('email', 'info@aldeftech.com');
     $defaultMsg = 'Halo Aldef Tech, saya ingin berkonsultasi mengenai kebutuhan pengembangan software/sistem untuk bisnis saya.';
     $waUrl = 'https://wa.me/' . preg_replace('/\D/', '', $whatsappNumber) . '?text=' . rawurlencode($defaultMsg);

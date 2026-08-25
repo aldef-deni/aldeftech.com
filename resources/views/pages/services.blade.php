@@ -1,8 +1,6 @@
 @extends('layouts.app')
 @section('content')
 @php
-$pageTitle = 'Layanan Software Development, SaaS & AI — Aldef Tech';
-$metaDescription = 'Layanan lengkap pembuatan custom software, SaaS platform, AI & Machine Learning, automasi bisnis, dan integrasi sistem enterprise berkinerja tinggi.';
 
 $serviceCardStyles = [
     [
@@ -114,7 +112,7 @@ $serviceCardStyles = [
                         </p>
                         
                         {{-- Button: Blue background normally, purple on hover --}}
-                        <a href="{{ \App\Services\WhatsAppService::getUrl() }}?text=Halo%20Aldef%20Tech,%20saya%20tertarik%20dengan%20layanan%20{{ urlencode($service->title) }}"
+                        <a href="{{ \App\Services\WhatsAppService::getUrl('Halo Aldef Tech, saya tertarik dengan layanan ' . $service->title) }}"
                            target="_blank" rel="noopener"
                            class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-xs sm:text-sm text-white bg-blue-600 hover:bg-purple-600 transition-all duration-300 shadow-lg shadow-blue-600/30 hover:shadow-purple-600/40 hover:-translate-y-0.5 group/btn">
                             <span>Konsultasikan Layanan Ini</span>
@@ -182,7 +180,7 @@ $serviceCardStyles = [
         </p>
 
         <div class="flex flex-wrap items-center justify-center gap-4 reveal reveal-delay-3">
-            <a href="{{ \App\Services\WhatsAppService::getUrl() }}?text=Halo%20Aldef%20Tech,%20saya%20ingin%20berkonsultasi%20mengenai%20spesifikasi%20sistem%20khusus%20untuk%20bisnis%20saya."
+            <a href="{{ \App\Services\WhatsAppService::getUrl('Halo Aldef Tech, saya ingin berkonsultasi mengenai spesifikasi sistem khusus untuk bisnis saya.') }}"
                target="_blank" rel="noopener"
                class="btn-primary btn-lg shadow-xl font-bold bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 hover:from-blue-500 hover:to-indigo-600 border border-blue-400/30">
                 <span>Jadwalkan Diskusi Teknis</span>

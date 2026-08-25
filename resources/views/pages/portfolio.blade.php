@@ -151,13 +151,13 @@ $featuredProjects = [
 
                 {{-- Action Row --}}
                 <div class="px-7 pb-7 pt-4 border-t border-black/5 flex items-center justify-between">
-                    <a href="{{ \App\Services\WhatsAppService::getUrl() }}?text=Halo%20Aldef%20Tech,%20saya%20tertarik%20dengan%20proyek%20serupa%20{{ urlencode($p['title']) }}"
+                    <a href="{{ \App\Services\WhatsAppService::getUrl('Halo Aldef Tech, saya tertarik dengan proyek serupa ' . $p['title']) }}"
                        target="_blank" rel="noopener"
                        class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider transition-colors {{ $p['btn_class'] }}">
                         <span>Diskusi Serupa</span>
                         <svg class="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                     </a>
-                    <a href="{{ \App\Services\WhatsAppService::getUrl() }}?text=Halo%20Aldef%20Tech,%20saya%20ingin%20konsultasi%20studi%20kasus%20{{ urlencode($p['title']) }}"
+                    <a href="{{ \App\Services\WhatsAppService::getUrl('Halo Aldef Tech, saya ingin konsultasi studi kasus ' . $p['title']) }}"
                        target="_blank" rel="noopener"
                        class="text-[0.6875rem] font-semibold text-slate-500 hover:text-slate-800">
                         Konsultasi →
@@ -193,7 +193,7 @@ $featuredProjects = [
         </p>
 
         <div class="flex flex-wrap items-center justify-center gap-4 reveal reveal-delay-3">
-            <a href="{{ \App\Services\WhatsAppService::getUrl() }}?text=Halo%20Aldef%20Tech,%20saya%20ingin%20membangun%20solusi%20sistem%20seperti%20pada%20portfolio%20Aldef%20Tech."
+            <a href="{{ \App\Services\WhatsAppService::getUrl('Halo Aldef Tech, saya ingin membangun solusi sistem seperti pada portfolio Aldef Tech.') }}"
                target="_blank" rel="noopener"
                class="btn-primary btn-lg shadow-xl font-bold bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 hover:from-blue-500 hover:to-indigo-600 border border-blue-400/30">
                 <span>Mulai Konsultasi Project</span>

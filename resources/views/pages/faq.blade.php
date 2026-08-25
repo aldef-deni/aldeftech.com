@@ -208,7 +208,7 @@ $faqCardStyles = [
 
                 <div class="flex flex-wrap items-center justify-center gap-4">
                     {{-- Solid Green WhatsApp Button --}}
-                    <a href="{{ \App\Services\WhatsAppService::getUrl() }}?text=Halo%20Aldef%20Tech,%20saya%20punya%20pertanyaan%20spesifik%20mengenai%20layanan%20software."
+                    <a href="{{ \App\Services\WhatsAppService::getUrl('Halo Aldef Tech, saya punya pertanyaan spesifik mengenai layanan software.') }}"
                        target="_blank" rel="noopener"
                        style="background-color: #10b981 !important; color: #ffffff !important;"
                        class="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl font-bold text-sm bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg shadow-emerald-600/35 hover:-translate-y-0.5 transition-all duration-200 border border-emerald-500/40">

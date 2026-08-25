@@ -35,4 +35,21 @@ return [
         ],
     ],
 
+    'vertex_ai' => [
+        'project' => env('GOOGLE_CLOUD_PROJECT'),
+        'location' => env('VERTEX_AI_LOCATION', 'us-central1'),
+        'model' => env('VERTEX_AI_MODEL', 'gemini-2.5-flash'),
+        'timeout' => (int) env('VERTEX_AI_TIMEOUT', 120),
+    ],
+
+    'gemini' => [
+        'api_key' => env('GEMINI_API_KEY'),
+        'model' => env('GEMINI_MODEL', 'gemini-2.5-flash'),
+        'base_url' => env(
+            'GEMINI_BASE_URL',
+            'https://generativelanguage.googleapis.com/v1beta'
+        ),
+        'timeout' => (int) env('GEMINI_TIMEOUT', 120),
+    ],
+
 ];

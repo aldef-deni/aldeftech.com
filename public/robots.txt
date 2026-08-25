@@ -1,2 +1,7 @@
 User-agent: *
-Disallow:
+Allow: /
+
+Disallow: /admin/
+Disallow: /storage/
+
+Sitemap: https://aldeftech.com/sitemap.xml
