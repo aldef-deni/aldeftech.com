@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const cursorGlow = document.createElement('div');
         cursorGlow.className = 'fixed pointer-events-none z-[9999] w-[300px] h-[300px] rounded-full opacity-0 transition-opacity duration-500';
         cursorGlow.style.cssText = `
-            background: radial-gradient(circle, rgba(124, 92, 252, 0.04) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.04) 0%, transparent 70%);
             transform: translate(-50%, -50%);
         `;
         document.body.appendChild(cursorGlow);

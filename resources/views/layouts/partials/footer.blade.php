@@ -1,24 +1,25 @@
-{{-- Premium Footer --}}
-<footer class="relative border-t border-brand-border bg-brand-surface">
-    {{-- Top gradient line --}}
-    <div class="gradient-line w-full"></div>
-
+{{-- Premium Deep Navy Enterprise Footer --}}
+<footer class="relative bg-[#090D16] text-slate-400 border-t border-slate-800/80">
     <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
         {{-- Main Footer --}}
         <div class="py-16 lg:py-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8">
             {{-- Brand Column --}}
             <div class="lg:col-span-4">
-                <a href="{{ route('home') }}" class="inline-block mb-6">
-                    <img src="{{ asset('images/logo.png') }}" alt="{{ config('app.name') }}" class="h-10 w-auto">
+                <a href="{{ route('home') }}" class="inline-block mb-6 group">
+                    <img src="{{ asset('images/logo.png') }}" alt="{{ config('app.name') }}" class="h-10 w-auto transition-transform duration-300 group-hover:scale-105">
                 </a>
-                <p class="text-text-muted text-sm leading-relaxed mb-6 max-w-xs">
-                    {{ \App\Models\SiteSetting::get('description', 'Premium Digital Technology Partner yang membantu bisnis membangun sistem digital sesuai kebutuhan.') }}
+                <p class="text-xs font-semibold text-blue-400 tracking-wider uppercase mb-3">
+                    Software Development • SaaS • AI • Automation
+                </p>
+                <p class="text-slate-400 text-sm leading-relaxed mb-6 max-w-sm">
+                    {{ \App\Models\SiteSetting::get('footer_description', \App\Models\SiteSetting::get('description', 'Enterprise-grade technology partner yang merancang dan membangun sistem digital, SaaS, aplikasi web, dan automasi AI untuk mengakselerasi pertumbuhan bisnis.')) }}
                 </p>
                 {{-- Social Links --}}
                 <div class="flex items-center gap-2.5">
                     @foreach(\App\Models\SocialLink::active()->ordered()->get() as $social)
                     <a href="{{ $social->url }}" target="_blank" rel="noopener noreferrer"
-                       class="w-9 h-9 rounded-lg bg-brand-surface-3 border border-brand-border flex items-center justify-center text-text-muted hover:text-accent-light hover:border-accent/30 hover:bg-accent/5 transition-all duration-200">
+                       class="w-9 h-9 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:border-blue-500/40 hover:bg-blue-600/10 transition-all duration-200"
+                       title="{{ $social->platform }}">
                         @if(strtolower($social->platform) === 'linkedin')
                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
                         @elseif(strtolower($social->platform) === 'github')
@@ -35,47 +36,49 @@
 
             {{-- Services --}}
             <div class="lg:col-span-3">
-                <h4 class="text-text-primary font-semibold text-sm mb-6 uppercase tracking-wider">Services</h4>
-                <ul class="space-y-3">
+                <h4 class="text-white font-semibold text-sm mb-5 uppercase tracking-wider">Services</h4>
+                <ul class="space-y-3 text-sm">
                     @foreach(\App\Models\Service::published()->ordered()->take(6)->get() as $service)
                     <li>
-                        <a href="{{ route('services') }}" class="text-text-muted text-sm hover:text-accent-light transition-colors duration-200">{{ $service->title }}</a>
+                        <a href="{{ route('services') }}" class="text-slate-400 hover:text-white transition-colors duration-200">{{ $service->title }}</a>
                     </li>
                     @endforeach
                 </ul>
             </div>
 
-            {{-- Quick Links --}}
+            {{-- Solutions / Company --}}
             <div class="lg:col-span-2">
-                <h4 class="text-text-primary font-semibold text-sm mb-6 uppercase tracking-wider">Company</h4>
-                <ul class="space-y-3">
-                    <li><a href="{{ route('about') }}" class="text-text-muted text-sm hover:text-accent-light transition-colors duration-200">About</a></li>
-                    <li><a href="{{ route('portfolio') }}" class="text-text-muted text-sm hover:text-accent-light transition-colors duration-200">Portfolio</a></li>
-                    <li><a href="{{ route('blog') }}" class="text-text-muted text-sm hover:text-accent-light transition-colors duration-200">Insights</a></li>
-                    <li><a href="{{ route('contact') }}" class="text-text-muted text-sm hover:text-accent-light transition-colors duration-200">Contact</a></li>
+                <h4 class="text-white font-semibold text-sm mb-5 uppercase tracking-wider">Company</h4>
+                <ul class="space-y-3 text-sm">
+                    <li><a href="{{ route('about') }}" class="text-slate-400 hover:text-white transition-colors duration-200">About Us</a></li>
+                    <li><a href="{{ route('services') }}" class="text-slate-400 hover:text-white transition-colors duration-200">Services</a></li>
+                    <li><a href="{{ route('solutions') }}" class="text-slate-400 hover:text-white transition-colors duration-200">Solutions</a></li>
+                    <li><a href="{{ route('portfolio') }}" class="text-slate-400 hover:text-white transition-colors duration-200">Portfolio</a></li>
+                    <li><a href="{{ route('blog') }}" class="text-slate-400 hover:text-white transition-colors duration-200">Blog & Insights</a></li>
+                    <li><a href="{{ route('contact') }}" class="text-slate-400 hover:text-white transition-colors duration-200">Contact Us</a></li>
                 </ul>
             </div>
 
-            {{-- Contact --}}
+            {{-- Contact Information --}}
             <div class="lg:col-span-3">
-                <h4 class="text-text-primary font-semibold text-sm mb-6 uppercase tracking-wider">Contact</h4>
-                <ul class="space-y-4">
+                <h4 class="text-white font-semibold text-sm mb-5 uppercase tracking-wider">Contact</h4>
+                <ul class="space-y-4 text-sm">
                     @if($email = \App\Models\SiteSetting::get('email'))
                     <li class="flex items-start gap-3">
-                        <svg class="w-4 h-4 text-accent mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                        <a href="mailto:{{ $email }}" class="text-text-muted text-sm hover:text-accent-light transition-colors">{{ $email }}</a>
+                        <svg class="w-4 h-4 text-blue-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                        <a href="mailto:{{ $email }}" class="text-slate-400 hover:text-white transition-colors">{{ $email }}</a>
                     </li>
                     @endif
                     @if($phone = \App\Models\SiteSetting::get('phone'))
                     <li class="flex items-start gap-3">
-                        <svg class="w-4 h-4 text-accent mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
-                        <a href="tel:{{ $phone }}" class="text-text-muted text-sm hover:text-accent-light transition-colors">{{ $phone }}</a>
+                        <svg class="w-4 h-4 text-blue-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                        <a href="tel:{{ $phone }}" class="text-slate-400 hover:text-white transition-colors">{{ $phone }}</a>
                     </li>
                     @endif
                     @if($address = \App\Models\SiteSetting::get('address'))
                     <li class="flex items-start gap-3">
-                        <svg class="w-4 h-4 text-accent mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                        <span class="text-text-muted text-sm">{{ $address }}</span>
+                        <svg class="w-4 h-4 text-blue-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                        <span class="text-slate-400">{{ $address }}</span>
                     </li>
                     @endif
                 </ul>
@@ -83,12 +86,12 @@
         </div>
 
         {{-- Bottom Bar --}}
-        <div class="py-6 border-t border-brand-border flex flex-col md:flex-row items-center justify-between gap-4">
-            <p class="text-text-dark text-sm">
+        <div class="py-7 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+            <p>
                 © {{ date('Y') }} {{ \App\Models\SiteSetting::get('copyright', config('app.name') . '. All rights reserved.') }}
             </p>
-            <p class="text-text-dark text-xs font-medium tracking-wider uppercase">
-                Premium Digital Technology Partner
+            <p class="font-medium tracking-wider uppercase text-slate-400">
+                Software Development • SaaS • AI • Automation
             </p>
         </div>
     </div>

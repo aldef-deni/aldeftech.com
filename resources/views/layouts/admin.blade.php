@@ -9,28 +9,28 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')
 </head>
-<body class="bg-brand-bg text-text-primary font-sans antialiased">
+<body class="bg-slate-50 text-slate-900 font-sans antialiased">
     <div class="flex min-h-screen" x-data="{ sidebarOpen: true, sidebarCollapsed: false }">
 
         {{-- Sidebar --}}
         @if(request()->is('admin/login'))
             @yield('content')
         @else
-        <aside class="admin-sidebar fixed inset-y-0 left-0 z-40 transform transition-all duration-300 lg:translate-x-0 overflow-hidden"
+        <aside class="admin-sidebar fixed inset-y-0 left-0 z-40 transform transition-all duration-300 lg:translate-x-0 overflow-hidden shadow-xl"
                :class="[sidebarOpen ? 'translate-x-0' : '-translate-x-full', sidebarCollapsed ? 'w-[4.5rem]' : 'w-[16.5rem]']"
                x-show="true">
-            <div class="flex flex-col h-full">
+            <div class="flex flex-col h-full bg-[#0F172A]">
                 {{-- Logo --}}
-                <div class="flex items-center gap-3 px-5 py-5 border-b border-brand-border shrink-0">
+                <div class="flex items-center gap-3 px-5 py-5 border-b border-slate-800 shrink-0">
                     <img src="{{ asset('images/logo-square.png') }}" alt="Aldef Tech" class="w-9 h-9 rounded-lg object-contain shrink-0">
                     <div x-show="!sidebarCollapsed" x-transition class="overflow-hidden">
-                        <div class="font-display font-semibold text-sm text-text-primary tracking-tight whitespace-nowrap">Aldef Tech</div>
-                        <div class="text-[0.65rem] text-accent-light font-medium uppercase tracking-wider whitespace-nowrap">Admin Panel</div>
+                        <div class="font-display font-bold text-sm text-white tracking-tight whitespace-nowrap">Aldef Tech</div>
+                        <div class="text-[0.65rem] text-blue-400 font-semibold uppercase tracking-wider whitespace-nowrap">Admin Control</div>
                     </div>
                 </div>
 
                 {{-- Navigation --}}
-                <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-1" style="scrollbar-width: thin; scrollbar-color: #1A1E2E transparent;">
+                <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-1" style="scrollbar-width: thin; scrollbar-color: #1E293B transparent;">
                     {{-- Dashboard --}}
                     <a href="{{ route('admin.dashboard') }}"
                        class="admin-sidebar-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
@@ -40,8 +40,8 @@
 
                     {{-- CONTENT Section --}}
                     <div class="pt-5 pb-2 px-2">
-                        <span class="text-[0.6rem] font-bold text-text-dark/70 uppercase tracking-[0.2em]" x-show="!sidebarCollapsed" x-transition>Content</span>
-                        <div class="h-px bg-brand-border mt-2" x-show="sidebarCollapsed"></div>
+                        <span class="text-[0.6rem] font-bold text-slate-500 uppercase tracking-[0.2em]" x-show="!sidebarCollapsed" x-transition>Content Management</span>
+                        <div class="h-px bg-slate-800 mt-2" x-show="sidebarCollapsed"></div>
                     </div>
 
                     @php
@@ -69,8 +69,8 @@
 
                     {{-- LEADS --}}
                     <div class="pt-5 pb-2 px-2">
-                        <span class="text-[0.6rem] font-bold text-text-dark/70 uppercase tracking-[0.2em]" x-show="!sidebarCollapsed" x-transition>Leads & CRM</span>
-                        <div class="h-px bg-brand-border mt-2" x-show="sidebarCollapsed"></div>
+                        <span class="text-[0.6rem] font-bold text-slate-500 uppercase tracking-[0.2em]" x-show="!sidebarCollapsed" x-transition>CRM & Leads</span>
+                        <div class="h-px bg-slate-800 mt-2" x-show="sidebarCollapsed"></div>
                     </div>
                     <a href="{{ route('admin.leads.index') }}"
                        class="admin-sidebar-link {{ request()->routeIs('admin.leads*') ? 'active' : '' }}">
@@ -80,8 +80,8 @@
 
                     {{-- COMPANY --}}
                     <div class="pt-5 pb-2 px-2">
-                        <span class="text-[0.6rem] font-bold text-text-dark/70 uppercase tracking-[0.2em]" x-show="!sidebarCollapsed" x-transition>Company</span>
-                        <div class="h-px bg-brand-border mt-2" x-show="sidebarCollapsed"></div>
+                        <span class="text-[0.6rem] font-bold text-slate-500 uppercase tracking-[0.2em]" x-show="!sidebarCollapsed" x-transition>Company</span>
+                        <div class="h-px bg-slate-800 mt-2" x-show="sidebarCollapsed"></div>
                     </div>
                     <a href="{{ route('admin.ceo.edit') }}"
                        class="admin-sidebar-link {{ request()->routeIs('admin.ceo.*') ? 'active' : '' }}">
@@ -101,8 +101,8 @@
 
                     {{-- SETTINGS --}}
                     <div class="pt-5 pb-2 px-2">
-                        <span class="text-[0.6rem] font-bold text-text-dark/70 uppercase tracking-[0.2em]" x-show="!sidebarCollapsed" x-transition>Settings</span>
-                        <div class="h-px bg-brand-border mt-2" x-show="sidebarCollapsed"></div>
+                        <span class="text-[0.6rem] font-bold text-slate-500 uppercase tracking-[0.2em]" x-show="!sidebarCollapsed" x-transition>Settings</span>
+                        <div class="h-px bg-slate-800 mt-2" x-show="sidebarCollapsed"></div>
                     </div>
 
                     @php
@@ -125,8 +125,8 @@
 
                     {{-- SYSTEM --}}
                     <div class="pt-5 pb-2 px-2">
-                        <span class="text-[0.6rem] font-bold text-text-dark/70 uppercase tracking-[0.2em]" x-show="!sidebarCollapsed" x-transition>System</span>
-                        <div class="h-px bg-brand-border mt-2" x-show="sidebarCollapsed"></div>
+                        <span class="text-[0.6rem] font-bold text-slate-500 uppercase tracking-[0.2em]" x-show="!sidebarCollapsed" x-transition>System</span>
+                        <div class="h-px bg-slate-800 mt-2" x-show="sidebarCollapsed"></div>
                     </div>
                     @if(auth()->user()->hasRole('super-admin'))
                     <a href="{{ route('admin.users.index') }}"
@@ -143,18 +143,18 @@
                 </nav>
 
                 {{-- User Info --}}
-                <div class="border-t border-brand-border px-4 py-3.5 shrink-0">
+                <div class="border-t border-slate-800 px-4 py-3.5 shrink-0 bg-[#0B132B]/50">
                     <div class="flex items-center gap-3">
-                        <div class="w-9 h-9 rounded-full bg-gradient-to-br from-accent/20 to-brand-cyan/10 border border-accent/15 flex items-center justify-center text-accent text-sm font-display font-semibold shrink-0">
+                        <div class="w-9 h-9 rounded-full bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-400 text-sm font-display font-bold shrink-0">
                             {{ substr(auth()->user()->name, 0, 1) }}
                         </div>
                         <div class="flex-1 min-w-0" x-show="!sidebarCollapsed" x-transition>
-                            <div class="text-sm font-medium text-text-primary truncate">{{ auth()->user()->name }}</div>
-                            <div class="text-[0.65rem] text-text-muted truncate">{{ ucfirst(str_replace('-', ' ', auth()->user()->roles->first()->name ?? 'user')) }}</div>
+                            <div class="text-sm font-medium text-white truncate">{{ auth()->user()->name }}</div>
+                            <div class="text-[0.65rem] text-slate-400 truncate">{{ ucfirst(str_replace('-', ' ', auth()->user()->roles->first()->name ?? 'user')) }}</div>
                         </div>
                         <form method="POST" action="{{ route('admin.logout') }}" x-show="!sidebarCollapsed" x-transition>
                             @csrf
-                            <button type="submit" class="text-text-muted hover:text-danger transition-colors p-1 rounded-lg hover:bg-danger/10" title="Logout">
+                            <button type="submit" class="text-slate-400 hover:text-red-400 transition-colors p-1 rounded-lg hover:bg-red-500/10" title="Logout">
                                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
                             </button>
                         </form>
@@ -166,21 +166,21 @@
         {{-- Main Content --}}
         <div class="flex-1 transition-all duration-300" :class="sidebarCollapsed ? 'lg:ml-[4.5rem]' : 'lg:ml-[16.5rem]'">
             {{-- Top Bar --}}
-            <header class="sticky top-0 z-30 bg-brand-bg/80 backdrop-blur-xl border-b border-brand-border">
+            <header class="sticky top-0 z-30 bg-white/90 backdrop-blur-md border-b border-slate-200">
                 <div class="flex items-center justify-between px-5 lg:px-8 py-3.5">
                     <div class="flex items-center gap-4">
-                        <button @click="sidebarOpen = !sidebarOpen" class="lg:hidden text-text-muted hover:text-text-primary p-1 rounded-lg hover:bg-white/[0.03]">
+                        <button @click="sidebarOpen = !sidebarOpen" class="lg:hidden text-slate-600 hover:text-slate-900 p-1.5 rounded-lg hover:bg-slate-100">
                             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"/></svg>
                         </button>
-                        <button @click="sidebarCollapsed = !sidebarCollapsed" class="hidden lg:block text-text-muted hover:text-text-primary p-1 rounded-lg hover:bg-white/[0.03] transition-colors">
+                        <button @click="sidebarCollapsed = !sidebarCollapsed" class="hidden lg:block text-slate-600 hover:text-slate-900 p-1.5 rounded-lg hover:bg-slate-100 transition-colors">
                             <svg class="w-4 h-4 transition-transform" :class="sidebarCollapsed ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 19l-7-7 7-7m8 14l-7-7 7-7"/></svg>
                         </button>
                         <div>
-                            <h1 class="text-lg font-display font-semibold">{{ $pageTitle ?? 'Dashboard' }}</h1>
+                            <h1 class="text-lg font-display font-bold text-slate-900">{{ $pageTitle ?? 'Dashboard' }}</h1>
                         </div>
                     </div>
                     <div class="flex items-center gap-4">
-                        <a href="{{ route('home') }}" target="_blank" class="text-text-muted hover:text-accent-light text-sm flex items-center gap-1.5 transition-colors px-3 py-1.5 rounded-lg hover:bg-accent/5">
+                        <a href="{{ route('home') }}" target="_blank" class="text-slate-600 hover:text-blue-600 text-sm font-medium flex items-center gap-1.5 transition-colors px-3 py-1.5 rounded-lg hover:bg-blue-50 border border-slate-200">
                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
                             View Site
                         </a>
@@ -196,7 +196,7 @@
                      x-transition:leave="transition ease-in duration-300"
                      x-transition:leave-start="opacity-100 translate-y-0"
                      x-transition:leave-end="opacity-0 -translate-y-2"
-                     class="mb-6 bg-success/5 border border-success/20 text-success px-5 py-3.5 rounded-xl text-sm flex items-center gap-3 backdrop-blur-sm">
+                     class="mb-6 bg-emerald-50 border border-emerald-200 text-emerald-700 px-5 py-3.5 rounded-xl text-sm flex items-center gap-3 font-medium">
                     <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 13l4 4L19 7"/></svg>
                     {{ session('success') }}
                 </div>
@@ -204,14 +204,14 @@
 
                 @if(session('error'))
                 <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 5000)"
-                     class="mb-6 bg-danger/5 border border-danger/20 text-danger px-5 py-3.5 rounded-xl text-sm flex items-center gap-3 backdrop-blur-sm">
+                     class="mb-6 bg-red-50 border border-red-200 text-red-700 px-5 py-3.5 rounded-xl text-sm flex items-center gap-3 font-medium">
                     <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"/></svg>
                     {{ session('error') }}
                 </div>
                 @endif
 
                 @if($errors->any())
-                <div class="mb-6 bg-danger/5 border border-danger/20 text-danger px-5 py-3.5 rounded-xl text-sm">
+                <div class="mb-6 bg-red-50 border border-red-200 text-red-700 px-5 py-3.5 rounded-xl text-sm">
                     <ul class="list-disc list-inside space-y-1">
                         @foreach($errors->all() as $error)
                             <li>{{ $error }}</li>

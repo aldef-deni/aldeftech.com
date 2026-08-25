@@ -1,57 +1,99 @@
 @extends('layouts.app')
 @section('content')
-@php $pageTitle = 'Services — Aldef Tech'; @endphp
+@php
+$pageTitle = 'Layanan Software Development, SaaS & AI — Aldef Tech';
+$metaDescription = 'Layanan lengkap pembuatan custom software, SaaS platform, AI & Machine Learning, automasi bisnis, dan integrasi sistem enterprise.';
+@endphp
 
-<section class="section-padding pt-24 lg:pt-32 relative overflow-hidden">
-    <div class="hero-orb hero-orb-1 opacity-50"></div>
-    <div class="hero-orb hero-orb-2 opacity-50"></div>
-    <div class="absolute inset-0 hero-grid opacity-30"></div>
+{{-- Hero Section --}}
+<section class="hero-light-gradient section-padding pt-16 lg:pt-24 relative overflow-hidden border-b border-slate-200/60">
+    <div class="absolute inset-0 subtle-grid opacity-60 pointer-events-none"></div>
 
     <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 relative z-10">
-        <div class="max-w-2xl mb-16 lg:mb-20">
-            <span class="section-eyebrow reveal">Services</span>
-            <h1 class="text-4xl sm:text-5xl lg:text-display-sm font-display text-gradient-hero mb-6 reveal reveal-delay-1">Layanan Kami</h1>
-            <p class="text-text-secondary text-lg lg:text-xl leading-relaxed reveal reveal-delay-2">Kami menyediakan layanan teknologi komprehensif untuk membantu bisnis Anda membangun solusi digital yang tepat sasaran, cepat, dan scalable.</p>
+        <div class="max-w-3xl mx-auto text-center">
+            <span class="section-eyebrow justify-center reveal">Our Services</span>
+            <h1 class="text-4xl sm:text-5xl lg:text-[3.5rem] font-display font-extrabold text-slate-900 tracking-tight leading-[1.1] mb-6 reveal reveal-delay-1">
+                Comprehensive Software & AI Engineering
+            </h1>
+            <p class="text-slate-600 text-lg lg:text-xl leading-relaxed reveal reveal-delay-2">
+                Dari analisis kebutuhan bisnis, arsitektur data, hingga implementasi kecerdasan buatan, kami membangun software berkualitas tinggi untuk pertumbuhan perusahaan Anda.
+            </p>
         </div>
+    </div>
+</section>
 
-        <div class="space-y-6">
+{{-- Services Grid --}}
+<section class="section-padding bg-slate-50/80 relative">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
+        <div class="space-y-8">
             @forelse($services as $service)
-            <div class="premium-card p-8 lg:p-12 group reveal reveal-delay-{{ min($loop->iteration, 3) }}">
-                <div class="flex flex-col sm:flex-row items-start gap-6 lg:gap-8">
-                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-accent/15 via-brand-magenta/10 to-brand-cyan/10 border border-accent/20 flex items-center justify-center text-accent text-3xl shrink-0 transition-all duration-500 group-hover:scale-110 group-hover:shadow-[0_0_30px_rgba(168,85,247,0.2)]">
-                        {{ $service->icon ?? '⚡' }}
-                    </div>
-                    <div class="flex-1">
-                        <div class="flex flex-wrap items-center gap-3 mb-3">
-                            <h2 class="text-2xl font-display font-bold text-text-primary group-hover:text-accent-light transition-colors duration-300">{{ $service->title }}</h2>
+            <div class="premium-card p-8 lg:p-12 reveal reveal-delay-{{ min($loop->iteration, 3) }}" id="{{ $service->slug }}">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                    
+                    {{-- Service Header & Icon --}}
+                    <div class="lg:col-span-4">
+                        <div class="w-16 h-16 rounded-2xl bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600 text-3xl mb-6 shadow-xs">
+                            {{ $service->icon ?? '⚡' }}
                         </div>
-                        <p class="text-text-secondary leading-relaxed mb-5 text-base lg:text-lg">{{ $service->short_description }}</p>
+                        <h2 class="text-2xl lg:text-3xl font-display font-bold text-slate-900 mb-3">
+                            {{ $service->title }}
+                        </h2>
+                        <p class="text-slate-600 text-base leading-relaxed mb-6">
+                            {{ $service->short_description }}
+                        </p>
+                        <a href="{{ \App\Services\WhatsAppService::getUrl() }}?text=Halo%20Aldef%20Tech,%20saya%20tertarik%20dengan%20layanan%20{{ urlencode($service->title) }}" target="_blank" rel="noopener" class="btn-secondary btn-sm inline-flex items-center gap-1.5 font-semibold text-blue-600 border-blue-200 hover:bg-blue-50">
+                            <span>Konsultasikan Layanan Ini</span>
+                            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                        </a>
+                    </div>
+
+                    {{-- Service Details & Features --}}
+                    <div class="lg:col-span-8 bg-slate-50/80 border border-slate-200/80 rounded-2xl p-6 lg:p-8">
                         @if($service->description)
-                        <div class="text-text-muted text-sm leading-relaxed mb-6 bg-brand-surface-2/60 border border-brand-border/60 rounded-xl p-5">{!! nl2br(e($service->description)) !!}</div>
+                        <div class="text-slate-700 text-sm leading-relaxed mb-6">
+                            {!! nl2br(e($service->description)) !!}
+                        </div>
                         @endif
+
                         @if($service->features && count($service->features))
-                        <div class="flex flex-wrap gap-2 pt-2">
-                            @foreach($service->features as $feature)
-                            <span class="tag tag-accent text-xs">{{ $feature }}</span>
-                            @endforeach
+                        <div>
+                            <div class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Key Capabilities & Features</div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                @foreach($service->features as $feature)
+                                <div class="flex items-center gap-2.5 text-sm text-slate-800 bg-white border border-slate-200/80 px-3.5 py-2 rounded-xl shadow-2xs">
+                                    <svg class="w-4 h-4 text-blue-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                    <span class="font-medium">{{ $feature }}</span>
+                                </div>
+                                @endforeach
+                            </div>
                         </div>
                         @endif
                     </div>
+
                 </div>
             </div>
             @empty
-            <div class="text-center py-20 text-text-muted">Layanan akan segera tersedia.</div>
+            <div class="text-center py-20 text-slate-500 bg-white rounded-2xl border border-slate-200">
+                Layanan akan segera diperbarui.
+            </div>
             @endforelse
         </div>
     </div>
 </section>
 
-<section class="section-padding bg-brand-surface relative overflow-hidden">
-    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-[radial-gradient(ellipse,rgba(168,85,247,0.06)_0%,transparent_70%)] pointer-events-none"></div>
+{{-- Striking Dark CTA Section --}}
+<section class="py-20 lg:py-28 relative bg-[#090D16] text-white overflow-hidden">
     <div class="max-w-4xl mx-auto px-5 sm:px-8 lg:px-10 text-center relative z-10">
-        <h2 class="text-3xl md:text-display-sm font-display text-text-primary mb-4 reveal">Butuh Solusi Khusus?</h2>
-        <p class="text-text-muted text-lg mb-8 reveal reveal-delay-1">Kami siap mendiskusikan kebutuhan spesifik dan arsitektur sistem bisnis Anda.</p>
-        <a href="{{ \App\Services\WhatsAppService::getUrl() }}" target="_blank" class="btn-gradient btn-lg magnetic reveal reveal-delay-2 px-10 py-4">Konsultasi Gratis →</a>
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold text-white mb-6 leading-tight tracking-tight reveal">
+            Butuh Spesifikasi Sistem Khusus?
+        </h2>
+        <p class="text-slate-300 text-lg mb-10 max-w-2xl mx-auto reveal reveal-delay-1">
+            Setiap bisnis memiliki keunikan alur kerja. Diskusikan rancangan sistem impian Anda bersama lead engineer kami.
+        </p>
+        <a href="{{ \App\Services\WhatsAppService::getUrl() }}" target="_blank" rel="noopener" class="btn-primary btn-lg shadow-lg reveal reveal-delay-2">
+            <span>Jadwalkan Diskusi Teknis</span>
+            <svg class="w-4 h-4 ml-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+        </a>
     </div>
 </section>
 @endsection
