@@ -14,7 +14,9 @@ class MenuServiceProvider extends ServiceProvider
    */
   public function register(): void
   {
-    //
+      if (file_exists(app_path('Helpers/Helpers.php'))) {
+          require_once app_path('Helpers/Helpers.php');
+      }
   }
 
   /**

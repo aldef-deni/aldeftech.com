@@ -2,9 +2,9 @@
 $customizerHidden = 'customizer-hide';
 @endphp
 
-@extends('layouts/layoutMaster')
+@extends('layouts.layoutMaster')
 
-@section('title', 'Login - Aldef Tech CMS')
+@section('title', 'Login - Aldef Tech')
 
 @section('vendor-style')
 @vite(['resources/assets/vendor/libs/@form-validation/form-validation.scss'])
@@ -41,7 +41,7 @@ $customizerHidden = 'customizer-hide';
             </a>
           </div>
           <!-- /Logo -->
-          <h4 class="mb-1">Welcome to Aldef Tech CMS! 👋</h4>
+          <h4 class="mb-1">Welcome to Aldef Tech👋</h4>
           <p class="mb-6">Please sign-in to your account.</p>
 
           <form id="formAuthentication" class="mb-4" action="{{ route('admin.login.submit') }}" method="POST">

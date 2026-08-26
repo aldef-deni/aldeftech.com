@@ -2,7 +2,7 @@
 $configData = Helper::appClasses();
 @endphp
 
-@extends('layouts/layoutMaster')
+@extends('layouts.layoutMaster')
 
 @section('title', 'Admin Dashboard')
 
@@ -15,7 +15,7 @@ $configData = Helper::appClasses();
         <div class="card h-100">
             <div class="card-header pb-0">
                 <div class="d-flex justify-content-between">
-                    <h5 class="card-title mb-0">Aldef Tech CMS</h5>
+                    <h5 class="card-title mb-0">Aldef Tech</h5>
                 </div>
             </div>
             <div class="card-body">
