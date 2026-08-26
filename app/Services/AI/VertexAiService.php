@@ -14,7 +14,6 @@ class VertexAiService
         $model = config('services.vertex_ai.model');
         $timeout = (int) config('services.vertex_ai.timeout', 120);
 
-<<<<<<< HEAD
         if ($project && $location && $model) {
             return $this->generateViaVertex(
                 $prompt,
@@ -41,14 +40,6 @@ class VertexAiService
         string $model,
         int $timeout
     ): string {
-=======
-        if (!$project || !$location || !$model) {
-            throw new RuntimeException(
-                'Vertex AI configuration is incomplete.'
-            );
-        }
-
->>>>>>> a4f16a9b4c3a6b5d155af1e7ac7ccd6e601bdec4
         $token = $this->getAccessToken();
 
         $url = sprintf(

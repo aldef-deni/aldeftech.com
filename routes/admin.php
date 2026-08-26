@@ -147,7 +147,6 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
             [AdminBlogPostController::class, 'togglePublish']
         )->name('blog.toggle-publish');
 
-<<<<<<< HEAD
         // AI Marketing Center
         Route::get('marketing', [MarketingController::class, 'index'])
             ->name('marketing.index');
@@ -180,9 +179,6 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
             'marketing/contents/{content}/publish',
             [MarketingController::class, 'publishContent']
         )->name('marketing.publish-content');
-
-=======
->>>>>>> a4f16a9b4c3a6b5d155af1e7ac7ccd6e601bdec4
         // Blog Categories
         Route::resource('categories', AdminBlogCategoryController::class)
             ->except(['show'])

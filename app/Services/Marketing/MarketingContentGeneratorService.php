@@ -32,11 +32,7 @@ class MarketingContentGeneratorService
 
         $data = $this->parseResponse($rawResponse);
 
-<<<<<<< HEAD
         $content = MarketingContent::create([
-=======
-        return MarketingContent::create([
->>>>>>> a4f16a9b4c3a6b5d155af1e7ac7ccd6e601bdec4
             'marketing_content_idea_id' => $idea->id,
             'marketing_campaign_id' => $idea->marketing_campaign_id,
 
@@ -49,181 +45,16 @@ class MarketingContentGeneratorService
             'seo_title' => $data['seo_title'],
             'seo_description' => $data['seo_description'],
             'seo_keywords' => $data['seo_keywords'],
-<<<<<<< HEAD
             'platform_posts' => $data['platform_posts'],
             'distribution_checklist' => $data['distribution_checklist'],
-=======
->>>>>>> a4f16a9b4c3a6b5d155af1e7ac7ccd6e601bdec4
-
-            'content_type' => $idea->content_type,
-            'funnel_stage' => $idea->funnel_stage,
-
-            'status' => 'draft',
-
-<<<<<<< HEAD
-            'ai_model' => config('services.vertex_ai.project')
-                ? config('services.vertex_ai.model')
-                : config('services.gemini.model'),
-=======
-            'ai_model' => config('services.vertex_ai.model'),
->>>>>>> a4f16a9b4c3a6b5d155af1e7ac7ccd6e601bdec4
             'ai_prompt_version' => 'v1',
 
             'generated_at' => now(),
         ]);
-<<<<<<< HEAD
 
         $idea->update(['status' => 'generated']);
 
         return $content;
-=======
->>>>>>> a4f16a9b4c3a6b5d155af1e7ac7ccd6e601bdec4
-    }
-
-    protected function buildPrompt(
-        MarketingContentIdea $idea
-    ): string {
-        $campaign = $idea->campaign;
-        $audience = $idea->audience;
-        $painPoint = $idea->painPoint;
-        $keyword = $idea->keyword;
-        $pillar = $idea->contentPillar;
-
-        return <<<PROMPT
-Anda adalah AI Content Strategist dan Copywriter senior untuk Aldef Tech.
-
-Tugas Anda adalah membuat konten marketing berkualitas tinggi berdasarkan strategi marketing yang diberikan.
-
-================ BRAND ================
-Brand: Aldef Tech
-
-Positioning:
-Technology partner untuk digitalisasi bisnis, custom software development, AI, automation, SaaS, dan system integration.
-
-================ CAMPAIGN ================
-Campaign:
-{$campaign?->name}
-
-Campaign objective:
-{$campaign?->objective}
-
-================ TARGET AUDIENCE ================
-Audience:
-{$audience?->name}
-
-Industry:
-{$audience?->industry}
-
-Company size:
-{$audience?->company_size}
-
-Decision maker:
-{$audience?->decision_maker}
-
-Audience description:
-{$audience?->description}
-
-Audience goals:
-{$audience?->goals}
-
-Audience needs:
-{$audience?->needs}
-
-================ PAIN POINT ================
-Pain point:
-{$painPoint?->title}
-
-Description:
-{$painPoint?->description}
-
-Severity:
-{$painPoint?->severity}
-
-Business impact:
-{$painPoint?->business_impact}
-
-Desired solution:
-{$painPoint?->desired_solution}
-
-================ KEYWORD ================
-Keyword:
-{$keyword?->keyword}
-
-Search intent:
-{$keyword?->search_intent}
-
-Keyword type:
-{$keyword?->keyword_type}
-
-================ CONTENT PILLAR ================
-Pillar:
-{$pillar?->name}
-
-Description:
-{$pillar?->description}
-
-Objectives:
-{$pillar?->objectives}
-
-Funnel stage:
-{$idea->funnel_stage}
-
-================ CONTENT IDEA ================
-Title:
-{$idea->title}
-
-Hook:
-{$idea->hook}
-
-Brief:
-{$idea->brief}
-
-Content type:
-{$idea->content_type}
-
-CTA:
-{$idea->cta}
-
-================ CONTENT REQUIREMENTS ================
-
-Buat konten dalam Bahasa Indonesia yang natural, profesional, mudah dipahami oleh pemilik bisnis dan decision maker.
-
-Prioritaskan:
-1. Edukasi.
-2. Relevansi terhadap masalah bisnis.
-3. Insight praktis.
-4. Authority dan credibility.
-5. Natural SEO.
-6. Soft selling yang tidak memaksa.
-
-Jangan:
-- membuat klaim yang tidak diberikan dalam konteks;
-- menggunakan data/statistik yang tidak memiliki sumber;
-- melakukan hard selling berlebihan;
-- mengulang keyword secara berlebihan;
-- membuat konten generik yang tidak berhubungan dengan pain point;
-- menyebut bahwa konten dibuat oleh AI.
-
-Struktur artikel:
-- Opening yang menarik dan relevan dengan pain point.
-- Penjelasan masalah.
-- Dampak terhadap bisnis.
-- Analisis penyebab.
-- Solusi/pendekatan teknologi.
-- Contoh penerapan yang realistis.
-- Kesimpulan.
-- CTA sesuai konteks funnel.
-
-<<<<<<< HEAD
-Konten lengkap harus berupa HTML aman untuk blog Laravel.
-Gunakan hanya tag umum seperti <h2>, <h3>, <p>, <ul>, <li>, <strong>, dan <a>.
-Jangan gunakan <script>, iframe, style inline, atau embed eksternal.
-
-Selain artikel, buat caption siap pakai untuk platform berikut:
-{$this->formatPlatformsForPrompt($idea->platforms ?? [])}
-=======
-Gunakan heading Markdown bila diperlukan.
->>>>>>> a4f16a9b4c3a6b5d155af1e7ac7ccd6e601bdec4
 
 ================ OUTPUT FORMAT ================
 
@@ -236,7 +67,6 @@ Format:
 
 {
   "title": "Judul konten",
-<<<<<<< HEAD
   "content": "Konten lengkap berupa HTML dalam Bahasa Indonesia",
   "excerpt": "Ringkasan singkat",
   "seo_title": "SEO title",
@@ -272,16 +102,6 @@ Format:
 
 Pastikan field title, content, excerpt, seo_title, seo_description, seo_keywords berupa string.
 Pastikan platform_posts berupa object dan distribution_checklist berupa array string.
-=======
-  "content": "Konten lengkap dalam Bahasa Indonesia",
-  "excerpt": "Ringkasan singkat",
-  "seo_title": "SEO title",
-  "seo_description": "SEO description",
-  "seo_keywords": "keyword 1, keyword 2, keyword 3"
-}
-
-Pastikan semua field tersedia dan berupa string.
->>>>>>> a4f16a9b4c3a6b5d155af1e7ac7ccd6e601bdec4
 PROMPT;
     }
 
@@ -337,7 +157,6 @@ PROMPT;
             }
         }
 
-<<<<<<< HEAD
         $data['platform_posts'] = $this->normalizePlatformPosts(
             $data['platform_posts'] ?? [],
             $data
@@ -416,8 +235,4 @@ PROMPT;
             'Pantau leads yang masuk dari WhatsApp dan form kontak.',
         ];
     }
-=======
-        return $data;
-    }
->>>>>>> a4f16a9b4c3a6b5d155af1e7ac7ccd6e601bdec4
 }
