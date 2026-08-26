@@ -1,163 +1,165 @@
-@extends('layouts.admin')
+@php
+$configData = Helper::appClasses();
+@endphp
+
+@extends('layouts/layoutMaster')
+
+@section('title', 'Admin Dashboard')
+
 @section('content')
-@php $pageTitle = 'Dashboard Overview'; @endphp
+<h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Dashboard /</span> Analytics</h4>
 
-{{-- Welcome Banner --}}
-<div class="relative overflow-hidden rounded-2xl bg-white border border-slate-200 mb-8 p-6 lg:p-8 shadow-2xs">
-    <div class="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-            <h2 class="text-xl lg:text-2xl font-display font-bold text-slate-900 mb-1">
-                Welcome back, {{ auth()->user()->name }}
-            </h2>
-            <p class="text-slate-500 text-sm">Here's the latest operational overview of your Aldef Tech platform.</p>
-        </div>
-        <div>
-            <a href="{{ route('admin.leads.index') }}" class="btn-primary btn-sm text-xs font-semibold">
-                View All Leads →
-            </a>
-        </div>
-    </div>
-</div>
-
-{{-- Primary Stats --}}
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
-    {{-- Leads --}}
-    <div class="admin-stat-card" style="--stat-color: #2563EB">
-        <div class="flex items-center justify-between mb-3">
-            <span class="text-slate-500 text-xs font-bold uppercase tracking-wider">Total Leads</span>
-            <span class="w-9 h-9 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600">
-                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-            </span>
-        </div>
-        <div class="text-3xl font-display font-bold text-slate-900 tracking-tight">{{ $stats['leads'] }}</div>
-        <div class="text-xs text-slate-400 mt-1">Inbound consultations</div>
-    </div>
-
-    {{-- New Leads --}}
-    <div class="admin-stat-card" style="--stat-color: #10B981">
-        <div class="flex items-center justify-between mb-3">
-            <span class="text-slate-500 text-xs font-bold uppercase tracking-wider">New Inquiries</span>
-            <span class="w-9 h-9 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600">
-                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
-            </span>
-        </div>
-        <div class="text-3xl font-display font-bold text-slate-900 tracking-tight">{{ $stats['new_leads'] }}</div>
-        <div class="text-xs text-emerald-600 font-semibold mt-1">Requires response</div>
-    </div>
-
-    {{-- Portfolios --}}
-    <div class="admin-stat-card" style="--stat-color: #4F46E5">
-        <div class="flex items-center justify-between mb-3">
-            <span class="text-slate-500 text-xs font-bold uppercase tracking-wider">Case Studies</span>
-            <span class="w-9 h-9 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600">
-                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-            </span>
-        </div>
-        <div class="text-3xl font-display font-bold text-slate-900 tracking-tight">{{ $stats['portfolios'] }}</div>
-        <div class="text-xs text-slate-400 mt-1">Published portfolio items</div>
-    </div>
-
-    {{-- Blog --}}
-    <div class="admin-stat-card" style="--stat-color: #F59E0B">
-        <div class="flex items-center justify-between mb-3">
-            <span class="text-slate-500 text-xs font-bold uppercase tracking-wider">Articles & Insights</span>
-            <span class="w-9 h-9 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-600">
-                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-            </span>
-        </div>
-        <div class="text-3xl font-display font-bold text-slate-900 tracking-tight">{{ $stats['blog_posts'] }}</div>
-        <div class="text-xs text-slate-400 mt-1">Published posts</div>
-    </div>
-</div>
-
-{{-- Secondary Quick Counts --}}
-<div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
-    @php
-    $secondaryStats = [
-        ['label' => 'Services', 'value' => $stats['services'], 'color' => '#2563EB'],
-        ['label' => 'Solutions', 'value' => $stats['solutions'], 'color' => '#4F46E5'],
-        ['label' => 'Testimonials', 'value' => $stats['testimonials'], 'color' => '#7C3AED'],
-        ['label' => 'FAQs', 'value' => $stats['faqs'], 'color' => '#0284C7'],
-    ];
-    @endphp
-    @foreach($secondaryStats as $stat)
-    <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-2xs">
-        <div class="flex items-center gap-2 mb-1.5">
-            <div class="w-2 h-2 rounded-full" style="background: {{ $stat['color'] }}"></div>
-            <span class="text-slate-500 text-xs font-semibold uppercase tracking-wider">{{ $stat['label'] }}</span>
-        </div>
-        <div class="text-2xl font-display font-bold text-slate-900">{{ $stat['value'] }}</div>
-    </div>
-    @endforeach
-</div>
-
-{{-- Activity & Leads Tables --}}
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-    {{-- Recent Leads --}}
-    <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-2xs">
-        <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
-            <div class="flex items-center gap-2">
-                <div class="w-2 h-2 rounded-full bg-blue-600 animate-pulse"></div>
-                <h3 class="font-display font-bold text-slate-900 text-base">Recent Inbound Leads</h3>
-            </div>
-            <a href="{{ route('admin.leads.index') }}" class="text-xs text-blue-600 hover:text-blue-700 font-semibold">View All →</a>
-        </div>
-        <div class="divide-y divide-slate-100">
-            @forelse($recentLeads as $lead)
-            <div class="px-6 py-4 flex items-center justify-between hover:bg-slate-50 transition-colors">
-                <div class="flex items-center gap-3">
-                    <div class="w-9 h-9 rounded-full bg-blue-50 text-blue-700 font-bold text-xs flex items-center justify-center shrink-0 border border-blue-100">
-                        {{ strtoupper(substr($lead->name, 0, 1)) }}
-                    </div>
-                    <div>
-                        <div class="text-sm font-bold text-slate-900">{{ $lead->name }}</div>
-                        <div class="text-xs text-slate-500">{{ $lead->email }} • {{ $lead->project_type ?? 'General' }}</div>
-                    </div>
+<div class="row">
+    <!-- View sales -->
+    <div class="col-xl-4 mb-4 col-lg-5 col-12">
+        <div class="card h-100">
+            <div class="card-header pb-0">
+                <div class="d-flex justify-content-between">
+                    <h5 class="card-title mb-0">Aldef Tech CMS</h5>
                 </div>
-                <span class="text-xs px-2.5 py-1 rounded-full font-semibold
-                    @if($lead->status === 'new') bg-emerald-50 text-emerald-700 border border-emerald-200
-                    @elseif($lead->status === 'won') bg-blue-50 text-blue-700 border border-blue-200
-                    @else bg-slate-100 text-slate-600 border border-slate-200 @endif">
-                    {{ $lead->status_label }}
-                </span>
             </div>
-            @empty
-            <div class="px-6 py-12 text-center text-slate-400 text-sm">
-                No recent leads.
+            <div class="card-body">
+                <p class="mb-4 text-muted">Migration to Vuexy Template is Active.</p>
+                <div class="alert alert-warning mb-0">
+                    You have <strong>{{ $stats['new_leads'] }}</strong> new leads waiting to be processed!
+                </div>
+                <a href="{{ route('admin.leads.index') }}" class="btn btn-primary mt-4">View Leads</a>
             </div>
-            @endforelse
         </div>
     </div>
-
-    {{-- Activity Logs --}}
-    <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-2xs">
-        <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
-            <div class="flex items-center gap-2">
-                <div class="w-2 h-2 rounded-full bg-indigo-600"></div>
-                <h3 class="font-display font-bold text-slate-900 text-base">System Activity Logs</h3>
+    <!-- Statistics -->
+    <div class="col-xl-8 mb-4 col-lg-7 col-12">
+        <div class="card h-100">
+            <div class="card-header">
+                <div class="d-flex justify-content-between mb-3">
+                    <h5 class="card-title mb-0">System Statistics</h5>
+                </div>
             </div>
-            <a href="{{ route('admin.activity-logs.index') }}" class="text-xs text-blue-600 hover:text-blue-700 font-semibold">View All →</a>
-        </div>
-        <div class="divide-y divide-slate-100">
-            @forelse($recentActivity as $log)
-            <div class="px-6 py-4 hover:bg-slate-50 transition-colors">
-                <div class="flex items-start gap-3">
-                    <div class="w-7 h-7 rounded-lg bg-slate-100 flex items-center justify-center mt-0.5 shrink-0 text-slate-600">
-                        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            <div class="card-body">
+                <div class="row gy-3">
+                    <div class="col-md-3 col-6">
+                        <div class="d-flex align-items-center">
+                            <div class="badge rounded-pill bg-label-primary me-3 p-2"><i class="ti ti-briefcase ti-sm"></i></div>
+                            <div class="card-info">
+                                <h5 class="mb-0">{{ $stats['portfolios'] }}</h5>
+                                <small>Portfolios</small>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <div class="text-sm text-slate-800 font-medium">{{ $log->description }}</div>
-                        <div class="text-xs text-slate-400 mt-1">
-                            {{ $log->user->name ?? 'System' }} • {{ $log->created_at->diffForHumans() }}
+                    <div class="col-md-3 col-6">
+                        <div class="d-flex align-items-center">
+                            <div class="badge rounded-pill bg-label-info me-3 p-2"><i class="ti ti-layout-grid ti-sm"></i></div>
+                            <div class="card-info">
+                                <h5 class="mb-0">{{ $stats['services'] }}</h5>
+                                <small>Services</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-6">
+                        <div class="d-flex align-items-center">
+                            <div class="badge rounded-pill bg-label-success me-3 p-2"><i class="ti ti-users ti-sm"></i></div>
+                            <div class="card-info">
+                                <h5 class="mb-0">{{ $stats['leads'] }}</h5>
+                                <small>Total Leads</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-6">
+                        <div class="d-flex align-items-center">
+                            <div class="badge rounded-pill bg-label-warning me-3 p-2"><i class="ti ti-news ti-sm"></i></div>
+                            <div class="card-info">
+                                <h5 class="mb-0">{{ $stats['blog_posts'] }}</h5>
+                                <small>Blog Posts</small>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            @empty
-            <div class="px-6 py-12 text-center text-slate-400 text-sm">
-                No recent activities.
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Recent Leads -->
+    <div class="col-md-6 mb-4">
+        <div class="card h-100">
+            <div class="card-header d-flex justify-content-between">
+                <h5 class="card-title m-0 me-2">Recent Leads</h5>
+                <div class="dropdown">
+                    <button class="btn p-0" type="button" id="recentLeadsBtn" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="ti ti-dots-vertical ti-sm text-muted"></i>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="recentLeadsBtn">
+                        <a class="dropdown-item" href="{{ route('admin.leads.index') }}">View All</a>
+                    </div>
+                </div>
             </div>
-            @endforelse
+            <div class="table-responsive">
+                <table class="table table-borderless table-sm">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($recentLeads as $lead)
+                        <tr>
+                            <td>{{ $lead->name }}</td>
+                            <td>
+                                @if($lead->status == 'new')
+                                    <span class="badge bg-label-warning">New</span>
+                                @elseif($lead->status == 'contacted')
+                                    <span class="badge bg-label-info">Contacted</span>
+                                @else
+                                    <span class="badge bg-label-success">{{ ucfirst($lead->status) }}</span>
+                                @endif
+                            </td>
+                            <td>{{ $lead->created_at->diffForHumans() }}</td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="3" class="text-center text-muted">No recent leads found.</td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="col-md-6 mb-4">
+        <div class="card h-100">
+            <div class="card-header d-flex justify-content-between">
+                <h5 class="card-title m-0 me-2">Recent Activity</h5>
+            </div>
+            <div class="card-body">
+                <ul class="timeline">
+                    @forelse($recentActivity->take(5) as $activity)
+                    <li class="timeline-item timeline-item-transparent">
+                        <span class="timeline-point timeline-point-primary"></span>
+                        <div class="timeline-event">
+                            <div class="timeline-header mb-1">
+                                <h6 class="mb-0">{{ $activity->action }}</h6>
+                                <small class="text-muted">{{ $activity->created_at->diffForHumans() }}</small>
+                            </div>
+                            <p class="mb-0">{{ $activity->description }}</p>
+                            @if($activity->user)
+                                <small class="text-muted">By: {{ $activity->user->name }}</small>
+                            @endif
+                        </div>
+                    </li>
+                    @empty
+                    <li class="timeline-item timeline-item-transparent">
+                        <div class="timeline-event">
+                            <p class="mb-0">No recent activity.</p>
+                        </div>
+                    </li>
+                    @endforelse
+                </ul>
+            </div>
         </div>
     </div>
 </div>

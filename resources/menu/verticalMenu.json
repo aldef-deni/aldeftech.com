@@ -1,0 +1,52 @@
+{
+  "menu": [
+    {
+      "url": "/admin",
+      "name": "Dashboard",
+      "icon": "menu-icon tf-icons ti ti-smart-home",
+      "slug": "admin-dashboard"
+    },
+    {
+      "menuHeader": "Management"
+    },
+    {
+      "url": "/admin/marketing",
+      "name": "AI Marketing Center",
+      "icon": "menu-icon tf-icons ti ti-robot",
+      "slug": "admin-marketing"
+    },
+    {
+      "url": "/admin/leads",
+      "name": "Leads / CRM",
+      "icon": "menu-icon tf-icons ti ti-users",
+      "slug": "admin-leads"
+    },
+    {
+      "url": "/admin/portfolio",
+      "name": "Portfolio",
+      "icon": "menu-icon tf-icons ti ti-briefcase",
+      "slug": "admin-portfolio"
+    },
+    {
+      "url": "/admin/services",
+      "name": "Services",
+      "icon": "menu-icon tf-icons ti ti-layout-grid-add",
+      "slug": "admin-services"
+    },
+    {
+      "url": "/admin/blog",
+      "name": "Blog",
+      "icon": "menu-icon tf-icons ti ti-news",
+      "slug": "admin-blog"
+    },
+    {
+      "menuHeader": "System Settings"
+    },
+    {
+      "url": "/admin/settings/site",
+      "name": "Site Settings",
+      "icon": "menu-icon tf-icons ti ti-settings",
+      "slug": "admin-settings"
+    }
+  ]
+}

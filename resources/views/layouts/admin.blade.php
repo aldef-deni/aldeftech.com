@@ -19,29 +19,29 @@
         <aside class="admin-sidebar fixed inset-y-0 left-0 z-40 transform transition-all duration-300 lg:translate-x-0 overflow-hidden shadow-xl"
                :class="[sidebarOpen ? 'translate-x-0' : '-translate-x-full', sidebarCollapsed ? 'w-[4.5rem]' : 'w-[16.5rem]']"
                x-show="true">
-            <div class="flex flex-col h-full bg-[#0F172A]">
+            <div class="flex flex-col h-full bg-white border-r border-slate-200">
                 {{-- Logo --}}
-                <div class="flex items-center gap-3 px-5 py-5 border-b border-slate-800 shrink-0">
+                <div class="flex items-center gap-3 px-5 py-5 border-b border-slate-100 shrink-0">
                     <img src="{{ asset('images/logo-square.png') }}" alt="Aldef Tech" class="w-9 h-9 rounded-lg object-contain shrink-0">
                     <div x-show="!sidebarCollapsed" x-transition class="overflow-hidden">
-                        <div class="font-display font-bold text-sm text-white tracking-tight whitespace-nowrap">Aldef Tech</div>
-                        <div class="text-[0.65rem] text-blue-400 font-semibold uppercase tracking-wider whitespace-nowrap">Admin Control</div>
+                        <div class="font-display font-bold text-sm text-slate-900 tracking-tight whitespace-nowrap">Aldef Tech</div>
+                        <div class="text-[0.65rem] text-blue-600 font-bold uppercase tracking-wider whitespace-nowrap">Admin Control</div>
                     </div>
                 </div>
 
                 {{-- Navigation --}}
-                <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-1" style="scrollbar-width: thin; scrollbar-color: #1E293B transparent;">
+                <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-1" style="scrollbar-width: thin; scrollbar-color: #CBD5E1 transparent;">
                     {{-- Dashboard --}}
                     <a href="{{ route('admin.dashboard') }}"
-                       class="admin-sidebar-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
-                        <svg class="icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 5a1 1 0 011-1h4a1 1 0 011 1v5a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM14 5a1 1 0 011-1h4a1 1 0 011 1v2a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1v-4zM14 12a1 1 0 011-1h4a1 1 0 011 1v7a1 1 0 01-1 1h-4a1 1 0 01-1-1v-7z"/></svg>
+                       class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all group {{ request()->routeIs('admin.dashboard') ? 'bg-blue-50 text-blue-700 shadow-sm' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}">
+                        <svg class="w-5 h-5 shrink-0 group-hover:scale-110 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 5a1 1 0 011-1h4a1 1 0 011 1v5a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM14 5a1 1 0 011-1h4a1 1 0 011 1v2a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1v-4zM14 12a1 1 0 011-1h4a1 1 0 011 1v7a1 1 0 01-1 1h-4a1 1 0 01-1-1v-7z"/></svg>
                         <span x-show="!sidebarCollapsed" x-transition class="whitespace-nowrap">Dashboard</span>
                     </a>
 
                     {{-- CONTENT Section --}}
                     <div class="pt-5 pb-2 px-2">
                         <span class="text-[0.6rem] font-bold text-slate-500 uppercase tracking-[0.2em]" x-show="!sidebarCollapsed" x-transition>Content Management</span>
-                        <div class="h-px bg-slate-800 mt-2" x-show="sidebarCollapsed"></div>
+                        <div class="h-px bg-slate-200 mt-2" x-show="sidebarCollapsed"></div>
                     </div>
 
                     @php
@@ -62,8 +62,8 @@
 
                     @foreach($contentLinks as $link)
                     <a href="{{ route($link['route']) }}"
-                       class="admin-sidebar-link {{ request()->routeIs($link['route'].'*') ? 'active' : '' }}">
-                        <svg class="icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">{!! $link['icon'] !!}</svg>
+                       class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all group {{ request()->routeIs($link['route'].'*') ? 'bg-blue-50 text-blue-700 shadow-sm' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}">
+                        <svg class="w-5 h-5 shrink-0 group-hover:scale-110 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">{!! $link['icon'] !!}</svg>
                         <span x-show="!sidebarCollapsed" x-transition class="whitespace-nowrap">{{ $link['label'] }}</span>
                     </a>
                     @endforeach
@@ -71,39 +71,39 @@
                     {{-- LEADS --}}
                     <div class="pt-5 pb-2 px-2">
                         <span class="text-[0.6rem] font-bold text-slate-500 uppercase tracking-[0.2em]" x-show="!sidebarCollapsed" x-transition>CRM & Leads</span>
-                        <div class="h-px bg-slate-800 mt-2" x-show="sidebarCollapsed"></div>
+                        <div class="h-px bg-slate-200 mt-2" x-show="sidebarCollapsed"></div>
                     </div>
                     <a href="{{ route('admin.leads.index') }}"
-                       class="admin-sidebar-link {{ request()->routeIs('admin.leads*') ? 'active' : '' }}">
-                        <svg class="icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                       class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all group {{ request()->routeIs('admin.leads*') ? 'bg-blue-50 text-blue-700 shadow-sm' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}">
+                        <svg class="w-5 h-5 shrink-0 group-hover:scale-110 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                         <span x-show="!sidebarCollapsed" x-transition class="whitespace-nowrap">Leads</span>
                     </a>
 
                     {{-- COMPANY --}}
                     <div class="pt-5 pb-2 px-2">
                         <span class="text-[0.6rem] font-bold text-slate-500 uppercase tracking-[0.2em]" x-show="!sidebarCollapsed" x-transition>Company</span>
-                        <div class="h-px bg-slate-800 mt-2" x-show="sidebarCollapsed"></div>
+                        <div class="h-px bg-slate-200 mt-2" x-show="sidebarCollapsed"></div>
                     </div>
                     <a href="{{ route('admin.ceo.edit') }}"
-                       class="admin-sidebar-link {{ request()->routeIs('admin.ceo.*') ? 'active' : '' }}">
-                        <svg class="icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                       class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all group {{ request()->routeIs('admin.ceo.*') ? 'bg-blue-50 text-blue-700 shadow-sm' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}">
+                        <svg class="w-5 h-5 shrink-0 group-hover:scale-110 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
                         <span x-show="!sidebarCollapsed" x-transition class="whitespace-nowrap">CEO Profile</span>
                     </a>
                     <a href="{{ route('admin.process-steps.index') }}"
-                       class="admin-sidebar-link {{ request()->routeIs('admin.process-steps*') ? 'active' : '' }}">
-                        <svg class="icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
+                       class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all group {{ request()->routeIs('admin.process-steps*') ? 'bg-blue-50 text-blue-700 shadow-sm' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}">
+                        <svg class="w-5 h-5 shrink-0 group-hover:scale-110 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
                         <span x-show="!sidebarCollapsed" x-transition class="whitespace-nowrap">Process Steps</span>
                     </a>
                     <a href="{{ route('admin.social-media.index') }}"
-                       class="admin-sidebar-link {{ request()->routeIs('admin.social-media*') ? 'active' : '' }}">
-                        <svg class="icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
+                       class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all group {{ request()->routeIs('admin.social-media*') ? 'bg-blue-50 text-blue-700 shadow-sm' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}">
+                        <svg class="w-5 h-5 shrink-0 group-hover:scale-110 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
                         <span x-show="!sidebarCollapsed" x-transition class="whitespace-nowrap">Social Media</span>
                     </a>
 
                     {{-- SETTINGS --}}
                     <div class="pt-5 pb-2 px-2">
                         <span class="text-[0.6rem] font-bold text-slate-500 uppercase tracking-[0.2em]" x-show="!sidebarCollapsed" x-transition>Settings</span>
-                        <div class="h-px bg-slate-800 mt-2" x-show="sidebarCollapsed"></div>
+                        <div class="h-px bg-slate-200 mt-2" x-show="sidebarCollapsed"></div>
                     </div>
 
                     @php
@@ -118,8 +118,8 @@
 
                     @foreach($settingsLinks as $link)
                     <a href="{{ route($link['route']) }}"
-                       class="admin-sidebar-link {{ request()->routeIs($link['route']) ? 'active' : '' }}">
-                        <svg class="icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">{!! $link['icon'] !!}</svg>
+                       class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all group {{ request()->routeIs($link['route']) ? 'bg-blue-50 text-blue-700 shadow-sm' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}">
+                        <svg class="w-5 h-5 shrink-0 group-hover:scale-110 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">{!! $link['icon'] !!}</svg>
                         <span x-show="!sidebarCollapsed" x-transition class="whitespace-nowrap">{{ $link['label'] }}</span>
                     </a>
                     @endforeach
@@ -127,31 +127,31 @@
                     {{-- SYSTEM --}}
                     <div class="pt-5 pb-2 px-2">
                         <span class="text-[0.6rem] font-bold text-slate-500 uppercase tracking-[0.2em]" x-show="!sidebarCollapsed" x-transition>System</span>
-                        <div class="h-px bg-slate-800 mt-2" x-show="sidebarCollapsed"></div>
+                        <div class="h-px bg-slate-200 mt-2" x-show="sidebarCollapsed"></div>
                     </div>
                     @if(auth()->user()->hasRole('super-admin'))
                     <a href="{{ route('admin.users.index') }}"
-                       class="admin-sidebar-link {{ request()->routeIs('admin.users*') ? 'active' : '' }}">
-                        <svg class="icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                       class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all group {{ request()->routeIs('admin.users*') ? 'bg-blue-50 text-blue-700 shadow-sm' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}">
+                        <svg class="w-5 h-5 shrink-0 group-hover:scale-110 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
                         <span x-show="!sidebarCollapsed" x-transition class="whitespace-nowrap">Users</span>
                     </a>
                     @endif
                     <a href="{{ route('admin.activity-logs.index') }}"
-                       class="admin-sidebar-link {{ request()->routeIs('admin.activity-logs*') ? 'active' : '' }}">
-                        <svg class="icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                       class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all group {{ request()->routeIs('admin.activity-logs*') ? 'bg-blue-50 text-blue-700 shadow-sm' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}">
+                        <svg class="w-5 h-5 shrink-0 group-hover:scale-110 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                         <span x-show="!sidebarCollapsed" x-transition class="whitespace-nowrap">Activity Logs</span>
                     </a>
                 </nav>
 
                 {{-- User Info --}}
-                <div class="border-t border-slate-800 px-4 py-3.5 shrink-0 bg-[#0B132B]/50">
+                <div class="border-t border-slate-100 px-4 py-3.5 shrink-0 bg-slate-50">
                     <div class="flex items-center gap-3">
                         <div class="w-9 h-9 rounded-full bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-400 text-sm font-display font-bold shrink-0">
                             {{ substr(auth()->user()->name, 0, 1) }}
                         </div>
                         <div class="flex-1 min-w-0" x-show="!sidebarCollapsed" x-transition>
-                            <div class="text-sm font-medium text-white truncate">{{ auth()->user()->name }}</div>
-                            <div class="text-[0.65rem] text-slate-400 truncate">{{ ucfirst(str_replace('-', ' ', auth()->user()->roles->first()->name ?? 'user')) }}</div>
+                            <div class="text-sm font-bold text-slate-900 truncate">{{ auth()->user()->name }}</div>
+                            <div class="text-[0.65rem] text-slate-500 truncate">{{ ucfirst(str_replace('-', ' ', auth()->user()->roles->first()->name ?? 'user')) }}</div>
                         </div>
                         <form method="POST" action="{{ route('admin.logout') }}" x-show="!sidebarCollapsed" x-transition>
                             @csrf
