@@ -48,6 +48,24 @@
   --color-aurora-500: #34AFD4;
   --color-aurora-600: #2490B2;
 
+  /* --- Logo spectrum ------------------------------------------------------
+     Sampled straight off the Aldef Tech mark: the "A" runs ember → crimson →
+     magenta → violet → indigo → azure. Saturated values are used only as light
+     (blurred washes, hairlines); text uses the -soft tints so it stays legible
+     on obsidian. */
+  --color-spectrum-ember: #FF8A2B;
+  --color-spectrum-flame: #F0402F;
+  --color-spectrum-magenta: #E0459A;
+  --color-spectrum-violet: #8B3FE8;
+  --color-spectrum-indigo: #3B5BFF;
+  --color-spectrum-azure: #16C8F0;
+
+  --color-spectrum-ember-soft: #FFB067;
+  --color-spectrum-rose-soft: #FF8FB0;
+  --color-spectrum-violet-soft: #C79BFF;
+  --color-spectrum-indigo-soft: #93AAFF;
+  --color-spectrum-azure-soft: #6FDCF7;
+
   /* --- Type colours ------------------------------------------------------ */
   --color-graphite-900: #0D1420;
   --color-graphite-700: #35424F;
@@ -99,7 +117,7 @@
 @layer base {
   html {
     scroll-behavior: smooth;
-    scroll-padding-top: 6rem;
+    scroll-padding-top: 7.5rem;
     background-color: #FDFCFA;
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
@@ -194,6 +212,34 @@
   color: transparent;
 }
 
+/* The headline accent on spectrum bands. Runs the logo's own hue order, but in
+   the lightened tints — the saturated values go muddy at text weight on a dark
+   ground. Kept to the italic serif word so it never becomes a rainbow banner. */
+.accent-spectrum {
+  background: linear-gradient(100deg,
+    #FFB067 0%,
+    #FF8FB0 24%,
+    #C79BFF 48%,
+    #93AAFF 72%,
+    #6FDCF7 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* Fallback: if background-clip:text is unsupported the text would vanish. */
+@supports not ((-webkit-background-clip: text) or (background-clip: text)) {
+  .accent-spectrum,
+  .accent-champagne,
+  .accent-gold,
+  .accent-aurora {
+    background: none;
+    -webkit-text-fill-color: currentColor;
+    color: #E8D3A7;
+  }
+}
+
 .text-balance { text-wrap: balance; }
 
 /* Overline / eyebrow label */
@@ -229,6 +275,12 @@
 .eyebrow-light { color: #E8D3A7; }
 .eyebrow-light::before { background: linear-gradient(90deg, transparent, #DFC28E); }
 .eyebrow-light.eyebrow-center::after { background: linear-gradient(90deg, #DFC28E, transparent); }
+
+/* Hero eyebrow on a spectrum band: soft violet type, with the flanking rules
+   picking up the warm and cool ends of the mark. */
+.eyebrow-spectrum { color: #CBB3FF; }
+.eyebrow-spectrum::before { background: linear-gradient(90deg, transparent, #E0459A 60%, #8B3FE8); }
+.eyebrow-spectrum.eyebrow-center::after { background: linear-gradient(90deg, #3B5BFF, #16C8F0 60%, transparent); }
 
 /* Pill chip */
 .chip {
@@ -277,6 +329,64 @@
   color: #E6EAF0;
 }
 
+/* --- Spectrum ground -------------------------------------------------------
+   The hero bands and the closing CTA. The logo's six hues are laid over
+   obsidian as wide, heavily blurred washes rather than as fills: at these
+   opacities they read as one aurora, not as a rainbow. Warm hues sit left,
+   cool hues right, mirroring the logo's own left-to-right run.
+   -------------------------------------------------------------------------- */
+.surface-spectrum {
+  position: relative;
+  background:
+    /* Listed first = painted on top. This vignette pulls the centre back to
+       near-black so headlines stay crisp and the hue only lives at the edges —
+       the difference between "premium" and "RGB keyboard". */
+    radial-gradient(62% 58% at 50% 44%, rgba(6, 10, 16, 0.82) 0%, rgba(6, 10, 16, 0.34) 52%, transparent 80%),
+    radial-gradient(62% 50% at -4% -8%, rgba(255, 138, 43, 0.15) 0%, transparent 60%),
+    radial-gradient(54% 44% at 22% -12%, rgba(240, 64, 47, 0.11) 0%, transparent 58%),
+    radial-gradient(58% 48% at 56% -10%, rgba(224, 69, 154, 0.12) 0%, transparent 60%),
+    radial-gradient(72% 60% at 98% -4%, rgba(139, 63, 232, 0.19) 0%, transparent 62%),
+    radial-gradient(82% 72% at 110% 56%, rgba(59, 91, 255, 0.15) 0%, transparent 64%),
+    radial-gradient(60% 52% at 80% 110%, rgba(22, 200, 240, 0.11) 0%, transparent 62%),
+    linear-gradient(168deg, #060A10 0%, #080D15 46%, #0A1018 100%);
+  color: #E6EAF0;
+}
+
+/* Deeper variant for the closing CTA, so it still reads as a floor. */
+.surface-spectrum-deep {
+  position: relative;
+  background:
+    radial-gradient(58% 54% at 50% 38%, rgba(4, 7, 12, 0.80) 0%, rgba(4, 7, 12, 0.30) 54%, transparent 80%),
+    radial-gradient(64% 54% at 4% 112%, rgba(255, 138, 43, 0.13) 0%, transparent 60%),
+    radial-gradient(66% 56% at 32% 118%, rgba(224, 69, 154, 0.13) 0%, transparent 60%),
+    radial-gradient(74% 64% at 62% 114%, rgba(139, 63, 232, 0.18) 0%, transparent 62%),
+    radial-gradient(78% 68% at 96% 104%, rgba(59, 91, 255, 0.15) 0%, transparent 64%),
+    radial-gradient(56% 50% at 106% 26%, rgba(22, 200, 240, 0.10) 0%, transparent 62%),
+    linear-gradient(180deg, #04070C 0%, #060A11 60%, #080D15 100%);
+  color: #E6EAF0;
+}
+
+/* A single hairline of the full spectrum along the bottom edge — the detail
+   that ties the band back to the mark without shouting. */
+.spectrum-edge::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(255, 138, 43, 0.55) 12%,
+    rgba(240, 64, 47, 0.6) 26%,
+    rgba(224, 69, 154, 0.65) 42%,
+    rgba(139, 63, 232, 0.7) 58%,
+    rgba(59, 91, 255, 0.65) 74%,
+    rgba(22, 200, 240, 0.55) 88%,
+    transparent 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
 .surface-ivory { background: #FDFCFA; }
 .surface-ivory-warm { background: linear-gradient(180deg, #FDFCFA 0%, #F9F7F2 100%); }
 .surface-ivory-deep { background: #F9F7F2; }
@@ -317,6 +427,12 @@
 .bloom-gold { background: radial-gradient(circle, rgba(217, 184, 124, 0.55), transparent 70%); }
 .bloom-aurora { background: radial-gradient(circle, rgba(95, 200, 232, 0.42), transparent 70%); }
 
+/* Spectrum blooms — used to add depth on top of .surface-spectrum. */
+.bloom-ember { background: radial-gradient(circle, rgba(255, 138, 43, 0.45), transparent 70%); }
+.bloom-magenta { background: radial-gradient(circle, rgba(224, 69, 154, 0.45), transparent 70%); }
+.bloom-violet { background: radial-gradient(circle, rgba(139, 63, 232, 0.50), transparent 70%); }
+.bloom-azure { background: radial-gradient(circle, rgba(22, 200, 240, 0.40), transparent 70%); }
+
 /* Hairline separators with a fade at both ends */
 .rule-fade {
   height: 1px;
@@ -327,6 +443,19 @@
   height: 1px;
   border: 0;
   background: linear-gradient(90deg, transparent, rgba(217, 184, 124, 0.28) 18%, rgba(217, 184, 124, 0.28) 82%, transparent);
+}
+
+.rule-spectrum {
+  height: 1px;
+  border: 0;
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(255, 138, 43, 0.4) 16%,
+    rgba(224, 69, 154, 0.45) 38%,
+    rgba(139, 63, 232, 0.5) 56%,
+    rgba(59, 91, 255, 0.45) 76%,
+    rgba(22, 200, 240, 0.4) 90%,
+    transparent);
 }
 
 /* ============================================================================
@@ -772,8 +901,11 @@
   position: relative;
   border-radius: 1.25rem;
   overflow: hidden;
-  border: 1px solid rgba(232, 211, 167, 0.22);
-  box-shadow: 0 40px 90px -40px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+  border: 1px solid rgba(199, 155, 255, 0.24);
+  box-shadow:
+    0 40px 90px -40px rgba(0, 0, 0, 0.75),
+    0 0 0 1px rgba(255, 255, 255, 0.04) inset,
+    0 0 60px -20px rgba(139, 63, 232, 0.35);
   background: #0A1017;
 }
 .frame-banner img { display: block; width: 100%; height: auto; }
@@ -781,7 +913,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(115deg, transparent 40%, rgba(232, 211, 167, 0.12) 50%, transparent 60%);
+  background: linear-gradient(115deg, transparent 38%, rgba(255, 176, 103, 0.10) 46%, rgba(199, 155, 255, 0.14) 52%, rgba(111, 220, 247, 0.10) 58%, transparent 66%);
   transform: translateX(-100%);
   transition: transform 1400ms var(--e-glide);
   pointer-events: none;
@@ -1221,7 +1353,7 @@
   width: 0.4375rem;
   height: 0.4375rem;
   border-radius: 999px;
-  background: #7FD3AE;
+  background: #6FDCF7;
   flex-shrink: 0;
   display: inline-block;
 }
@@ -1230,7 +1362,7 @@
   position: absolute;
   inset: -4px;
   border-radius: 999px;
-  border: 1px solid rgba(127, 211, 174, 0.55);
+  border: 1px solid rgba(111, 220, 247, 0.55);
   animation: pulseRing 2.8s var(--e-glide) infinite;
 }
 @keyframes pulseRing {

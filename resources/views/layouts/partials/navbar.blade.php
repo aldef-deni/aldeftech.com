@@ -18,14 +18,14 @@
      class="nav-shell nav-over-dark">
 
     <div class="shell">
-        <div class="flex items-center justify-between h-[4.75rem] lg:h-[5.5rem]">
+        <div class="flex items-center justify-between h-[5.5rem] lg:h-[6.5rem]">
 
             {{-- Wordmark --}}
             <a href="{{ route('home') }}" class="shrink-0 group flex items-center" aria-label="{{ config('app.name') }} — Beranda">
                 <img src="{{ asset('images/logo.png') }}"
                      alt="{{ config('app.name') }}"
-                     width="220" height="80"
-                     class="h-9 sm:h-10 lg:h-11 w-auto transition-transform duration-700 ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-[1.03]">
+                     width="320" height="116"
+                     class="h-12 sm:h-14 lg:h-16 w-auto transition-transform duration-700 ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-[1.03]">
             </a>
 
             {{-- Desktop rail --}}
@@ -80,7 +80,7 @@
          x-transition:leave-start="opacity-100"
          x-transition:leave-end="opacity-0"
          @click="open = false"
-         class="lg:hidden fixed inset-0 top-[4.75rem] bg-ink-950/50 backdrop-blur-sm"
+         class="lg:hidden fixed inset-0 top-[5.5rem] bg-ink-950/50 backdrop-blur-sm"
          aria-hidden="true"></div>
 
     <div id="mobile-drawer"
@@ -93,7 +93,7 @@
          x-transition:leave-end="opacity-0 -translate-y-3"
          class="lg:hidden absolute inset-x-0 top-full mx-3 mb-3 rounded-2xl border border-line bg-ivory-50/97 backdrop-blur-2xl shadow-[0_40px_80px_-32px_rgba(13,20,32,0.45)] overflow-hidden">
 
-        <div class="max-h-[calc(100dvh-7rem)] overflow-y-auto no-scrollbar p-3">
+        <div class="max-h-[calc(100dvh-8rem)] overflow-y-auto no-scrollbar p-3">
             <div class="space-y-0.5">
                 @foreach($navLinks as $link)
                     <a href="{{ route($link['route']) }}" @click="open = false"

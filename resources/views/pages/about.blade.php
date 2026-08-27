@@ -49,14 +49,15 @@
     eyebrow="Tentang Kami"
     :title="$aboutTitle"
     :lead="$aboutSubtitle"
+    :edge="false"
     :breadcrumbs="[['label' => 'Tentang']]">
-    <p class="font-serif-accent italic text-xl sm:text-2xl text-gold-300">
+    <p class="font-serif-accent italic text-xl sm:text-2xl accent-spectrum">
         “Mitra Transformasi Digital Korporasi Anda”
     </p>
 </x-page-hero>
 
 {{-- ── Brand plate ──────────────────────────────────────────────────────── --}}
-<section class="surface-obsidian-deep relative overflow-hidden pb-16 lg:pb-24">
+<section class="surface-spectrum spectrum-edge relative overflow-hidden pb-16 lg:pb-24">
     <div class="shell relative z-10">
         <figure class="max-w-4xl mx-auto frame-banner reveal-scale" data-tilt="2.5">
             <img src="{{ asset('images/aldef-tech-banner.png') }}"

@@ -30,8 +30,8 @@
             <div class="col-span-2 lg:col-span-4">
                 <a href="{{ route('home') }}" class="inline-block group" aria-label="{{ config('app.name') }}">
                     <img src="{{ asset('images/logo.png') }}" alt="{{ config('app.name') }}"
-                         width="220" height="80"
-                         class="h-12 lg:h-14 w-auto transition-transform duration-700 ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-[1.03]">
+                         width="440" height="160"
+                         class="h-20 sm:h-24 lg:h-28 w-auto transition-transform duration-700 ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-[1.03]">
                 </a>
 
                 <p class="mt-6 text-sm leading-relaxed text-graphite-400 max-w-sm">
@@ -122,12 +122,9 @@
         <hr class="rule-fade-dark">
 
         {{-- Lower --}}
-        <div class="py-7 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+        <div class="py-7 text-center">
             <p class="text-xs text-graphite-500">
                 © {{ date('Y') }} {{ config('app.name', 'Aldef Tech') }}. Seluruh hak cipta dilindungi.
-            </p>
-            <p class="text-xs text-graphite-500">
-                Dibangun di Indonesia · <span class="text-gold-400">Software Engineering &amp; AI</span>
             </p>
         </div>
     </div>

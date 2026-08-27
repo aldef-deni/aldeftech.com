@@ -44,19 +44,21 @@
 {{-- ══════════════════════════════════════════════════════════════════════
      HERO
      ══════════════════════════════════════════════════════════════════ --}}
-<section class="surface-obsidian relative overflow-hidden pt-32 pb-0 lg:pt-44">
+<section class="surface-spectrum spectrum-edge relative overflow-hidden pt-36 pb-0 lg:pt-48">
     <div class="absolute inset-0 veil-grid pointer-events-none" aria-hidden="true"></div>
-    <div class="bloom bloom-gold w-[40rem] h-[40rem] -top-56 -left-40" aria-hidden="true"></div>
-    <div class="bloom bloom-aurora w-[34rem] h-[34rem] top-20 -right-40" aria-hidden="true"></div>
+    <div class="bloom bloom-ember w-[30rem] h-[30rem] -top-64 -left-48 opacity-30" aria-hidden="true"></div>
+    <div class="bloom bloom-magenta w-[26rem] h-[26rem] -top-60 left-[28%] opacity-25" aria-hidden="true"></div>
+    <div class="bloom bloom-violet w-[34rem] h-[34rem] -top-60 right-[2%] opacity-35" aria-hidden="true"></div>
+    <div class="bloom bloom-azure w-[30rem] h-[30rem] top-10 -right-52 opacity-28" aria-hidden="true"></div>
 
     <div class="shell relative z-10">
         <div class="max-w-4xl mx-auto text-center">
 
-            <p class="eyebrow eyebrow-center eyebrow-light reveal">Software Engineering · AI · Automation</p>
+            <p class="eyebrow eyebrow-center eyebrow-spectrum reveal">Software Engineering · AI · Automation</p>
 
             <h1 class="mt-7 text-[2.5rem] leading-[1.08] sm:text-5xl lg:text-[4rem] text-white reveal reveal-d1">
                 Sistem digital yang benar-benar
-                <span class="accent-serif accent-champagne">menggerakkan</span>
+                <span class="accent-serif accent-spectrum">menggerakkan</span>
                 bisnis Anda.
             </h1>
 
@@ -579,17 +581,20 @@
 {{-- ══════════════════════════════════════════════════════════════════════
      CLOSING CTA
      ══════════════════════════════════════════════════════════════════ --}}
-<section id="kontak" class="surface-obsidian-deep relative overflow-hidden">
+<section id="kontak" class="surface-spectrum-deep relative overflow-hidden">
     <div class="absolute inset-0 veil-grid pointer-events-none" aria-hidden="true"></div>
-    <div class="bloom bloom-gold w-[42rem] h-[42rem] -bottom-72 left-1/2 -translate-x-1/2" aria-hidden="true"></div>
+    <div class="bloom bloom-ember w-[26rem] h-[26rem] -bottom-60 left-[2%] opacity-28" aria-hidden="true"></div>
+    <div class="bloom bloom-magenta w-[28rem] h-[28rem] -bottom-68 left-[32%] opacity-28" aria-hidden="true"></div>
+    <div class="bloom bloom-violet w-[32rem] h-[32rem] -bottom-72 right-[20%] opacity-36" aria-hidden="true"></div>
+    <div class="bloom bloom-azure w-[26rem] h-[26rem] -bottom-56 -right-32 opacity-25" aria-hidden="true"></div>
 
     <div class="shell relative z-10 py-20 lg:py-28">
         <div class="max-w-3xl mx-auto text-center">
-            <p class="eyebrow eyebrow-center eyebrow-light reveal">Langkah Berikutnya</p>
+            <p class="eyebrow eyebrow-center eyebrow-spectrum reveal">Langkah Berikutnya</p>
 
             <h2 class="mt-7 text-3xl sm:text-4xl lg:text-[3rem] leading-[1.12] text-white reveal reveal-d1">
                 Ceritakan persoalannya.
-                Kami bantu <span class="accent-serif accent-champagne">petakan</span> solusinya.
+                Kami bantu <span class="accent-serif accent-spectrum">petakan</span> solusinya.
             </h2>
 
             <p class="mt-6 text-base lg:text-lg leading-relaxed text-graphite-300 reveal reveal-d2">
