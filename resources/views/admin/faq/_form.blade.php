@@ -57,4 +57,14 @@
             </div>
         </div>
     </div>
+
+    <div class="col-12 col-lg-8">
+        <x-admin.form.translation
+            :model="$faq"
+            :fields="[
+                'question' => ['label' => 'Pertanyaan (English)', 'type' => 'textarea', 'rows' => 2],
+                'answer'   => ['label' => 'Jawaban (English)', 'type' => 'textarea', 'rows' => 8],
+                'category' => ['label' => 'Kategori (English)', 'type' => 'text'],
+            ]" />
+    </div>
 </div>

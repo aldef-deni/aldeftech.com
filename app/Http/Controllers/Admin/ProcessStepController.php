@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Admin\Concerns\SavesTranslations;
 use App\Http\Controllers\Controller;
 use App\Models\ProcessStep;
 use Illuminate\Http\Request;
 
 class ProcessStepController extends Controller
 {
+    use SavesTranslations;
+
     public function index()
     {
         $steps = ProcessStep::ordered()->get();
@@ -32,7 +35,7 @@ class ProcessStepController extends Controller
 
         $validated['is_published'] = $request->boolean('is_published');
 
-        ProcessStep::create($validated);
+        $this->saveTranslations($request, ProcessStep::create($validated));
 
         return redirect()->route('admin.process-steps.index')->with('success', 'Process step created successfully.');
     }
@@ -55,6 +58,7 @@ class ProcessStepController extends Controller
         $validated['is_published'] = $request->boolean('is_published');
 
         $processStep->update($validated);
+        $this->saveTranslations($request, $processStep);
 
         return redirect()->route('admin.process-steps.index')->with('success', 'Process step updated successfully.');
     }

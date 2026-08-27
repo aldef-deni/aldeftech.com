@@ -3,13 +3,17 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Concerns\HasTranslations;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
 class BlogPost extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, HasTranslations;
+
+    /** Fields served per locale; see HasTranslations. */
+    protected array $translatable = ['title', 'excerpt', 'content'];
 
     protected $fillable = [
         'title', 'slug', 'excerpt', 'content', 'featured_image',

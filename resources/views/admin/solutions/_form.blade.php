@@ -26,6 +26,15 @@
             </div>
         </div>
 
+        <x-admin.form.translation
+            :model="$solution"
+            :fields="[
+                'title'             => ['label' => 'Judul (English)', 'type' => 'text'],
+                'short_description' => ['label' => 'Deskripsi Singkat (English)', 'type' => 'textarea', 'rows' => 3],
+                'description'       => ['label' => 'Deskripsi Lengkap (English)', 'type' => 'textarea', 'rows' => 6],
+                'features'          => ['label' => 'Poin (English)', 'type' => 'list'],
+            ]" />
+
         <div class="card">
             <div class="card-header"><h5 class="card-title mb-0">SEO</h5></div>
             <div class="card-body">

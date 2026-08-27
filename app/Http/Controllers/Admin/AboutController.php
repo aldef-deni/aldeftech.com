@@ -34,7 +34,16 @@ class AboutController extends Controller
                 $value = json_encode($value);
             }
             SiteSetting::set($field, $value, 'textarea', 'about');
+
+            // English copy lives in the row's translations JSON, keyed on 'value'.
+            $english = $request->input("en.{$field}");
+            if ($field !== 'about_values' && ($setting = SiteSetting::where('key', $field)->first())) {
+                $setting->setTranslations('en', ['value' => $english]);
+                $setting->save();
+            }
         }
+
+        SiteSetting::clearCache();
 
         return redirect()->route('admin.about.edit')->with('success', 'About page updated successfully.');
     }

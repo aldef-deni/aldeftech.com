@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Admin\Concerns\SavesTranslations;
 use App\Http\Controllers\Controller;
 use App\Models\Service;
 use App\Models\ActivityLog;
@@ -9,6 +10,8 @@ use Illuminate\Http\Request;
 
 class ServiceController extends Controller
 {
+    use SavesTranslations;
+
     public function index()
     {
         $services = Service::ordered()->get();
@@ -39,6 +42,7 @@ class ServiceController extends Controller
         $validated['is_published'] = $request->boolean('is_published');
 
         $service = Service::create($validated);
+        $this->saveTranslations($request, $service);
         ActivityLog::log('service.created', "Created service \"{$service->title}\"", $service);
 
         return redirect()->route('admin.services.index')->with('success', 'Service created successfully.');
@@ -68,6 +72,7 @@ class ServiceController extends Controller
         $validated['is_published'] = $request->boolean('is_published');
 
         $service->update($validated);
+        $this->saveTranslations($request, $service);
         ActivityLog::log('service.updated', "Updated service \"{$service->title}\"", $service);
 
         return redirect()->route('admin.services.index')->with('success', 'Service updated successfully.');

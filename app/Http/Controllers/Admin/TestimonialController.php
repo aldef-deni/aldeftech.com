@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Admin\Concerns\SavesTranslations;
 use App\Http\Controllers\Controller;
 use App\Models\Testimonial;
 use App\Models\ActivityLog;
@@ -9,6 +10,8 @@ use Illuminate\Http\Request;
 
 class TestimonialController extends Controller
 {
+    use SavesTranslations;
+
     public function index()
     {
         $testimonials = Testimonial::ordered()->get();
@@ -36,6 +39,7 @@ class TestimonialController extends Controller
         $validated['is_published'] = $request->boolean('is_published');
 
         $testimonial = Testimonial::create($validated);
+        $this->saveTranslations($request, $testimonial);
         ActivityLog::log('testimonial.created', "Created testimonial from \"{$testimonial->client_name}\"", $testimonial);
 
         return redirect()->route('admin.testimonials.index')->with('success', 'Testimonial created successfully.');
@@ -62,6 +66,7 @@ class TestimonialController extends Controller
         $validated['is_published'] = $request->boolean('is_published');
 
         $testimonial->update($validated);
+        $this->saveTranslations($request, $testimonial);
         ActivityLog::log('testimonial.updated', "Updated testimonial from \"{$testimonial->client_name}\"", $testimonial);
 
         return redirect()->route('admin.testimonials.index')->with('success', 'Testimonial updated successfully.');

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Admin\Concerns\SavesTranslations;
 use App\Http\Controllers\Controller;
 use App\Models\Faq;
 use App\Models\ActivityLog;
@@ -9,6 +10,8 @@ use Illuminate\Http\Request;
 
 class FaqController extends Controller
 {
+    use SavesTranslations;
+
     public function index()
     {
         $faqs = Faq::ordered()->get();
@@ -33,6 +36,7 @@ class FaqController extends Controller
         $validated['is_published'] = $request->boolean('is_published');
 
         $faq = Faq::create($validated);
+        $this->saveTranslations($request, $faq);
         ActivityLog::log('faq.created', "Created FAQ: \"{$faq->question}\"", $faq);
 
         return redirect()->route('admin.faq.index')->with('success', 'FAQ created successfully.');
@@ -56,6 +60,7 @@ class FaqController extends Controller
         $validated['is_published'] = $request->boolean('is_published');
 
         $faq->update($validated);
+        $this->saveTranslations($request, $faq);
         ActivityLog::log('faq.updated', "Updated FAQ: \"{$faq->question}\"", $faq);
 
         return redirect()->route('admin.faq.index')->with('success', 'FAQ updated successfully.');

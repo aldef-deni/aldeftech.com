@@ -3,11 +3,15 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Concerns\HasTranslations;
 use Illuminate\Database\Eloquent\Model;
 
 class ProcessStep extends Model
 {
-    use HasFactory;
+    use HasFactory, HasTranslations;
+
+    /** Fields served per locale; see HasTranslations. */
+    protected array $translatable = ['title', 'description'];
 
     protected $fillable = ['step_number', 'title', 'description', 'icon', 'sort_order', 'is_published'];
 

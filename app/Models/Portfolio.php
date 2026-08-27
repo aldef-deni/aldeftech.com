@@ -3,13 +3,17 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Concerns\HasTranslations;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
 class Portfolio extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, HasTranslations;
+
+    /** Fields served per locale; see HasTranslations. */
+    protected array $translatable = ['title', 'short_description', 'description', 'challenge', 'approach', 'solution', 'results'];
 
     protected $fillable = [
         'title', 'slug', 'short_description', 'description',

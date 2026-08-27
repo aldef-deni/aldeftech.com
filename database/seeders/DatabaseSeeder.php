@@ -46,6 +46,7 @@ class DatabaseSeeder extends Seeder
             MarketingPainPointSeeder::class,
             MarketingKeywordSeeder::class,
             MarketingContentPillarSeeder::class,
+            EnglishTranslationSeeder::class,
         ]);
     }
 

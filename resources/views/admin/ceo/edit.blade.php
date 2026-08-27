@@ -44,6 +44,16 @@
                         placeholder="Latar belakang, pengalaman, dan fokus keahlian" />
                 </div>
             </div>
+        <x-admin.form.translation
+            :model="$profile"
+            :fields="[
+                'position'   => ['label' => 'Jabatan (English)', 'type' => 'text'],
+                'short_bio'  => ['label' => 'Bio Singkat (English)', 'type' => 'textarea', 'rows' => 4],
+                'full_bio'   => ['label' => 'Bio Lengkap (English)', 'type' => 'textarea', 'rows' => 8],
+                'skills'     => ['label' => 'Bidang Keahlian (English)', 'type' => 'list'],
+                'experience' => ['label' => 'Pengalaman (English)', 'type' => 'list'],
+            ]" />
+
 
             <div class="card">
                 <div class="card-header"><h5 class="card-title mb-0">Kontak &amp; Tautan</h5></div>

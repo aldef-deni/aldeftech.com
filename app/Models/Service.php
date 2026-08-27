@@ -3,12 +3,16 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Concerns\HasTranslations;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 class Service extends Model
 {
-    use HasFactory;
+    use HasFactory, HasTranslations;
+
+    /** Fields served per locale; see HasTranslations. */
+    protected array $translatable = ['title', 'short_description', 'description', 'features'];
 
     protected $fillable = [
         'title', 'slug', 'short_description', 'description',

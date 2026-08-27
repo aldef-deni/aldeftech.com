@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Admin\Concerns\SavesTranslations;
 use App\Http\Controllers\Controller;
 use App\Models\Solution;
 use App\Models\ActivityLog;
@@ -9,6 +10,8 @@ use Illuminate\Http\Request;
 
 class SolutionController extends Controller
 {
+    use SavesTranslations;
+
     public function index()
     {
         $solutions = Solution::ordered()->get();
@@ -39,6 +42,7 @@ class SolutionController extends Controller
         $validated['is_published'] = $request->boolean('is_published');
 
         $solution = Solution::create($validated);
+        $this->saveTranslations($request, $solution);
         ActivityLog::log('solution.created', "Created solution \"{$solution->title}\"", $solution);
 
         return redirect()->route('admin.solutions.index')->with('success', 'Solution created successfully.');
@@ -68,6 +72,7 @@ class SolutionController extends Controller
         $validated['is_published'] = $request->boolean('is_published');
 
         $solution->update($validated);
+        $this->saveTranslations($request, $solution);
         ActivityLog::log('solution.updated', "Updated solution \"{$solution->title}\"", $solution);
 
         return redirect()->route('admin.solutions.index')->with('success', 'Solution updated successfully.');

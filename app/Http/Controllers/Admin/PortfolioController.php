@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Admin\Concerns\SavesTranslations;
 use App\Http\Controllers\Controller;
 use App\Models\Portfolio;
 use App\Models\PortfolioCategory;
@@ -12,6 +13,8 @@ use Illuminate\Support\Str;
 
 class PortfolioController extends Controller
 {
+    use SavesTranslations;
+
     public function index()
     {
         $portfolios = Portfolio::with('category')->ordered()->get();
@@ -60,6 +63,7 @@ class PortfolioController extends Controller
         $validated['published_at'] = $request->input('published_at') ?? now();
 
         $portfolio = Portfolio::create($validated);
+        $this->saveTranslations($request, $portfolio);
 
         // Handle gallery images
         if ($images = $request->input('images')) {
@@ -116,6 +120,7 @@ class PortfolioController extends Controller
         $validated['is_published'] = $request->boolean('is_published');
 
         $portfolio->update($validated);
+        $this->saveTranslations($request, $portfolio);
 
         // Handle gallery images
         if ($images = $request->input('images')) {

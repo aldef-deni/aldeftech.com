@@ -25,6 +25,13 @@
                     help="Maksimal 2000 karakter. Kutipan pendek dan spesifik lebih meyakinkan." />
             </div>
         </div>
+
+        <x-admin.form.translation
+            :model="$testimonial"
+            :fields="[
+                'position'    => ['label' => 'Jabatan (English)', 'type' => 'text'],
+                'testimonial' => ['label' => 'Isi Testimoni (English)', 'type' => 'textarea', 'rows' => 6],
+            ]" />
     </div>
 
     <div class="col-12 col-lg-4">

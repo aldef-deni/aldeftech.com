@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Admin\Concerns\SavesTranslations;
 use App\Http\Controllers\Controller;
 use App\Models\CeoProfile;
 use Illuminate\Http\Request;
 
 class CeoProfileController extends Controller
 {
+    use SavesTranslations;
+
     public function edit()
     {
         $profile = CeoProfile::firstOrCreate([], [
@@ -46,8 +49,10 @@ class CeoProfileController extends Controller
         if ($profile) {
             $profile->update($validated);
         } else {
-            CeoProfile::create($validated);
+            $profile = CeoProfile::create($validated);
         }
+
+        $this->saveTranslations($request, $profile);
 
         return redirect()->route('admin.ceo.edit')->with('success', 'CEO profile updated successfully.');
     }
