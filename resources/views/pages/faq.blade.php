@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @php
-    $pageTitle = 'Pertanyaan yang Sering Diajukan — Aldef Tech';
-    $metaDescription = 'Jawaban atas pertanyaan umum seputar proses kerja, durasi pengerjaan, tech stack, kepemilikan source code, keamanan data, dan dukungan pasca-rilis Aldef Tech.';
+    $pageTitle = __('pages.faq.meta_title');
+    $metaDescription = __('pages.faq.meta_description');
 @endphp
 
 @push('schema')
@@ -22,11 +22,11 @@
 @section('content')
 
 <x-page-hero
-    eyebrow="FAQ"
-    title="Pertanyaan yang paling sering"
-    accent="kami terima."
-    lead="Kalau yang Anda cari belum ada di sini, kirim saja pertanyaannya — biasanya dibalas di hari yang sama."
-    :breadcrumbs="[['label' => 'FAQ']]" />
+    :eyebrow="__('pages.faq.eyebrow')"
+    :title="__('pages.faq.title')"
+    :accent="__('pages.faq.accent')"
+    :lead="__('pages.faq.lead')"
+    :breadcrumbs="[['label' => __('site.nav.faq')]]" />
 
 {{-- ── Accordion ────────────────────────────────────────────────────────── --}}
 <section class="section-padding surface-ivory relative">
@@ -40,13 +40,13 @@
             {{-- Category rail --}}
             <aside class="lg:col-span-3">
                 <div class="lg:sticky lg:top-28">
-                    <p class="eyebrow mb-5 reveal">Kategori</p>
+                    <p class="eyebrow mb-5 reveal">{{ __('pages.faq.categories') }}</p>
 
                     <div class="flex lg:flex-col gap-2 overflow-x-auto no-scrollbar pb-1 reveal">
                         <button type="button" @click="cat = 'all'; open = null"
                                 class="shrink-0 lg:shrink text-left px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-500 ease-[cubic-bezier(.22,1,.36,1)] border"
                                 :class="cat === 'all' ? 'bg-graphite-900 border-graphite-900 text-ivory-100' : 'bg-white border-line text-graphite-600 hover:border-gold-300 hover:text-graphite-900'">
-                            Semua
+                            {{ __('site.common.all') }}
                         </button>
                         @foreach($categories as $category)
                         <button type="button" @click="cat = @js($category); open = null"
@@ -58,13 +58,13 @@
                     </div>
 
                     <div class="hidden lg:block mt-8 card-lux card-lux-featured p-6 reveal">
-                        <p class="text-sm font-display font-semibold text-graphite-900">Belum terjawab?</p>
+                        <p class="text-sm font-display font-semibold text-graphite-900">{{ __('pages.faq.unanswered_title') }}</p>
                         <p class="mt-2 text-[0.8125rem] leading-relaxed text-graphite-600">
-                            Kirim pertanyaan spesifik Anda, kami balas langsung.
+                            {{ __('pages.faq.unanswered_body') }}
                         </p>
                         <a href="{{ \App\Services\WhatsAppService::getUrl() }}" target="_blank" rel="noopener"
                            class="btn btn-primary btn-sm btn-block mt-5">
-                            <span>Tanya via WhatsApp</span>
+                            <span>{{ __('pages.faq.ask_whatsapp') }}</span>
                         </a>
                     </div>
                 </div>
@@ -104,11 +104,11 @@
 </section>
 
 <x-cta-band
-    eyebrow="Masih Ragu?"
-    title="Tanyakan yang paling"
-    accent="mengganjal."
-    lead="Tidak perlu menunggu sampai semuanya jelas. Justru pertanyaan mentah yang paling membantu kami memahami kebutuhan Anda."
-    primaryLabel="Tanya via WhatsApp"
-    secondaryLabel="Kirim pertanyaan tertulis" />
+    :eyebrow="__('pages.faq.closing.eyebrow')"
+    :title="__('pages.faq.closing.title')"
+    :accent="__('pages.faq.closing.accent')"
+    :lead="__('pages.faq.closing.lead')"
+    :primary-label="__('pages.faq.closing.primary')"
+    :secondary-label="__('pages.faq.closing.secondary')" />
 
 @endsection

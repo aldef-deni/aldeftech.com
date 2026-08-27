@@ -1,12 +1,12 @@
 @php
     $navLinks = [
-        ['route' => 'home',      'label' => 'Beranda'],
-        ['route' => 'services',  'label' => 'Layanan'],
-        ['route' => 'solutions', 'label' => 'Solusi'],
-        ['route' => 'portfolio', 'label' => 'Portofolio'],
-        ['route' => 'about',     'label' => 'Tentang'],
-        ['route' => 'blog',      'label' => 'Insight'],
-        ['route' => 'faq',       'label' => 'FAQ'],
+        ['route' => 'home',      'label' => __('site.nav.home')],
+        ['route' => 'services',  'label' => __('site.nav.services')],
+        ['route' => 'solutions', 'label' => __('site.nav.solutions')],
+        ['route' => 'portfolio', 'label' => __('site.nav.portfolio')],
+        ['route' => 'about',     'label' => __('site.nav.about')],
+        ['route' => 'blog',      'label' => __('site.nav.blog')],
+        ['route' => 'faq',       'label' => __('site.nav.faq')],
     ];
     $waUrl = \App\Services\WhatsAppService::getUrl();
 @endphp
@@ -21,7 +21,8 @@
         <div class="flex items-center justify-between h-[5.5rem] lg:h-[6.5rem]">
 
             {{-- Wordmark --}}
-            <a href="{{ route('home') }}" class="shrink-0 group flex items-center" aria-label="{{ config('app.name') }} — Beranda">
+            <a href="{{ route('home') }}" class="shrink-0 group flex items-center"
+               aria-label="{{ __('site.nav.to_home', ['name' => config('app.name')]) }}">
                 <img src="{{ asset('images/logo.png') }}"
                      alt="{{ config('app.name') }}"
                      width="320" height="116"
@@ -29,7 +30,7 @@
             </a>
 
             {{-- Desktop rail --}}
-            <div class="nav-rail" role="navigation" aria-label="Navigasi utama">
+            <div class="nav-rail" role="navigation" aria-label="{{ __('site.nav.menu') }}">
                 @foreach($navLinks as $link)
                     <a href="{{ route($link['route']) }}"
                        class="nav-link {{ request()->routeIs($link['route'].'*') ? 'nav-link-active' : '' }}"
@@ -43,12 +44,16 @@
             <div class="flex items-center gap-2 sm:gap-3">
                 <a href="{{ route('contact') }}"
                    class="hidden xl:inline-flex nav-link {{ request()->routeIs('contact*') ? 'nav-link-active' : '' }}">
-                    Kontak
+                    {{ __('site.nav.contact') }}
                 </a>
 
+                <div class="hidden sm:block">
+                    <x-language-switcher />
+                </div>
+
                 <a href="{{ $waUrl }}" target="_blank" rel="noopener"
-                   class="hidden sm:inline-flex btn btn-primary btn-sm magnetic" data-magnetic="0.12">
-                    <span>Konsultasi</span>
+                   class="hidden lg:inline-flex btn btn-primary btn-sm magnetic" data-magnetic="0.12">
+                    <span>{{ __('site.cta.consult') }}</span>
                     <svg class="btn-arrow w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
                     </svg>
@@ -59,7 +64,7 @@
                         class="nav-burger lg:hidden"
                         :aria-expanded="open.toString()"
                         aria-controls="mobile-drawer"
-                        aria-label="Buka menu">
+                        aria-label="{{ __('site.nav.open_menu') }}">
                     <svg x-show="!open" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                         <path stroke-linecap="round" stroke-width="1.75" d="M4 7h16M4 12h16M4 17h10"/>
                     </svg>
@@ -106,7 +111,7 @@
                 @endforeach
                 <a href="{{ route('contact') }}" @click="open = false"
                    class="nav-row {{ request()->routeIs('contact*') ? 'nav-row-active' : '' }}">
-                    <span>Kontak</span>
+                    <span>{{ __('site.nav.contact') }}</span>
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M9 5l7 7-7 7"/>
                     </svg>
@@ -115,15 +120,17 @@
 
             <hr class="rule-fade my-3">
 
-            <div class="px-1.5 pb-1.5 space-y-3">
+            <div class="px-1.5 pb-1.5 space-y-4">
+                <x-language-switcher variant="mobile" />
+
                 <a href="{{ $waUrl }}" target="_blank" rel="noopener" class="btn btn-primary btn-block">
-                    <span>Konsultasi Proyek Gratis</span>
+                    <span>{{ __('site.cta.consult_free') }}</span>
                     <svg class="btn-arrow w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
                     </svg>
                 </a>
                 <p class="text-center text-xs text-graphite-400 leading-relaxed">
-                    Respons rata-rata &lt; 2 jam pada hari kerja
+                    {{ __('site.cta.response_short') }}
                 </p>
             </div>
         </div>

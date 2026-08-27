@@ -3,42 +3,24 @@
 @php
     use App\Models\SiteSetting;
 
-    $pageTitle = 'Tentang Aldef Tech — Mitra Transformasi Digital Korporasi';
-    $metaDescription = SiteSetting::get('about_subtitle', 'Aldef Tech adalah mitra teknologi yang merancang dan membangun sistem digital, platform SaaS, dan automasi AI untuk perusahaan di Indonesia.');
+    $pageTitle = __('pages.about.meta_title');
+    $metaDescription = app()->isLocale('id')
+        ? SiteSetting::get('about_subtitle', __('pages.about.meta_description'))
+        : __('pages.about.meta_description');
 
-    $aboutTitle    = SiteSetting::get('about_title', 'Tentang Aldef Tech');
+    $aboutTitle    = SiteSetting::get('about_title', __('pages.about.title_fallback'));
     $aboutSubtitle = SiteSetting::get('about_subtitle');
     $mission       = SiteSetting::get('about_mission');
     $vision        = SiteSetting::get('about_vision');
 
     $values = [
-        [
-            'icon'  => 'compass',
-            'title' => 'Jujur soal ruang lingkup',
-            'body'  => 'Kami menolak pekerjaan yang tidak yakin bisa kami selesaikan dengan baik, dan mengatakannya sejak awal — bukan setelah kontrak ditandatangani.',
-        ],
-        [
-            'icon'  => 'blueprint',
-            'title' => 'Sederhana yang bertahan',
-            'body'  => 'Solusi paling sederhana yang menyelesaikan masalah hampir selalu lebih baik daripada yang paling canggih. Kompleksitas adalah biaya, bukan prestasi.',
-        ],
-        [
-            'icon'  => 'lock',
-            'title' => 'Tanpa mengunci klien',
-            'body'  => 'Kode, basis data, dan dokumentasi menjadi milik Anda. Jika suatu saat ingin pindah tim, kami pastikan transisinya mudah.',
-        ],
-        [
-            'icon'  => 'clock',
-            'title' => 'Menghormati waktu Anda',
-            'body'  => 'Kabar buruk disampaikan lebih cepat daripada kabar baik. Anda tidak akan menunggu laporan untuk tahu ada yang meleset.',
-        ],
+        ['icon' => 'compass',   'key' => 'scope'],
+        ['icon' => 'blueprint', 'key' => 'simple'],
+        ['icon' => 'lock',      'key' => 'nolock'],
+        ['icon' => 'clock',     'key' => 'time'],
     ];
 
-    $timeline = [
-        ['year' => 'Fondasi',   'title' => 'Rekayasa perangkat lunak', 'body' => 'Berawal dari pengerjaan sistem internal perusahaan — sistem absensi, inventaris, dan operasional yang dipakai harian.'],
-        ['year' => 'Perluasan', 'title' => 'Platform & SaaS',          'body' => 'Merambah pembangunan platform multi-tenant, booking engine, POS omnichannel, dan sistem OTA untuk klien lintas industri.'],
-        ['year' => 'Hari ini',  'title' => 'AI & automasi',            'body' => 'Menggabungkan LLM, pemrosesan dokumen, dan automasi proses ke dalam sistem bisnis yang sudah berjalan.'],
-    ];
+    // Journey entries live in the language files.
 @endphp
 
 @section('content')
@@ -46,13 +28,13 @@
 {{-- The title is editable from the admin, so no accent clause is appended here:
      it would run on into whatever the admin typed. --}}
 <x-page-hero
-    eyebrow="Tentang Kami"
+    :eyebrow="__('pages.about.eyebrow')"
     :title="$aboutTitle"
     :lead="$aboutSubtitle"
     :edge="false"
-    :breadcrumbs="[['label' => 'Tentang']]">
+    :breadcrumbs="[['label' => __('site.nav.about')]]">
     <p class="font-serif-accent italic text-xl sm:text-2xl accent-spectrum">
-        “Mitra Transformasi Digital Korporasi Anda”
+        {{ __('site.footer.tagline') }}
     </p>
 </x-page-hero>
 
@@ -77,7 +59,7 @@
             @if($mission)
             <article class="card-lux reveal group p-8 lg:p-10">
                 <span class="icon-plate"><x-lux-icon name="target" /></span>
-                <h2 class="mt-6 text-2xl">Misi</h2>
+                <h2 class="mt-6 text-2xl">{{ __('pages.about.mission') }}</h2>
                 <p class="mt-4 text-[0.9375rem] leading-[1.8] text-graphite-600">{{ $mission }}</p>
             </article>
             @endif
@@ -85,7 +67,7 @@
             @if($vision)
             <article class="card-lux reveal group p-8 lg:p-10">
                 <span class="icon-plate"><x-lux-icon name="rocket" /></span>
-                <h2 class="mt-6 text-2xl">Visi</h2>
+                <h2 class="mt-6 text-2xl">{{ __('pages.about.vision') }}</h2>
                 <p class="mt-4 text-[0.9375rem] leading-[1.8] text-graphite-600">{{ $vision }}</p>
             </article>
             @endif
@@ -107,7 +89,7 @@
             </div>
 
             <div class="lg:col-span-7 reveal-right">
-                <p class="eyebrow">Pendiri</p>
+                <p class="eyebrow">{{ __('pages.about.founder') }}</p>
 
                 <h2 class="mt-5 text-3xl sm:text-4xl">{{ $ceoProfile->name }}</h2>
                 <p class="mt-2 text-sm text-gold-700 font-display font-semibold tracking-wide">{{ $ceoProfile->position }}</p>
@@ -124,7 +106,7 @@
 
                 @if(!empty($ceoProfile->skills))
                 <div class="mt-9">
-                    <p class="eyebrow mb-4">Bidang Keahlian</p>
+                    <p class="eyebrow mb-4">{{ __('pages.about.skills') }}</p>
                     <div class="flex flex-wrap gap-2">
                         @foreach((array) $ceoProfile->skills as $skill)
                             <span class="chip chip-neutral">{{ $skill }}</span>
@@ -135,7 +117,7 @@
 
                 @if(!empty($ceoProfile->experience))
                 <div class="mt-9">
-                    <p class="eyebrow mb-5">Pengalaman</p>
+                    <p class="eyebrow mb-5">{{ __('pages.about.experience') }}</p>
                     <ul class="space-y-3">
                         @foreach((array) $ceoProfile->experience as $exp)
                         <li class="feature-row">
@@ -169,9 +151,9 @@
 <section class="section-padding surface-ivory">
     <div class="shell">
         <header class="max-w-2xl mx-auto text-center reveal">
-            <p class="eyebrow eyebrow-center">Prinsip Kerja</p>
+            <p class="eyebrow eyebrow-center">{{ __('pages.about.values.eyebrow') }}</p>
             <h2 class="mt-5 text-3xl sm:text-4xl">
-                Empat hal yang tidak kami <span class="accent-serif accent-gold">tawar</span>.
+                {{ __('pages.about.values.title') }} <span class="accent-serif accent-gold">{{ __('pages.about.values.accent') }}</span>{{ __('pages.about.values.title_after') }}
             </h2>
         </header>
 
@@ -180,8 +162,8 @@
             <article class="card-lux reveal group p-7 lg:p-8 !flex-row items-start gap-5">
                 <span class="icon-plate"><x-lux-icon :name="$value['icon']" /></span>
                 <div class="min-w-0">
-                    <h3 class="text-lg">{{ $value['title'] }}</h3>
-                    <p class="mt-2.5 text-sm leading-relaxed text-graphite-600">{{ $value['body'] }}</p>
+                    <h3 class="text-lg">{{ __('pages.about.values.' . $value['key'] . '.title') }}</h3>
+                    <p class="mt-2.5 text-sm leading-relaxed text-graphite-600">{{ __('pages.about.values.' . $value['key'] . '.body') }}</p>
                 </div>
             </article>
             @endforeach
@@ -196,14 +178,14 @@
 
     <div class="shell relative z-10">
         <header class="max-w-2xl reveal">
-            <p class="eyebrow eyebrow-light">Perjalanan</p>
+            <p class="eyebrow eyebrow-light">{{ __('pages.about.journey.eyebrow') }}</p>
             <h2 class="mt-5 text-3xl sm:text-4xl text-white">
-                Dibangun dari pekerjaan nyata, bukan dari <span class="accent-serif accent-champagne">rencana bisnis.</span>
+                {{ __('pages.about.journey.title') }} <span class="accent-serif accent-champagne">{{ __('pages.about.journey.accent') }}</span>
             </h2>
         </header>
 
         <ol class="mt-12 lg:mt-16 grid grid-cols-1 md:grid-cols-3 gap-5 lg:gap-6" data-reveal-group="100">
-            @foreach($timeline as $item)
+            @foreach((array) __('pages.about.journey.items') as $item)
             <li class="card-obsidian reveal group p-7 lg:p-8">
                 <span class="chip chip-dark">{{ $item['year'] }}</span>
                 <h3 class="mt-5 text-lg text-white">{{ $item['title'] }}</h3>
@@ -215,9 +197,9 @@
 </section>
 
 <x-cta-band
-    eyebrow="Berkenalan"
-    title="Mari bicara sebelum"
-    accent="bicara harga."
-    lead="Kami lebih suka memahami persoalannya dulu. Kalau ternyata Anda tidak butuh sistem baru, kami akan bilang begitu." />
+    :eyebrow="__('pages.about.closing.eyebrow')"
+    :title="__('pages.about.closing.title')"
+    :accent="__('pages.about.closing.accent')"
+    :lead="__('pages.about.closing.lead')" />
 
 @endsection

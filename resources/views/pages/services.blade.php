@@ -3,16 +3,16 @@
 @section('content')
 
 <x-page-hero
-    eyebrow="Layanan"
-    title="Kapabilitas rekayasa untuk setiap tahap"
-    accent="pertumbuhan."
-    lead="Dari sistem internal yang merapikan operasional, hingga platform SaaS yang menjadi produk itu sendiri — semuanya dibangun dengan standar arsitektur yang sama.">
+    :eyebrow="__('pages.services.eyebrow')"
+    :title="__('pages.services.title')"
+    :accent="__('pages.services.accent')"
+    :lead="__('pages.services.lead')">
     <div class="flex flex-col sm:flex-row items-center justify-center gap-3.5">
         <a href="{{ \App\Services\WhatsAppService::getUrl() }}" target="_blank" rel="noopener" class="btn btn-primary w-full sm:w-auto">
-            <span>Diskusikan kebutuhan Anda</span>
+            <span>{{ __('pages.services.cta_discuss') }}</span>
             <svg class="btn-arrow w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
         </a>
-        <a href="{{ route('portfolio') }}" class="btn btn-ghost w-full sm:w-auto"><span>Lihat hasil kerja</span></a>
+        <a href="{{ route('portfolio') }}" class="btn btn-ghost w-full sm:w-auto"><span>{{ __('pages.services.cta_work') }}</span></a>
     </div>
 </x-page-hero>
 
@@ -54,7 +54,7 @@
                     @endif
 
                     @if(!empty($service->features))
-                    <p class="eyebrow {{ !empty($service->description) ? 'mt-7' : '' }} mb-5">Yang Anda dapatkan</p>
+                    <p class="eyebrow {{ !empty($service->description) ? 'mt-7' : '' }} mb-5">{{ __('pages.services.benefits') }}</p>
                     <ul class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3.5">
                         @foreach((array) $service->features as $feature)
                         <li class="feature-row">
@@ -72,7 +72,7 @@
             <div class="mt-8 pt-6 border-t border-line-soft">
                 <a href="{{ \App\Services\WhatsAppService::getProjectUrl($service->title) }}"
                    target="_blank" rel="noopener" class="link-arrow">
-                    <span>Konsultasikan layanan ini</span>
+                    <span>{{ __('pages.services.consult_this') }}</span>
                     <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                 </a>
             </div>
@@ -85,53 +85,34 @@
 <section class="section-padding surface-parchment border-y border-line">
     <div class="shell">
         <header class="max-w-2xl mx-auto text-center reveal">
-            <p class="eyebrow eyebrow-center">Model Kerja Sama</p>
+            <p class="eyebrow eyebrow-center">{{ __('pages.services.models.eyebrow') }}</p>
             <h2 class="mt-5 text-3xl sm:text-4xl">
-                Pilih bentuk kolaborasi yang paling <span class="accent-serif accent-gold">masuk akal</span>.
+                {{ __('pages.services.models.title') }} <span class="accent-serif accent-gold">{{ __('pages.services.models.accent') }}</span>{{ __('pages.services.models.title_after') }}
             </h2>
         </header>
 
         <div class="mt-12 lg:mt-16 grid grid-cols-1 md:grid-cols-3 gap-5 lg:gap-6" data-reveal-group="90">
             @foreach([
-                [
-                    'icon' => 'target',
-                    'name' => 'Proyek Terikat Ruang Lingkup',
-                    'best' => 'Kebutuhan sudah jelas',
-                    'body' => 'Ruang lingkup, jadwal, dan biaya disepakati di muka. Cocok ketika Anda sudah tahu persis sistem apa yang dibutuhkan.',
-                    'points' => ['Harga tetap, tanpa kejutan', 'Milestone dengan serah terima jelas', 'Garansi perbaikan pasca-rilis'],
-                ],
-                [
-                    'icon' => 'users',
-                    'name' => 'Tim Khusus (Dedicated)',
-                    'best' => 'Pengembangan berkelanjutan',
-                    'body' => 'Engineer yang bekerja khusus untuk Anda dengan ritme bulanan. Prioritas bisa berubah mengikuti kebutuhan bisnis.',
-                    'points' => ['Kapasitas yang dapat diprediksi', 'Prioritas fleksibel tiap sprint', 'Laporan progres mingguan'],
-                    'featured' => true,
-                ],
-                [
-                    'icon' => 'compass',
-                    'name' => 'Pendampingan Teknis',
-                    'best' => 'Sudah punya tim sendiri',
-                    'body' => 'Audit arsitektur, tinjauan kode, dan arahan teknis untuk tim internal Anda tanpa mengambil alih pekerjaan.',
-                    'points' => ['Audit arsitektur & keamanan', 'Peta jalan teknis', 'Pendampingan tim internal'],
-                ],
+                ['icon' => 'target',  'key' => 'fixed'],
+                ['icon' => 'users',   'key' => 'dedicated', 'featured' => true],
+                ['icon' => 'compass', 'key' => 'advisory'],
             ] as $model)
             <article class="card-lux reveal group p-7 lg:p-8 {{ !empty($model['featured']) ? 'card-lux-featured' : '' }}">
                 @if(!empty($model['featured']))
-                    <span class="chip self-start mb-5">Paling sering dipilih</span>
+                    <span class="chip self-start mb-5">{{ __('pages.services.models.popular') }}</span>
                 @else
-                    <span class="chip chip-neutral self-start mb-5">{{ $model['best'] }}</span>
+                    <span class="chip chip-neutral self-start mb-5">{{ __('pages.services.models.' . $model['key'] . '.best') }}</span>
                 @endif
 
                 <span class="icon-plate">
                     <x-lux-icon :name="$model['icon']" />
                 </span>
 
-                <h3 class="mt-5 text-lg lg:text-xl">{{ $model['name'] }}</h3>
-                <p class="mt-3 text-sm leading-relaxed text-graphite-600">{{ $model['body'] }}</p>
+                <h3 class="mt-5 text-lg lg:text-xl">{{ __('pages.services.models.' . $model['key'] . '.name') }}</h3>
+                <p class="mt-3 text-sm leading-relaxed text-graphite-600">{{ __('pages.services.models.' . $model['key'] . '.body') }}</p>
 
                 <ul class="mt-6 space-y-2.5">
-                    @foreach($model['points'] as $point)
+                    @foreach((array) __('pages.services.models.' . $model['key'] . '.points') as $point)
                     <li class="feature-row">
                         <span class="tick">
                             <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3.5" d="M5 13l4 4L19 7"/></svg>
@@ -145,15 +126,15 @@
         </div>
 
         <p class="mt-10 text-center text-sm text-graphite-500 reveal">
-            Belum yakin yang mana? Ceritakan situasinya — kami sarankan yang paling hemat untuk Anda.
+            {{ __('pages.services.models.note') }}
         </p>
     </div>
 </section>
 
 <x-cta-band
-    eyebrow="Mulai Percakapan"
-    title="Layanan mana yang paling"
-    accent="mendesak bagi Anda?"
-    lead="Sampaikan kendalanya. Kami balas dengan pendekatan konkret, bukan brosur." />
+    :eyebrow="__('pages.services.closing.eyebrow')"
+    :title="__('pages.services.closing.title')"
+    :accent="__('pages.services.closing.accent')"
+    :lead="__('pages.services.closing.lead')" />
 
 @endsection

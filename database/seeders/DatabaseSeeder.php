@@ -318,9 +318,9 @@ class DatabaseSeeder extends Seeder
             'position' => 'CEO & System/Application Developer',
             'short_bio' => 'Deni Afrizal adalah profesional IT yang memulai karier sebagai developer dan berkembang menjadi IT Project Manager. Kombinasi antara software engineering, system architecture, business process analysis, dan project management.',
             'full_bio' => "Deni Afrizal adalah profesional IT yang memulai karier sebagai developer dan berkembang menjadi IT Project Manager. Pengalaman tersebut memberikan kombinasi antara kemampuan software engineering, system architecture, business process analysis, dan project management.\n\nDengan fokus pada custom software development, SaaS, AI, dan business automation, Deni membantu bisnis membangun sistem digital yang sesuai dengan kebutuhan operasional mereka.\n\nVisinya adalah membantu transformasi digital bisnis Indonesia melalui solusi software berkualitas tinggi yang dirancang berdasarkan pemahaman mendalam terhadap proses bisnis.",
-            'skills' => ['Software Development', 'System Architecture', 'SaaS Development', 'AI & Machine Learning', 'Business Automation', 'IT Project Management', 'Business Process Analysis', 'Laravel', 'PHP', 'Python'],
+            'skills' => ['Software Development', 'System Architecture', 'SaaS Development', 'AI & Machine Learning', 'Business Automation', 'IT Project Management', 'Business Process Analysis'],
             'experience' => ['Software Developer', 'Full-stack Developer', 'IT Project Manager', 'CEO & System Architect — Aldef Tech'],
-            'email' => 'deni@aldeftech.com',
+            'email' => 'deniafrizal@aldeftech.com',
             'is_active' => true,
         ]);
     }

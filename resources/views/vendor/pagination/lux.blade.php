@@ -1,8 +1,8 @@
 @if ($paginator->hasPages())
-<nav role="navigation" aria-label="Navigasi halaman" class="flex items-center justify-between gap-4 flex-wrap">
+<nav role="navigation" aria-label="{{ __('site.nav.menu') }}" class="flex items-center justify-between gap-4 flex-wrap">
 
     <p class="text-xs text-graphite-500 tabular">
-        Menampilkan {{ $paginator->firstItem() }}–{{ $paginator->lastItem() }} dari {{ $paginator->total() }}
+        {{ __('pages.blog.showing', ['from' => $paginator->firstItem(), 'to' => $paginator->lastItem(), 'total' => $paginator->total()]) }}
     </p>
 
     <div class="flex items-center gap-1.5">
@@ -12,7 +12,7 @@
                 <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
             </span>
         @else
-            <a href="{{ $paginator->previousPageUrl() }}" rel="prev" class="page-pill" aria-label="Halaman sebelumnya">
+            <a href="{{ $paginator->previousPageUrl() }}" rel="prev" class="page-pill" aria-label="&laquo;">
                 <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
             </a>
         @endif
@@ -36,7 +36,7 @@
 
         {{-- Next --}}
         @if ($paginator->hasMorePages())
-            <a href="{{ $paginator->nextPageUrl() }}" rel="next" class="page-pill" aria-label="Halaman berikutnya">
+            <a href="{{ $paginator->nextPageUrl() }}" rel="next" class="page-pill" aria-label="&raquo;">
                 <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
             </a>
         @else

@@ -1,18 +1,18 @@
 @extends('layouts.app')
 
 @php
-    $pageTitle = 'Insight — Catatan Teknis & Bisnis dari Aldef Tech';
-    $metaDescription = 'Tulisan tentang rekayasa perangkat lunak, SaaS, AI, automasi proses bisnis, dan transformasi digital dari tim Aldef Tech.';
+    $pageTitle = __('pages.blog.meta_title');
+    $metaDescription = __('pages.blog.meta_description');
 @endphp
 
 @section('content')
 
 <x-page-hero
-    eyebrow="Insight"
-    title="Catatan dari ruang kerja kami tentang membangun"
-    accent="sistem yang bertahan."
-    lead="Pelajaran teknis, keputusan arsitektur, dan pengamatan bisnis yang kami tulis sambil mengerjakan proyek nyata."
-    :breadcrumbs="[['label' => 'Insight']]" />
+    :eyebrow="__('pages.blog.eyebrow')"
+    :title="__('pages.blog.title')"
+    :accent="__('pages.blog.accent')"
+    :lead="__('pages.blog.lead')"
+    :breadcrumbs="[['label' => __('site.nav.blog')]]" />
 
 <section class="section-padding surface-ivory relative">
     <div class="absolute inset-0 veil-grid-light pointer-events-none" aria-hidden="true"></div>
@@ -25,12 +25,12 @@
                 @if($posts->isEmpty())
                     <div class="card-lux p-12 text-center reveal">
                         <span class="icon-plate mx-auto"><x-lux-icon name="code" /></span>
-                        <h2 class="mt-6 text-xl">Tulisan pertama sedang disiapkan</h2>
+                        <h2 class="mt-6 text-xl">{{ __('pages.blog.empty_title') }}</h2>
                         <p class="mt-3 text-sm text-graphite-600 max-w-md mx-auto leading-relaxed">
-                            Sementara itu, Anda bisa melihat bagaimana kami bekerja lewat portofolio proyek.
+                            {{ __('pages.blog.empty_body') }}
                         </p>
                         <a href="{{ route('portfolio') }}" class="btn btn-outline mt-7">
-                            <span>Lihat portofolio</span>
+                            <span>{{ __('pages.blog.empty_cta') }}</span>
                             <svg class="btn-arrow w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                         </a>
                     </div>
@@ -51,7 +51,7 @@
 
                                 <div class="p-6 lg:p-7 flex-1 flex flex-col">
                                     <div class="flex items-center gap-2.5 text-[0.6875rem] uppercase tracking-[0.14em] text-gold-700">
-                                        <span>{{ $post->category->name ?? 'Insight' }}</span>
+                                        <span>{{ $post->category->name ?? __('site.common.insight') }}</span>
                                         @if($post->published_at)
                                             <span class="w-1 h-1 rounded-full bg-gold-400" aria-hidden="true"></span>
                                             <time datetime="{{ $post->published_at->toDateString() }}">{{ $post->published_at->translatedFormat('d M Y') }}</time>
@@ -65,7 +65,7 @@
                                     </p>
 
                                     <span class="mt-auto pt-6 link-arrow">
-                                        <span>Baca</span>
+                                        <span>{{ __('site.common.read') }}</span>
                                         <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                                     </span>
                                 </div>
@@ -88,7 +88,7 @@
 
                     @if($categories->isNotEmpty())
                     <div class="card-lux p-6 lg:p-7 reveal">
-                        <p class="eyebrow mb-5">Kategori</p>
+                        <p class="eyebrow mb-5">{{ __('pages.blog.categories') }}</p>
                         <ul class="space-y-1">
                             @foreach($categories as $category)
                             <li>
@@ -106,14 +106,14 @@
                     <div class="card-lux card-lux-featured p-6 lg:p-7 reveal">
                         <span class="icon-plate icon-plate-sm"><x-lux-icon name="spark" /></span>
                         <p class="mt-4 font-display text-base font-semibold text-graphite-900">
-                            Punya persoalan yang mirip?
+                            {{ __('pages.blog.similar_title') }}
                         </p>
                         <p class="mt-2 text-[0.8125rem] leading-relaxed text-graphite-600">
-                            Kami senang membahasnya. Konsultasi awal tanpa biaya dan tanpa kewajiban.
+                            {{ __('pages.blog.similar_body') }}
                         </p>
                         <a href="{{ \App\Services\WhatsAppService::getUrl() }}" target="_blank" rel="noopener"
                            class="btn btn-primary btn-sm btn-block mt-5">
-                            <span>Mulai diskusi</span>
+                            <span>{{ __('pages.blog.start_discussion') }}</span>
                         </a>
                     </div>
                 </div>

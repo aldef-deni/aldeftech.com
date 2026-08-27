@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @php
-    $pageTitle = 'Portofolio — Sistem & Aplikasi yang Kami Bangun | Aldef Tech';
-    $metaDescription = 'Kumpulan sistem, aplikasi web, platform SaaS, dan automasi AI yang dibangun Aldef Tech untuk klien di berbagai industri.';
+    $pageTitle = __('pages.portfolio.meta_title');
+    $metaDescription = __('pages.portfolio.meta_description');
 
     // Fallback entries carry a plain object category; database rows carry a relation.
     $filters = collect($portfolios)
@@ -15,11 +15,11 @@
 @section('content')
 
 <x-page-hero
-    eyebrow="Portofolio"
-    title="Sistem yang sudah berjalan, bukan sekadar"
-    accent="konsep di slide."
-    lead="Setiap proyek di bawah ini dipakai setiap hari oleh tim operasional klien kami. Berikut ringkasan persoalan yang diselesaikan dan cara kami menyelesaikannya."
-    :breadcrumbs="[['label' => 'Portofolio']]" />
+    :eyebrow="__('pages.portfolio.eyebrow')"
+    :title="__('pages.portfolio.title')"
+    :accent="__('pages.portfolio.accent')"
+    :lead="__('pages.portfolio.lead')"
+    :breadcrumbs="[['label' => __('site.nav.portfolio')]]" />
 
 {{-- ── Grid ─────────────────────────────────────────────────────────────── --}}
 <section class="section-padding surface-ivory relative">
@@ -29,11 +29,11 @@
          x-data="{ filter: 'all' }">
 
         @if($filters->count() > 1)
-        <div class="flex flex-wrap items-center gap-2 pb-10 reveal" role="group" aria-label="Saring kategori">
+        <div class="flex flex-wrap items-center gap-2 pb-10 reveal" role="group" aria-label="{{ __('pages.portfolio.filter_label') }}">
             <button type="button" @click="filter = 'all'"
                     class="chip transition-all duration-500 ease-[cubic-bezier(.22,1,.36,1)]"
                     :class="filter === 'all' ? 'bg-graphite-900 border-graphite-900 text-ivory-100' : 'bg-ivory-100 border-line text-graphite-600 hover:border-gold-300'">
-                Semua
+                {{ __('site.common.all') }}
             </button>
             @foreach($filters as $name)
             <button type="button" @click="filter = @js($name)"
@@ -65,7 +65,7 @@
 
                     <div class="p-6 lg:p-7 flex-1 flex flex-col">
                         <div class="flex items-center gap-2.5 text-[0.6875rem] uppercase tracking-[0.14em] text-gold-700">
-                            <span>{{ $catName ?? 'Proyek' }}</span>
+                            <span>{{ $catName ?? __('site.common.project') }}</span>
                             @if(!empty($item->year))
                                 <span class="w-1 h-1 rounded-full bg-gold-400" aria-hidden="true"></span>
                                 <span class="tabular">{{ $item->year }}</span>
@@ -91,23 +91,23 @@
                         @endif
 
                         <span class="mt-auto pt-6 link-arrow">
-                            <span>Studi kasus</span>
+                            <span>{{ __('site.common.case_study') }}</span>
                             <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                         </span>
                     </div>
                 </a>
             </article>
             @empty
-            <p class="col-span-full text-center text-graphite-500 py-12">Portofolio sedang disiapkan.</p>
+            <p class="col-span-full text-center text-graphite-500 py-12">{{ __('pages.portfolio.empty') }}</p>
             @endforelse
         </div>
     </div>
 </section>
 
 <x-cta-band
-    eyebrow="Proyek Berikutnya"
-    title="Proyek Anda bisa jadi"
-    accent="yang berikutnya."
-    lead="Ceritakan apa yang ingin Anda bangun — kami balas dengan gambaran ruang lingkup dan estimasinya." />
+    :eyebrow="__('pages.portfolio.closing.eyebrow')"
+    :title="__('pages.portfolio.closing.title')"
+    :accent="__('pages.portfolio.closing.accent')"
+    :lead="__('pages.portfolio.closing.lead')" />
 
 @endsection

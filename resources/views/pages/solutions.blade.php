@@ -1,23 +1,23 @@
 @extends('layouts.app')
 
 @php
-    $pageTitle = 'Solusi Sistem Bisnis — ERP, POS, CRM, HR & AI | Aldef Tech';
-    $metaDescription = 'Solusi sistem siap disesuaikan: ERP, POS omnichannel, CRM, HRIS, inventory, dashboard eksekutif, hingga AI customer service — dibentuk mengikuti proses bisnis Anda.';
+    $pageTitle = __('pages.solutions.meta_title');
+    $metaDescription = __('pages.solutions.meta_description');
 @endphp
 
 @section('content')
 
 <x-page-hero
-    eyebrow="Solusi"
-    title="Fondasi yang sudah matang, dibentuk mengikuti"
-    accent="cara Anda bekerja."
-    lead="Setiap solusi di bawah ini adalah kerangka yang sudah teruji di lapangan. Kami mulai dari sana, lalu menyesuaikannya dengan alur, istilah, dan aturan bisnis perusahaan Anda.">
+    :eyebrow="__('pages.solutions.eyebrow')"
+    :title="__('pages.solutions.title')"
+    :accent="__('pages.solutions.accent')"
+    :lead="__('pages.solutions.lead')">
     <div class="flex flex-col sm:flex-row items-center justify-center gap-3.5">
         <a href="{{ \App\Services\WhatsAppService::getUrl() }}" target="_blank" rel="noopener" class="btn btn-primary w-full sm:w-auto">
-            <span>Cari solusi yang tepat</span>
+            <span>{{ __('pages.solutions.cta_find') }}</span>
             <svg class="btn-arrow w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
         </a>
-        <a href="{{ route('services') }}" class="btn btn-ghost w-full sm:w-auto"><span>Lihat layanan</span></a>
+        <a href="{{ route('services') }}" class="btn btn-ghost w-full sm:w-auto"><span>{{ __('pages.solutions.cta_services') }}</span></a>
     </div>
 </x-page-hero>
 
@@ -63,7 +63,7 @@
                 <div class="mt-auto pt-7">
                     <a href="{{ \App\Services\WhatsAppService::getProjectUrl($solution->title) }}"
                        target="_blank" rel="noopener" class="link-arrow">
-                        <span>Tanya solusi ini</span>
+                        <span>{{ __('pages.solutions.ask_this') }}</span>
                         <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                     </a>
                 </div>
@@ -81,22 +81,17 @@
     <div class="shell relative z-10">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
             <div class="lg:col-span-5 reveal-left">
-                <p class="eyebrow eyebrow-light">Tidak Ada yang Persis Cocok?</p>
+                <p class="eyebrow eyebrow-light">{{ __('pages.solutions.adapt.eyebrow') }}</p>
                 <h2 class="mt-5 text-3xl sm:text-4xl text-white">
-                    Justru itu titik <span class="accent-serif accent-champagne">berangkatnya.</span>
+                    {{ __('pages.solutions.adapt.title') }} <span class="accent-serif accent-champagne">{{ __('pages.solutions.adapt.accent') }}</span>
                 </h2>
                 <p class="mt-5 text-base leading-relaxed text-graphite-300">
-                    Sebagian besar perusahaan punya satu atau dua proses yang tidak ada di produk manapun.
-                    Di situlah sistem custom mengembalikan investasinya.
+                    {{ __('pages.solutions.adapt.lead') }}
                 </p>
             </div>
 
             <div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-4" data-reveal-group="90">
-                @foreach([
-                    ['n' => '01', 'title' => 'Kami pelajari alurnya', 'body' => 'Wawancara dengan pengguna yang benar-benar menjalankan proses setiap hari.'],
-                    ['n' => '02', 'title' => 'Kami petakan celahnya', 'body' => 'Mana yang bisa diambil dari kerangka yang ada, mana yang harus dibangun baru.'],
-                    ['n' => '03', 'title' => 'Kami bangun bertahap', 'body' => 'Modul paling menyakitkan dirilis lebih dulu, agar manfaatnya terasa sejak awal.'],
-                ] as $s)
+                @foreach((array) __('pages.solutions.adapt.steps') as $s)
                 <div class="card-obsidian reveal group p-6">
                     <span class="font-serif-accent italic text-3xl text-gold-600 leading-none transition-colors duration-700 group-hover:text-gold-300">{{ $s['n'] }}</span>
                     <h3 class="mt-4 text-base text-white">{{ $s['title'] }}</h3>
@@ -109,9 +104,9 @@
 </section>
 
 <x-cta-band
-    eyebrow="Konsultasi"
-    title="Sistem seperti apa yang"
-    accent="Anda butuhkan?"
-    lead="Ceritakan proses yang paling merepotkan di perusahaan Anda. Kami bantu petakan bentuk solusinya." />
+    :eyebrow="__('pages.solutions.closing.eyebrow')"
+    :title="__('pages.solutions.closing.title')"
+    :accent="__('pages.solutions.closing.accent')"
+    :lead="__('pages.solutions.closing.lead')" />
 
 @endsection

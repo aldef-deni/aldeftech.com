@@ -1,11 +1,21 @@
 @props([
-    'eyebrow' => 'Langkah Berikutnya',
-    'title' => 'Ceritakan persoalannya.',
-    'accent' => 'Kami bantu petakan solusinya.',
-    'lead' => 'Sesi konsultasi awal tanpa biaya — hasilnya berupa gambaran ruang lingkup, pendekatan teknis, dan estimasi yang bisa Anda bawa ke rapat internal.',
-    'primaryLabel' => 'Mulai lewat WhatsApp',
-    'secondaryLabel' => 'Kirim brief proyek',
+    'eyebrow' => null,
+    'title' => null,
+    'accent' => null,
+    'lead' => null,
+    'primaryLabel' => null,
+    'secondaryLabel' => null,
 ])
+
+@php
+    // Defaults resolve at render time so they follow the active locale.
+    $eyebrow ??= __('pages.cta_band.eyebrow');
+    $title   ??= __('pages.cta_band.title');
+    $accent  ??= __('pages.cta_band.accent');
+    $lead    ??= __('pages.cta_band.lead');
+    $primaryLabel   ??= __('site.cta.via_whatsapp');
+    $secondaryLabel ??= __('site.cta.send_brief');
+@endphp
 
 <section class="surface-spectrum-deep relative overflow-hidden">
     <div class="absolute inset-0 veil-grid pointer-events-none" aria-hidden="true"></div>

@@ -14,8 +14,7 @@
     $footerWhatsapp = SiteSetting::get('whatsapp_number', '+62 812-8968-609');
     $footerAddress  = SiteSetting::get('address', 'Rumah Chiara 2, Jl. Curug Induk, Bojong Kulur, Kec. Gunung Putri, Kab. Bogor');
     $footerMapsUrl  = 'https://www.google.com/maps/search/?api=1&query=' . urlencode($footerAddress);
-    $footerAbout    = SiteSetting::get('footer_description', SiteSetting::get('description',
-        'Mitra transformasi digital korporasi — merancang dan membangun sistem, aplikasi, platform SaaS, serta automasi berbasis AI untuk mengakselerasi pertumbuhan bisnis.'));
+    $footerAbout    = SiteSetting::get('footer_description', SiteSetting::get('description', __('site.footer.about_default')));
 @endphp
 
 <footer class="surface-obsidian-deep relative overflow-hidden">
@@ -39,7 +38,7 @@
                 </p>
 
                 <p class="mt-5 font-serif-accent italic text-lg text-gold-300 leading-snug">
-                    “Mitra Transformasi Digital Korporasi Anda”
+                    {{ __('site.footer.tagline') }}
                 </p>
 
                 @if($footerSocials->isNotEmpty())
@@ -68,32 +67,32 @@
 
             {{-- Services --}}
             <div class="lg:col-span-3 lg:pl-6">
-                <h4 class="font-display text-[0.6875rem] font-semibold uppercase tracking-[0.18em] text-gold-400">Layanan</h4>
+                <h4 class="font-display text-[0.6875rem] font-semibold uppercase tracking-[0.18em] text-gold-400">{{ __('site.footer.services') }}</h4>
                 <ul class="mt-5 space-y-3">
                     @forelse($footerServices as $service)
                         <li><a href="{{ route('services') }}#{{ $service->slug ?? '' }}" class="footer-link">{{ $service->title }}</a></li>
                     @empty
-                        <li><a href="{{ route('services') }}" class="footer-link">Semua Layanan</a></li>
+                        <li><a href="{{ route('services') }}" class="footer-link">{{ __('site.footer.all_services') }}</a></li>
                     @endforelse
                 </ul>
             </div>
 
             {{-- Company --}}
             <div class="lg:col-span-2">
-                <h4 class="font-display text-[0.6875rem] font-semibold uppercase tracking-[0.18em] text-gold-400">Perusahaan</h4>
+                <h4 class="font-display text-[0.6875rem] font-semibold uppercase tracking-[0.18em] text-gold-400">{{ __('site.footer.company') }}</h4>
                 <ul class="mt-5 space-y-3">
-                    <li><a href="{{ route('about') }}" class="footer-link">Tentang Kami</a></li>
-                    <li><a href="{{ route('solutions') }}" class="footer-link">Solusi Industri</a></li>
-                    <li><a href="{{ route('portfolio') }}" class="footer-link">Portofolio</a></li>
-                    <li><a href="{{ route('blog') }}" class="footer-link">Insight</a></li>
-                    <li><a href="{{ route('faq') }}" class="footer-link">FAQ</a></li>
-                    <li><a href="{{ route('contact') }}" class="footer-link">Kontak</a></li>
+                    <li><a href="{{ route('about') }}" class="footer-link">{{ __('site.footer.about_us') }}</a></li>
+                    <li><a href="{{ route('solutions') }}" class="footer-link">{{ __('site.footer.industry_solutions') }}</a></li>
+                    <li><a href="{{ route('portfolio') }}" class="footer-link">{{ __('site.nav.portfolio') }}</a></li>
+                    <li><a href="{{ route('blog') }}" class="footer-link">{{ __('site.nav.blog') }}</a></li>
+                    <li><a href="{{ route('faq') }}" class="footer-link">{{ __('site.nav.faq') }}</a></li>
+                    <li><a href="{{ route('contact') }}" class="footer-link">{{ __('site.nav.contact') }}</a></li>
                 </ul>
             </div>
 
             {{-- Contact --}}
             <div class="col-span-2 lg:col-span-3">
-                <h4 class="font-display text-[0.6875rem] font-semibold uppercase tracking-[0.18em] text-gold-400">Hubungi</h4>
+                <h4 class="font-display text-[0.6875rem] font-semibold uppercase tracking-[0.18em] text-gold-400">{{ __('site.footer.contact') }}</h4>
                 <ul class="mt-5 space-y-4 text-sm">
                     <li class="flex items-start gap-3">
                         <svg class="w-4 h-4 text-gold-500 mt-1 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
@@ -107,13 +106,13 @@
                         <svg class="w-4 h-4 text-gold-500 mt-1 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                         <a href="{{ $footerMapsUrl }}" target="_blank" rel="noopener" class="footer-link leading-relaxed">
                             {{ $footerAddress }}
-                            <span class="block text-[0.6875rem] text-gold-400 mt-1">Lihat di Google Maps →</span>
+                            <span class="block text-[0.6875rem] text-gold-400 mt-1">{{ __('site.footer.view_on_maps') }}</span>
                         </a>
                     </li>
                 </ul>
 
                 <a href="{{ route('contact') }}" class="btn btn-ghost btn-sm mt-6">
-                    <span>Mulai Proyek</span>
+                    <span>{{ __('site.cta.start_project') }}</span>
                     <svg class="btn-arrow w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                 </a>
             </div>
@@ -124,7 +123,7 @@
         {{-- Lower --}}
         <div class="py-7 text-center">
             <p class="text-xs text-graphite-500">
-                © {{ date('Y') }} {{ config('app.name', 'Aldef Tech') }}. Seluruh hak cipta dilindungi.
+                {{ __('site.footer.rights', ['year' => date('Y'), 'name' => config('app.name', 'Aldef Tech')]) }}
             </p>
         </div>
     </div>

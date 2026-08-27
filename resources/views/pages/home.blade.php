@@ -4,8 +4,14 @@
     use App\Services\WhatsAppService;
     use App\Models\SiteSetting;
 
-    $pageTitle = SiteSetting::get('seo_default_title', 'Aldef Tech — Software Engineering, SaaS & AI untuk Korporasi');
-    $metaDescription = SiteSetting::get('seo_default_description', 'Aldef Tech membangun sistem custom, aplikasi web, platform SaaS, dan automasi AI untuk perusahaan. Mitra transformasi digital korporasi Anda.');
+    // Site settings hold one language only; fall back to the translated copy so
+    // the English visitor never lands on Indonesian meta text.
+    $pageTitle = app()->isLocale('id')
+        ? SiteSetting::get('seo_default_title', __('home.meta.title'))
+        : __('home.meta.title');
+    $metaDescription = app()->isLocale('id')
+        ? SiteSetting::get('seo_default_description', __('home.meta.description'))
+        : __('home.meta.description');
 
     $waUrl = WhatsAppService::getUrl();
 
@@ -16,26 +22,10 @@
     ];
 
     $pillars = [
-        [
-            'icon'  => 'blueprint',
-            'title' => 'Arsitektur dulu, kode kemudian',
-            'body'  => 'Setiap proyek dimulai dari pemetaan proses bisnis dan desain arsitektur. Sistem yang dibangun di atas fondasi yang benar tidak perlu ditulis ulang dua tahun lagi.',
-        ],
-        [
-            'icon'  => 'lock',
-            'title' => 'Kepemilikan penuh atas kode',
-            'body'  => 'Source code, database, dan dokumentasi menjadi milik Anda sepenuhnya. Tidak ada vendor lock-in, tidak ada biaya lisensi tersembunyi.',
-        ],
-        [
-            'icon'  => 'chart',
-            'title' => 'Diukur dari hasil bisnis',
-            'body'  => 'Kami menetapkan metrik keberhasilan sejak awal — waktu proses yang dipangkas, biaya operasional yang turun, kapasitas yang naik.',
-        ],
-        [
-            'icon'  => 'lifebuoy',
-            'title' => 'Pendampingan setelah rilis',
-            'body'  => 'Rilis bukan garis akhir. Monitoring, perbaikan, dan pengembangan lanjutan berjalan dengan SLA yang jelas dan terukur.',
-        ],
+        ['icon' => 'blueprint', 'key' => 'architecture'],
+        ['icon' => 'lock',      'key' => 'ownership'],
+        ['icon' => 'chart',     'key' => 'outcome'],
+        ['icon' => 'lifebuoy',  'key' => 'support'],
     ];
 @endphp
 
@@ -52,33 +42,31 @@
     <div class="shell relative z-10">
         <div class="max-w-4xl mx-auto text-center">
 
-            <p class="eyebrow eyebrow-center eyebrow-spectrum reveal">Software Engineering · AI · Automation</p>
+            <p class="eyebrow eyebrow-center eyebrow-spectrum reveal">{{ __('home.hero.eyebrow') }}</p>
 
             <h1 class="mt-7 text-[2.5rem] leading-[1.08] sm:text-5xl lg:text-[4rem] text-white reveal reveal-d1">
-                Sistem digital yang benar-benar
-                <span class="accent-serif accent-spectrum">menggerakkan</span>
-                bisnis Anda.
+                {{ __('home.hero.title') }}
+                <span class="accent-serif accent-spectrum">{{ __('home.hero.accent') }}</span>
+                {{ __('home.hero.title_after') }}
             </h1>
 
             <p class="mt-7 text-base sm:text-lg leading-relaxed text-graphite-300 max-w-2xl mx-auto reveal reveal-d2">
-                Aldef Tech merancang dan membangun sistem custom, aplikasi web, platform SaaS,
-                serta automasi berbasis AI — dirakit untuk menyelesaikan persoalan operasional nyata,
-                bukan sekadar memenuhi checklist fitur.
+                {{ __('home.hero.lead') }}
             </p>
 
             <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3.5 reveal reveal-d3">
                 <a href="{{ $waUrl }}" target="_blank" rel="noopener" class="btn btn-primary btn-lg w-full sm:w-auto magnetic" data-magnetic="0.1">
-                    <span>Konsultasi Proyek Gratis</span>
+                    <span>{{ __('site.cta.consult_free') }}</span>
                     <svg class="btn-arrow w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                 </a>
                 <a href="{{ route('portfolio') }}" class="btn btn-ghost btn-lg w-full sm:w-auto">
-                    <span>Lihat Portofolio</span>
+                    <span>{{ __('home.hero.view_portfolio') }}</span>
                 </a>
             </div>
 
             <p class="mt-5 inline-flex items-center gap-2.5 text-xs text-graphite-400 reveal reveal-d4">
                 <span class="pulse-dot"></span>
-                Respons rata-rata di bawah 2 jam pada hari kerja
+                {{ __('site.cta.response_time') }}
             </p>
         </div>
 
@@ -86,7 +74,7 @@
         <div class="mt-14 lg:mt-20 max-w-5xl mx-auto reveal-scale reveal-d3" data-tilt="3">
             <figure class="frame-banner">
                 <img src="{{ asset('images/aldef-tech-banner.png') }}"
-                     alt="Aldef Tech — pengembangan sistem, aplikasi, kecerdasan buatan, dan solusi IT"
+                     alt="{{ __('home.hero.banner_alt') }}"
                      width="1376" height="768" fetchpriority="high" decoding="async">
             </figure>
         </div>
@@ -95,10 +83,10 @@
         <div class="max-w-4xl mx-auto mt-14 lg:mt-16 grid grid-cols-2 sm:grid-cols-4 gap-y-9 gap-x-6 pb-16 lg:pb-20"
              data-reveal-group="90">
             @foreach([
-                ['v' => '10', 'suffix' => '+',  'l' => 'Tahun rekayasa perangkat lunak'],
-                ['v' => '40', 'suffix' => '+',  'l' => 'Sistem & aplikasi dirilis'],
-                ['v' => '99.9', 'suffix' => '%', 'l' => 'Target ketersediaan layanan', 'dec' => 1],
-                ['v' => '100', 'suffix' => '%', 'l' => 'Kode menjadi milik klien'],
+                ['v' => '10', 'suffix' => '+',  'l' => __('home.stats.years')],
+                ['v' => '40', 'suffix' => '+',  'l' => __('home.stats.systems')],
+                ['v' => '99.9', 'suffix' => '%', 'l' => __('home.stats.uptime'), 'dec' => 1],
+                ['v' => '100', 'suffix' => '%', 'l' => __('home.stats.ownership')],
             ] as $m)
             <div class="text-center reveal">
                 <p class="stat-value stat-value-light tabular">
@@ -114,7 +102,7 @@
 {{-- ══════════════════════════════════════════════════════════════════════
      TECH STACK MARQUEE
      ══════════════════════════════════════════════════════════════════ --}}
-<section class="surface-ivory-deep border-y border-line py-6 lg:py-7" aria-label="Teknologi yang kami gunakan">
+<section class="surface-ivory-deep border-y border-line py-6 lg:py-7" aria-label="{{ __('home.stack_label') }}">
     <div class="marquee">
         <div class="marquee-track">
             @foreach(array_merge($stack, $stack) as $tech)
@@ -133,20 +121,19 @@
 
     <div class="shell relative z-10">
         <header class="max-w-2xl reveal">
-            <p class="eyebrow">Kapabilitas</p>
+            <p class="eyebrow">{{ __('home.services.eyebrow') }}</p>
             <h2 class="mt-5 text-3xl sm:text-4xl lg:text-[2.75rem]">
-                Satu mitra untuk seluruh siklus
-                <span class="accent-serif accent-gold">rekayasa</span> perangkat lunak.
+                {{ __('home.services.title') }}
+                <span class="accent-serif accent-gold">{{ __('home.services.accent') }}</span> {{ __('home.services.title_after') }}
             </h2>
             <p class="mt-5 text-base leading-relaxed text-graphite-600">
-                Dari analisis proses bisnis, desain arsitektur, pembangunan, hingga pendampingan pasca-rilis —
-                ditangani oleh satu tim yang memahami konteks bisnis Anda seutuhnya.
+                {{ __('home.services.lead') }}
             </p>
         </header>
 
-        <div class="mt-12 lg:mt-16 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 lg:gap-6"
+        <div class="mt-12 lg:mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6"
              data-reveal-group="70">
-            @foreach($services as $i => $service)
+            @foreach($services->take(3) as $i => $service)
             <article class="card-lux reveal group p-7 lg:p-8">
                 <div class="flex items-start justify-between gap-4">
                     <span class="icon-plate">
@@ -178,7 +165,7 @@
 
                 <div class="mt-auto pt-7">
                     <a href="{{ route('services') }}" class="link-arrow">
-                        <span>Pelajari</span>
+                        <span>{{ __('site.common.read_more') }}</span>
                         <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                     </a>
                 </div>
@@ -188,7 +175,7 @@
 
         <div class="mt-12 text-center reveal">
             <a href="{{ route('services') }}" class="btn btn-outline">
-                <span>Lihat seluruh layanan</span>
+                <span>{{ __('home.services.all') }}</span>
                 <svg class="btn-arrow w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
             </a>
         </div>
@@ -204,20 +191,18 @@
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
 
             <div class="lg:col-span-5 lg:sticky lg:top-32 lg:self-start reveal-left">
-                <p class="eyebrow">Mengapa Aldef Tech</p>
+                <p class="eyebrow">{{ __('home.pillars.eyebrow') }}</p>
                 <h2 class="mt-5 text-3xl sm:text-4xl lg:text-[2.75rem]">
-                    Bukan sekadar menulis kode —
-                    kami membangun <span class="accent-serif accent-gold">aset</span> perusahaan.
+                    {{ __('home.pillars.title') }}
+                    <span class="accent-serif accent-gold">{{ __('home.pillars.accent') }}</span>{{ __('home.pillars.title_after') }}
                 </h2>
                 <p class="mt-6 text-base leading-relaxed text-graphite-600">
-                    Sistem yang baik memangkas biaya operasional selama bertahun-tahun setelah dibayar sekali.
-                    Sistem yang buruk menjadi beban yang terus tumbuh. Perbedaannya ditentukan
-                    di ruang perencanaan, jauh sebelum baris pertama ditulis.
+                    {{ __('home.pillars.lead') }}
                 </p>
 
                 <div class="mt-9 flex flex-wrap gap-3">
                     <a href="{{ route('about') }}" class="btn btn-obsidian">
-                        <span>Kenali cara kerja kami</span>
+                        <span>{{ __('home.pillars.cta') }}</span>
                         <svg class="btn-arrow w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                     </a>
                 </div>
@@ -230,8 +215,8 @@
                         <x-lux-icon :name="$pillar['icon']" />
                     </span>
                     <div class="min-w-0">
-                        <h3 class="text-base lg:text-lg">{{ $pillar['title'] }}</h3>
-                        <p class="mt-2.5 text-sm leading-relaxed text-graphite-600">{{ $pillar['body'] }}</p>
+                        <h3 class="text-base lg:text-lg">{{ __('home.pillars.' . $pillar['key'] . '.title') }}</h3>
+                        <p class="mt-2.5 text-sm leading-relaxed text-graphite-600">{{ __('home.pillars.' . $pillar['key'] . '.body') }}</p>
                     </div>
                 </article>
                 @endforeach
@@ -247,12 +232,12 @@
 <section id="proses" class="section-padding surface-ivory">
     <div class="shell">
         <header class="max-w-2xl mx-auto text-center reveal">
-            <p class="eyebrow eyebrow-center">Metode Kerja</p>
+            <p class="eyebrow eyebrow-center">{{ __('home.process.eyebrow') }}</p>
             <h2 class="mt-5 text-3xl sm:text-4xl lg:text-[2.75rem]">
-                Alur yang <span class="accent-serif accent-gold">terukur</span>, tanpa kejutan di tengah jalan.
+                {{ __('home.process.title') }} <span class="accent-serif accent-gold">{{ __('home.process.accent') }}</span>{{ __('home.process.title_after') }}
             </h2>
             <p class="mt-5 text-base leading-relaxed text-graphite-600">
-                Setiap tahap punya keluaran yang dapat ditinjau, sehingga Anda selalu tahu posisi proyek.
+                {{ __('home.process.lead') }}
             </p>
         </header>
 
@@ -286,13 +271,13 @@
     <div class="shell relative z-10">
         <header class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 reveal">
             <div class="max-w-2xl">
-                <p class="eyebrow eyebrow-light">Pekerjaan Terpilih</p>
+                <p class="eyebrow eyebrow-light">{{ __('home.portfolio.eyebrow') }}</p>
                 <h2 class="mt-5 text-3xl sm:text-4xl lg:text-[2.75rem] text-white">
-                    Sistem yang sudah <span class="accent-serif accent-champagne">berjalan</span> di lapangan.
+                    {{ __('home.portfolio.title') }} <span class="accent-serif accent-champagne">{{ __('home.portfolio.accent') }}</span> {{ __('home.portfolio.title_after') }}
                 </h2>
             </div>
             <a href="{{ route('portfolio') }}" class="link-arrow link-arrow-light shrink-0">
-                <span>Semua proyek</span>
+                <span>{{ __('home.portfolio.all') }}</span>
                 <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
             </a>
         </header>
@@ -313,7 +298,7 @@
 
                 <div class="p-6 lg:p-7 flex-1 flex flex-col">
                     <div class="flex items-center gap-2.5 text-[0.6875rem] uppercase tracking-[0.14em] text-gold-400">
-                        <span>{{ $item->category->name ?? 'Proyek' }}</span>
+                        <span>{{ $item->category->name ?? __('site.common.project') }}</span>
                         @if($item->year)
                             <span class="w-1 h-1 rounded-full bg-gold-600" aria-hidden="true"></span>
                             <span class="tabular">{{ $item->year }}</span>
@@ -335,7 +320,7 @@
                     @endif
 
                     <span class="mt-auto pt-6 link-arrow link-arrow-light">
-                        <span>Lihat studi kasus</span>
+                        <span>{{ __('site.common.case_study') }}</span>
                         <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                     </span>
                 </div>
@@ -353,13 +338,12 @@
 <section class="section-padding surface-ivory">
     <div class="shell">
         <header class="max-w-2xl mx-auto text-center reveal">
-            <p class="eyebrow eyebrow-center">Solusi Siap Disesuaikan</p>
+            <p class="eyebrow eyebrow-center">{{ __('home.solutions.eyebrow') }}</p>
             <h2 class="mt-5 text-3xl sm:text-4xl lg:text-[2.75rem]">
-                Fondasi yang sudah <span class="accent-serif accent-gold">terbukti</span>, disesuaikan dengan proses Anda.
+                {{ __('home.solutions.title') }} <span class="accent-serif accent-gold">{{ __('home.solutions.accent') }}</span>{{ __('home.solutions.title_after') }}
             </h2>
             <p class="mt-5 text-base leading-relaxed text-graphite-600">
-                Mulai dari kerangka yang matang, lalu dibentuk mengikuti alur kerja perusahaan Anda —
-                bukan sebaliknya.
+                {{ __('home.solutions.lead') }}
             </p>
         </header>
 
@@ -398,10 +382,10 @@
             </div>
 
             <div class="lg:col-span-7 reveal-right">
-                <p class="eyebrow">Kepemimpinan</p>
+                <p class="eyebrow">{{ __('home.leadership.eyebrow') }}</p>
 
                 <blockquote class="mt-6 font-serif-accent italic text-2xl sm:text-3xl lg:text-[2.125rem] leading-[1.35] text-graphite-900">
-                    “{{ excerpt_text($ceoProfile->short_bio, 210) ?: 'Teknologi hanya bernilai ketika ia menyederhanakan pekerjaan orang yang menggunakannya setiap hari.' }}”
+                    “{{ excerpt_text($ceoProfile->short_bio, 210) ?: __('home.leadership.fallback_quote') }}”
                 </blockquote>
 
                 <div class="mt-8 flex items-center gap-4">
@@ -422,7 +406,7 @@
 
                 <div class="mt-9">
                     <a href="{{ route('about') }}" class="link-arrow">
-                        <span>Profil lengkap</span>
+                        <span>{{ __('home.leadership.full_profile') }}</span>
                         <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                     </a>
                 </div>
@@ -439,9 +423,9 @@
 <section class="section-padding surface-ivory">
     <div class="shell">
         <header class="max-w-2xl mx-auto text-center reveal">
-            <p class="eyebrow eyebrow-center">Suara Klien</p>
+            <p class="eyebrow eyebrow-center">{{ __('home.testimonials.eyebrow') }}</p>
             <h2 class="mt-5 text-3xl sm:text-4xl lg:text-[2.75rem]">
-                Dipercaya untuk pekerjaan yang <span class="accent-serif accent-gold">kritikal</span>.
+                {{ __('home.testimonials.title') }} <span class="accent-serif accent-gold">{{ __('home.testimonials.accent') }}</span>{{ __('home.testimonials.title_after') }}
             </h2>
         </header>
 
@@ -450,7 +434,7 @@
             @foreach($testimonials->take(6) as $t)
             <figure class="card-lux reveal p-7 lg:p-8">
                 @if($t->rating)
-                <div class="flex gap-1 text-gold-500" aria-label="{{ $t->rating }} dari 5">
+                <div class="flex gap-1 text-gold-500" aria-label="{{ __('home.testimonials.rating', ['rating' => $t->rating]) }}">
                     @for($s = 1; $s <= 5; $s++)
                         <svg class="w-3.5 h-3.5 {{ $s <= $t->rating ? 'opacity-100' : 'opacity-25' }}" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L1.5 7.7l5.9-.9z"/></svg>
                     @endfor
@@ -482,54 +466,6 @@
 @endif
 
 {{-- ══════════════════════════════════════════════════════════════════════
-     FAQ
-     ══════════════════════════════════════════════════════════════════ --}}
-@if($faqs->isNotEmpty())
-<section class="section-padding surface-ivory-deep border-y border-line">
-    <div class="shell">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
-
-            <div class="lg:col-span-4 reveal-left">
-                <p class="eyebrow">Pertanyaan Umum</p>
-                <h2 class="mt-5 text-3xl sm:text-4xl">
-                    Hal yang paling sering <span class="accent-serif accent-gold">ditanyakan</span>.
-                </h2>
-                <p class="mt-5 text-base leading-relaxed text-graphite-600">
-                    Belum terjawab? Kirim pertanyaan Anda langsung — kami balas secara personal.
-                </p>
-                <a href="{{ route('faq') }}" class="link-arrow mt-7">
-                    <span>Semua pertanyaan</span>
-                    <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-                </a>
-            </div>
-
-            <div class="lg:col-span-8 space-y-3" x-data="{ open: 0 }" data-reveal-group="60">
-                @foreach($faqs->take(6) as $i => $faq)
-                <div class="accordion-item reveal" :class="open === {{ $i }} && 'is-open'">
-                    <button type="button" class="accordion-trigger"
-                            @click="open = open === {{ $i }} ? null : {{ $i }}"
-                            :aria-expanded="(open === {{ $i }}).toString()">
-                        <span>{{ $faq->question }}</span>
-                        <span class="accordion-marker" aria-hidden="true">
-                            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-width="2" d="M12 5v14M5 12h14"/></svg>
-                        </span>
-                    </button>
-                    <div class="accordion-panel">
-                        <div>
-                            <div class="px-6 pb-6 -mt-1 text-sm leading-relaxed text-graphite-600">
-                                {{ $faq->answer }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                @endforeach
-            </div>
-        </div>
-    </div>
-</section>
-@endif
-
-{{-- ══════════════════════════════════════════════════════════════════════
      INSIGHTS
      ══════════════════════════════════════════════════════════════════ --}}
 @if($latestPosts->isNotEmpty())
@@ -537,11 +473,11 @@
     <div class="shell">
         <header class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 reveal">
             <div class="max-w-2xl">
-                <p class="eyebrow">Insight</p>
-                <h2 class="mt-5 text-3xl sm:text-4xl">Catatan dari ruang kerja kami.</h2>
+                <p class="eyebrow">{{ __('home.insights.eyebrow') }}</p>
+                <h2 class="mt-5 text-3xl sm:text-4xl">{{ __('home.insights.title') }}</h2>
             </div>
             <a href="{{ route('blog') }}" class="link-arrow shrink-0">
-                <span>Semua tulisan</span>
+                <span>{{ __('home.insights.all') }}</span>
                 <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
             </a>
         </header>
@@ -560,7 +496,7 @@
                 </div>
                 <div class="p-6 lg:p-7 flex-1 flex flex-col">
                     <div class="flex items-center gap-2.5 text-[0.6875rem] uppercase tracking-[0.14em] text-gold-700">
-                        <span>{{ $post->category->name ?? 'Insight' }}</span>
+                        <span>{{ $post->category->name ?? __('site.common.insight') }}</span>
                         @if($post->published_at)
                             <span class="w-1 h-1 rounded-full bg-gold-400" aria-hidden="true"></span>
                             <time datetime="{{ $post->published_at->toDateString() }}">{{ $post->published_at->translatedFormat('d M Y') }}</time>
@@ -588,25 +524,24 @@
 
     <div class="shell relative z-10 py-20 lg:py-28">
         <div class="max-w-3xl mx-auto text-center">
-            <p class="eyebrow eyebrow-center eyebrow-spectrum reveal">Langkah Berikutnya</p>
+            <p class="eyebrow eyebrow-center eyebrow-spectrum reveal">{{ __('home.cta.eyebrow') }}</p>
 
             <h2 class="mt-7 text-3xl sm:text-4xl lg:text-[3rem] leading-[1.12] text-white reveal reveal-d1">
-                Ceritakan persoalannya.
-                Kami bantu <span class="accent-serif accent-spectrum">petakan</span> solusinya.
+                {{ __('home.cta.title') }}
+                <span class="accent-serif accent-spectrum">{{ __('home.cta.accent') }}</span> {{ __('home.cta.title_after') }}
             </h2>
 
             <p class="mt-6 text-base lg:text-lg leading-relaxed text-graphite-300 reveal reveal-d2">
-                Sesi konsultasi awal tanpa biaya — hasilnya berupa gambaran ruang lingkup,
-                pendekatan teknis, dan estimasi yang bisa Anda bawa ke rapat internal.
+                {{ __('home.cta.lead') }}
             </p>
 
             <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3.5 reveal reveal-d3">
                 <a href="{{ $waUrl }}" target="_blank" rel="noopener" class="btn btn-primary btn-lg w-full sm:w-auto magnetic" data-magnetic="0.1">
-                    <span>Mulai lewat WhatsApp</span>
+                    <span>{{ __('site.cta.via_whatsapp') }}</span>
                     <svg class="btn-arrow w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                 </a>
                 <a href="{{ route('contact') }}" class="btn btn-ghost btn-lg w-full sm:w-auto">
-                    <span>Kirim brief proyek</span>
+                    <span>{{ __('site.cta.send_brief') }}</span>
                 </a>
             </div>
         </div>

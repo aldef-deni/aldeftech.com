@@ -34,12 +34,12 @@
 @section('content')
 
 <x-page-hero
-    :eyebrow="$post->category->name ?? 'Insight'"
+    :eyebrow="$post->category->name ?? __('site.common.insight')"
     :title="$post->title"
     align="left"
     compact
     :breadcrumbs="[
-        ['label' => 'Insight', 'url' => route('blog')],
+        ['label' => __('site.nav.blog'), 'url' => route('blog')],
         ['label' => $post->title],
     ]" />
 
@@ -61,7 +61,7 @@
             </span>
             @endif
 
-            <span class="tabular">{{ $readMinutes }} menit baca</span>
+            <span class="tabular">{{ __('site.common.minutes_read', ['count' => $readMinutes]) }}</span>
         </div>
     </div>
 </section>
@@ -89,7 +89,7 @@
 
                 @if($post->tags && $post->tags->isNotEmpty())
                 <div class="mt-12 pt-8 border-t border-line">
-                    <p class="eyebrow mb-4">Topik</p>
+                    <p class="eyebrow mb-4">{{ __('pages.blog.detail.topics') }}</p>
                     <div class="flex flex-wrap gap-2">
                         @foreach($post->tags as $tag)
                             <span class="chip chip-neutral">{{ $tag->name }}</span>
@@ -101,7 +101,7 @@
                 <div class="mt-10">
                     <a href="{{ route('blog') }}" class="link-arrow">
                         <svg class="w-3.5 h-3.5 rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-                        <span>Semua tulisan</span>
+                        <span>{{ __('pages.blog.detail.all_posts') }}</span>
                     </a>
                 </div>
             </article>
@@ -110,14 +110,14 @@
                 <div class="lg:sticky lg:top-28 card-lux card-lux-featured p-6 lg:p-7 reveal">
                     <span class="icon-plate icon-plate-sm"><x-lux-icon name="spark" /></span>
                     <p class="mt-4 font-display text-base font-semibold text-graphite-900">
-                        Ingin menerapkannya di bisnis Anda?
+                        {{ __('pages.blog.detail.apply_title') }}
                     </p>
                     <p class="mt-2 text-[0.8125rem] leading-relaxed text-graphite-600">
-                        Kami bantu terjemahkan ide di tulisan ini menjadi sistem yang benar-benar berjalan.
+                        {{ __('pages.blog.detail.apply_body') }}
                     </p>
                     <a href="{{ \App\Services\WhatsAppService::getUrl() }}" target="_blank" rel="noopener"
                        class="btn btn-primary btn-sm btn-block mt-5">
-                        <span>Konsultasi gratis</span>
+                        <span>{{ __('pages.blog.detail.consult') }}</span>
                     </a>
                 </div>
             </aside>
@@ -129,7 +129,7 @@
 @if($relatedPosts->isNotEmpty())
 <section class="section-padding-sm surface-parchment border-t border-line">
     <div class="shell">
-        <p class="eyebrow reveal">Bacaan Lain</p>
+        <p class="eyebrow reveal">{{ __('pages.blog.detail.related') }}</p>
 
         <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-5 lg:gap-6" data-reveal-group="80">
             @foreach($relatedPosts as $related)
@@ -144,7 +144,7 @@
                     @endif
                 </div>
                 <div class="p-6">
-                    <p class="text-[0.6875rem] uppercase tracking-[0.14em] text-gold-700">{{ $related->category->name ?? 'Insight' }}</p>
+                    <p class="text-[0.6875rem] uppercase tracking-[0.14em] text-gold-700">{{ $related->category->name ?? __('site.common.insight') }}</p>
                     <h3 class="mt-3 text-base leading-snug">{{ $related->title }}</h3>
                 </div>
             </a>

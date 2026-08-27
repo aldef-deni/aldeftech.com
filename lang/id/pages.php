@@ -1,0 +1,282 @@
+<?php
+
+return [
+
+    'cta_band' => [
+        'eyebrow' => 'Langkah Berikutnya',
+        'title'   => 'Ceritakan persoalannya.',
+        'accent'  => 'Kami bantu petakan solusinya.',
+        'lead'    => 'Sesi konsultasi awal tanpa biaya — hasilnya berupa gambaran ruang lingkup, pendekatan teknis, dan estimasi yang bisa Anda bawa ke rapat internal.',
+    ],
+
+    'services' => [
+        'meta_title' => 'Layanan Software Development, SaaS & AI — Aldef Tech',
+        'meta_description' => 'Layanan custom software development, SaaS platform, AI solutions, business automation, system integration, dan IT consulting dari Aldef Tech.',
+        'eyebrow' => 'Layanan',
+        'title'   => 'Kapabilitas rekayasa untuk setiap tahap',
+        'accent'  => 'pertumbuhan.',
+        'lead'    => 'Dari sistem internal yang merapikan operasional, hingga platform SaaS yang menjadi produk itu sendiri — semuanya dibangun dengan standar arsitektur yang sama.',
+        'cta_discuss' => 'Diskusikan kebutuhan Anda',
+        'cta_work'    => 'Lihat hasil kerja',
+        'benefits'    => 'Yang Anda dapatkan',
+        'consult_this' => 'Konsultasikan layanan ini',
+
+        'models' => [
+            'eyebrow' => 'Model Kerja Sama',
+            'title'   => 'Pilih bentuk kolaborasi yang paling',
+            'accent'  => 'masuk akal',
+            'title_after' => '.',
+            'note'    => 'Belum yakin yang mana? Ceritakan situasinya — kami sarankan yang paling hemat untuk Anda.',
+            'popular' => 'Paling sering dipilih',
+
+            'fixed' => [
+                'name' => 'Proyek Terikat Ruang Lingkup',
+                'best' => 'Kebutuhan sudah jelas',
+                'body' => 'Ruang lingkup, jadwal, dan biaya disepakati di muka. Cocok ketika Anda sudah tahu persis sistem apa yang dibutuhkan.',
+                'points' => ['Harga tetap, tanpa kejutan', 'Milestone dengan serah terima jelas', 'Garansi perbaikan pasca-rilis'],
+            ],
+            'dedicated' => [
+                'name' => 'Tim Khusus (Dedicated)',
+                'best' => 'Pengembangan berkelanjutan',
+                'body' => 'Engineer yang bekerja khusus untuk Anda dengan ritme bulanan. Prioritas bisa berubah mengikuti kebutuhan bisnis.',
+                'points' => ['Kapasitas yang dapat diprediksi', 'Prioritas fleksibel tiap sprint', 'Laporan progres mingguan'],
+            ],
+            'advisory' => [
+                'name' => 'Pendampingan Teknis',
+                'best' => 'Sudah punya tim sendiri',
+                'body' => 'Audit arsitektur, tinjauan kode, dan arahan teknis untuk tim internal Anda tanpa mengambil alih pekerjaan.',
+                'points' => ['Audit arsitektur & keamanan', 'Peta jalan teknis', 'Pendampingan tim internal'],
+            ],
+        ],
+
+        'closing' => [
+            'eyebrow' => 'Mulai Percakapan',
+            'title'   => 'Layanan mana yang paling',
+            'accent'  => 'mendesak bagi Anda?',
+            'lead'    => 'Sampaikan kendalanya. Kami balas dengan pendekatan konkret, bukan brosur.',
+        ],
+    ],
+
+    'solutions' => [
+        'meta_title' => 'Solusi Sistem Bisnis — ERP, POS, CRM, HR & AI | Aldef Tech',
+        'meta_description' => 'Solusi sistem siap disesuaikan: ERP, POS omnichannel, CRM, HRIS, inventory, dashboard eksekutif, hingga AI customer service — dibentuk mengikuti proses bisnis Anda.',
+        'eyebrow' => 'Solusi',
+        'title'   => 'Fondasi yang sudah matang, dibentuk mengikuti',
+        'accent'  => 'cara Anda bekerja.',
+        'lead'    => 'Setiap solusi di bawah ini adalah kerangka yang sudah teruji di lapangan. Kami mulai dari sana, lalu menyesuaikannya dengan alur, istilah, dan aturan bisnis perusahaan Anda.',
+        'cta_find'  => 'Cari solusi yang tepat',
+        'cta_services' => 'Lihat layanan',
+        'ask_this'  => 'Tanya solusi ini',
+
+        'adapt' => [
+            'eyebrow' => 'Tidak Ada yang Persis Cocok?',
+            'title'   => 'Justru itu titik',
+            'accent'  => 'berangkatnya.',
+            'lead'    => 'Sebagian besar perusahaan punya satu atau dua proses yang tidak ada di produk manapun. Di situlah sistem custom mengembalikan investasinya.',
+            'steps'   => [
+                ['n' => '01', 'title' => 'Kami pelajari alurnya', 'body' => 'Wawancara dengan pengguna yang benar-benar menjalankan proses setiap hari.'],
+                ['n' => '02', 'title' => 'Kami petakan celahnya', 'body' => 'Mana yang bisa diambil dari kerangka yang ada, mana yang harus dibangun baru.'],
+                ['n' => '03', 'title' => 'Kami bangun bertahap', 'body' => 'Modul paling menyakitkan dirilis lebih dulu, agar manfaatnya terasa sejak awal.'],
+            ],
+        ],
+
+        'closing' => [
+            'eyebrow' => 'Konsultasi',
+            'title'   => 'Sistem seperti apa yang',
+            'accent'  => 'Anda butuhkan?',
+            'lead'    => 'Ceritakan proses yang paling merepotkan di perusahaan Anda. Kami bantu petakan bentuk solusinya.',
+        ],
+    ],
+
+    'portfolio' => [
+        'meta_title' => 'Portofolio — Sistem & Aplikasi yang Kami Bangun | Aldef Tech',
+        'meta_description' => 'Kumpulan sistem, aplikasi web, platform SaaS, dan automasi AI yang dibangun Aldef Tech untuk klien di berbagai industri.',
+        'eyebrow' => 'Portofolio',
+        'title'   => 'Sistem yang sudah berjalan, bukan sekadar',
+        'accent'  => 'konsep di slide.',
+        'lead'    => 'Setiap proyek di bawah ini dipakai setiap hari oleh tim operasional klien kami. Berikut ringkasan persoalan yang diselesaikan dan cara kami menyelesaikannya.',
+        'filter_label' => 'Saring kategori',
+        'empty'   => 'Portofolio sedang disiapkan.',
+
+        'closing' => [
+            'eyebrow' => 'Proyek Berikutnya',
+            'title'   => 'Proyek Anda bisa jadi',
+            'accent'  => 'yang berikutnya.',
+            'lead'    => 'Ceritakan apa yang ingin Anda bangun — kami balas dengan gambaran ruang lingkup dan estimasinya.',
+        ],
+
+        'detail' => [
+            'client'   => 'Klien',
+            'year'     => 'Tahun',
+            'category' => 'Kategori',
+            'link'     => 'Tautan',
+            'visit'    => 'Kunjungi',
+            'tech'     => 'Teknologi',
+            'gallery'  => 'Galeri',
+            'challenge' => 'Tantangan',
+            'approach'  => 'Pendekatan',
+            'solution'  => 'Solusi',
+            'results'   => 'Hasil',
+            'similar_eyebrow' => 'Punya kebutuhan serupa?',
+            'similar_title'   => 'Kami bisa membangun yang',
+            'similar_accent'  => 'sepadan',
+            'similar_after'   => 'untuk Anda.',
+            'similar_lead'    => 'Diskusi awal gratis. Hasilnya berupa gambaran ruang lingkup dan estimasi yang konkret.',
+            'consult_now'     => 'Konsultasi sekarang',
+            'send_brief'      => 'Kirim brief',
+            'all_portfolio'   => 'Semua portofolio',
+            'related'         => 'Proyek Terkait',
+            'fallback_case'   => 'Studi Kasus',
+        ],
+    ],
+
+    'about' => [
+        'meta_title' => 'Tentang Aldef Tech — Mitra Transformasi Digital Korporasi',
+        'meta_description' => 'Aldef Tech adalah mitra teknologi yang merancang dan membangun sistem digital, platform SaaS, dan automasi AI untuk perusahaan di Indonesia.',
+        'eyebrow'   => 'Tentang Kami',
+        'title_fallback' => 'Tentang Aldef Tech',
+        'mission'   => 'Misi',
+        'vision'    => 'Visi',
+        'founder'   => 'Pendiri',
+        'skills'    => 'Bidang Keahlian',
+        'experience' => 'Pengalaman',
+
+        'values' => [
+            'eyebrow' => 'Prinsip Kerja',
+            'title'   => 'Empat hal yang tidak kami',
+            'accent'  => 'tawar',
+            'title_after' => '.',
+            'scope' => [
+                'title' => 'Jujur soal ruang lingkup',
+                'body'  => 'Kami menolak pekerjaan yang tidak yakin bisa kami selesaikan dengan baik, dan mengatakannya sejak awal — bukan setelah kontrak ditandatangani.',
+            ],
+            'simple' => [
+                'title' => 'Sederhana yang bertahan',
+                'body'  => 'Solusi paling sederhana yang menyelesaikan masalah hampir selalu lebih baik daripada yang paling canggih. Kompleksitas adalah biaya, bukan prestasi.',
+            ],
+            'nolock' => [
+                'title' => 'Tanpa mengunci klien',
+                'body'  => 'Kode, basis data, dan dokumentasi menjadi milik Anda. Jika suatu saat ingin pindah tim, kami pastikan transisinya mudah.',
+            ],
+            'time' => [
+                'title' => 'Menghormati waktu Anda',
+                'body'  => 'Kabar buruk disampaikan lebih cepat daripada kabar baik. Anda tidak akan menunggu laporan untuk tahu ada yang meleset.',
+            ],
+        ],
+
+        'journey' => [
+            'eyebrow' => 'Perjalanan',
+            'title'   => 'Dibangun dari pekerjaan nyata, bukan dari',
+            'accent'  => 'rencana bisnis.',
+            'items'   => [
+                ['year' => 'Fondasi',   'title' => 'Rekayasa perangkat lunak', 'body' => 'Berawal dari pengerjaan sistem internal perusahaan — sistem absensi, inventaris, dan operasional yang dipakai harian.'],
+                ['year' => 'Perluasan', 'title' => 'Platform & SaaS',          'body' => 'Merambah pembangunan platform multi-tenant, booking engine, POS omnichannel, dan sistem OTA untuk klien lintas industri.'],
+                ['year' => 'Hari ini',  'title' => 'AI & automasi',            'body' => 'Menggabungkan LLM, pemrosesan dokumen, dan automasi proses ke dalam sistem bisnis yang sudah berjalan.'],
+            ],
+        ],
+
+        'closing' => [
+            'eyebrow' => 'Berkenalan',
+            'title'   => 'Mari bicara sebelum',
+            'accent'  => 'bicara harga.',
+            'lead'    => 'Kami lebih suka memahami persoalannya dulu. Kalau ternyata Anda tidak butuh sistem baru, kami akan bilang begitu.',
+        ],
+    ],
+
+    'faq' => [
+        'meta_title' => 'Pertanyaan yang Sering Diajukan — Aldef Tech',
+        'meta_description' => 'Jawaban atas pertanyaan umum seputar proses kerja, durasi pengerjaan, tech stack, kepemilikan source code, keamanan data, dan dukungan pasca-rilis Aldef Tech.',
+        'eyebrow' => 'FAQ',
+        'title'   => 'Pertanyaan yang paling sering',
+        'accent'  => 'kami terima.',
+        'lead'    => 'Kalau yang Anda cari belum ada di sini, kirim saja pertanyaannya — biasanya dibalas di hari yang sama.',
+        'categories' => 'Kategori',
+        'unanswered_title' => 'Belum terjawab?',
+        'unanswered_body'  => 'Kirim pertanyaan spesifik Anda, kami balas langsung.',
+        'ask_whatsapp'     => 'Tanya via WhatsApp',
+
+        'closing' => [
+            'eyebrow' => 'Masih Ragu?',
+            'title'   => 'Tanyakan yang paling',
+            'accent'  => 'mengganjal.',
+            'lead'    => 'Tidak perlu menunggu sampai semuanya jelas. Justru pertanyaan mentah yang paling membantu kami memahami kebutuhan Anda.',
+            'primary' => 'Tanya via WhatsApp',
+            'secondary' => 'Kirim pertanyaan tertulis',
+        ],
+    ],
+
+    'blog' => [
+        'meta_title' => 'Insight — Catatan Teknis & Bisnis dari Aldef Tech',
+        'meta_description' => 'Tulisan tentang rekayasa perangkat lunak, SaaS, AI, automasi proses bisnis, dan transformasi digital dari tim Aldef Tech.',
+        'eyebrow' => 'Insight',
+        'title'   => 'Catatan dari ruang kerja kami tentang membangun',
+        'accent'  => 'sistem yang bertahan.',
+        'lead'    => 'Pelajaran teknis, keputusan arsitektur, dan pengamatan bisnis yang kami tulis sambil mengerjakan proyek nyata.',
+        'empty_title' => 'Tulisan pertama sedang disiapkan',
+        'empty_body'  => 'Sementara itu, Anda bisa melihat bagaimana kami bekerja lewat portofolio proyek.',
+        'empty_cta'   => 'Lihat portofolio',
+        'categories'  => 'Kategori',
+        'similar_title' => 'Punya persoalan yang mirip?',
+        'similar_body'  => 'Kami senang membahasnya. Konsultasi awal tanpa biaya dan tanpa kewajiban.',
+        'start_discussion' => 'Mulai diskusi',
+        'showing' => 'Menampilkan :from–:to dari :total',
+
+        'detail' => [
+            'topics'      => 'Topik',
+            'all_posts'   => 'Semua tulisan',
+            'apply_title' => 'Ingin menerapkannya di bisnis Anda?',
+            'apply_body'  => 'Kami bantu terjemahkan ide di tulisan ini menjadi sistem yang benar-benar berjalan.',
+            'consult'     => 'Konsultasi gratis',
+            'related'     => 'Bacaan Lain',
+        ],
+    ],
+
+    'contact' => [
+        'meta_title' => 'Kontak — Mulai Proyek Bersama Aldef Tech',
+        'meta_description' => 'Hubungi Aldef Tech untuk konsultasi pembuatan sistem, aplikasi web, platform SaaS, dan automasi AI. Konsultasi awal tanpa biaya.',
+        'eyebrow' => 'Kontak',
+        'title'   => 'Ceritakan apa yang ingin Anda',
+        'accent'  => 'bangun.',
+        'lead'    => 'Isi brief singkat di bawah, atau langsung sapa kami di WhatsApp. Kami balas dengan pertanyaan yang tepat, bukan template penawaran.',
+
+        'form' => [
+            'eyebrow'  => 'Brief Proyek',
+            'title'    => 'Ceritakan kebutuhan Anda',
+            'subtitle' => 'Semakin konkret persoalannya, semakin akurat estimasi yang bisa kami berikan.',
+            'name'     => 'Nama',
+            'name_ph'  => 'Nama lengkap Anda',
+            'company'  => 'Perusahaan',
+            'company_ph' => 'Nama perusahaan',
+            'email'    => 'Email',
+            'email_ph' => 'nama@perusahaan.com',
+            'whatsapp' => 'WhatsApp',
+            'whatsapp_ph' => '08xx xxxx xxxx',
+            'type'     => 'Jenis Proyek',
+            'type_ph'  => 'Pilih jenis proyek',
+            'budget'   => 'Perkiraan Anggaran',
+            'budget_ph' => 'Pilih rentang anggaran',
+            'message'  => 'Ceritakan kebutuhannya',
+            'message_ph' => 'Proses apa yang paling merepotkan saat ini? Berapa orang yang terlibat? Sistem apa yang sudah dipakai?',
+            'submit'   => 'Kirim brief',
+            'privacy'  => 'Data Anda hanya dipakai untuk menanggapi permintaan ini.',
+            'continue_wa' => 'Lanjutkan di WhatsApp',
+            'contact_wa'  => 'Hubungi via WhatsApp',
+        ],
+
+        'channels' => [
+            'whatsapp'      => 'WhatsApp',
+            'whatsapp_hint' => 'Jalur tercepat — biasanya dibalas < 2 jam',
+            'email'         => 'Email',
+            'email_hint'    => 'Untuk dokumen, RFP, dan lampiran',
+            'location'      => 'Lokasi',
+            'maps'          => 'Buka di Google Maps →',
+            'next_eyebrow'  => 'Yang Terjadi Setelah Ini',
+            'steps' => [
+                'Kami baca brief Anda dan menyiapkan pertanyaan lanjutan.',
+                'Diskusi 30–45 menit untuk memahami proses dan kendala.',
+                'Anda menerima ringkasan ruang lingkup, pendekatan, dan estimasi.',
+            ],
+        ],
+    ],
+
+];

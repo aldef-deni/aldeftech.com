@@ -33,6 +33,21 @@ Route::get('/blog/{post:slug}', [BlogController::class, 'show'])->name('blog.sho
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
+/*
+|--------------------------------------------------------------------------
+| Bahasa
+|--------------------------------------------------------------------------
+| Menyimpan pilihan bahasa di sesi lalu mengembalikan pengunjung ke halaman
+| yang sedang dibuka, sehingga URL tetap bersih tanpa prefiks /id atau /en.
+*/
+Route::get('/lang/{locale}', function (string $locale) {
+    abort_unless(array_key_exists($locale, config('locales.available', [])), 404);
+
+    session(['locale' => $locale]);
+
+    return back();
+})->name('locale.switch');
+
 // SEO
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 Route::get('/robots.txt', [SitemapController::class, 'robots'])->name('robots');
