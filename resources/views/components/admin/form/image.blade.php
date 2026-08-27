@@ -2,35 +2,70 @@
     'label' => 'Gambar',
     'name' => 'image',
     'value' => null,
-    'help' => 'JPG, PNG, WEBP atau AVIF. Maksimal 5 MB.',
+    'help' => null,
     'col' => null,
+    'ratio' => '16 / 10',      // preview shape; use '1 / 1' for square art
+    'hint' => 'Seret berkas ke sini atau klik untuk memilih',
+    'dark' => false,           // preview on obsidian, for logos with transparency
+    'fallback' => null,        // shown when the field is empty (e.g. bundled default)
 ])
 
 @php
-    $id = $attributes->get('id') ?? $name;
-    $current = media_url($value);
+    $id = $name . '_' . \Illuminate\Support\Str::random(6);
+    $stored = old($name, $value);
+    $preview = media_url($stored, $fallback);
+    $allowed = config('aldeftech.upload.allowed_mimes', ['jpg', 'jpeg', 'png', 'webp']);
+    $accept = collect($allowed)->map(fn ($ext) => '.' . $ext)->implode(',');
+    // 'jpeg' is the same thing as 'jpg' to an editor, so only name it once.
+    $formatLabel = collect($allowed)->reject(fn ($ext) => $ext === 'jpeg')
+        ->map(fn ($ext) => strtoupper($ext))->implode(', ');
 @endphp
 
-<div class="{{ $col ? 'col-'.$col : '' }} mb-4" data-image-field>
-    <label for="{{ $id }}" class="form-label">{{ $label }}</label>
+<div class="{{ $col ? 'col-' . $col : '' }} mb-4">
+    <label class="form-label" for="{{ $id }}">{{ $label }}</label>
 
-    <div class="d-flex align-items-start gap-3 flex-wrap">
-        <img src="{{ $current ?: 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 10%22%3E%3C/svg%3E' }}"
-             alt="" class="aldef-thumb-lg" data-image-preview
-             style="{{ $current ? '' : 'display:none;' }}">
+    <div class="aldef-uploader{{ $preview ? ' has-image' : '' }}{{ $dark ? ' is-dark' : '' }}"
+         data-uploader
+         data-uploader-url="{{ route('admin.uploads.store') }}"
+         style="--aldef-uploader-ratio: {{ $ratio }};">
 
-        <div class="flex-grow-1" style="min-width: 15rem;">
-            <input type="file" id="{{ $id }}" name="{{ $name }}" accept="image/*"
-                   {{ $attributes->merge(['class' => 'form-control' . ($errors->has($name) ? ' is-invalid' : '')]) }}>
-            @error($name)<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
-            <div class="form-text">{{ $help }}</div>
+        {{-- What the form actually submits: a path string, exactly as before. --}}
+        <input type="hidden" name="{{ $name }}" value="{{ $stored }}" data-uploader-value>
 
-            @if($current)
-            <div class="form-check mt-2">
-                <input class="form-check-input" type="checkbox" id="{{ $id }}_remove" name="remove_{{ $name }}" value="1">
-                <label class="form-check-label small" for="{{ $id }}_remove">Hapus gambar saat ini</label>
-            </div>
-            @endif
+        <input type="file" id="{{ $id }}" class="aldef-uploader-input" accept="{{ $accept }}"
+               data-uploader-file tabindex="-1">
+
+        <button type="button" class="aldef-uploader-drop" data-uploader-trigger>
+            <img src="{{ $preview ?: '' }}" alt="" class="aldef-uploader-preview"
+                 data-uploader-preview @style(['display: none' => ! $preview])>
+
+            <span class="aldef-uploader-empty" @style(['display: none' => (bool) $preview])>
+                <i class="icon-base ti tabler-photo-up"></i>
+                <span class="aldef-uploader-hint">{{ $hint }}</span>
+                <span class="aldef-uploader-meta">{{ $formatLabel }} · maks {{ max_upload_label() }}</span>
+            </span>
+
+            <span class="aldef-uploader-veil" data-uploader-veil hidden>
+                <span class="aldef-uploader-spinner"></span>
+                <span class="aldef-uploader-veil-text">Mengunggah…</span>
+            </span>
+        </button>
+
+        <div class="aldef-uploader-bar" data-uploader-bar hidden><span></span></div>
+
+        <div class="aldef-uploader-actions" data-uploader-actions @style(['display: none' => ! $preview])>
+            <button type="button" class="btn btn-sm btn-outline-secondary" data-uploader-trigger>
+                <i class="icon-base ti tabler-refresh me-1"></i>Ganti
+            </button>
+            <button type="button" class="btn btn-sm btn-outline-danger" data-uploader-clear>
+                <i class="icon-base ti tabler-trash me-1"></i>Hapus
+            </button>
+            <span class="aldef-uploader-name" data-uploader-name></span>
         </div>
+
+        <div class="aldef-uploader-error" data-uploader-error hidden></div>
     </div>
+
+    @error($name)<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
+    @if($help)<div class="form-text">{{ $help }}</div>@endif
 </div>

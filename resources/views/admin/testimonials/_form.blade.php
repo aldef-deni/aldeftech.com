@@ -51,14 +51,10 @@
                     label="Urutan" name="sort_order" type="number" :value="$testimonial->sort_order ?? 0"
                     help="Angka kecil tampil lebih dulu." />
 
-                <x-admin.form.input
-                    label="Foto" name="photo" :value="$testimonial->photo ?? ''"
-                    placeholder="images/team/nama.jpg"
-                    help="Path atau URL foto. Unggah lewat menu Media, lalu salin path-nya ke sini." />
-
-                @if(!empty($testimonial?->photo) && ($src = media_url($testimonial->photo)))
-                <img src="{{ $src }}" alt="" class="aldef-thumb-lg mt-2">
-                @endif
+                <x-admin.form.image
+                    label="Foto Klien" name="photo" :value="$testimonial->photo ?? ''"
+                    ratio="1 / 1" hint="Seret foto ke sini atau klik"
+                    help="Tampil bulat di kartu testimoni, jadi wajah sebaiknya di tengah." />
             </div>
         </div>
     </div>

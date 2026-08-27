@@ -78,34 +78,66 @@ if (! function_exists('php_size_to_bytes')) {
     }
 }
 
+if (! function_exists('configured_upload_bytes')) {
+    /**
+     * The limit the console advertises, straight from config.
+     */
+    function configured_upload_bytes(): int
+    {
+        return (int) config('aldeftech.upload.max_size', 5120) * 1024;
+    }
+}
+
 if (! function_exists('max_upload_bytes')) {
     /**
      * The size limit that actually applies to an upload.
      *
      * A request larger than PHP's upload_max_filesize / post_max_size is
      * rejected by PHP (or the web server) before Laravel boots, so validation
-     * rules never run and the browser lands on a raw 413 page. Quoting the
-     * app's own config alone would therefore promise a limit the server does
-     * not honour — take the smallest of the three instead.
+     * rules never run and the browser lands on a raw 413 page. Enforcement
+     * therefore has to respect the smallest of the three.
      */
     function max_upload_bytes(): int
     {
         return min(
             php_size_to_bytes(ini_get('upload_max_filesize')),
             php_size_to_bytes(ini_get('post_max_size')),
-            (int) config('aldeftech.upload.max_size', 5120) * 1024,
+            configured_upload_bytes(),
         );
+    }
+}
+
+if (! function_exists('format_upload_mb')) {
+    /**
+     * "5 MB", "2,5 MB" — Indonesian decimal comma, trailing zeros trimmed.
+     */
+    function format_upload_mb(int $bytes): string
+    {
+        $mb = $bytes / 1048576;
+
+        return rtrim(rtrim(number_format($mb, 1, ',', '.'), '0'), ',') . ' MB';
     }
 }
 
 if (! function_exists('max_upload_label')) {
     /**
-     * Human-readable form of max_upload_bytes(), e.g. "2 MB" or "5,5 MB".
+     * The limit shown on the upload fields: the app's own 5 MB, not whatever
+     * php.ini happens to be set to on the machine rendering the page.
      */
     function max_upload_label(): string
     {
-        $mb = max_upload_bytes() / 1048576;
+        return format_upload_mb(configured_upload_bytes());
+    }
+}
 
-        return rtrim(rtrim(number_format($mb, 1, ',', '.'), '0'), ',') . ' MB';
+if (! function_exists('effective_upload_label')) {
+    /**
+     * What the server will really accept. Same as max_upload_label() on a
+     * correctly configured host; lower when php.ini has not been raised, which
+     * is exactly when a rejection message must not repeat the advertised 5 MB.
+     */
+    function effective_upload_label(): string
+    {
+        return format_upload_mb(max_upload_bytes());
     }
 }

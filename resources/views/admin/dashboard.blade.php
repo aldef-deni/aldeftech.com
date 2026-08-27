@@ -19,7 +19,6 @@
         ['label' => 'Solusi',     'value' => $stats['solutions'],    'icon' => 'tabler-bulb',            'url' => route('admin.solutions.index')],
         ['label' => 'Testimoni',  'value' => $stats['testimonials'], 'icon' => 'tabler-star',            'url' => route('admin.testimonials.index')],
         ['label' => 'FAQ',        'value' => $stats['faqs'],         'icon' => 'tabler-help-circle',     'url' => route('admin.faq.index')],
-        ['label' => 'Media',      'value' => $stats['media'],        'icon' => 'tabler-photo',           'url' => route('admin.media.index')],
     ];
 @endphp
 

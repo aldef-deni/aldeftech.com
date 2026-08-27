@@ -85,14 +85,9 @@
         <div class="card">
             <div class="card-header"><h5 class="card-title mb-0">Gambar Utama</h5></div>
             <div class="card-body">
-                @if($src = media_url($post->featured_image ?? null))
-                <img src="{{ $src }}" alt="" class="aldef-thumb-lg mb-3">
-                @endif
-
-                <x-admin.form.input
-                    label="Path Gambar" name="featured_image" :value="$post->featured_image ?? ''"
-                    placeholder="images/blog/nama.webp"
-                    help="Unggah lewat menu Media, lalu salin path-nya ke sini." />
+                <x-admin.form.image
+                    label="Gambar Sampul" name="featured_image" :value="$post->featured_image ?? ''"
+                    help="Tampil di kartu artikel dan di bagian atas halaman. Rasio 16:10." />
             </div>
         </div>
     </div>

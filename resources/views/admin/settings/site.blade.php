@@ -81,21 +81,15 @@
             <div class="card">
                 <div class="card-header"><h5 class="card-title mb-0">Logo &amp; Favicon</h5></div>
                 <div class="card-body">
-                    @if($logo = media_url(SiteSetting::get('site_logo', ''), 'images/logo.png'))
-                    <div class="p-3 mb-3 rounded" style="background: #0A1017;">
-                        <img src="{{ $logo }}" alt="Logo" style="height: 44px; width: auto;">
-                    </div>
-                    @endif
+                    <x-admin.form.image
+                        label="Logo" name="site_logo" :value="SiteSetting::get('site_logo', '')"
+                        ratio="16 / 6" dark fallback="images/logo.png"
+                        help="Tampil di navbar dan footer. Latar transparan (PNG/SVG) paling baik." />
 
-                    <x-admin.form.input
-                        label="Path Logo" name="site_logo" :value="SiteSetting::get('site_logo', '')"
-                        placeholder="images/logo.png"
-                        help="Logo tampil di navbar dan footer. Latar transparan (PNG/SVG) paling baik." />
-
-                    <x-admin.form.input
-                        label="Path Favicon" name="site_favicon" :value="SiteSetting::get('site_favicon', '')"
-                        placeholder="images/logo-square.png"
-                        help="Ikon tab browser. Idealnya persegi." />
+                    <x-admin.form.image
+                        label="Favicon" name="site_favicon" :value="SiteSetting::get('site_favicon', '')"
+                        ratio="1 / 1" dark
+                        help="Ikon tab browser. Persegi, minimal 256×256." />
                 </div>
             </div>
         </div>

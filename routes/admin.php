@@ -56,6 +56,13 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])
         ->name('dashboard');
 
+    // Inline image uploads for the CRUD forms. Reachable by anyone who can open
+    // a form that carries an <x-admin.form.image> field, which spans both the
+    // content screens and the settings screens.
+    Route::post('uploads', [MediaController::class, 'store'])
+        ->middleware('permission:manage-content,manage-settings')
+        ->name('uploads.store');
+
     /*
     |--------------------------------------------------------------------------
     | Content Management
@@ -285,16 +292,6 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
 
         Route::put('settings/analytics', [AnalyticsSettingController::class, 'update'])
             ->name('settings.analytics.update');
-
-        // Media
-        Route::get('media', [MediaController::class, 'index'])
-            ->name('media.index');
-
-        Route::post('media/upload', [MediaController::class, 'upload'])
-            ->name('media.upload');
-
-        Route::delete('media/{media}', [MediaController::class, 'destroy'])
-            ->name('media.destroy');
     });
 
     /*

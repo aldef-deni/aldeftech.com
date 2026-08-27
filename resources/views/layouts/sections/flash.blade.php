@@ -4,7 +4,7 @@
 <div class="alert alert-danger alert-dismissible d-flex align-items-start gap-2 mb-4" role="alert">
     <i class="icon-base ti tabler-alert-circle mt-1"></i>
     <div class="flex-grow-1">
-        Berkas melebihi batas {{ max_upload_label() }} dan ditolak server sebelum sempat diproses.
+        Berkas melebihi batas {{ effective_upload_label() }} dan ditolak server sebelum sempat diproses.
         Kompres berkas terlebih dulu, lalu unggah ulang.
     </div>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Tutup"></button>

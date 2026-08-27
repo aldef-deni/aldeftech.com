@@ -117,14 +117,9 @@
         <div class="card">
             <div class="card-header"><h5 class="card-title mb-0">Gambar Utama</h5></div>
             <div class="card-body">
-                @if($src = media_url($portfolio->featured_image ?? null))
-                <img src="{{ $src }}" alt="" class="aldef-thumb-lg mb-3">
-                @endif
-
-                <x-admin.form.input
-                    label="Path Gambar" name="featured_image" :value="$portfolio->featured_image ?? ''"
-                    placeholder="images/portfolio/nama.webp"
-                    help="Unggah lewat menu Media, lalu salin path-nya ke sini." />
+                <x-admin.form.image
+                    label="Gambar Utama" name="featured_image" :value="$portfolio->featured_image ?? ''"
+                    help="Tampil di kartu portofolio dan halaman studi kasus. Rasio 16:10." />
             </div>
         </div>
     </div>

@@ -80,14 +80,10 @@
             <div class="card mb-4">
                 <div class="card-header"><h5 class="card-title mb-0">Foto</h5></div>
                 <div class="card-body">
-                    @if($src = media_url($profile->profile_photo, 'images/deni-afrizal.jpg'))
-                    <img src="{{ $src }}" alt="" class="aldef-thumb-lg mb-3" style="aspect-ratio: 4 / 5;">
-                    @endif
-
-                    <x-admin.form.input
-                        label="Path Foto" name="profile_photo" :value="$profile->profile_photo ?? ''"
-                        placeholder="images/deni-afrizal.jpg"
-                        help="Rasio 4:5 (potret) paling pas. Unggah lewat menu Media." />
+                    <x-admin.form.image
+                        label="Foto" name="profile_photo" :value="$profile->profile_photo ?? ''"
+                        ratio="4 / 5" fallback="images/deni-afrizal.jpg"
+                        help="Potret rasio 4:5 paling pas." />
 
                     <x-admin.form.switch
                         label="Tampilkan di situs" name="is_active" :checked="$profile->is_active ?? true" />

@@ -4,26 +4,154 @@
  */
 
 document.addEventListener('DOMContentLoaded', function () {
-  initImagePreview();
+  initImageUploader();
   initSlugFrom();
   initRepeater();
   initAutoDismissAlerts();
 });
 
-/* Live preview when picking an image in <x-admin.form.image> */
-function initImagePreview() {
-  document.querySelectorAll('[data-image-field] input[type="file"]').forEach(function (input) {
-    input.addEventListener('change', function () {
-      const field = input.closest('[data-image-field]');
-      const preview = field && field.querySelector('[data-image-preview]');
-      const file = input.files && input.files[0];
-      if (!preview || !file) return;
+/**
+ * Inline image uploader for <x-admin.form.image>.
+ *
+ * The file goes up on its own the moment it is chosen, and the returned path
+ * lands in the field's hidden input — so the surrounding form still submits a
+ * plain string and no controller had to learn about file handling.
+ */
+function initImageUploader() {
+  const token = document.querySelector('meta[name="csrf-token"]');
 
-      const url = URL.createObjectURL(file);
-      preview.src = url;
-      preview.style.display = '';
-      preview.addEventListener('load', () => URL.revokeObjectURL(url), { once: true });
+  document.querySelectorAll('[data-uploader]').forEach(function (root) {
+    const file = root.querySelector('[data-uploader-file]');
+    const value = root.querySelector('[data-uploader-value]');
+    const preview = root.querySelector('[data-uploader-preview]');
+    const empty = root.querySelector('.aldef-uploader-empty');
+    const actions = root.querySelector('[data-uploader-actions]');
+    const veil = root.querySelector('[data-uploader-veil]');
+    const bar = root.querySelector('[data-uploader-bar]');
+    const fill = bar && bar.querySelector('span');
+    const nameOut = root.querySelector('[data-uploader-name]');
+    const errorOut = root.querySelector('[data-uploader-error]');
+    if (!file || !value) return;
+
+    const url = root.dataset.uploaderUrl;
+
+    const showError = (message) => {
+      if (!errorOut) return;
+      errorOut.textContent = message;
+      errorOut.hidden = false;
+    };
+    const clearError = () => { if (errorOut) errorOut.hidden = true; };
+
+    const paint = (src, label) => {
+      root.classList.toggle('has-image', Boolean(src));
+      if (preview) {
+        preview.src = src || '';
+        preview.style.display = src ? '' : 'none';
+      }
+      if (empty) empty.style.display = src ? 'none' : '';
+      if (actions) actions.style.display = src ? '' : 'none';
+      if (nameOut) nameOut.textContent = label || '';
+    };
+
+    root.querySelectorAll('[data-uploader-trigger]').forEach(function (btn) {
+      btn.addEventListener('click', function () { file.click(); });
     });
+
+    const clearBtn = root.querySelector('[data-uploader-clear]');
+    if (clearBtn) {
+      clearBtn.addEventListener('click', function () {
+        // Only drops the reference. The stored file is left alone — another
+        // record may well be pointing at it.
+        value.value = '';
+        file.value = '';
+        clearError();
+        paint('', '');
+      });
+    }
+
+    file.addEventListener('change', function () {
+      if (file.files && file.files[0]) upload(file.files[0]);
+    });
+
+    // Drag and drop over the whole field
+    ['dragenter', 'dragover'].forEach(function (type) {
+      root.addEventListener(type, function (e) {
+        e.preventDefault();
+        root.classList.add('is-dragging');
+      });
+    });
+    ['dragleave', 'drop'].forEach(function (type) {
+      root.addEventListener(type, function (e) {
+        e.preventDefault();
+        if (type === 'dragleave' && root.contains(e.relatedTarget)) return;
+        root.classList.remove('is-dragging');
+      });
+    });
+    root.addEventListener('drop', function (e) {
+      const dropped = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+      if (dropped) upload(dropped);
+    });
+
+    function upload(blob) {
+      clearError();
+
+      // Remember what was on screen so a failed upload can be undone.
+      const prevSrc = value.value && preview ? preview.src : '';
+      const prevName = nameOut ? nameOut.textContent : '';
+
+      // Show the local file straight away; the round trip only confirms it.
+      const localUrl = URL.createObjectURL(blob);
+      paint(localUrl, blob.name);
+
+      if (veil) veil.hidden = false;
+      if (bar) { bar.hidden = false; if (fill) fill.style.width = '0%'; }
+
+      const body = new FormData();
+      body.append('file', blob);
+
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', url);
+      xhr.setRequestHeader('Accept', 'application/json');
+      xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+      if (token) xhr.setRequestHeader('X-CSRF-TOKEN', token.content);
+
+      xhr.upload.addEventListener('progress', function (e) {
+        if (fill && e.lengthComputable) {
+          fill.style.width = Math.round((e.loaded / e.total) * 100) + '%';
+        }
+      });
+
+      const finish = () => {
+        if (veil) veil.hidden = true;
+        if (bar) bar.hidden = true;
+        URL.revokeObjectURL(localUrl);
+      };
+
+      xhr.addEventListener('load', function () {
+        finish();
+        let data = {};
+        try { data = JSON.parse(xhr.responseText); } catch (e) { /* non-JSON error page */ }
+
+        if (xhr.status >= 200 && xhr.status < 300 && data.path) {
+          value.value = data.path;
+          paint(data.url, data.name);
+          return;
+        }
+
+        paint(prevSrc, prevName);
+        showError(data.message || 'Berkas gagal diunggah (kode ' + xhr.status + ').');
+        file.value = '';
+      });
+
+      xhr.addEventListener('error', function () {
+        finish();
+        paint(prevSrc, prevName);
+        showError('Koneksi terputus saat mengunggah. Silakan coba lagi.');
+        file.value = '';
+      });
+
+      xhr.send(body);
+    }
   });
 }
 

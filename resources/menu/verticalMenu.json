@@ -133,12 +133,6 @@
       "slug": "admin.ceo.edit"
     },
     {
-      "url": "admin/media",
-      "name": "Media",
-      "icon": "menu-icon tf-icons ti tabler-photo",
-      "slug": "admin.media"
-    },
-    {
       "menuHeader": "Sistem"
     },
     {

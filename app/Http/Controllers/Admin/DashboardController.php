@@ -7,7 +7,6 @@ use App\Models\ActivityLog;
 use App\Models\BlogPost;
 use App\Models\Faq;
 use App\Models\Lead;
-use App\Models\Media;
 use App\Models\Portfolio;
 use App\Models\Service;
 use App\Models\Solution;
@@ -29,7 +28,6 @@ class DashboardController extends Controller
             'blog_posts' => BlogPost::count(),
             'testimonials' => Testimonial::count(),
             'faqs' => Faq::count(),
-            'media' => Media::count(),
         ];
 
         // Content that is saved but not visible to the public yet — the most
