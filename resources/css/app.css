@@ -60,6 +60,8 @@
   --color-spectrum-indigo: #3B5BFF;
   --color-spectrum-azure: #16C8F0;
 
+  --color-hero-ground: #070C13;
+
   --color-spectrum-ember-soft: #FFB067;
   --color-spectrum-rose-soft: #FF8FB0;
   --color-spectrum-violet-soft: #C79BFF;
@@ -327,6 +329,56 @@
     radial-gradient(90% 70% at 50% 0%, rgba(217, 184, 124, 0.10) 0%, transparent 60%),
     linear-gradient(180deg, #05080D 0%, #080D14 100%);
   color: #E6EAF0;
+}
+
+/* --- Hero key visual -------------------------------------------------------
+   The top band of every page. The artwork is pinned full-width to the top of
+   the section and fades into --color-hero-ground, so it works on a short hero
+   and on the tall homepage hero alike without stretching the artwork.
+
+   Layer order (first = topmost):
+     1. centre vignette  — guarantees headline contrast over the artwork
+     2. vertical fade    — dissolves the artwork into the obsidian ground
+     3. the artwork      — supplied per-page via --hero-bg
+   -------------------------------------------------------------------------- */
+.surface-hero-image {
+  position: relative;
+  isolation: isolate;
+  color: #E6EAF0;
+  background-color: var(--color-hero-ground, #070C13);
+}
+
+/* The artwork lives in its own box, sized by the artwork's aspect ratio, so the
+   fade that dissolves it always lands exactly on the artwork's bottom edge —
+   sizing the fade to the section instead leaves a hard cut wherever the section
+   is taller than the image (e.g. the homepage hero). Below this box the section's
+   own background-color takes over in the same colour, so the join is invisible.
+
+   Layer order (first = topmost):
+     1. centre vignette — guarantees headline contrast over the artwork
+     2. vertical fade   — dissolves the artwork into the ground colour
+     3. the artwork     — supplied per page via --hero-bg
+   -------------------------------------------------------------------------- */
+.surface-hero-image::before {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  aspect-ratio: 1440 / 576;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    radial-gradient(66% 64% at 50% 48%, rgba(6, 10, 16, 0.60) 0%, rgba(6, 10, 16, 0.22) 56%, transparent 86%),
+    linear-gradient(180deg,
+      rgba(6, 10, 16, 0.30) 0%,
+      rgba(6, 10, 16, 0.04) 22%,
+      rgba(7, 12, 19, 0.55) 66%,
+      rgba(7, 12, 19, 0.92) 88%,
+      var(--color-hero-ground, #070C13) 100%),
+    var(--hero-bg, none);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
 }
 
 /* --- Spectrum ground -------------------------------------------------------

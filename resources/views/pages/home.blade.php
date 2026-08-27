@@ -44,12 +44,10 @@
 {{-- ══════════════════════════════════════════════════════════════════════
      HERO
      ══════════════════════════════════════════════════════════════════ --}}
-<section class="surface-spectrum spectrum-edge relative overflow-hidden pt-36 pb-0 lg:pt-48">
+<section class="surface-hero-image spectrum-edge relative overflow-hidden pt-36 pb-0 lg:pt-48"
+         style="--hero-bg: url('{{ asset('images/hero-banner.png') }}');">
     <div class="absolute inset-0 veil-grid pointer-events-none" aria-hidden="true"></div>
-    <div class="bloom bloom-ember w-[30rem] h-[30rem] -top-64 -left-48 opacity-30" aria-hidden="true"></div>
-    <div class="bloom bloom-magenta w-[26rem] h-[26rem] -top-60 left-[28%] opacity-25" aria-hidden="true"></div>
-    <div class="bloom bloom-violet w-[34rem] h-[34rem] -top-60 right-[2%] opacity-35" aria-hidden="true"></div>
-    <div class="bloom bloom-azure w-[30rem] h-[30rem] top-10 -right-52 opacity-28" aria-hidden="true"></div>
+    <div class="bloom bloom-violet w-[34rem] h-[34rem] -top-60 left-1/2 -translate-x-1/2 opacity-25" aria-hidden="true"></div>
 
     <div class="shell relative z-10">
         <div class="max-w-4xl mx-auto text-center">

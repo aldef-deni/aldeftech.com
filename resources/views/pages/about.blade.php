@@ -57,7 +57,7 @@
 </x-page-hero>
 
 {{-- ── Brand plate ──────────────────────────────────────────────────────── --}}
-<section class="surface-spectrum spectrum-edge relative overflow-hidden pb-16 lg:pb-24">
+<section class="bg-hero-ground spectrum-edge relative overflow-hidden pb-16 lg:pb-24">
     <div class="shell relative z-10">
         <figure class="max-w-4xl mx-auto frame-banner reveal-scale" data-tilt="2.5">
             <img src="{{ asset('images/aldef-tech-banner.png') }}"
