@@ -159,7 +159,7 @@
 
             {{-- ── Direct channels ──────────────────────────────────────── --}}
             <aside class="lg:col-span-5">
-                <div class="lg:sticky lg:top-28 space-y-5" data-reveal-group="90">
+                <div class="lg:sticky lg:top-28 cards-swipe md:space-y-5" data-reveal-group="90">
 
                     <a href="{{ WhatsAppService::getUrl() }}" target="_blank" rel="noopener"
                        class="card-lux card-lux-featured reveal group p-7 !flex-row items-start gap-5">

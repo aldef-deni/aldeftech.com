@@ -35,7 +35,7 @@
                         </a>
                     </div>
                 @else
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 lg:gap-6" data-reveal-group="80">
+                    <div class="cards-swipe md:grid md:grid-cols-2 gap-5 lg:gap-6" data-reveal-group="80">
                         @foreach($posts as $post)
                         <article class="reveal">
                             <a href="{{ route('blog.show', $post->slug) }}" class="card-lux group h-full overflow-hidden">

@@ -91,7 +91,7 @@
             </h2>
         </header>
 
-        <div class="mt-12 lg:mt-16 grid grid-cols-1 md:grid-cols-3 gap-5 lg:gap-6" data-reveal-group="90">
+        <div class="mt-12 lg:mt-16 cards-swipe md:grid md:grid-cols-3 gap-5 lg:gap-6" data-reveal-group="90">
             @foreach([
                 ['icon' => 'target',  'key' => 'fixed'],
                 ['icon' => 'users',   'key' => 'dedicated', 'featured' => true],

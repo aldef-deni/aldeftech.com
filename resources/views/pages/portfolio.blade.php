@@ -45,7 +45,7 @@
         </div>
         @endif
 
-        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 lg:gap-6" data-reveal-group="80">
+        <div class="cards-swipe md:grid md:grid-cols-2 xl:grid-cols-3 gap-5 lg:gap-6" data-reveal-group="80">
             @forelse($portfolios as $item)
             @php $catName = $item->category->name ?? null; @endphp
 

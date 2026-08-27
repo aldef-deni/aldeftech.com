@@ -113,7 +113,7 @@
                 @if($portfolio->images && $portfolio->images->isNotEmpty())
                 <div class="mt-12">
                     <p class="eyebrow mb-6 reveal">{{ __('pages.portfolio.detail.gallery') }}</p>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" data-reveal-group="70">
+                    <div class="cards-swipe md:grid md:grid-cols-2 gap-4" data-reveal-group="70">
                         @foreach($portfolio->images as $image)
                         <figure class="frame-lux reveal group aspect-[4/3]">
                             <img src="{{ media_url($image->image) }}"
@@ -162,7 +162,7 @@
     <div class="shell">
         <p class="eyebrow reveal">{{ __('pages.portfolio.detail.related') }}</p>
 
-        <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-5 lg:gap-6" data-reveal-group="80">
+        <div class="mt-8 cards-swipe md:grid md:grid-cols-3 gap-5 lg:gap-6" data-reveal-group="80">
             @foreach($relatedPortfolios as $related)
             <a href="{{ route('portfolio.show', $related->slug) }}" class="card-lux reveal group overflow-hidden">
                 <div class="frame-lux !rounded-none !border-0 !border-b !border-line aspect-[16/10] bg-ivory-200">

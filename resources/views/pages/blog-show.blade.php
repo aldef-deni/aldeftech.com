@@ -131,7 +131,7 @@
     <div class="shell">
         <p class="eyebrow reveal">{{ __('pages.blog.detail.related') }}</p>
 
-        <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-5 lg:gap-6" data-reveal-group="80">
+        <div class="mt-8 cards-swipe md:grid md:grid-cols-3 gap-5 lg:gap-6" data-reveal-group="80">
             @foreach($relatedPosts as $related)
             <a href="{{ route('blog.show', $related->slug) }}" class="card-lux reveal group overflow-hidden">
                 <div class="frame-lux !rounded-none !border-0 !border-b !border-line aspect-[16/10] bg-ivory-200">

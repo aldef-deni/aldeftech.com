@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initMagnetic();
   initAmbientGlow();
   initTilt();
+  initSwipeRails();
 });
 
 /* ---------------------------------------------------------------------------
@@ -257,6 +258,102 @@ function initTilt() {
       el.style.transform = 'perspective(1200px) rotateY(0deg) rotateX(0deg)';
     });
   });
+}
+
+/* ---------------------------------------------------------------------------
+   Swipe rails
+   Adds position dots under any .cards-swipe that actually overflows, and keeps
+   the active dot in step with the scroll. Purely an indicator — the rail itself
+   is CSS scroll-snap and works with JS disabled.
+   ------------------------------------------------------------------------- */
+function initSwipeRails() {
+  const rails = document.querySelectorAll('.cards-swipe');
+  if (!rails.length) return;
+
+  const mobile = window.matchMedia('(max-width: 767px)');
+
+  rails.forEach((rail) => {
+    let dots = null;
+    let buttons = [];
+
+    const cardWidth = () => {
+      const first = rail.firstElementChild;
+      if (!first) return rail.clientWidth || 1;
+      const gap = parseFloat(getComputedStyle(rail).columnGap || '0') || 0;
+      return first.getBoundingClientRect().width + gap;
+    };
+
+    const build = () => {
+      teardown();
+      if (!mobile.matches) return;
+      // Nothing to page through if it all fits.
+      if (rail.scrollWidth <= rail.clientWidth + 4) return;
+
+      const count = rail.children.length;
+      if (count < 2) return;
+
+      dots = document.createElement('div');
+      dots.className = 'swipe-dots';
+      dots.setAttribute('role', 'tablist');
+      dots.setAttribute('aria-label', 'Posisi kartu');
+
+      buttons = Array.from({ length: count }, (_, i) => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'swipe-dot';
+        b.setAttribute('aria-label', String(i + 1));
+        b.addEventListener('click', () => {
+          rail.scrollTo({ left: i * cardWidth(), behavior: 'smooth' });
+        });
+        dots.appendChild(b);
+        return b;
+      });
+
+      rail.insertAdjacentElement('afterend', dots);
+      sync();
+    };
+
+    const teardown = () => {
+      if (dots) dots.remove();
+      dots = null;
+      buttons = [];
+    };
+
+    let ticking = false;
+    const sync = () => {
+      if (!buttons.length) return;
+      const index = Math.round(rail.scrollLeft / cardWidth());
+      buttons.forEach((b, i) => {
+        const active = i === index;
+        b.classList.toggle('is-active', active);
+        b.setAttribute('aria-selected', active ? 'true' : 'false');
+      });
+      ticking = false;
+    };
+
+    rail.addEventListener(
+      'scroll',
+      () => {
+        if (ticking) return;
+        requestAnimationFrame(sync);
+        ticking = true;
+      },
+      { passive: true }
+    );
+
+    if (mobile.addEventListener) mobile.addEventListener('change', build);
+    window.addEventListener('resize', debounce(build, 200), { passive: true });
+
+    build();
+  });
+}
+
+function debounce(fn, wait) {
+  let t;
+  return function () {
+    clearTimeout(t);
+    t = setTimeout(fn, wait);
+  };
 }
 
 /* ---------------------------------------------------------------------------

@@ -131,7 +131,7 @@
             </p>
         </header>
 
-        <div class="mt-12 lg:mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6"
+        <div class="mt-12 lg:mt-16 cards-swipe md:grid md:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6"
              data-reveal-group="70">
             @foreach($services->take(3) as $i => $service)
             <article class="card-lux reveal group p-7 lg:p-8">
@@ -208,7 +208,7 @@
                 </div>
             </div>
 
-            <div class="lg:col-span-7 space-y-4" data-reveal-group="90">
+            <div class="lg:col-span-7 cards-swipe md:space-y-4" data-reveal-group="90">
                 @foreach($pillars as $i => $pillar)
                 <article class="card-lux reveal group p-6 lg:p-8 !flex-row items-start gap-5">
                     <span class="icon-plate">
@@ -241,7 +241,7 @@
             </p>
         </header>
 
-        <ol class="mt-14 lg:mt-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10"
+        <ol class="mt-14 lg:mt-20 cards-swipe cards-swipe-tight md:grid md:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10"
             data-reveal-group="70">
             @foreach($processSteps as $step)
             <li class="reveal group relative pt-7">
@@ -282,7 +282,7 @@
             </a>
         </header>
 
-        <div class="mt-12 lg:mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6"
+        <div class="mt-12 lg:mt-16 cards-swipe md:grid md:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6"
              data-reveal-group="90">
             @foreach($portfolios as $item)
             <a href="{{ route('portfolio.show', $item->slug) }}" class="card-obsidian reveal group overflow-hidden">
@@ -347,7 +347,7 @@
             </p>
         </header>
 
-        <div class="mt-12 lg:mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4"
+        <div class="mt-12 lg:mt-16 cards-swipe cards-swipe-tight md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4"
              data-reveal-group="50">
             @foreach($solutions as $solution)
             <a href="{{ route('solutions') }}" class="card-quiet reveal group p-6 flex flex-col">
@@ -429,7 +429,7 @@
             </h2>
         </header>
 
-        <div class="mt-12 lg:mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6"
+        <div class="mt-12 lg:mt-16 cards-swipe md:grid md:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6"
              data-reveal-group="80">
             @foreach($testimonials->take(6) as $t)
             <figure class="card-lux reveal p-7 lg:p-8">
@@ -482,7 +482,7 @@
             </a>
         </header>
 
-        <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-5 lg:gap-6" data-reveal-group="80">
+        <div class="mt-12 cards-swipe md:grid md:grid-cols-3 gap-5 lg:gap-6" data-reveal-group="80">
             @foreach($latestPosts as $post)
             <a href="{{ route('blog.show', $post->slug) }}" class="card-lux reveal group overflow-hidden">
                 <div class="frame-lux !rounded-none !border-0 !border-b !border-line aspect-[16/10]">

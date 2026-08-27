@@ -26,7 +26,7 @@
     <div class="absolute inset-0 veil-grid-light pointer-events-none" aria-hidden="true"></div>
 
     <div class="shell relative z-10">
-        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 lg:gap-6" data-reveal-group="70">
+        <div class="cards-swipe md:grid md:grid-cols-2 xl:grid-cols-3 gap-5 lg:gap-6" data-reveal-group="70">
             @foreach($solutions as $i => $solution)
             <article id="{{ $solution->slug ?? \Illuminate\Support\Str::slug($solution->title) }}"
                      class="card-lux reveal group scroll-mt-28 p-7 lg:p-8">
@@ -90,7 +90,7 @@
                 </p>
             </div>
 
-            <div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-4" data-reveal-group="90">
+            <div class="lg:col-span-7 cards-swipe cards-swipe-tight md:grid md:grid-cols-3 gap-4" data-reveal-group="90">
                 @foreach((array) __('pages.solutions.adapt.steps') as $s)
                 <div class="card-obsidian reveal group p-6">
                     <span class="font-serif-accent italic text-3xl text-gold-600 leading-none transition-colors duration-700 group-hover:text-gold-300">{{ $s['n'] }}</span>
