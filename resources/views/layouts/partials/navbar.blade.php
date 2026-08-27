@@ -7,6 +7,7 @@
         ['route' => 'about',     'label' => __('site.nav.about')],
         ['route' => 'blog',      'label' => __('site.nav.blog')],
         ['route' => 'faq',       'label' => __('site.nav.faq')],
+        ['route' => 'contact',   'label' => __('site.nav.contact')],
     ];
     $waUrl = \App\Services\WhatsAppService::getUrl();
 @endphp
@@ -42,17 +43,12 @@
 
             {{-- Actions --}}
             <div class="flex items-center gap-2 sm:gap-3">
-                <a href="{{ route('contact') }}"
-                   class="hidden xl:inline-flex nav-link {{ request()->routeIs('contact*') ? 'nav-link-active' : '' }}">
-                    {{ __('site.nav.contact') }}
-                </a>
-
                 <div class="hidden sm:block">
                     <x-language-switcher />
                 </div>
 
                 <a href="{{ $waUrl }}" target="_blank" rel="noopener"
-                   class="hidden lg:inline-flex btn btn-primary btn-sm magnetic" data-magnetic="0.12">
+                   class="hidden xl:inline-flex btn btn-primary btn-sm magnetic" data-magnetic="0.12">
                     <span>{{ __('site.cta.consult') }}</span>
                     <svg class="btn-arrow w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
@@ -61,7 +57,7 @@
 
                 <button type="button"
                         @click="open = !open"
-                        class="nav-burger lg:hidden"
+                        class="nav-burger xl:hidden"
                         :aria-expanded="open.toString()"
                         aria-controls="mobile-drawer"
                         aria-label="{{ __('site.nav.open_menu') }}">
@@ -85,7 +81,7 @@
          x-transition:leave-start="opacity-100"
          x-transition:leave-end="opacity-0"
          @click="open = false"
-         class="lg:hidden fixed inset-0 top-[5.5rem] bg-ink-950/50 backdrop-blur-sm"
+         class="xl:hidden fixed inset-0 top-[5.5rem] bg-ink-950/50 backdrop-blur-sm"
          aria-hidden="true"></div>
 
     <div id="mobile-drawer"
@@ -96,7 +92,7 @@
          x-transition:leave="transition ease-in duration-200"
          x-transition:leave-start="opacity-100 translate-y-0"
          x-transition:leave-end="opacity-0 -translate-y-3"
-         class="lg:hidden absolute inset-x-0 top-full mx-3 mb-3 rounded-2xl border border-line bg-ivory-50/97 backdrop-blur-2xl shadow-[0_40px_80px_-32px_rgba(13,20,32,0.45)] overflow-hidden">
+         class="xl:hidden absolute inset-x-0 top-full mx-3 mb-3 rounded-2xl border border-line bg-ivory-50/97 backdrop-blur-2xl shadow-[0_40px_80px_-32px_rgba(13,20,32,0.45)] overflow-hidden">
 
         <div class="max-h-[calc(100dvh-8rem)] overflow-y-auto no-scrollbar p-3">
             <div class="space-y-0.5">
@@ -109,13 +105,6 @@
                         </svg>
                     </a>
                 @endforeach
-                <a href="{{ route('contact') }}" @click="open = false"
-                   class="nav-row {{ request()->routeIs('contact*') ? 'nav-row-active' : '' }}">
-                    <span>{{ __('site.nav.contact') }}</span>
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M9 5l7 7-7 7"/>
-                    </svg>
-                </a>
             </div>
 
             <hr class="rule-fade my-3">

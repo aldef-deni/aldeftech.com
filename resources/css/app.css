@@ -1024,7 +1024,8 @@
   border: 1px solid rgba(232, 227, 216, 0.85);
   transition: background-color var(--t-mid) var(--e-glide), border-color var(--t-mid) var(--e-glide);
 }
-@media (min-width: 1024px) { .nav-rail { display: flex; } }
+/* Eight items need ~600px; below 1280px the burger menu is used instead. */
+@media (min-width: 1280px) { .nav-rail { display: flex; } }
 
 .nav-burger {
   display: inline-flex;
@@ -1162,7 +1163,31 @@
   transition: background-color var(--t-mid) var(--e-glide), color var(--t-mid) var(--e-glide);
 }
 
-.lang-option .lang-flag { font-size: 1rem; line-height: 1; }
+/* A typographic badge instead of a flag emoji: Windows has no flag glyphs, so
+   the emoji degrades into its regional-indicator letters ("GB", "ID"). */
+.lang-option .lang-code {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.875rem;
+  padding: 0.1875rem 0.375rem;
+  border-radius: 0.375rem;
+  border: 1px solid var(--color-line, #E8E3D8);
+  background: #F9F7F2;
+  color: #6C7885;
+  font-family: var(--font-display);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  transition: background-color var(--t-mid) var(--e-glide), border-color var(--t-mid) var(--e-glide), color var(--t-mid) var(--e-glide);
+}
+
+.lang-option.is-active .lang-code {
+  background: #D9B87C;
+  border-color: #C29F60;
+  color: #0A1017;
+}
 .lang-option .lang-check { margin-left: auto; width: 0.875rem; height: 0.875rem; color: #C29F60; opacity: 0; }
 .lang-option.is-active { color: #0D1420; font-weight: 600; background: rgba(217, 184, 124, 0.1); }
 .lang-option.is-active .lang-check { opacity: 1; }

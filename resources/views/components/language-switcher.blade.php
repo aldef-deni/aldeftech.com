@@ -43,7 +43,7 @@
            role="menuitem"
            hreflang="{{ $meta['html'] }}"
            aria-label="{{ __('site.nav.switch_to', ['language' => $meta['native']]) }}">
-            <span class="lang-flag" aria-hidden="true">{{ $meta['flag'] }}</span>
+            <span class="lang-code" aria-hidden="true">{{ $meta['short'] }}</span>
             <span>{{ $meta['native'] }}</span>
             <svg class="lang-check" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
@@ -67,8 +67,7 @@
                   {{ $code === $current
                         ? 'border-gold-300 bg-gold-100 text-graphite-900 font-semibold'
                         : 'border-line bg-white text-graphite-600' }}">
-            <span aria-hidden="true">{{ $meta['flag'] }}</span>
-            <span>{{ $meta['short'] }}</span>
+            <span>{{ $meta['native'] }}</span>
         </a>
         @endforeach
     </div>

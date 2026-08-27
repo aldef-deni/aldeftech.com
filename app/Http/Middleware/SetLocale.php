@@ -12,9 +12,10 @@ class SetLocale
     /**
      * Pick the request locale.
      *
-     * Order of preference: an explicit choice stored in the session, then the
-     * visitor's Accept-Language header, then the configured default. The header
-     * is only consulted on a first visit so a deliberate switch always wins.
+     * Indonesian is the default for every visitor. Accept-Language is
+     * deliberately ignored: this is an Indonesian company site, and sniffing
+     * the header served English to anyone whose browser happened to be set to
+     * it. Only an explicit choice from the switcher changes the language.
      */
     public function handle(Request $request, Closure $next): Response
     {
@@ -24,7 +25,7 @@ class SetLocale
         $locale = $request->session()->get('locale');
 
         if (! in_array($locale, $available, true)) {
-            $locale = $request->getPreferredLanguage($available) ?: $default;
+            $locale = $default;
         }
 
         App::setLocale($locale);
