@@ -1,57 +1,102 @@
-@extends('layouts.admin')
-@php $pageTitle = 'Media Library'; @endphp
-@section('content')
-<div class="mb-6">
-    <form method="POST" action="{{ route('admin.media.upload') }}" enctype="multipart/form-data" id="media-upload-form">
-        @csrf
-        <div class="bg-brand-surface border-2 border-dashed border-brand-border rounded-xl p-8 text-center"
-             x-data="{ dragging: false }"
-             @dragover.prevent="dragging = true"
-             @dragleave="dragging = false"
-             @drop.prevent="dragging = false; $refs.fileInput.files = $event.dataTransfer.files; $refs.form.submit();"
-             :class="dragging ? 'border-accent bg-accent/5' : ''">
-            <svg class="w-10 h-10 mx-auto text-text-muted mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-            <p class="text-text-muted text-sm mb-2">Drop files here or click to upload</p>
-            <input type="file" name="file" x-ref="fileInput" accept="image/*" class="hidden" onchange="this.form.submit()">
-            <button type="button" onclick="this.closest('form').querySelector('input[type=file]').click()" class="btn-primary text-sm py-2 px-4">Select File</button>
-        </div>
-    </form>
-</div>
+@extends('layouts.layoutMaster')
 
-{{-- Filters --}}
-<form method="GET" class="flex gap-3 mb-6">
-    <input type="text" name="search" value="{{ request('search') }}" placeholder="Search files..."
-           class="bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-accent w-64">
-    <button type="submit" class="btn-secondary text-sm py-2 px-4">Search</button>
+@section('title', 'Media')
+
+@php
+    $maxMb = round(config('aldeftech.upload.max_size', 5120) / 1024, 1);
+    $allowed = implode(', ', config('aldeftech.upload.allowed_mimes', []));
+@endphp
+
+@section('content')
+
+<x-admin.page-head
+    eyebrow="Pengaturan"
+    title="Media"
+    subtitle="{{ $media->total() }} berkas · maksimal {{ $maxMb }} MB per berkas">
+    <label class="btn btn-primary mb-0">
+        <i class="icon-base ti tabler-upload me-2"></i>Unggah Berkas
+        <input type="file" form="mediaUploadForm" name="file" class="d-none"
+               accept="image/*" onchange="this.form.submit()">
+    </label>
+</x-admin.page-head>
+
+<form id="mediaUploadForm" method="POST" action="{{ route('admin.media.upload') }}" enctype="multipart/form-data" class="d-none">
+    @csrf
 </form>
 
-{{-- Media Grid --}}
-<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-    @forelse($media as $item)
-    <div class="bg-brand-surface border border-brand-border rounded-xl overflow-hidden group">
-        <div class="aspect-square bg-brand-surface-2 flex items-center justify-center p-2">
-            @if(str_starts_with($item->mime_type, 'image/'))
-            <img src="{{ $item->url }}" alt="{{ $item->original_name }}" class="w-full h-full object-cover rounded">
-            @else
-            <span class="text-text-muted text-xs">{{ $item->mime_type }}</span>
-            @endif
-        </div>
-        <div class="p-2">
-            <div class="text-xs text-text-primary truncate">{{ $item->original_name }}</div>
-            <div class="text-xs text-text-dark mt-0.5">{{ number_format($item->size / 1024, 1) }} KB</div>
-            <div class="flex items-center justify-between mt-2">
-                <button onclick="navigator.clipboard.writeText('{{ $item->path }}'); showToast('Path copied!')" class="text-xs text-accent hover:text-accent-light">Copy Path</button>
-                <form method="POST" action="{{ route('admin.media.destroy', $item) }}" onsubmit="return confirm('Delete?')">
-                    @csrf @method('DELETE')
-                    <button type="submit" class="text-xs text-danger hover:text-danger-dark">Delete</button>
-                </form>
+{{-- Filters --}}
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="GET" action="{{ route('admin.media.index') }}" class="row g-3 align-items-end">
+            <div class="col-12 col-md-6">
+                <label for="search" class="form-label">Cari berkas</label>
+                <input type="search" id="search" name="search" value="{{ request('search') }}"
+                       class="form-control" placeholder="Nama berkas">
+            </div>
+            <div class="col-8 col-md-4">
+                <label for="type" class="form-label">Jenis</label>
+                <select id="type" name="type" class="form-select">
+                    <option value="">Semua jenis</option>
+                    <option value="image" @selected(request('type') === 'image')>Gambar</option>
+                    <option value="application" @selected(request('type') === 'application')>Dokumen</option>
+                    <option value="video" @selected(request('type') === 'video')>Video</option>
+                </select>
+            </div>
+            <div class="col-4 col-md-2">
+                <button type="submit" class="btn btn-primary w-100">Terapkan</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@if($media->isEmpty())
+<div class="card">
+    <div class="card-body">
+        <x-admin.empty
+            icon="tabler-photo"
+            title="Belum ada berkas"
+            message="Unggah gambar di sini, lalu salin path-nya ke kolom gambar pada portofolio atau artikel. Format yang diterima: {{ $allowed }}." />
+    </div>
+</div>
+@else
+<div class="row g-4">
+    @foreach($media as $item)
+    <div class="col-6 col-md-4 col-lg-3 col-xxl-2">
+        <div class="card h-100">
+            <div class="ratio ratio-4x3 bg-body-secondary rounded-top overflow-hidden">
+                @if(str_starts_with((string) $item->mime_type, 'image/'))
+                    <img src="{{ media_url($item->path) }}" alt="{{ $item->original_name }}"
+                         class="w-100 h-100" style="object-fit: cover;" loading="lazy">
+                @else
+                    <span class="d-flex align-items-center justify-content-center text-body-secondary">
+                        <i class="icon-base ti tabler-file icon-lg"></i>
+                    </span>
+                @endif
+            </div>
+
+            <div class="card-body p-3">
+                <p class="mb-1 small fw-medium text-truncate" title="{{ $item->original_name }}">{{ $item->original_name }}</p>
+                <small class="text-body-secondary d-block">{{ number_format($item->size / 1024, 0, ',', '.') }} KB</small>
+
+                <div class="input-group input-group-sm mt-2">
+                    <input type="text" class="form-control font-monospace" readonly
+                           value="{{ $item->path }}" aria-label="Path berkas"
+                           onclick="this.select(); navigator.clipboard && navigator.clipboard.writeText(this.value);">
+                    <x-admin.delete
+                        :action="route('admin.media.destroy', $item)"
+                        :confirm="'Hapus ' . $item->original_name . '? Berkas ini mungkin masih dipakai di halaman lain.'"
+                        class="btn btn-outline-danger btn-sm" />
+                </div>
+                <small class="text-body-secondary">Klik path untuk menyalin.</small>
             </div>
         </div>
     </div>
-    @empty
-    <div class="col-span-full py-12 text-center text-text-muted text-sm">No media files yet.</div>
-    @endforelse
+    @endforeach
 </div>
 
+@if($media->hasPages())
 <div class="mt-4">{{ $media->links() }}</div>
+@endif
+@endif
+
 @endsection

@@ -1,14 +1,23 @@
-@extends('layouts.admin')
-@php $pageTitle = 'Create Portfolio'; @endphp
+@extends('layouts.layoutMaster')
+
+@section('title', 'Tambah Proyek')
+
 @section('content')
-<div class="max-w-3xl">
-    <form method="POST" action="{{ route('admin.portfolio.store') }}">
-        @csrf
-        @include('admin.portfolio._form')
-        <div class="flex items-center gap-3 mt-6">
-            <button type="submit" class="btn-primary text-sm py-2.5 px-6">Save Portfolio</button>
-            <a href="{{ route('admin.portfolio.index') }}" class="btn-secondary text-sm py-2.5 px-6">Cancel</a>
-        </div>
-    </form>
-</div>
+
+<form method="POST" action="{{ route('admin.portfolio.store') }}">
+    @csrf
+
+    <x-admin.page-head
+        eyebrow="Portofolio"
+        title="Tambah Proyek"
+        :back="route('admin.portfolio.index')">
+        <a href="{{ route('admin.portfolio.index') }}" class="btn btn-outline-secondary">Batal</a>
+        <button type="submit" class="btn btn-primary">
+            <i class="icon-base ti tabler-device-floppy me-2"></i>Simpan
+        </button>
+    </x-admin.page-head>
+
+    @include('admin.portfolio._form')
+</form>
+
 @endsection

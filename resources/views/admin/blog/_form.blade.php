@@ -1,53 +1,99 @@
-{{-- Blog Form Fields --}}
-<x-admin.form.input label="Title" name="title" :value="$post->title ?? ''" required placeholder="Blog post title" />
-<x-admin.form.textarea label="Excerpt" name="excerpt" :value="$post->excerpt ?? ''" placeholder="Short summary" :rows="2" />
+@php
+    $post = $post ?? null;
+    $selectedTags = old('tags', $post?->tags?->pluck('id')->all() ?? []);
+@endphp
 
-<div class="mb-4">
-    <label class="block text-sm font-medium text-text-secondary mb-1.5">Content <span class="text-danger">*</span></label>
-    <textarea name="content" rows="12"
-              class="w-full bg-brand-surface-2 border border-brand-border rounded-xl px-4 py-2.5 text-text-primary text-sm focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent/20 transition-colors resize-y"
-              required>{{ old('content', $post->content ?? '') }}</textarea>
-    @error('content')<p class="text-danger text-xs mt-1">{{ $message }}</p>@enderror
-    <p class="text-text-dark text-xs mt-1">Supports HTML content</p>
-</div>
+<div class="row g-4">
+    <div class="col-12 col-lg-8">
 
-<div class="grid grid-cols-2 gap-4">
-    <div class="mb-4">
-        <label class="block text-sm font-medium text-text-secondary mb-1.5">Category</label>
-        <select name="category_id" class="w-full bg-brand-surface-2 border border-brand-border rounded-xl px-4 py-2.5 text-text-primary text-sm focus:outline-none focus:border-accent">
-            <option value="">None</option>
-            @foreach($categories as $cat)
-            <option value="{{ $cat->id }}" {{ ($post->category_id ?? '') == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
-            @endforeach
-        </select>
+        <div class="card mb-4">
+            <div class="card-header"><h5 class="card-title mb-0">Isi Artikel</h5></div>
+            <div class="card-body">
+                <x-admin.form.input
+                    label="Judul" name="title" :value="$post->title ?? ''" required
+                    placeholder="Judul artikel" />
+
+                <x-admin.form.textarea
+                    label="Ringkasan" name="excerpt" :value="$post->excerpt ?? ''" :rows="3"
+                    placeholder="Satu-dua kalimat yang muncul di kartu artikel dan hasil pencarian" />
+
+                <x-admin.form.textarea
+                    label="Konten" name="content" :value="$post->content ?? ''" required :rows="18"
+                    placeholder="Tulis artikel di sini"
+                    help="Mendukung HTML. Gunakan <h2>, <p>, <ul>, dan <blockquote> agar tampil rapi di situs."
+                    class="font-monospace" />
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><h5 class="card-title mb-0">SEO</h5></div>
+            <div class="card-body">
+                <x-admin.form.input label="Meta Title" name="meta_title" :value="$post->meta_title ?? ''" />
+                <x-admin.form.textarea label="Meta Description" name="meta_description" :value="$post->meta_description ?? ''" :rows="3" />
+                <x-admin.form.input
+                    label="Canonical URL" name="canonical_url" type="url" :value="$post->canonical_url ?? ''"
+                    placeholder="https://..."
+                    help="Isi hanya jika artikel ini juga terbit di tempat lain." />
+            </div>
+        </div>
     </div>
-    <div class="mb-4">
-        <label class="block text-sm font-medium text-text-secondary mb-1.5">Status</label>
-        <select name="status" class="w-full bg-brand-surface-2 border border-brand-border rounded-xl px-4 py-2.5 text-text-primary text-sm focus:outline-none focus:border-accent">
-            <option value="draft" {{ ($post->status ?? 'draft') === 'draft' ? 'selected' : '' }}>Draft</option>
-            <option value="published" {{ ($post->status ?? '') === 'published' ? 'selected' : '' }}>Published</option>
-            <option value="scheduled" {{ ($post->status ?? '') === 'scheduled' ? 'selected' : '' }}>Scheduled</option>
-        </select>
+
+    <div class="col-12 col-lg-4">
+
+        <div class="card mb-4">
+            <div class="card-header"><h5 class="card-title mb-0">Publikasi</h5></div>
+            <div class="card-body">
+                <x-admin.form.select
+                    label="Status" name="status" required
+                    :options="['draft' => 'Draf', 'published' => 'Terbit', 'scheduled' => 'Terjadwal']"
+                    :value="$post->status ?? 'draft'" />
+
+                <x-admin.form.input
+                    label="Tanggal Terbit" name="published_at" type="datetime-local"
+                    :value="$post?->published_at?->format('Y-m-d\TH:i') ?? ''"
+                    help="Dikosongkan berarti memakai waktu saat disimpan." />
+
+                <x-admin.form.select
+                    label="Kategori" name="category_id"
+                    :options="$categories->pluck('name', 'id')->all()"
+                    :value="$post->category_id ?? null"
+                    placeholder="Tanpa kategori" />
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header"><h5 class="card-title mb-0">Tag</h5></div>
+            <div class="card-body">
+                @if($tags->isEmpty())
+                    <p class="text-body-secondary mb-2">Belum ada tag.</p>
+                    <a href="{{ route('admin.tags.create') }}" class="btn btn-sm btn-outline-primary">Buat tag</a>
+                @else
+                <div class="d-flex flex-wrap gap-2">
+                    @foreach($tags as $tag)
+                    <div class="form-check form-check-inline m-0">
+                        <input class="form-check-input" type="checkbox" name="tags[]"
+                               value="{{ $tag->id }}" id="tag{{ $tag->id }}"
+                               @checked(in_array($tag->id, $selectedTags))>
+                        <label class="form-check-label" for="tag{{ $tag->id }}">{{ $tag->name }}</label>
+                    </div>
+                    @endforeach
+                </div>
+                @endif
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><h5 class="card-title mb-0">Gambar Utama</h5></div>
+            <div class="card-body">
+                @if($src = media_url($post->featured_image ?? null))
+                <img src="{{ $src }}" alt="" class="aldef-thumb-lg mb-3">
+                @endif
+
+                <x-admin.form.input
+                    label="Path Gambar" name="featured_image" :value="$post->featured_image ?? ''"
+                    placeholder="images/blog/nama.webp"
+                    help="Unggah lewat menu Media, lalu salin path-nya ke sini." />
+            </div>
+        </div>
     </div>
 </div>
-
-<x-admin.form.input label="Featured Image" name="featured_image" :value="$post->featured_image ?? ''" placeholder="images/blog/..." />
-<x-admin.form.input label="Published At" name="published_at" type="datetime-local" :value="$post->published_at ? $post->published_at->format('Y-m-d\TH:i') : ''" />
-
-<div class="mb-4">
-    <label class="block text-sm font-medium text-text-secondary mb-1.5">Tags</label>
-    <div class="flex flex-wrap gap-2">
-        @foreach($tags as $tag)
-        <label class="flex items-center gap-1.5 bg-brand-surface-2 border border-brand-border rounded-lg px-3 py-1.5 cursor-pointer hover:border-accent/30 transition-colors">
-            <input type="checkbox" name="tags[]" value="{{ $tag->id }}"
-                   {{ in_array($tag->id, ($post->tags->pluck('id')->toArray() ?? [])) ? 'checked' : '' }}
-                   class="w-3.5 h-3.5 rounded border-brand-border bg-brand-surface text-accent">
-            <span class="text-xs text-text-secondary">{{ $tag->name }}</span>
-        </label>
-        @endforeach
-    </div>
-</div>
-
-<x-admin.form.input label="Meta Title" name="meta_title" :value="$post->meta_title ?? ''" />
-<x-admin.form.textarea label="Meta Description" name="meta_description" :value="$post->meta_description ?? ''" :rows="2" />
-<x-admin.form.input label="Canonical URL" name="canonical_url" type="url" :value="$post->canonical_url ?? ''" />

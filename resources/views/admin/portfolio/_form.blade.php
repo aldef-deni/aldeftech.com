@@ -1,53 +1,119 @@
-{{-- Portfolio Form Fields --}}
-<x-admin.form.input label="Title" name="title" :value="$portfolio->title ?? ''" required placeholder="Project title" />
-<x-admin.form.textarea label="Short Description" name="short_description" :value="$portfolio->short_description ?? ''" required placeholder="Brief project description" :rows="2" />
-<x-admin.form.textarea label="Full Description" name="description" :value="$portfolio->description ?? ''" placeholder="Detailed description" :rows="5" />
+@php $portfolio = $portfolio ?? null; @endphp
 
-<div class="grid grid-cols-2 gap-4">
-    <div class="mb-4">
-        <label class="block text-sm font-medium text-text-secondary mb-1.5">Category</label>
-        <select name="category_id" class="w-full bg-brand-surface-2 border border-brand-border rounded-xl px-4 py-2.5 text-text-primary text-sm focus:outline-none focus:border-accent">
-            <option value="">None</option>
-            @foreach($categories as $cat)
-            <option value="{{ $cat->id }}" {{ ($portfolio->category_id ?? '') == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
-            @endforeach
-        </select>
+<div class="row g-4">
+    <div class="col-12 col-lg-8">
+
+        <div class="card mb-4">
+            <div class="card-header"><h5 class="card-title mb-0">Ringkasan Proyek</h5></div>
+            <div class="card-body">
+                <x-admin.form.input
+                    label="Judul Proyek" name="title" :value="$portfolio->title ?? ''" required
+                    placeholder="mis. Arahinn Mobile — OTA & Travel Platform" />
+
+                <x-admin.form.textarea
+                    label="Deskripsi Singkat" name="short_description" :value="$portfolio->short_description ?? ''" required
+                    :rows="3" placeholder="Satu paragraf tentang apa yang dibangun dan untuk siapa"
+                    help="Tampil di kartu portofolio." />
+
+                <x-admin.form.textarea
+                    label="Deskripsi Lengkap" name="description" :value="$portfolio->description ?? ''"
+                    :rows="6" placeholder="Penjelasan menyeluruh untuk halaman studi kasus" />
+
+                <x-admin.form.list
+                    label="Teknologi" name="technologies"
+                    :items="$portfolio->technologies ?? []"
+                    placeholder="mis. Laravel 11"
+                    add-label="Tambah teknologi" />
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="card-title mb-1">Narasi Studi Kasus</h5>
+                <small class="text-body-secondary">Bagian ini yang membuat portofolio menjual. Isi seadanya bila belum lengkap.</small>
+            </div>
+            <div class="card-body">
+                <x-admin.form.textarea
+                    label="Tantangan" name="challenge" :value="$portfolio->challenge ?? ''" :rows="4"
+                    placeholder="Masalah apa yang dihadapi klien sebelum sistem ini ada?" />
+                <x-admin.form.textarea
+                    label="Pendekatan" name="approach" :value="$portfolio->approach ?? ''" :rows="4"
+                    placeholder="Bagaimana Anda memutuskan cara menyelesaikannya?" />
+                <x-admin.form.textarea
+                    label="Solusi" name="solution" :value="$portfolio->solution ?? ''" :rows="4"
+                    placeholder="Apa yang akhirnya dibangun?" />
+                <x-admin.form.textarea
+                    label="Hasil" name="results" :value="$portfolio->results ?? ''" :rows="4"
+                    placeholder="Angka konkret paling meyakinkan: waktu proses turun, kapasitas naik, biaya berkurang." />
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><h5 class="card-title mb-0">SEO</h5></div>
+            <div class="card-body">
+                <x-admin.form.input label="Meta Title" name="meta_title" :value="$portfolio->meta_title ?? ''" />
+                <x-admin.form.textarea label="Meta Description" name="meta_description" :value="$portfolio->meta_description ?? ''" :rows="3" />
+            </div>
+        </div>
     </div>
-    <x-admin.form.input label="Client" name="client" :value="$portfolio->client ?? ''" placeholder="Client name or Demo" />
-</div>
 
-<div class="grid grid-cols-2 gap-4">
-    <x-admin.form.input label="Year" name="year" :value="$portfolio->year ?? ''" placeholder="e.g. 2024" />
-    <x-admin.form.input label="Project URL" name="project_url" type="url" :value="$portfolio->project_url ?? ''" placeholder="https://..." />
-</div>
+    <div class="col-12 col-lg-4">
 
-<x-admin.form.input label="Featured Image Path" name="featured_image" :value="$portfolio->featured_image ?? ''" placeholder="images/portfolio/..." />
+        <div class="card mb-4">
+            <div class="card-header"><h5 class="card-title mb-0">Publikasi</h5></div>
+            <div class="card-body">
+                <x-admin.form.switch
+                    label="Tampilkan di situs" name="is_published"
+                    :checked="$portfolio->is_published ?? true" />
 
-<div class="mb-4">
-    <label class="block text-sm font-medium text-text-secondary mb-1.5">Technologies (one per line)</label>
-    <textarea name="technologies[]" rows="3" class="w-full bg-brand-surface-2 border border-brand-border rounded-xl px-4 py-2.5 text-text-primary text-sm focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent/20 transition-colors resize-y" placeholder="Laravel&#10;Vue.js&#10;MySQL">{{ is_array($portfolio->technologies ?? null) ? implode("\n", $portfolio->technologies) : '' }}</textarea>
-</div>
+                <x-admin.form.switch
+                    label="Tampilkan di beranda" name="is_featured"
+                    :checked="$portfolio->is_featured ?? false"
+                    help="Beranda menampilkan tiga proyek unggulan." />
 
-<x-admin.form.textarea label="The Challenge" name="challenge" :value="$portfolio->challenge ?? ''" :rows="3" />
-<x-admin.form.textarea label="The Approach" name="approach" :value="$portfolio->approach ?? ''" :rows="3" />
-<x-admin.form.textarea label="The Solution" name="solution" :value="$portfolio->solution ?? ''" :rows="3" />
-<x-admin.form.textarea label="The Results" name="results" :value="$portfolio->results ?? ''" :rows="3" />
+                <x-admin.form.input
+                    label="Tanggal Terbit" name="published_at" type="datetime-local"
+                    :value="$portfolio?->published_at?->format('Y-m-d\TH:i') ?? ''" />
 
-<div class="grid grid-cols-2 gap-4">
-    <x-admin.form.input label="Published At" name="published_at" type="datetime-local" :value="$portfolio->published_at ? $portfolio->published_at->format('Y-m-d\TH:i') : ''" />
-    <x-admin.form.input label="Sort Order" name="sort_order" type="number" :value="$portfolio->sort_order ?? 0" />
-</div>
+                <x-admin.form.input
+                    label="Urutan" name="sort_order" type="number" :value="$portfolio->sort_order ?? 0" />
+            </div>
+        </div>
 
-<x-admin.form.input label="Meta Title" name="meta_title" :value="$portfolio->meta_title ?? ''" />
-<x-admin.form.textarea label="Meta Description" name="meta_description" :value="$portfolio->meta_description ?? ''" :rows="2" />
+        <div class="card mb-4">
+            <div class="card-header"><h5 class="card-title mb-0">Identitas</h5></div>
+            <div class="card-body">
+                <x-admin.form.select
+                    label="Kategori" name="category_id"
+                    :options="$categories->pluck('name', 'id')->all()"
+                    :value="$portfolio->category_id ?? null"
+                    placeholder="Tanpa kategori" />
 
-<div class="flex items-center gap-6 mt-2">
-    <div class="flex items-center gap-2">
-        <input type="checkbox" name="is_featured" value="1" id="is_featured" {{ ($portfolio->is_featured ?? false) ? 'checked' : '' }} class="w-4 h-4 rounded border-brand-border bg-brand-surface-2 text-accent">
-        <label for="is_featured" class="text-sm text-text-secondary">Featured</label>
-    </div>
-    <div class="flex items-center gap-2">
-        <input type="checkbox" name="is_published" value="1" id="is_published" {{ ($portfolio->is_published ?? true) ? 'checked' : '' }} class="w-4 h-4 rounded border-brand-border bg-brand-surface-2 text-accent">
-        <label for="is_published" class="text-sm text-text-secondary">Published</label>
+                <x-admin.form.input
+                    label="Klien" name="client" :value="$portfolio->client ?? ''"
+                    placeholder="Nama klien atau 'Proyek Internal'" />
+
+                <x-admin.form.input
+                    label="Tahun" name="year" :value="$portfolio->year ?? ''" placeholder="2024" />
+
+                <x-admin.form.input
+                    label="Tautan Proyek" name="project_url" type="url" :value="$portfolio->project_url ?? ''"
+                    placeholder="https://..." />
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><h5 class="card-title mb-0">Gambar Utama</h5></div>
+            <div class="card-body">
+                @if($src = media_url($portfolio->featured_image ?? null))
+                <img src="{{ $src }}" alt="" class="aldef-thumb-lg mb-3">
+                @endif
+
+                <x-admin.form.input
+                    label="Path Gambar" name="featured_image" :value="$portfolio->featured_image ?? ''"
+                    placeholder="images/portfolio/nama.webp"
+                    help="Unggah lewat menu Media, lalu salin path-nya ke sini." />
+            </div>
+        </div>
     </div>
 </div>

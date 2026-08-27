@@ -23,6 +23,5 @@
 @yield('page-script')
 <!-- END: Page JS-->
 
-<!-- app JS -->
-@vite(['resources/js/app.js'])
-<!-- END: app JS-->
+<!-- Aldef Tech admin behaviours (the public site's Alpine bundle is not loaded here) -->
+@vite(['resources/assets/js/aldef-admin.js'])

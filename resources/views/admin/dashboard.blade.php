@@ -1,166 +1,259 @@
-@php
-$configData = Helper::appClasses();
-@endphp
-
 @extends('layouts.layoutMaster')
 
-@section('title', 'Admin Dashboard')
+@section('title', 'Dashboard')
+
+@php
+    $statusLabels = config('aldeftech.lead.statuses', []);
+    $trendMax = max(1, collect($leadTrend)->max('value'));
+    $trendTotal = collect($leadTrend)->sum('value');
+
+    $tiles = [
+        ['label' => 'Total Leads',  'value' => $stats['leads'],       'icon' => 'tabler-users',      'tone' => 'primary', 'url' => route('admin.leads.index')],
+        ['label' => 'Leads Baru',   'value' => $stats['new_leads'],   'icon' => 'tabler-mail-opened','tone' => 'warning', 'url' => route('admin.leads.index')],
+        ['label' => 'Portofolio',   'value' => $stats['portfolios'],  'icon' => 'tabler-briefcase',  'tone' => 'info',    'url' => route('admin.portfolio.index')],
+        ['label' => 'Artikel',      'value' => $stats['blog_posts'],  'icon' => 'tabler-news',       'tone' => 'success', 'url' => route('admin.blog.index')],
+    ];
+
+    $contentTiles = [
+        ['label' => 'Layanan',    'value' => $stats['services'],     'icon' => 'tabler-layout-grid-add', 'url' => route('admin.services.index')],
+        ['label' => 'Solusi',     'value' => $stats['solutions'],    'icon' => 'tabler-bulb',            'url' => route('admin.solutions.index')],
+        ['label' => 'Testimoni',  'value' => $stats['testimonials'], 'icon' => 'tabler-star',            'url' => route('admin.testimonials.index')],
+        ['label' => 'FAQ',        'value' => $stats['faqs'],         'icon' => 'tabler-help-circle',     'url' => route('admin.faq.index')],
+        ['label' => 'Media',      'value' => $stats['media'],        'icon' => 'tabler-photo',           'url' => route('admin.media.index')],
+    ];
+@endphp
 
 @section('content')
-<h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Dashboard /</span> Analytics</h4>
 
-<div class="row">
-    <!-- View sales -->
-    <div class="col-xl-4 mb-4 col-lg-5 col-12">
-        <div class="card h-100">
-            <div class="card-header pb-0">
-                <div class="d-flex justify-content-between">
-                    <h5 class="card-title mb-0">Aldef Tech</h5>
-                </div>
-            </div>
+<x-admin.page-head
+    eyebrow="Ringkasan"
+    title="Selamat datang, {{ explode(' ', auth()->user()->name)[0] }}"
+    subtitle="Kondisi konten dan permintaan masuk aldeftech.com hari ini.">
+    <a href="{{ route('home') }}" target="_blank" rel="noopener" class="btn btn-outline-secondary">
+        <i class="icon-base ti tabler-external-link me-2"></i>Lihat Situs
+    </a>
+    <a href="{{ route('admin.leads.index') }}" class="btn btn-primary">
+        <i class="icon-base ti tabler-users me-2"></i>Kelola Leads
+    </a>
+</x-admin.page-head>
+
+{{-- Needs attention ---------------------------------------------------------}}
+@if($unpublishedTotal > 0)
+<div class="alert alert-warning d-flex align-items-start gap-3 mb-4" role="alert">
+    <i class="icon-base ti tabler-eye-off mt-1"></i>
+    <div class="flex-grow-1">
+        <h6 class="alert-heading mb-1">{{ $unpublishedTotal }} konten belum tampil di situs</h6>
+        <p class="mb-0 small">
+            @foreach(array_filter($unpublished) as $key => $count)
+                <span class="me-3">{{ ucfirst(str_replace('_', ' ', $key)) }}: <strong>{{ $count }}</strong></span>
+            @endforeach
+        </p>
+    </div>
+</div>
+@endif
+
+{{-- Primary tiles -----------------------------------------------------------}}
+<div class="row g-4 mb-4">
+    @foreach($tiles as $tile)
+    <div class="col-6 col-xl-3">
+        <a href="{{ $tile['url'] }}" class="card h-100 text-body text-decoration-none card-hover">
             <div class="card-body">
-                <p class="mb-4 text-muted">Migration to Vuexy Template is Active.</p>
-                <div class="alert alert-warning mb-0">
-                    You have <strong>{{ $stats['new_leads'] }}</strong> new leads waiting to be processed!
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <span class="badge bg-label-{{ $tile['tone'] }} rounded p-2">
+                        <i class="icon-base ti {{ $tile['icon'] }} icon-md"></i>
+                    </span>
+                    <i class="icon-base ti tabler-arrow-up-right text-body-secondary"></i>
                 </div>
-                <a href="{{ route('admin.leads.index') }}" class="btn btn-primary mt-4">View Leads</a>
+                <h3 class="aldef-stat mb-0">{{ number_format($tile['value'], 0, ',', '.') }}</h3>
+                <small class="text-body-secondary">{{ $tile['label'] }}</small>
+            </div>
+        </a>
+    </div>
+    @endforeach
+</div>
+
+<div class="row g-4 mb-4">
+
+    {{-- Lead trend ---------------------------------------------------------}}
+    <div class="col-12 col-xl-8">
+        <div class="card h-100">
+            <div class="card-header d-flex align-items-start justify-content-between">
+                <div>
+                    <h5 class="card-title mb-1">Leads Masuk</h5>
+                    <small class="text-body-secondary">14 hari terakhir · total {{ $trendTotal }}</small>
+                </div>
+                <span class="badge bg-label-primary">{{ $stats['new_leads'] }} belum diproses</span>
+            </div>
+
+            <div class="card-body">
+                @if($trendTotal === 0)
+                    <x-admin.empty
+                        icon="tabler-chart-bar"
+                        title="Belum ada lead dalam 14 hari terakhir"
+                        message="Formulir kontak dan tombol WhatsApp di situs akan mengisi bagian ini otomatis." />
+                @else
+                    <div class="d-flex align-items-end gap-2" style="height: 11rem;" role="img"
+                         aria-label="Grafik batang leads 14 hari terakhir">
+                        @foreach($leadTrend as $point)
+                        <div class="flex-fill d-flex flex-column align-items-center justify-content-end h-100"
+                             title="{{ $point['label'] }}: {{ $point['value'] }} lead">
+                            <span class="small text-body-secondary mb-1">{{ $point['value'] ?: '' }}</span>
+                            <div class="w-100 rounded-top {{ $point['value'] ? 'bg-primary' : 'bg-label-secondary' }}"
+                                 style="height: {{ max(3, round(($point['value'] / $trendMax) * 100)) }}%; min-height: 4px;"></div>
+                        </div>
+                        @endforeach
+                    </div>
+
+                    <div class="d-flex justify-content-between mt-3 pt-3 border-top">
+                        <small class="text-body-secondary">{{ $leadTrend[0]['label'] }}</small>
+                        <small class="text-body-secondary">{{ $leadTrend[count($leadTrend) - 1]['label'] }}</small>
+                    </div>
+                @endif
             </div>
         </div>
     </div>
-    <!-- Statistics -->
-    <div class="col-xl-8 mb-4 col-lg-7 col-12">
+
+    {{-- Pipeline ------------------------------------------------------------}}
+    <div class="col-12 col-xl-4">
         <div class="card h-100">
             <div class="card-header">
-                <div class="d-flex justify-content-between mb-3">
-                    <h5 class="card-title mb-0">System Statistics</h5>
-                </div>
+                <h5 class="card-title mb-0">Pipeline</h5>
             </div>
             <div class="card-body">
-                <div class="row gy-3">
-                    <div class="col-md-3 col-6">
-                        <div class="d-flex align-items-center">
-                            <div class="badge rounded-pill bg-label-primary me-3 p-2"><i class="ti ti-briefcase ti-sm"></i></div>
-                            <div class="card-info">
-                                <h5 class="mb-0">{{ $stats['portfolios'] }}</h5>
-                                <small>Portfolios</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-6">
-                        <div class="d-flex align-items-center">
-                            <div class="badge rounded-pill bg-label-info me-3 p-2"><i class="ti ti-layout-grid ti-sm"></i></div>
-                            <div class="card-info">
-                                <h5 class="mb-0">{{ $stats['services'] }}</h5>
-                                <small>Services</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-6">
-                        <div class="d-flex align-items-center">
-                            <div class="badge rounded-pill bg-label-success me-3 p-2"><i class="ti ti-users ti-sm"></i></div>
-                            <div class="card-info">
-                                <h5 class="mb-0">{{ $stats['leads'] }}</h5>
-                                <small>Total Leads</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-6">
-                        <div class="d-flex align-items-center">
-                            <div class="badge rounded-pill bg-label-warning me-3 p-2"><i class="ti ti-news ti-sm"></i></div>
-                            <div class="card-info">
-                                <h5 class="mb-0">{{ $stats['blog_posts'] }}</h5>
-                                <small>Blog Posts</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @if(empty($leadsByStatus))
+                    <x-admin.empty icon="tabler-filter" title="Pipeline masih kosong" />
+                @else
+                    @php $pipelineTotal = max(1, array_sum($leadsByStatus)); @endphp
+                    <ul class="list-unstyled mb-0">
+                        @foreach($statusLabels as $key => $label)
+                            @php $count = $leadsByStatus[$key] ?? 0; @endphp
+                            <li class="mb-3">
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <span class="small">{{ $label }}</span>
+                                    <span class="small fw-medium">{{ $count }}</span>
+                                </div>
+                                <div class="progress" style="height: 6px;">
+                                    <div class="progress-bar {{ $key === 'won' ? 'bg-success' : ($key === 'lost' ? 'bg-secondary' : '') }}"
+                                         style="width: {{ round(($count / $pipelineTotal) * 100) }}%"
+                                         role="progressbar"
+                                         aria-valuenow="{{ $count }}" aria-valuemin="0" aria-valuemax="{{ $pipelineTotal }}"></div>
+                                </div>
+                            </li>
+                        @endforeach
+                    </ul>
+                @endif
             </div>
         </div>
     </div>
 </div>
 
-<div class="row">
-    <!-- Recent Leads -->
-    <div class="col-md-6 mb-4">
+<div class="row g-4 mb-4">
+
+    {{-- Recent leads --------------------------------------------------------}}
+    <div class="col-12 col-xl-7">
         <div class="card h-100">
-            <div class="card-header d-flex justify-content-between">
-                <h5 class="card-title m-0 me-2">Recent Leads</h5>
-                <div class="dropdown">
-                    <button class="btn p-0" type="button" id="recentLeadsBtn" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="ti ti-dots-vertical ti-sm text-muted"></i>
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="recentLeadsBtn">
-                        <a class="dropdown-item" href="{{ route('admin.leads.index') }}">View All</a>
-                    </div>
-                </div>
+            <div class="card-header d-flex align-items-center justify-content-between">
+                <h5 class="card-title mb-0">Leads Terbaru</h5>
+                <a href="{{ route('admin.leads.index') }}" class="btn btn-sm btn-text-primary">Semua</a>
             </div>
+
+            @if($recentLeads->isEmpty())
+                <div class="card-body">
+                    <x-admin.empty icon="tabler-inbox" title="Belum ada lead masuk" />
+                </div>
+            @else
             <div class="table-responsive">
-                <table class="table table-borderless table-sm">
+                <table class="table table-hover mb-0">
                     <thead>
                         <tr>
-                            <th>Name</th>
+                            <th>Nama</th>
+                            <th class="d-none d-md-table-cell">Kebutuhan</th>
                             <th>Status</th>
-                            <th>Date</th>
+                            <th class="text-end">Masuk</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($recentLeads as $lead)
+                        @foreach($recentLeads as $lead)
                         <tr>
-                            <td>{{ $lead->name }}</td>
                             <td>
-                                @if($lead->status == 'new')
-                                    <span class="badge bg-label-warning">New</span>
-                                @elseif($lead->status == 'contacted')
-                                    <span class="badge bg-label-info">Contacted</span>
-                                @else
-                                    <span class="badge bg-label-success">{{ ucfirst($lead->status) }}</span>
-                                @endif
+                                <a href="{{ route('admin.leads.show', $lead) }}" class="fw-medium text-body">{{ $lead->name }}</a>
+                                @if($lead->company)<div class="small text-body-secondary">{{ $lead->company }}</div>@endif
                             </td>
-                            <td>{{ $lead->created_at->diffForHumans() }}</td>
+                            <td class="d-none d-md-table-cell">
+                                <span class="small text-body-secondary">{{ $lead->project_type ?: '—' }}</span>
+                            </td>
+                            <td>
+                                <span class="badge bg-label-{{ match($lead->status) {
+                                    'won' => 'success', 'lost' => 'secondary', 'new' => 'warning', default => 'info',
+                                } }}">{{ $statusLabels[$lead->status] ?? ucfirst((string) $lead->status) }}</span>
+                            </td>
+                            <td class="text-end">
+                                <span class="small text-body-secondary">{{ $lead->created_at?->diffForHumans(short: true) }}</span>
+                            </td>
                         </tr>
-                        @empty
-                        <tr>
-                            <td colspan="3" class="text-center text-muted">No recent leads found.</td>
-                        </tr>
-                        @endforelse
+                        @endforeach
                     </tbody>
                 </table>
             </div>
+            @endif
         </div>
     </div>
 
-    <!-- Recent Activity -->
-    <div class="col-md-6 mb-4">
+    {{-- Activity ------------------------------------------------------------}}
+    <div class="col-12 col-xl-5">
         <div class="card h-100">
-            <div class="card-header d-flex justify-content-between">
-                <h5 class="card-title m-0 me-2">Recent Activity</h5>
+            <div class="card-header d-flex align-items-center justify-content-between">
+                <h5 class="card-title mb-0">Aktivitas Terakhir</h5>
+                <a href="{{ route('admin.activity-logs.index') }}" class="btn btn-sm btn-text-primary">Semua</a>
             </div>
+
             <div class="card-body">
-                <ul class="timeline">
-                    @forelse($recentActivity->take(5) as $activity)
-                    <li class="timeline-item timeline-item-transparent">
+                @if($recentActivity->isEmpty())
+                    <x-admin.empty icon="tabler-history" title="Belum ada aktivitas tercatat" />
+                @else
+                <ul class="timeline timeline-dashed mb-0">
+                    @foreach($recentActivity as $log)
+                    <li class="timeline-item timeline-item-transparent ps-4 pb-3">
                         <span class="timeline-point timeline-point-primary"></span>
-                        <div class="timeline-event">
-                            <div class="timeline-header mb-1">
-                                <h6 class="mb-0">{{ $activity->action }}</h6>
-                                <small class="text-muted">{{ $activity->created_at->diffForHumans() }}</small>
+                        <div class="timeline-event p-0">
+                            <div class="timeline-header">
+                                <h6 class="mb-0 small fw-medium">{{ $log->description }}</h6>
                             </div>
-                            <p class="mb-0">{{ $activity->description }}</p>
-                            @if($activity->user)
-                                <small class="text-muted">By: {{ $activity->user->name }}</small>
-                            @endif
+                            <small class="text-body-secondary">
+                                {{ $log->user->name ?? 'Sistem' }} · {{ $log->created_at?->diffForHumans(short: true) }}
+                            </small>
                         </div>
                     </li>
-                    @empty
-                    <li class="timeline-item timeline-item-transparent">
-                        <div class="timeline-event">
-                            <p class="mb-0">No recent activity.</p>
-                        </div>
-                    </li>
-                    @endforelse
+                    @endforeach
                 </ul>
+                @endif
             </div>
         </div>
     </div>
 </div>
+
+{{-- Content inventory -------------------------------------------------------}}
+<div class="card">
+    <div class="card-header">
+        <h5 class="card-title mb-0">Isi Situs</h5>
+    </div>
+    <div class="card-body">
+        <div class="row g-4">
+            @foreach($contentTiles as $tile)
+            <div class="col-6 col-md-4 col-xl">
+                <a href="{{ $tile['url'] }}" class="d-flex align-items-center gap-3 text-body text-decoration-none">
+                    <span class="badge bg-label-primary rounded p-2">
+                        <i class="icon-base ti {{ $tile['icon'] }} icon-md"></i>
+                    </span>
+                    <span>
+                        <span class="d-block aldef-stat fs-5">{{ $tile['value'] }}</span>
+                        <small class="text-body-secondary">{{ $tile['label'] }}</small>
+                    </span>
+                </a>
+            </div>
+            @endforeach
+        </div>
+    </div>
+</div>
+
 @endsection

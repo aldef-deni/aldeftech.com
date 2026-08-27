@@ -62,6 +62,7 @@ export default defineConfig({
         'resources/css/app.css', // Tailwind
         'resources/js/app.js',   // Tailwind/Main JS
         'resources/assets/css/demo.css', // Vuexy demo css (if any)
+        'resources/assets/css/aldef-admin.css', // Aldef Tech admin skin
         ...pageJsFiles,
         ...vendorJsFiles,
         ...LibsJsFiles,

@@ -1,47 +1,73 @@
-@extends('layouts.admin')
-@php $pageTitle = 'Solutions'; @endphp
+@extends('layouts.layoutMaster')
+
+@section('title', 'Solusi')
+
 @section('content')
-<div class="flex items-center justify-between mb-6">
-    <p class="text-text-muted text-sm">{{ $solutions->count() }} solutions</p>
-    <a href="{{ route('admin.solutions.create') }}" class="btn-primary text-sm py-2 px-4">+ Add Solution</a>
+
+<x-admin.page-head
+    eyebrow="Konten Situs"
+    title="Solusi"
+    subtitle="{{ $solutions->count() }} solusi · {{ $solutions->where('is_published', true)->count() }} tampil di situs">
+    <a href="{{ route('admin.solutions.create') }}" class="btn btn-primary">
+        <i class="icon-base ti tabler-plus me-2"></i>Tambah Solusi
+    </a>
+</x-admin.page-head>
+
+<div class="card">
+    @if($solutions->isEmpty())
+        <div class="card-body">
+            <x-admin.empty
+                icon="tabler-bulb"
+                title="Belum ada solusi"
+                message="Tambahkan solusi siap-pakai yang bisa disesuaikan untuk klien.">
+                <a href="{{ route('admin.solutions.create') }}" class="btn btn-primary">
+                    <i class="icon-base ti tabler-plus me-2"></i>Tambah Solusi
+                </a>
+            </x-admin.empty>
+        </div>
+    @else
+    <div class="table-responsive">
+        <table class="table table-hover mb-0">
+            <thead>
+                <tr>
+                    <th>Solusi</th>
+                    <th class="d-none d-lg-table-cell">Modul</th>
+                    <th class="text-center">Urutan</th>
+                    <th class="text-center">Status</th>
+                    <th class="text-end">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($solutions as $solution)
+                <tr>
+                    <td>
+                        <div class="d-flex align-items-center gap-3">
+                            <span class="badge bg-label-primary rounded p-2 lh-1">{{ $solution->icon ?: '•' }}</span>
+                            <div class="text-truncate">
+                                <a href="{{ route('admin.solutions.edit', $solution) }}" class="fw-medium text-body d-block text-truncate">{{ $solution->title }}</a>
+                                <small class="text-body-secondary d-block text-truncate" style="max-width: 26rem;">{{ $solution->short_description }}</small>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="d-none d-lg-table-cell">
+                        <span class="badge bg-label-secondary">{{ count((array) $solution->features) }}</span>
+                    </td>
+                    <td class="text-center">{{ $solution->sort_order }}</td>
+                    <td class="text-center"><x-admin.status :published="$solution->is_published" /></td>
+                    <td class="text-end text-nowrap">
+                        <a href="{{ route('admin.solutions.edit', $solution) }}" class="btn btn-sm btn-icon btn-text-secondary" title="Ubah">
+                            <i class="icon-base ti tabler-pencil"></i>
+                        </a>
+                        <x-admin.delete
+                            :action="route('admin.solutions.destroy', $solution)"
+                            :confirm="'Hapus solusi \'' . $solution->title . '\'?'" />
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+    @endif
 </div>
-<div class="bg-brand-surface border border-brand-border rounded-xl overflow-hidden">
-    <table class="w-full">
-        <thead>
-            <tr class="border-b border-brand-border">
-                <th class="text-left px-5 py-3 text-xs font-medium text-text-muted uppercase">Title</th>
-                <th class="text-center px-5 py-3 text-xs font-medium text-text-muted uppercase">Sort</th>
-                <th class="text-center px-5 py-3 text-xs font-medium text-text-muted uppercase">Status</th>
-                <th class="text-right px-5 py-3 text-xs font-medium text-text-muted uppercase">Actions</th>
-            </tr>
-        </thead>
-        <tbody class="divide-y divide-brand-border">
-            @forelse($solutions as $item)
-            <tr class="hover:bg-brand-surface-2/50">
-                <td class="px-5 py-4">
-                    <div class="font-medium text-sm text-text-primary">{{ $item->title }}</div>
-                    <div class="text-xs text-text-muted mt-0.5 line-clamp-1">{{ $item->short_description }}</div>
-                </td>
-                <td class="px-5 py-4 text-center text-sm text-text-muted">{{ $item->sort_order }}</td>
-                <td class="px-5 py-4 text-center">
-                    <span class="text-xs px-2 py-1 rounded-full {{ $item->is_published ? 'bg-green-500/10 text-green-400' : 'bg-brand-surface-2 text-text-muted' }}">
-                        {{ $item->is_published ? 'Published' : 'Draft' }}
-                    </span>
-                </td>
-                <td class="px-5 py-4 text-right">
-                    <div class="flex items-center justify-end gap-2">
-                        <a href="{{ route('admin.solutions.edit', $item) }}" class="text-xs text-accent hover:text-accent-light">Edit</a>
-                        <form method="POST" action="{{ route('admin.solutions.destroy', $item) }}" onsubmit="return confirm('Delete?')">
-                            @csrf @method('DELETE')
-                            <button type="submit" class="text-xs text-danger hover:text-danger-dark">Delete</button>
-                        </form>
-                    </div>
-                </td>
-            </tr>
-            @empty
-            <tr><td colspan="4" class="px-5 py-8 text-center text-text-muted text-sm">No solutions yet.</td></tr>
-            @endforelse
-        </tbody>
-    </table>
-</div>
+
 @endsection

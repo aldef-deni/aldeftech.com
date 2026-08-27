@@ -1,15 +1,77 @@
-@extends('layouts.admin')
-@php $pageTitle = 'SEO Settings'; @endphp
+@extends('layouts.layoutMaster')
+
+@section('title', 'Pengaturan SEO')
+
+@php use App\Models\SiteSetting; @endphp
+
 @section('content')
-<div class="max-w-2xl">
-    <form method="POST" action="{{ route('admin.settings.seo.update') }}">
-        @csrf @method('PUT')
-        <x-admin.form.input label="Default Meta Title" name="seo_default_title" :value="\App\Models\SiteSetting::get('seo_default_title', config('aldeftech.seo.default_title'))" />
-        <x-admin.form.textarea label="Default Meta Description" name="seo_default_description" :value="\App\Models\SiteSetting::get('seo_default_description', config('aldeftech.seo.default_description'))" :rows="3" />
-        <x-admin.form.input label="Default OG Image" name="seo_default_image" :value="\App\Models\SiteSetting::get('seo_default_image', config('aldeftech.seo.default_image'))" placeholder="images/og-default.jpg" />
-        <div class="flex items-center gap-3 mt-6">
-            <button type="submit" class="btn-primary text-sm py-2.5 px-6">Save SEO Settings</button>
+
+<form method="POST" action="{{ route('admin.settings.seo.update') }}">
+    @csrf
+    @method('PUT')
+
+    <x-admin.page-head
+        eyebrow="Pengaturan"
+        title="SEO"
+        subtitle="Judul, deskripsi, dan gambar bawaan untuk mesin pencari dan berbagi tautan">
+        <a href="{{ route('sitemap') }}" target="_blank" rel="noopener" class="btn btn-outline-secondary">
+            <i class="icon-base ti tabler-sitemap me-2"></i>Sitemap
+        </a>
+        <button type="submit" class="btn btn-primary">
+            <i class="icon-base ti tabler-device-floppy me-2"></i>Simpan Perubahan
+        </button>
+    </x-admin.page-head>
+
+    <div class="row g-4">
+        <div class="col-12 col-lg-7">
+            <div class="card">
+                <div class="card-header"><h5 class="card-title mb-0">Meta Bawaan</h5></div>
+                <div class="card-body">
+                    <x-admin.form.input
+                        label="Judul Bawaan" name="seo_default_title"
+                        :value="SiteSetting::get('seo_default_title', '')"
+                        placeholder="Aldef Tech — Jasa Pembuatan Sistem, Aplikasi, SaaS & AI"
+                        help="Dipakai halaman yang tidak punya judul sendiri. Idealnya 50-60 karakter." />
+
+                    <x-admin.form.textarea
+                        label="Deskripsi Bawaan" name="seo_default_description"
+                        :value="SiteSetting::get('seo_default_description', '')" :rows="4"
+                        help="Idealnya 140-160 karakter agar tidak terpotong di hasil pencarian." />
+
+                    <x-admin.form.input
+                        label="Gambar Bagikan (OG Image)" name="seo_default_image"
+                        :value="SiteSetting::get('seo_default_image', '')"
+                        placeholder="images/aldef-tech-banner.png"
+                        help="Tampil saat tautan situs dibagikan di WhatsApp, LinkedIn, atau X. Rasio 1200x630 paling aman." />
+                </div>
+            </div>
         </div>
-    </form>
-</div>
+
+        <div class="col-12 col-lg-5">
+            <div class="card mb-4">
+                <div class="card-header"><h5 class="card-title mb-0">Pratinjau Gambar Bagikan</h5></div>
+                <div class="card-body">
+                    <img src="{{ media_url(SiteSetting::get('seo_default_image', ''), 'images/aldef-tech-banner.png') }}"
+                         alt="Pratinjau OG image" class="img-fluid rounded border">
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header"><h5 class="card-title mb-0">Berkas SEO</h5></div>
+                <div class="card-body">
+                    <p class="text-body-secondary">Dihasilkan otomatis dari konten yang sudah terbit.</p>
+                    <div class="d-flex flex-column gap-2">
+                        <a href="{{ route('sitemap') }}" target="_blank" rel="noopener" class="btn btn-outline-secondary btn-sm">
+                            <i class="icon-base ti tabler-file-code me-2"></i>sitemap.xml
+                        </a>
+                        <a href="{{ route('robots') }}" target="_blank" rel="noopener" class="btn btn-outline-secondary btn-sm">
+                            <i class="icon-base ti tabler-robot me-2"></i>robots.txt
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
 @endsection

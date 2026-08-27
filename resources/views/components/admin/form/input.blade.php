@@ -1,19 +1,29 @@
-@props(['label', 'name', 'type' => 'text', 'value' => '', 'placeholder' => '', 'required' => false, 'help' => ''])
+@props([
+    'label' => null,
+    'name',
+    'type' => 'text',
+    'value' => '',
+    'placeholder' => '',
+    'required' => false,
+    'help' => null,
+    'col' => null,
+])
 
-<div class="mb-4">
-    <label for="{{ $name }}" class="block text-sm font-medium text-text-secondary mb-1.5">
-        {{ $label }}
-        @if($required) <span class="text-danger">*</span> @endif
+@php $id = $attributes->get('id') ?? $name; @endphp
+
+<div class="{{ $col ? 'col-'.$col : '' }} mb-4">
+    @if($label)
+    <label for="{{ $id }}" class="form-label">
+        {{ $label }}@if($required) <span class="text-danger">*</span>@endif
     </label>
-    <input type="{{ $type }}" id="{{ $name }}" name="{{ $name }}"
-           value="{{ old($name, $value) }}"
-           placeholder="{{ $placeholder }}"
-           @if($required) required @endif
-           {{ $attributes->merge(['class' => 'w-full bg-brand-surface-2 border border-brand-border rounded-xl px-4 py-2.5 text-text-primary text-sm focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent/20 transition-colors']) }}>
-    @error($name)
-        <p class="text-danger text-xs mt-1">{{ $message }}</p>
-    @enderror
-    @if($help)
-        <p class="text-text-dark text-xs mt-1">{{ $help }}</p>
     @endif
+
+    <input type="{{ $type }}" id="{{ $id }}" name="{{ $name }}"
+           value="{{ old($name, $value) }}"
+           @if($placeholder) placeholder="{{ $placeholder }}" @endif
+           @if($required) required @endif
+           {{ $attributes->merge(['class' => 'form-control' . ($errors->has($name) ? ' is-invalid' : '')]) }}>
+
+    @error($name)<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
+    @if($help)<div class="form-text">{{ $help }}</div>@endif
 </div>

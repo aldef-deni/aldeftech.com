@@ -1,36 +1,30 @@
-@extends('layouts.admin')
-@php $pageTitle = 'Edit Portfolio — ' . $portfolio->title; @endphp
+@extends('layouts.layoutMaster')
+
+@section('title', 'Ubah Proyek')
+
 @section('content')
-<div class="max-w-3xl">
-    <form method="POST" action="{{ route('admin.portfolio.update', $portfolio) }}">
-        @csrf @method('PUT')
-        @include('admin.portfolio._form')
 
-        {{-- Existing Gallery Images --}}
-        @if($portfolio->images->count())
-        <div class="mt-6 mb-4">
-            <label class="block text-sm font-medium text-text-secondary mb-2">Gallery Images</label>
-            <div class="grid grid-cols-3 gap-3">
-                @foreach($portfolio->images as $image)
-                <div class="bg-brand-surface-2 border border-brand-border rounded-lg p-2 relative">
-                    <div class="aspect-video bg-brand-surface-3 rounded flex items-center justify-center text-xs text-text-muted">
-                        {{ $image->image }}
-                    </div>
-                    <div class="mt-1 text-xs text-text-muted truncate">{{ $image->caption }}</div>
-                    <form method="POST" action="{{ route('admin.portfolio.delete-image', [$portfolio, $image]) }}" class="absolute top-1 right-1">
-                        @csrf @method('DELETE')
-                        <button type="submit" class="w-5 h-5 bg-danger/80 rounded-full flex items-center justify-center text-white text-xs" onclick="return confirm('Delete image?')">×</button>
-                    </form>
-                </div>
-                @endforeach
-            </div>
-        </div>
+<form method="POST" action="{{ route('admin.portfolio.update', $portfolio) }}">
+    @csrf
+    @method('PUT')
+
+    <x-admin.page-head
+        eyebrow="Portofolio"
+        :title="$portfolio->title"
+        subtitle="Terakhir diubah {{ $portfolio->updated_at?->diffForHumans() }}"
+        :back="route('admin.portfolio.index')">
+        @if($portfolio->is_published && $portfolio->slug)
+        <a href="{{ route('portfolio.show', $portfolio->slug) }}" target="_blank" rel="noopener" class="btn btn-outline-secondary">
+            <i class="icon-base ti tabler-external-link me-2"></i>Lihat
+        </a>
         @endif
+        <a href="{{ route('admin.portfolio.index') }}" class="btn btn-outline-secondary">Batal</a>
+        <button type="submit" class="btn btn-primary">
+            <i class="icon-base ti tabler-device-floppy me-2"></i>Simpan Perubahan
+        </button>
+    </x-admin.page-head>
 
-        <div class="flex items-center gap-3 mt-6">
-            <button type="submit" class="btn-primary text-sm py-2.5 px-6">Update Portfolio</button>
-            <a href="{{ route('admin.portfolio.index') }}" class="btn-secondary text-sm py-2.5 px-6">Cancel</a>
-        </div>
-    </form>
-</div>
+    @include('admin.portfolio._form')
+</form>
+
 @endsection

@@ -1,14 +1,23 @@
-@extends('layouts.admin')
-@php $pageTitle = 'Create Blog Post'; @endphp
+@extends('layouts.layoutMaster')
+
+@section('title', 'Tulis Artikel')
+
 @section('content')
-<div class="max-w-3xl">
-    <form method="POST" action="{{ route('admin.blog.store') }}">
-        @csrf
-        @include('admin.blog._form')
-        <div class="flex items-center gap-3 mt-6">
-            <button type="submit" class="btn-primary text-sm py-2.5 px-6">Save Post</button>
-            <a href="{{ route('admin.blog.index') }}" class="btn-secondary text-sm py-2.5 px-6">Cancel</a>
-        </div>
-    </form>
-</div>
+
+<form method="POST" action="{{ route('admin.blog.store') }}">
+    @csrf
+
+    <x-admin.page-head
+        eyebrow="Blog"
+        title="Tulis Artikel"
+        :back="route('admin.blog.index')">
+        <a href="{{ route('admin.blog.index') }}" class="btn btn-outline-secondary">Batal</a>
+        <button type="submit" class="btn btn-primary">
+            <i class="icon-base ti tabler-device-floppy me-2"></i>Simpan
+        </button>
+    </x-admin.page-head>
+
+    @include('admin.blog._form')
+</form>
+
 @endsection

@@ -37,7 +37,7 @@
     {{-- Google Fonts --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
     {{-- Schema.org (JSON-LD) --}}
     <script type="application/ld+json">
@@ -91,7 +91,7 @@
     </script>
     @endif
 </head>
-<body class="bg-white text-slate-700 font-sans antialiased selection:bg-blue-600 selection:text-white" x-data="{ mobileMenuOpen: false }">
+<body class="surface-ivory font-sans antialiased" data-ambient-glow>
     {{-- GTM Noscript --}}
     @if($gtmId = \App\Models\SiteSetting::get('google_tag_manager_id'))
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ $gtmId }}" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -115,25 +115,33 @@
     {{-- Flash Toast Notification --}}
     @if(session('success'))
     <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 5000)"
+         x-transition:enter="transition ease-out duration-500"
+         x-transition:enter-start="opacity-0 -translate-y-3"
+         x-transition:enter-end="opacity-100 translate-y-0"
          x-transition:leave="transition ease-in duration-300"
          x-transition:leave-start="opacity-100 translate-y-0"
          x-transition:leave-end="opacity-0 -translate-y-2"
-         class="fixed top-6 right-6 z-[100] border border-emerald-200 bg-white/95 text-emerald-800 backdrop-blur-lg px-6 py-4 rounded-2xl shadow-xl font-medium flex items-center gap-3">
-        <svg class="w-5 h-5 text-emerald-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+         class="toast toast-success fixed top-24 right-5 sm:right-8 z-[100] max-w-sm">
+        <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M5 13l4 4L19 7"/></svg>
         <span>{{ session('success') }}</span>
     </div>
     @endif
 
     @if(session('error'))
     <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 5000)"
+         x-transition:enter="transition ease-out duration-500"
+         x-transition:enter-start="opacity-0 -translate-y-3"
+         x-transition:enter-end="opacity-100 translate-y-0"
          x-transition:leave="transition ease-in duration-300"
          x-transition:leave-start="opacity-100 translate-y-0"
          x-transition:leave-end="opacity-0 -translate-y-2"
-         class="fixed top-6 right-6 z-[100] border border-red-200 bg-white/95 text-red-800 backdrop-blur-lg px-6 py-4 rounded-2xl shadow-xl font-medium flex items-center gap-3">
-        <svg class="w-5 h-5 text-red-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+         class="toast toast-error fixed top-24 right-5 sm:right-8 z-[100] max-w-sm">
+        <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M6 18L18 6M6 6l12 12"/></svg>
         <span>{{ session('error') }}</span>
     </div>
     @endif
+
+
 
     @stack('scripts')
 </body>

@@ -10,7 +10,7 @@ $configData = Helper::appClasses();
   <!-- ! Hide app brand if navbar-full -->
   @if (!isset($navbarFull))
   <div class="app-brand demo">
-    <a href="{{ url('/') }}" class="app-brand-link">
+    <a href="{{ route('admin.dashboard') }}" class="app-brand-link">
       <span class="app-brand-logo demo">@include('_partials.macros')</span>
       <span class="app-brand-text demo menu-text fw-bold ms-3">{{ config('variables.templateName') }}</span>
     </a>
@@ -36,25 +36,15 @@ $configData = Helper::appClasses();
     @else
     {{-- active menu method --}}
     @php
+    // A slug names a route *prefix*: "admin.services" must light up for
+    // admin.services.index, .create and .edit alike, not only an exact match.
     $activeClass = null;
-    $currentRouteName = Route::currentRouteName();
+    $slugs = (array) $menu->slug;
 
-    if ($currentRouteName === $menu->slug) {
-    $activeClass = 'active';
-    } elseif (isset($menu->submenu)) {
-    if (gettype($menu->slug) === 'array') {
-    foreach ($menu->slug as $slug) {
-    if (str_contains($currentRouteName, $slug) and strpos($currentRouteName, $slug) === 0) {
-    $activeClass = 'active open';
-    }
-    }
-    } else {
-    if (
-    str_contains($currentRouteName, $menu->slug) and
-    strpos($currentRouteName, $menu->slug) === 0
-    ) {
-    $activeClass = 'active open';
-    }
+    foreach ($slugs as $slug) {
+    if (Route::is($slug) || Route::is($slug . '.*')) {
+    $activeClass = isset($menu->submenu) ? 'active open' : 'active';
+    break;
     }
     }
     @endphp

@@ -1,14 +1,23 @@
-@extends('layouts.admin')
-@php $pageTitle = 'Create Testimonial'; @endphp
+@extends('layouts.layoutMaster')
+
+@section('title', 'Tambah Testimoni')
+
 @section('content')
-<div class="max-w-2xl">
-    <form method="POST" action="{{ route('admin.testimonials.store') }}">
-        @csrf
-        @include('admin.testimonials._form')
-        <div class="flex items-center gap-3 mt-6">
-            <button type="submit" class="btn-primary text-sm py-2.5 px-6">Save Testimonial</button>
-            <a href="{{ route('admin.testimonials.index') }}" class="btn-secondary text-sm py-2.5 px-6">Cancel</a>
-        </div>
-    </form>
-</div>
+
+<form method="POST" action="{{ route('admin.testimonials.store') }}">
+    @csrf
+
+    <x-admin.page-head
+        eyebrow="Testimoni"
+        title="Tambah Testimoni"
+        :back="route('admin.testimonials.index')">
+        <a href="{{ route('admin.testimonials.index') }}" class="btn btn-outline-secondary">Batal</a>
+        <button type="submit" class="btn btn-primary">
+            <i class="icon-base ti tabler-device-floppy me-2"></i>Simpan
+        </button>
+    </x-admin.page-head>
+
+    @include('admin.testimonials._form')
+</form>
+
 @endsection

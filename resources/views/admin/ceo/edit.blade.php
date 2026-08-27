@@ -1,43 +1,112 @@
-@extends('layouts.admin')
-@php $pageTitle = 'CEO Profile'; @endphp
+@extends('layouts.layoutMaster')
+
+@section('title', 'Profil CEO')
+
 @section('content')
-<div class="max-w-2xl">
-    <form method="POST" action="{{ route('admin.ceo.update') }}">
-        @csrf @method('PUT')
 
-        <x-admin.form.input label="Full Name" name="name" :value="$profile->name" required />
-        <x-admin.form.input label="Position" name="position" :value="$profile->position" required />
-        <x-admin.form.input label="Profile Photo Path" name="profile_photo" :value="$profile->profile_photo ?? ''" placeholder="images/ceo/..." />
-        <x-admin.form.textarea label="Short Bio" name="short_bio" :value="$profile->short_bio ?? ''" :rows="2" />
-        <x-admin.form.textarea label="Full Bio" name="full_bio" :value="$profile->full_bio ?? ''" :rows="6" />
+<form method="POST" action="{{ route('admin.ceo.update') }}">
+    @csrf
+    @method('PUT')
 
-        <div class="mb-4">
-            <label class="block text-sm font-medium text-text-secondary mb-1.5">Skills (one per line)</label>
-            <textarea name="skills[]" rows="4" class="w-full bg-brand-surface-2 border border-brand-border rounded-xl px-4 py-2.5 text-text-primary text-sm focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent/20 transition-colors resize-y">{{ is_array($profile->skills) ? implode("\n", $profile->skills) : '' }}</textarea>
+    <x-admin.page-head
+        eyebrow="Pengaturan"
+        title="Profil CEO"
+        subtitle="Tampil di beranda dan halaman Tentang">
+        <a href="{{ route('about') }}" target="_blank" rel="noopener" class="btn btn-outline-secondary">
+            <i class="icon-base ti tabler-external-link me-2"></i>Lihat
+        </a>
+        <button type="submit" class="btn btn-primary">
+            <i class="icon-base ti tabler-device-floppy me-2"></i>Simpan Perubahan
+        </button>
+    </x-admin.page-head>
+
+    <div class="row g-4">
+        <div class="col-12 col-lg-8">
+
+            <div class="card mb-4">
+                <div class="card-header"><h5 class="card-title mb-0">Identitas</h5></div>
+                <div class="card-body">
+                    <div class="row">
+                        <x-admin.form.input
+                            col="12 col-md-6" label="Nama" name="name" :value="$profile->name" required />
+                        <x-admin.form.input
+                            col="12 col-md-6" label="Jabatan" name="position" :value="$profile->position" required
+                            placeholder="mis. Founder & Lead Technical Architect" />
+                    </div>
+
+                    <x-admin.form.textarea
+                        label="Bio Singkat" name="short_bio" :value="$profile->short_bio ?? ''" :rows="4"
+                        placeholder="Kalimat yang dikutip besar di beranda"
+                        help="Dipakai sebagai kutipan di bagian Kepemimpinan. Maksimal 1000 karakter." />
+
+                    <x-admin.form.textarea
+                        label="Bio Lengkap" name="full_bio" :value="$profile->full_bio ?? ''" :rows="8"
+                        placeholder="Latar belakang, pengalaman, dan fokus keahlian" />
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header"><h5 class="card-title mb-0">Kontak &amp; Tautan</h5></div>
+                <div class="card-body">
+                    <div class="row">
+                        <x-admin.form.input
+                            col="12 col-md-6" label="Email" name="email" type="email" :value="$profile->email ?? ''" />
+                        <x-admin.form.input
+                            col="12 col-md-6" label="LinkedIn" name="linkedin" type="url" :value="$profile->linkedin ?? ''"
+                            placeholder="https://linkedin.com/in/..." />
+                        <x-admin.form.input
+                            col="12 col-md-6" label="GitHub" name="github" type="url" :value="$profile->github ?? ''"
+                            placeholder="https://github.com/..." />
+                        <x-admin.form.input
+                            col="12 col-md-6" label="Instagram" name="instagram" type="url" :value="$profile->instagram ?? ''"
+                            placeholder="https://instagram.com/..." />
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="mb-4">
-            <label class="block text-sm font-medium text-text-secondary mb-1.5">Experience (one per line)</label>
-            <textarea name="experience[]" rows="4" class="w-full bg-brand-surface-2 border border-brand-border rounded-xl px-4 py-2.5 text-text-primary text-sm focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent/20 transition-colors resize-y">{{ is_array($profile->experience) ? implode("\n", $profile->experience) : '' }}</textarea>
-        </div>
+        <div class="col-12 col-lg-4">
 
-        <div class="grid grid-cols-2 gap-4">
-            <x-admin.form.input label="LinkedIn" name="linkedin" type="url" :value="$profile->linkedin ?? ''" placeholder="https://linkedin.com/in/..." />
-            <x-admin.form.input label="GitHub" name="github" type="url" :value="$profile->github ?? ''" placeholder="https://github.com/..." />
-        </div>
-        <div class="grid grid-cols-2 gap-4">
-            <x-admin.form.input label="Instagram" name="instagram" :value="$profile->instagram ?? ''" placeholder="https://instagram.com/..." />
-            <x-admin.form.input label="Email" name="email" type="email" :value="$profile->email ?? ''" />
-        </div>
+            <div class="card mb-4">
+                <div class="card-header"><h5 class="card-title mb-0">Foto</h5></div>
+                <div class="card-body">
+                    @if($src = media_url($profile->profile_photo, 'images/deni-afrizal.jpg'))
+                    <img src="{{ $src }}" alt="" class="aldef-thumb-lg mb-3" style="aspect-ratio: 4 / 5;">
+                    @endif
 
-        <div class="flex items-center gap-2 mt-2">
-            <input type="checkbox" name="is_active" value="1" id="is_active" {{ $profile->is_active ? 'checked' : '' }} class="w-4 h-4 rounded border-brand-border bg-brand-surface-2 text-accent">
-            <label for="is_active" class="text-sm text-text-secondary">Active</label>
-        </div>
+                    <x-admin.form.input
+                        label="Path Foto" name="profile_photo" :value="$profile->profile_photo ?? ''"
+                        placeholder="images/deni-afrizal.jpg"
+                        help="Rasio 4:5 (potret) paling pas. Unggah lewat menu Media." />
 
-        <div class="flex items-center gap-3 mt-6">
-            <button type="submit" class="btn-primary text-sm py-2.5 px-6">Save Profile</button>
+                    <x-admin.form.switch
+                        label="Tampilkan di situs" name="is_active" :checked="$profile->is_active ?? true" />
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header"><h5 class="card-title mb-0">Keahlian</h5></div>
+                <div class="card-body">
+                    <x-admin.form.list
+                        label="Bidang Keahlian" name="skills"
+                        :items="$profile->skills ?? []"
+                        placeholder="mis. System Architecture"
+                        add-label="Tambah keahlian" />
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header"><h5 class="card-title mb-0">Pengalaman</h5></div>
+                <div class="card-body">
+                    <x-admin.form.list
+                        label="Riwayat" name="experience"
+                        :items="$profile->experience ?? []"
+                        placeholder="mis. 10+ tahun rekayasa perangkat lunak"
+                        add-label="Tambah pengalaman" />
+                </div>
+            </div>
         </div>
-    </form>
-</div>
+    </div>
+</form>
+
 @endsection

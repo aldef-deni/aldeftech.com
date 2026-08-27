@@ -1,208 +1,113 @@
 @extends('layouts.app')
-@section('content')
-@php
-$pageTitle = 'The Project — Aldef Tech';
-$metaDescription = 'Lihat ragam proyek software, web application, SaaS, platform OTA, dan POS modern yang telah kami bangun untuk klien dan industri.';
 
-$featuredProjects = [
-    [
-        'title' => 'Arahinn Mobile — OTA & Travel Platform',
-        'category' => 'Project OTA • Mobile Ecosystem',
-        'image' => 'images/portfolio/arahinn-mobile.webp',
-        'desc' => 'Aplikasi mobile Online Travel Agent modern dengan integrasi real-time inventory kamar, engine pencarian instan, payment gateway multi-channel otomatis, dan sistem loyalty rewards terpadu.',
-        'technologies' => ['Laravel API', 'Flutter / Mobile', 'PostgreSQL', 'Midtrans Gateway', 'Redis Cache'],
-        'bg_class' => 'bg-gradient-to-b from-[#F0F7FF] to-[#E6F1FD] border-[#BFDBFE]/80 shadow-[0_14px_34px_-8px_rgba(37,99,235,0.15)] hover:shadow-[0_24px_48px_-10px_rgba(37,99,235,0.28)] hover:border-blue-400',
-        'pill_class' => 'text-blue-700 bg-blue-100/90 border border-blue-200',
-        'accent_hover' => 'group-hover:text-blue-600',
-        'btn_class' => 'text-blue-600 hover:text-blue-800'
-    ],
-    [
-        'title' => 'Bamboe Oerip — Booking Engine & Hospitality OTA',
-        'category' => 'Project OTA • Hospitality Management',
-        'image' => 'images/portfolio/bamboe-oerip.webp',
-        'desc' => 'Sistem reservasi dan manajemen hospitality digital berbasis web dengan dynamic pricing engine, kalender okupansi interaktif, automated WhatsApp billing invoice, dan integrasi channel manager.',
-        'technologies' => ['Laravel 11', 'Vue.js 3', 'Tailwind CSS', 'MySQL', 'WhatsApp Business API'],
-        'bg_class' => 'bg-gradient-to-b from-[#F0FDF4] to-[#DCFCE7] border-[#BBF7D0]/80 shadow-[0_14px_34px_-8px_rgba(16,185,129,0.15)] hover:shadow-[0_24px_48px_-10px_rgba(16,185,129,0.28)] hover:border-emerald-400',
-        'pill_class' => 'text-emerald-800 bg-emerald-100/90 border border-emerald-200',
-        'accent_hover' => 'group-hover:text-emerald-600',
-        'btn_class' => 'text-emerald-700 hover:text-emerald-900'
-    ],
-    [
-        'title' => 'Aldef POS — Omnichannel Smart POS System',
-        'category' => 'Project POS Sistem • Multi-Outlet',
-        'image' => 'images/portfolio/aldeftech-pos.webp',
-        'desc' => 'Platform Point of Sale (POS) cloud omnichannel berkecepatan tinggi dengan sinkronisasi inventori multi-cabang, barcode scanning offline-ready, audit kasir real-time, dan analitik performa laba-rugi.',
-        'technologies' => ['Laravel', 'Electron / PWA', 'PostgreSQL', 'Thermal Printing', 'WebSockets'],
-        'bg_class' => 'bg-gradient-to-b from-[#F5F3FF] to-[#ECE7FD] border-[#DDD6FE]/80 shadow-[0_14px_34px_-8px_rgba(99,102,241,0.15)] hover:shadow-[0_24px_48px_-10px_rgba(99,102,241,0.28)] hover:border-indigo-400',
-        'pill_class' => 'text-indigo-700 bg-indigo-100/90 border border-indigo-200',
-        'accent_hover' => 'group-hover:text-indigo-600',
-        'btn_class' => 'text-indigo-600 hover:text-indigo-800'
-    ],
-    [
-        'title' => 'Smart Attendance — Biometric & Geofencing HRIS',
-        'category' => 'Project Enterprise HR • Biometric Mobile',
-        'image' => 'images/portfolio/absensi.png',
-        'desc' => 'Sistem presensi karyawan cerdas berbasis AI Face Recognition biometrik dan validasi radius GPS (lock location) anti-fake GPS, terintegrasi otomatis dengan payroll dan manajemen shift multi-cabang.',
-        'technologies' => ['Laravel 11 API', 'Flutter Mobile', 'AI Face Recognition', 'PostGIS Geofencing', 'PostgreSQL'],
-        'bg_class' => 'bg-gradient-to-b from-[#FFFDF5] to-[#FEF3C7] border-[#FDE68A]/80 shadow-[0_14px_34px_-8px_rgba(217,119,6,0.15)] hover:shadow-[0_24px_48px_-10px_rgba(217,119,6,0.28)] hover:border-amber-400',
-        'pill_class' => 'text-amber-800 bg-amber-100/90 border border-amber-200',
-        'accent_hover' => 'group-hover:text-amber-700',
-        'btn_class' => 'text-amber-700 hover:text-amber-900'
-    ],
-    [
-        'title' => 'Aldef Cloud Drive — Multi-Tenant Enterprise Storage',
-        'category' => 'Project Cloud Storage • Multi-Tenant SaaS',
-        'image' => 'images/portfolio/drive.png',
-        'desc' => 'Platform cloud storage multi-perusahaan (multi-tenant) berkecepatan tinggi dengan antarmuka modern drag-and-drop, enkripsi berkas end-to-end, kolaborasi izin akses folder, dan audit log keamanan terpusat.',
-        'technologies' => ['Laravel 11', 'Vue.js 3', 'S3 Object Storage', 'Multi-Tenant SaaS', 'Tailwind CSS'],
-        'bg_class' => 'bg-gradient-to-b from-[#ECFEFF] to-[#CFFAFE] border-[#A5F3FC]/80 shadow-[0_14px_34px_-8px_rgba(6,182,212,0.15)] hover:shadow-[0_24px_48px_-10px_rgba(6,182,212,0.28)] hover:border-cyan-400',
-        'pill_class' => 'text-cyan-900 bg-cyan-100/90 border border-cyan-200',
-        'accent_hover' => 'group-hover:text-cyan-700',
-        'btn_class' => 'text-cyan-700 hover:text-cyan-900'
-    ],
-    [
-        'title' => 'MotoRide Connect — Touring & Telemetry Ecosystem',
-        'category' => 'Project Mobile Telemetry • Real-Time IoT',
-        'image' => 'images/portfolio/touring.png',
-        'desc' => 'Ekosistem aplikasi mobile komunitas touring motor dengan pelacakan posisi konvoi real-time (live tracking), sinyal darurat SOS instan saat kendala mesin/kecelakaan, serta telemetri speedometer digital dan rute navigasi terintegrasi.',
-        'technologies' => ['Flutter / Mobile', 'WebSockets Realtime', 'OpenStreetMap Telemetry', 'SOS Emergency Engine', 'Redis'],
-        'bg_class' => 'bg-gradient-to-b from-[#FFF1F2] to-[#FFE4E6] border-[#FECDD3]/80 shadow-[0_14px_34px_-8px_rgba(244,63,94,0.15)] hover:shadow-[0_24px_48px_-10px_rgba(244,63,94,0.28)] hover:border-rose-400',
-        'pill_class' => 'text-rose-900 bg-rose-100/90 border border-rose-200',
-        'accent_hover' => 'group-hover:text-rose-700',
-        'btn_class' => 'text-rose-700 hover:text-rose-900'
-    ],
-];
+@php
+    $pageTitle = 'Portofolio — Sistem & Aplikasi yang Kami Bangun | Aldef Tech';
+    $metaDescription = 'Kumpulan sistem, aplikasi web, platform SaaS, dan automasi AI yang dibangun Aldef Tech untuk klien di berbagai industri.';
+
+    // Fallback entries carry a plain object category; database rows carry a relation.
+    $filters = collect($portfolios)
+        ->map(fn ($p) => $p->category->name ?? null)
+        ->filter()
+        ->unique()
+        ->values();
 @endphp
 
-{{-- Hero Section (Signature Aldef Dark & Navy Tech Hero — Matching Services) --}}
-<section class="hero-premium-dark section-padding pt-16 lg:pt-24 pb-20 lg:pb-28 relative overflow-hidden border-b border-slate-800/80">
-    <div class="absolute inset-0 hero-grid-dark pointer-events-none opacity-60"></div>
-    <div class="absolute -top-24 -right-24 w-[500px] h-[500px] bg-blue-600/25 blur-[130px] rounded-full pointer-events-none"></div>
-    <div class="absolute -bottom-24 -left-24 w-[500px] h-[500px] bg-cyan-500/20 blur-[130px] rounded-full pointer-events-none"></div>
+@section('content')
 
-    <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 relative z-10">
-        {{-- Breadcrumb --}}
-        <div class="flex items-center justify-center gap-2 text-xs font-mono text-slate-400 mb-6 reveal">
-            <a href="{{ route('home') }}" class="hover:text-blue-400 transition-colors">HOME</a>
-            <span>/</span>
-            <span class="text-blue-400 font-semibold">PORTFOLIO</span>
-        </div>
+<x-page-hero
+    eyebrow="Portofolio"
+    title="Sistem yang sudah berjalan, bukan sekadar"
+    accent="konsep di slide."
+    lead="Setiap proyek di bawah ini dipakai setiap hari oleh tim operasional klien kami. Berikut ringkasan persoalan yang diselesaikan dan cara kami menyelesaikannya."
+    :breadcrumbs="[['label' => 'Portofolio']]" />
 
-        <div class="max-w-3xl mx-auto text-center">
-            <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/[0.08] border border-white/15 backdrop-blur-md shadow-2xs mb-6 reveal">
-                <span class="status-dot status-dot-pulse"></span>
-                <span class="text-xs font-semibold text-blue-200 tracking-wide uppercase">The Project Portfolio</span>
-            </div>
-            <h1 class="text-4xl sm:text-5xl lg:text-[3.5rem] font-display font-extrabold text-white tracking-tight leading-[1.1] mb-6 reveal reveal-delay-1">
-                Karya & <span class="bg-gradient-to-r from-blue-300 via-indigo-200 to-cyan-300 bg-clip-text text-transparent">Studi Kasus Kami</span>
-            </h1>
-            <p class="text-slate-300 text-lg lg:text-xl leading-relaxed reveal reveal-delay-2">
-                Lihat bagaimana rekayasa perangkat lunak, sistem OTA, dan POS modern kami memberikan efisiensi nyata pada berbagai lini bisnis klien.
-            </p>
-        </div>
-    </div>
-</section>
+{{-- ── Grid ─────────────────────────────────────────────────────────────── --}}
+<section class="section-padding surface-ivory relative">
+    <div class="absolute inset-0 veil-grid-light pointer-events-none" aria-hidden="true"></div>
 
-{{-- Portfolio Showcase (Clean 3 Cards from Home, No Tabs, Clean Unobstructed Image) --}}
-<section class="section-padding bg-gradient-to-b from-[#090E1A] via-[#0C1427] to-[#080D18] relative text-slate-300 border-b border-slate-800/80">
-    {{-- Ambient Lighting --}}
-    <div class="absolute top-1/4 left-0 w-96 h-96 bg-blue-600/10 blur-[120px] rounded-full pointer-events-none"></div>
-    <div class="absolute bottom-1/4 right-0 w-96 h-96 bg-indigo-600/10 blur-[120px] rounded-full pointer-events-none"></div>
-    <div class="absolute inset-0 subtle-grid opacity-10 pointer-events-none"></div>
+    <div class="shell relative z-10"
+         x-data="{ filter: 'all' }">
 
-    <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 relative z-10">
-        
-        {{-- 3 Featured Project Cards --}}
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            @foreach($featuredProjects as $p)
-            <div class="rounded-3xl border overflow-hidden flex flex-col justify-between group transition-all duration-300 hover:-translate-y-2 reveal {{ $p['bg_class'] }}">
-                <div>
-                    {{-- Clean Unobstructed Image (No Tag/Badge on top of image) --}}
-                    <div class="aspect-[16/10] bg-slate-900/5 relative overflow-hidden border-b border-black/5">
-                        <img src="{{ asset($p['image']) }}" alt="{{ $p['title'] }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-108" loading="lazy">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                    </div>
-
-                    {{-- Body Content --}}
-                    <div class="p-7">
-                        <div class="mb-2">
-                            <span class="text-xs font-mono font-bold px-3 py-1 rounded-full inline-block {{ $p['pill_class'] }}">
-                                {{ $p['category'] }}
-                            </span>
-                        </div>
-
-                        <h3 class="text-lg lg:text-xl font-display font-bold text-slate-900 mb-3 transition-colors {{ $p['accent_hover'] }}">
-                            {{ $p['title'] }}
-                        </h3>
-                        <p class="text-slate-600 text-sm leading-relaxed mb-6">
-                            {{ $p['desc'] }}
-                        </p>
-
-                        {{-- Tech badges --}}
-                        <div class="flex flex-wrap gap-1.5 pt-1">
-                            @foreach($p['technologies'] as $tech)
-                            <span class="text-[0.6875rem] px-2.5 py-1 rounded-lg bg-white/85 border border-white/80 text-slate-700 font-mono font-medium shadow-2xs">
-                                {{ $tech }}
-                            </span>
-                            @endforeach
-                        </div>
-                    </div>
-                </div>
-
-                {{-- Action Row --}}
-                <div class="px-7 pb-7 pt-4 border-t border-black/5 flex items-center justify-between">
-                    <a href="{{ \App\Services\WhatsAppService::getUrl('Halo Aldef Tech, saya tertarik dengan proyek serupa ' . $p['title']) }}"
-                       target="_blank" rel="noopener"
-                       class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider transition-colors {{ $p['btn_class'] }}">
-                        <span>Diskusi Serupa</span>
-                        <svg class="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-                    </a>
-                    <a href="{{ \App\Services\WhatsAppService::getUrl('Halo Aldef Tech, saya ingin konsultasi studi kasus ' . $p['title']) }}"
-                       target="_blank" rel="noopener"
-                       class="text-[0.6875rem] font-semibold text-slate-500 hover:text-slate-800">
-                        Konsultasi →
-                    </a>
-                </div>
-            </div>
+        @if($filters->count() > 1)
+        <div class="flex flex-wrap items-center gap-2 pb-10 reveal" role="group" aria-label="Saring kategori">
+            <button type="button" @click="filter = 'all'"
+                    class="chip transition-all duration-500 ease-[cubic-bezier(.22,1,.36,1)]"
+                    :class="filter === 'all' ? 'bg-graphite-900 border-graphite-900 text-ivory-100' : 'bg-ivory-100 border-line text-graphite-600 hover:border-gold-300'">
+                Semua
+            </button>
+            @foreach($filters as $name)
+            <button type="button" @click="filter = @js($name)"
+                    class="chip transition-all duration-500 ease-[cubic-bezier(.22,1,.36,1)]"
+                    :class="filter === @js($name) ? 'bg-graphite-900 border-graphite-900 text-ivory-100' : 'bg-ivory-100 border-line text-graphite-600 hover:border-gold-300'">
+                {{ $name }}
+            </button>
             @endforeach
         </div>
+        @endif
 
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 lg:gap-6" data-reveal-group="80">
+            @forelse($portfolios as $item)
+            @php $catName = $item->category->name ?? null; @endphp
+
+            <article class="reveal"
+                     @if($catName) x-show="filter === 'all' || filter === @js($catName)" x-transition.opacity.duration.400ms @endif>
+                <a href="{{ route('portfolio.show', $item->slug) }}" class="card-lux group h-full overflow-hidden">
+
+                    <div class="frame-lux !rounded-none !border-0 !border-b !border-line aspect-[16/10] bg-ivory-200">
+                        @if($src = media_url($item->featured_image))
+                            <img src="{{ $src }}" alt="{{ $item->title }}" loading="lazy" decoding="async">
+                        @else
+                            <span class="absolute inset-0 flex items-center justify-center text-gold-400/50">
+                                <x-lux-icon name="layers" class="w-12 h-12" />
+                            </span>
+                        @endif
+                    </div>
+
+                    <div class="p-6 lg:p-7 flex-1 flex flex-col">
+                        <div class="flex items-center gap-2.5 text-[0.6875rem] uppercase tracking-[0.14em] text-gold-700">
+                            <span>{{ $catName ?? 'Proyek' }}</span>
+                            @if(!empty($item->year))
+                                <span class="w-1 h-1 rounded-full bg-gold-400" aria-hidden="true"></span>
+                                <span class="tabular">{{ $item->year }}</span>
+                            @endif
+                        </div>
+
+                        <h2 class="mt-3.5 text-lg leading-snug">{{ $item->title }}</h2>
+
+                        @if(!empty($item->client))
+                        <p class="mt-1.5 text-xs text-graphite-500">{{ $item->client }}</p>
+                        @endif
+
+                        <p class="mt-3 text-sm leading-relaxed text-graphite-600">
+                            {{ excerpt_text($item->short_description, 150) }}
+                        </p>
+
+                        @if(!empty($item->technologies))
+                        <div class="mt-5 flex flex-wrap gap-1.5">
+                            @foreach(array_slice((array) $item->technologies, 0, 4) as $tech)
+                                <span class="px-2.5 py-1 rounded-md text-[0.6875rem] font-medium bg-ivory-100 border border-line-soft text-graphite-600">{{ $tech }}</span>
+                            @endforeach
+                        </div>
+                        @endif
+
+                        <span class="mt-auto pt-6 link-arrow">
+                            <span>Studi kasus</span>
+                            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                        </span>
+                    </div>
+                </a>
+            </article>
+            @empty
+            <p class="col-span-full text-center text-graphite-500 py-12">Portofolio sedang disiapkan.</p>
+            @endforelse
+        </div>
     </div>
 </section>
 
-{{-- Final Conversion CTA (Black, Blue & Red Luxury Mesh — Matching Home Mulai Transformasi) --}}
-<section class="py-24 lg:py-32 relative bg-[#060810] text-white overflow-hidden" id="contact">
-    <div class="absolute -top-32 -left-20 w-[520px] h-[520px] bg-gradient-to-br from-blue-600/30 via-indigo-600/20 to-transparent rounded-full blur-[130px] pointer-events-none"></div>
-    <div class="absolute -bottom-32 -right-20 w-[560px] h-[560px] bg-gradient-to-tl from-rose-600/25 via-red-600/20 to-transparent rounded-full blur-[140px] pointer-events-none"></div>
-    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-radial from-blue-600/15 via-red-700/10 to-transparent blur-[120px] pointer-events-none"></div>
+<x-cta-band
+    eyebrow="Proyek Berikutnya"
+    title="Proyek Anda bisa jadi"
+    accent="yang berikutnya."
+    lead="Ceritakan apa yang ingin Anda bangun — kami balas dengan gambaran ruang lingkup dan estimasinya." />
 
-    <div class="absolute inset-0 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] pointer-events-none opacity-60"></div>
-
-    <div class="max-w-5xl mx-auto px-5 sm:px-8 lg:px-10 text-center relative z-10">
-        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gradient-to-r from-blue-950/80 via-slate-900/90 to-red-950/80 border border-white/15 text-xs font-mono font-bold tracking-wider mb-6 shadow-lg reveal">
-            <span class="w-2 h-2 rounded-full bg-gradient-to-r from-blue-400 to-rose-500 animate-pulse"></span>
-            <span class="bg-gradient-to-r from-blue-300 via-white to-rose-300 bg-clip-text text-transparent uppercase">Mulai Transformasi</span>
-        </div>
-        
-        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold text-white mb-6 leading-tight tracking-tight reveal reveal-delay-1">
-            Ingin Membangun Solusi <span class="bg-gradient-to-r from-blue-400 via-indigo-200 to-rose-400 bg-clip-text text-transparent">Seperti Ini?</span>
-        </h2>
-        
-        <p class="text-slate-300 text-lg lg:text-xl mb-10 max-w-2xl mx-auto leading-relaxed reveal reveal-delay-2">
-            Mari wujudkan aplikasi dan sistem digital berkinerja tinggi bersama tim engineer kami dengan standar kualitas arsitektur enterprise.
-        </p>
-
-        <div class="flex flex-wrap items-center justify-center gap-4 reveal reveal-delay-3">
-            <a href="{{ \App\Services\WhatsAppService::getUrl('Halo Aldef Tech, saya ingin membangun solusi sistem seperti pada portfolio Aldef Tech.') }}"
-               target="_blank" rel="noopener"
-               class="btn-primary btn-lg shadow-xl font-bold bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 hover:from-blue-500 hover:to-indigo-600 border border-blue-400/30">
-                <span>Mulai Konsultasi Project</span>
-                <svg class="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-            </a>
-            <a href="{{ route('contact') }}" class="btn-ghost-light btn-lg border border-white/20 hover:border-white/40">
-                <span>Isi Form Konsultasi</span>
-            </a>
-        </div>
-    </div>
-</section>
 @endsection

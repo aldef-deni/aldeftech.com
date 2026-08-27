@@ -1,38 +1,44 @@
-@extends('layouts.admin')
-@php $pageTitle = 'Blog Tags'; @endphp
+@extends('layouts.layoutMaster')
+
+@section('title', 'Tag')
+
 @section('content')
-<div class="flex items-center justify-between mb-6">
-    <p class="text-text-muted text-sm">{{ $tags->count() }} tags</p>
-    <a href="{{ route('admin.tags.create') }}" class="btn-primary text-sm py-2 px-4">+ Add Tag</a>
+
+<x-admin.page-head
+    eyebrow="Blog"
+    title="Tag"
+    subtitle="{{ $tags->count() }} tag">
+    <a href="{{ route('admin.tags.create') }}" class="btn btn-primary">
+        <i class="icon-base ti tabler-plus me-2"></i>Tambah Tag
+    </a>
+</x-admin.page-head>
+
+<div class="card">
+    <div class="card-body">
+        @if($tags->isEmpty())
+            <x-admin.empty
+                icon="tabler-tag"
+                title="Belum ada tag"
+                message="Tag memudahkan pengelompokan topik lintas kategori.">
+                <a href="{{ route('admin.tags.create') }}" class="btn btn-primary">
+                    <i class="icon-base ti tabler-plus me-2"></i>Tambah Tag
+                </a>
+            </x-admin.empty>
+        @else
+        <div class="d-flex flex-wrap gap-2">
+            @foreach($tags as $tag)
+            <div class="d-inline-flex align-items-center gap-1 border rounded-pill ps-3 pe-1 py-1">
+                <a href="{{ route('admin.tags.edit', $tag) }}" class="text-body text-decoration-none">{{ $tag->name }}</a>
+                <span class="badge bg-label-secondary rounded-pill">{{ $tag->posts_count ?? 0 }}</span>
+                <x-admin.delete
+                    :action="route('admin.tags.destroy', $tag)"
+                    :confirm="'Hapus tag \'' . $tag->name . '\'?'"
+                    class="btn btn-sm btn-icon btn-text-danger rounded-circle" />
+            </div>
+            @endforeach
+        </div>
+        @endif
+    </div>
 </div>
-<div class="bg-brand-surface border border-brand-border rounded-xl overflow-hidden">
-    <table class="w-full">
-        <thead>
-            <tr class="border-b border-brand-border">
-                <th class="text-left px-5 py-3 text-xs font-medium text-text-muted uppercase">Name</th>
-                <th class="text-center px-5 py-3 text-xs font-medium text-text-muted uppercase">Posts</th>
-                <th class="text-right px-5 py-3 text-xs font-medium text-text-muted uppercase">Actions</th>
-            </tr>
-        </thead>
-        <tbody class="divide-y divide-brand-border">
-            @forelse($tags as $tag)
-            <tr class="hover:bg-brand-surface-2/50">
-                <td class="px-5 py-4 text-sm text-text-primary">{{ $tag->name }}</td>
-                <td class="px-5 py-4 text-center text-sm text-text-muted">{{ $tag->posts_count }}</td>
-                <td class="px-5 py-4 text-right">
-                    <div class="flex items-center justify-end gap-2">
-                        <a href="{{ route('admin.tags.edit', $tag) }}" class="text-xs text-accent hover:text-accent-light">Edit</a>
-                        <form method="POST" action="{{ route('admin.tags.destroy', $tag) }}" onsubmit="return confirm('Delete?')">
-                            @csrf @method('DELETE')
-                            <button type="submit" class="text-xs text-danger hover:text-danger-dark">Delete</button>
-                        </form>
-                    </div>
-                </td>
-            </tr>
-            @empty
-            <tr><td colspan="3" class="px-5 py-8 text-center text-text-muted text-sm">No tags yet.</td></tr>
-            @endforelse
-        </tbody>
-    </table>
-</div>
+
 @endsection

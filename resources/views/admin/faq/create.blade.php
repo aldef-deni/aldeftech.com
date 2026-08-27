@@ -1,14 +1,23 @@
-@extends('layouts.admin')
-@php $pageTitle = 'Create FAQ'; @endphp
+@extends('layouts.layoutMaster')
+
+@section('title', 'Tambah Pertanyaan')
+
 @section('content')
-<div class="max-w-2xl">
-    <form method="POST" action="{{ route('admin.faq.store') }}">
-        @csrf
-        @include('admin.faq._form')
-        <div class="flex items-center gap-3 mt-6">
-            <button type="submit" class="btn-primary text-sm py-2.5 px-6">Save FAQ</button>
-            <a href="{{ route('admin.faq.index') }}" class="btn-secondary text-sm py-2.5 px-6">Cancel</a>
-        </div>
-    </form>
-</div>
+
+<form method="POST" action="{{ route('admin.faq.store') }}">
+    @csrf
+
+    <x-admin.page-head
+        eyebrow="FAQ"
+        title="Tambah Pertanyaan"
+        :back="route('admin.faq.index')">
+        <a href="{{ route('admin.faq.index') }}" class="btn btn-outline-secondary">Batal</a>
+        <button type="submit" class="btn btn-primary">
+            <i class="icon-base ti tabler-device-floppy me-2"></i>Simpan
+        </button>
+    </x-admin.page-head>
+
+    @include('admin.faq._form')
+</form>
+
 @endsection

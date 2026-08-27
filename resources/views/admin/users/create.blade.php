@@ -1,25 +1,48 @@
-@extends('layouts.admin')
-@php $pageTitle = 'Create User'; @endphp
+@extends('layouts.layoutMaster')
+
+@section('title', 'Tambah Pengguna')
+
 @section('content')
-<div class="max-w-lg">
-    <form method="POST" action="{{ route('admin.users.store') }}">
-        @csrf
-        <x-admin.form.input label="Name" name="name" required />
-        <x-admin.form.input label="Email" name="email" type="email" required />
-        <x-admin.form.input label="Password" name="password" type="password" required />
-        <x-admin.form.input label="Confirm Password" name="password_confirmation" type="password" required />
-        <div class="mb-4">
-            <label class="block text-sm font-medium text-text-secondary mb-1.5">Role <span class="text-danger">*</span></label>
-            <select name="role" class="w-full bg-brand-surface-2 border border-brand-border rounded-xl px-4 py-2.5 text-text-primary text-sm focus:outline-none focus:border-accent" required>
-                @foreach($roles as $role)
-                <option value="{{ $role->name }}">{{ $role->display_name }}</option>
-                @endforeach
-            </select>
+
+<form method="POST" action="{{ route('admin.users.store') }}">
+    @csrf
+
+    <x-admin.page-head
+        eyebrow="Pengguna"
+        title="Tambah Pengguna"
+        :back="route('admin.users.index')">
+        <a href="{{ route('admin.users.index') }}" class="btn btn-outline-secondary">Batal</a>
+        <button type="submit" class="btn btn-primary">
+            <i class="icon-base ti tabler-device-floppy me-2"></i>Simpan
+        </button>
+    </x-admin.page-head>
+
+    <div class="row">
+        <div class="col-12 col-lg-7">
+            <div class="card">
+                <div class="card-body">
+                    <x-admin.form.input label="Nama" name="name" required placeholder="Nama lengkap" autocomplete="name" />
+                    <x-admin.form.input label="Email" name="email" type="email" required placeholder="nama@aldeftech.com" autocomplete="email" />
+
+                    <x-admin.form.select
+                        label="Peran" name="role" required
+                        :options="$roles->pluck('display_name', 'name')->all()"
+                        placeholder="Pilih peran"
+                        help="Peran menentukan menu yang dapat diakses." />
+
+                    <hr class="my-4">
+
+                    <x-admin.form.input
+                        label="Kata Sandi" name="password" type="password" required
+                        autocomplete="new-password" help="Minimal 8 karakter." />
+
+                    <x-admin.form.input
+                        label="Ulangi Kata Sandi" name="password_confirmation" type="password" required
+                        autocomplete="new-password" />
+                </div>
+            </div>
         </div>
-        <div class="flex items-center gap-3 mt-6">
-            <button type="submit" class="btn-primary text-sm py-2.5 px-6">Create User</button>
-            <a href="{{ route('admin.users.index') }}" class="btn-secondary text-sm py-2.5 px-6">Cancel</a>
-        </div>
-    </form>
-</div>
+    </div>
+</form>
+
 @endsection

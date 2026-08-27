@@ -1,14 +1,33 @@
-@extends('layouts.admin')
-@php $pageTitle = 'Create Tag'; @endphp
+@extends('layouts.layoutMaster')
+
+@section('title', 'Tambah Tag')
+
 @section('content')
-<div class="max-w-lg">
-    <form method="POST" action="{{ route('admin.tags.store') }}">
-        @csrf
-        <x-admin.form.input label="Name" name="name" required />
-        <div class="flex items-center gap-3 mt-6">
-            <button type="submit" class="btn-primary text-sm py-2.5 px-6">Save Tag</button>
-            <a href="{{ route('admin.tags.index') }}" class="btn-secondary text-sm py-2.5 px-6">Cancel</a>
+
+<form method="POST" action="{{ route('admin.tags.store') }}">
+    @csrf
+
+    <x-admin.page-head
+        eyebrow="Tag"
+        title="Tambah Tag"
+        :back="route('admin.tags.index')">
+        <a href="{{ route('admin.tags.index') }}" class="btn btn-outline-secondary">Batal</a>
+        <button type="submit" class="btn btn-primary">
+            <i class="icon-base ti tabler-device-floppy me-2"></i>Simpan
+        </button>
+    </x-admin.page-head>
+
+    <div class="row">
+        <div class="col-12 col-lg-5">
+            <div class="card">
+                <div class="card-body">
+                    <x-admin.form.input
+                        label="Nama Tag" name="name" required placeholder="mis. Otomasi"
+                        help="Slug dibuat otomatis dari nama." />
+                </div>
+            </div>
         </div>
-    </form>
-</div>
+    </div>
+</form>
+
 @endsection

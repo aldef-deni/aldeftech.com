@@ -1,49 +1,74 @@
-@extends('layouts.admin')
-@php $pageTitle = 'Testimonials'; @endphp
+@extends('layouts.layoutMaster')
+
+@section('title', 'Testimoni')
+
 @section('content')
-<div class="flex items-center justify-between mb-6">
-    <p class="text-text-muted text-sm">{{ $testimonials->count() }} testimonials</p>
-    <a href="{{ route('admin.testimonials.create') }}" class="btn-primary text-sm py-2 px-4">+ Add Testimonial</a>
+
+<x-admin.page-head
+    eyebrow="Konten Situs"
+    title="Testimoni"
+    subtitle="{{ $testimonials->count() }} testimoni · {{ $testimonials->where('is_published', true)->count() }} tampil di situs">
+    <a href="{{ route('admin.testimonials.create') }}" class="btn btn-primary">
+        <i class="icon-base ti tabler-plus me-2"></i>Tambah Testimoni
+    </a>
+</x-admin.page-head>
+
+@if($testimonials->isEmpty())
+<div class="card">
+    <div class="card-body">
+        <x-admin.empty
+            icon="tabler-star"
+            title="Belum ada testimoni"
+            message="Testimoni klien adalah salah satu pendorong konversi terkuat di halaman utama.">
+            <a href="{{ route('admin.testimonials.create') }}" class="btn btn-primary">
+                <i class="icon-base ti tabler-plus me-2"></i>Tambah Testimoni
+            </a>
+        </x-admin.empty>
+    </div>
 </div>
-<div class="bg-brand-surface border border-brand-border rounded-xl overflow-hidden">
-    <table class="w-full">
-        <thead>
-            <tr class="border-b border-brand-border">
-                <th class="text-left px-5 py-3 text-xs font-medium text-text-muted uppercase">Client</th>
-                <th class="text-left px-5 py-3 text-xs font-medium text-text-muted uppercase">Testimonial</th>
-                <th class="text-center px-5 py-3 text-xs font-medium text-text-muted uppercase">Rating</th>
-                <th class="text-center px-5 py-3 text-xs font-medium text-text-muted uppercase">Status</th>
-                <th class="text-right px-5 py-3 text-xs font-medium text-text-muted uppercase">Actions</th>
-            </tr>
-        </thead>
-        <tbody class="divide-y divide-brand-border">
-            @forelse($testimonials as $item)
-            <tr class="hover:bg-brand-surface-2/50">
-                <td class="px-5 py-4">
-                    <div class="font-medium text-sm text-text-primary">{{ $item->client_name }}</div>
-                    <div class="text-xs text-text-muted">{{ $item->company }} {{ $item->position ? '· ' . $item->position : '' }}</div>
-                </td>
-                <td class="px-5 py-4 text-sm text-text-muted line-clamp-2 max-w-xs">{{ $item->testimonial }}</td>
-                <td class="px-5 py-4 text-center text-sm text-yellow-400">{{ str_repeat('★', $item->rating) }}</td>
-                <td class="px-5 py-4 text-center">
-                    <span class="text-xs px-2 py-1 rounded-full {{ $item->is_published ? 'bg-green-500/10 text-green-400' : 'bg-brand-surface-2 text-text-muted' }}">
-                        {{ $item->is_published ? 'Published' : 'Draft' }}
-                    </span>
-                </td>
-                <td class="px-5 py-4 text-right">
-                    <div class="flex items-center justify-end gap-2">
-                        <a href="{{ route('admin.testimonials.edit', $item) }}" class="text-xs text-accent hover:text-accent-light">Edit</a>
-                        <form method="POST" action="{{ route('admin.testimonials.destroy', $item) }}" onsubmit="return confirm('Delete?')">
-                            @csrf @method('DELETE')
-                            <button type="submit" class="text-xs text-danger hover:text-danger-dark">Delete</button>
-                        </form>
+@else
+<div class="row g-4">
+    @foreach($testimonials as $testimonial)
+    <div class="col-12 col-md-6 col-xl-4">
+        <div class="card h-100">
+            <div class="card-body d-flex flex-column">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <div class="text-warning" aria-label="{{ $testimonial->rating }} dari 5">
+                        @for($i = 1; $i <= 5; $i++)
+                            <i class="icon-base ti {{ $i <= $testimonial->rating ? 'tabler-star-filled' : 'tabler-star' }} icon-sm"></i>
+                        @endfor
                     </div>
-                </td>
-            </tr>
-            @empty
-            <tr><td colspan="5" class="px-5 py-8 text-center text-text-muted text-sm">No testimonials yet. Add testimonials from the admin.</td></tr>
-            @endforelse
-        </tbody>
-    </table>
+                    <x-admin.status :published="$testimonial->is_published" />
+                </div>
+
+                <p class="text-body-secondary flex-grow-1">{{ excerpt_text($testimonial->testimonial, 200) }}</p>
+
+                <div class="d-flex align-items-center gap-3 pt-3 mt-3 border-top">
+                    @if($src = media_url($testimonial->photo))
+                        <img src="{{ $src }}" alt="" class="aldef-thumb rounded-circle">
+                    @else
+                        <span class="avatar"><span class="avatar-initial rounded-circle bg-label-primary">{{ initials_of($testimonial->client_name) }}</span></span>
+                    @endif
+
+                    <div class="flex-grow-1 text-truncate">
+                        <div class="fw-medium text-truncate">{{ $testimonial->client_name }}</div>
+                        <small class="text-body-secondary text-truncate d-block">{{ trim(($testimonial->position ? $testimonial->position . ' · ' : '') . $testimonial->company, ' ·') ?: '—' }}</small>
+                    </div>
+
+                    <div class="text-nowrap">
+                        <a href="{{ route('admin.testimonials.edit', $testimonial) }}" class="btn btn-sm btn-icon btn-text-secondary" title="Ubah">
+                            <i class="icon-base ti tabler-pencil"></i>
+                        </a>
+                        <x-admin.delete
+                            :action="route('admin.testimonials.destroy', $testimonial)"
+                            :confirm="'Hapus testimoni dari ' . $testimonial->client_name . '?'" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endforeach
 </div>
+@endif
+
 @endsection

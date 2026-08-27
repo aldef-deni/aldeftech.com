@@ -1,52 +1,157 @@
 {
   "menu": [
     {
-      "url": "/admin",
+      "url": "admin/dashboard",
       "name": "Dashboard",
-      "icon": "menu-icon tf-icons ti ti-smart-home",
-      "slug": "admin-dashboard"
+      "icon": "menu-icon tf-icons ti tabler-smart-home",
+      "slug": "admin.dashboard"
     },
     {
-      "menuHeader": "Management"
+      "menuHeader": "Konten Situs"
     },
     {
-      "url": "/admin/marketing",
-      "name": "AI Marketing Center",
-      "icon": "menu-icon tf-icons ti ti-robot",
-      "slug": "admin-marketing"
+      "url": "admin/homepage",
+      "name": "Homepage",
+      "icon": "menu-icon tf-icons ti tabler-layout-dashboard",
+      "slug": "admin.homepage.index"
     },
     {
-      "url": "/admin/leads",
-      "name": "Leads / CRM",
-      "icon": "menu-icon tf-icons ti ti-users",
-      "slug": "admin-leads"
+      "url": "admin/about",
+      "name": "Tentang",
+      "icon": "menu-icon tf-icons ti tabler-info-circle",
+      "slug": "admin.about.edit"
     },
     {
-      "url": "/admin/portfolio",
-      "name": "Portfolio",
-      "icon": "menu-icon tf-icons ti ti-briefcase",
-      "slug": "admin-portfolio"
+      "url": "admin/services",
+      "name": "Layanan",
+      "icon": "menu-icon tf-icons ti tabler-layout-grid-add",
+      "slug": "admin.services"
     },
     {
-      "url": "/admin/services",
-      "name": "Services",
-      "icon": "menu-icon tf-icons ti ti-layout-grid-add",
-      "slug": "admin-services"
+      "url": "admin/solutions",
+      "name": "Solusi",
+      "icon": "menu-icon tf-icons ti tabler-bulb",
+      "slug": "admin.solutions"
     },
     {
-      "url": "/admin/blog",
-      "name": "Blog",
-      "icon": "menu-icon tf-icons ti ti-news",
-      "slug": "admin-blog"
+      "url": "admin/portfolio",
+      "name": "Portofolio",
+      "icon": "menu-icon tf-icons ti tabler-briefcase",
+      "slug": "admin.portfolio"
     },
     {
-      "menuHeader": "System Settings"
+      "url": "admin/process-steps",
+      "name": "Alur Kerja",
+      "icon": "menu-icon tf-icons ti tabler-timeline-event",
+      "slug": "admin.process-steps"
     },
     {
-      "url": "/admin/settings/site",
-      "name": "Site Settings",
-      "icon": "menu-icon tf-icons ti ti-settings",
-      "slug": "admin-settings"
+      "url": "admin/testimonials",
+      "name": "Testimoni",
+      "icon": "menu-icon tf-icons ti tabler-star",
+      "slug": "admin.testimonials"
+    },
+    {
+      "url": "admin/faq",
+      "name": "FAQ",
+      "icon": "menu-icon tf-icons ti tabler-help-circle",
+      "slug": "admin.faq"
+    },
+    {
+      "menuHeader": "Blog"
+    },
+    {
+      "url": "admin/blog",
+      "name": "Artikel",
+      "icon": "menu-icon tf-icons ti tabler-news",
+      "slug": "admin.blog"
+    },
+    {
+      "url": "admin/categories",
+      "name": "Kategori",
+      "icon": "menu-icon tf-icons ti tabler-category",
+      "slug": "admin.categories"
+    },
+    {
+      "url": "admin/tags",
+      "name": "Tag",
+      "icon": "menu-icon tf-icons ti tabler-tag",
+      "slug": "admin.tags"
+    },
+    {
+      "menuHeader": "CRM & Pemasaran"
+    },
+    {
+      "url": "admin/leads",
+      "name": "Leads",
+      "icon": "menu-icon tf-icons ti tabler-users",
+      "slug": "admin.leads"
+    },
+    {
+      "url": "admin/marketing",
+      "name": "AI Marketing",
+      "icon": "menu-icon tf-icons ti tabler-robot",
+      "slug": "admin.marketing"
+    },
+    {
+      "menuHeader": "Pengaturan"
+    },
+    {
+      "url": "admin/settings/site",
+      "name": "Situs",
+      "icon": "menu-icon tf-icons ti tabler-settings",
+      "slug": "admin.settings.site"
+    },
+    {
+      "url": "admin/settings/seo",
+      "name": "SEO",
+      "icon": "menu-icon tf-icons ti tabler-search",
+      "slug": "admin.settings.seo"
+    },
+    {
+      "url": "admin/settings/whatsapp",
+      "name": "WhatsApp",
+      "icon": "menu-icon tf-icons ti tabler-brand-whatsapp",
+      "slug": "admin.settings.whatsapp"
+    },
+    {
+      "url": "admin/settings/analytics",
+      "name": "Analytics",
+      "icon": "menu-icon tf-icons ti tabler-chart-line",
+      "slug": "admin.settings.analytics"
+    },
+    {
+      "url": "admin/social-media",
+      "name": "Media Sosial",
+      "icon": "menu-icon tf-icons ti tabler-share",
+      "slug": "admin.social-media"
+    },
+    {
+      "url": "admin/ceo",
+      "name": "Profil CEO",
+      "icon": "menu-icon tf-icons ti tabler-user-circle",
+      "slug": "admin.ceo.edit"
+    },
+    {
+      "url": "admin/media",
+      "name": "Media",
+      "icon": "menu-icon tf-icons ti tabler-photo",
+      "slug": "admin.media"
+    },
+    {
+      "menuHeader": "Sistem"
+    },
+    {
+      "url": "admin/users",
+      "name": "Pengguna",
+      "icon": "menu-icon tf-icons ti tabler-user-shield",
+      "slug": "admin.users"
+    },
+    {
+      "url": "admin/activity-logs",
+      "name": "Log Aktivitas",
+      "icon": "menu-icon tf-icons ti tabler-history",
+      "slug": "admin.activity-logs"
     }
   ]
 }

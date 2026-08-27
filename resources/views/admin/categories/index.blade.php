@@ -1,38 +1,68 @@
-@extends('layouts.admin')
-@php $pageTitle = 'Blog Categories'; @endphp
+@extends('layouts.layoutMaster')
+
+@section('title', 'Kategori')
+
 @section('content')
-<div class="flex items-center justify-between mb-6">
-    <p class="text-text-muted text-sm">{{ $categories->count() }} categories</p>
-    <a href="{{ route('admin.categories.create') }}" class="btn-primary text-sm py-2 px-4">+ Add Category</a>
+
+<x-admin.page-head
+    eyebrow="Blog"
+    title="Kategori"
+    subtitle="{{ $categories->count() }} kategori artikel">
+    <a href="{{ route('admin.categories.create') }}" class="btn btn-primary">
+        <i class="icon-base ti tabler-plus me-2"></i>Tambah Kategori
+    </a>
+</x-admin.page-head>
+
+<div class="card">
+    @if($categories->isEmpty())
+        <div class="card-body">
+            <x-admin.empty
+                icon="tabler-category"
+                title="Belum ada kategori"
+                message="Kategori membantu pembaca menemukan artikel yang relevan.">
+                <a href="{{ route('admin.categories.create') }}" class="btn btn-primary">
+                    <i class="icon-base ti tabler-plus me-2"></i>Tambah Kategori
+                </a>
+            </x-admin.empty>
+        </div>
+    @else
+    <div class="table-responsive">
+        <table class="table table-hover mb-0">
+            <thead>
+                <tr>
+                    <th>Nama</th>
+                    <th class="d-none d-md-table-cell">Slug</th>
+                    <th class="text-center">Artikel</th>
+                    <th class="text-center">Urutan</th>
+                    <th class="text-end">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($categories as $category)
+                <tr>
+                    <td>
+                        <a href="{{ route('admin.categories.edit', $category) }}" class="fw-medium text-body">{{ $category->name }}</a>
+                        @if($category->description)
+                        <small class="text-body-secondary d-block text-truncate" style="max-width: 28rem;">{{ $category->description }}</small>
+                        @endif
+                    </td>
+                    <td class="d-none d-md-table-cell"><code class="text-body-secondary">{{ $category->slug }}</code></td>
+                    <td class="text-center"><span class="badge bg-label-secondary">{{ $category->posts_count ?? 0 }}</span></td>
+                    <td class="text-center">{{ $category->sort_order }}</td>
+                    <td class="text-end text-nowrap">
+                        <a href="{{ route('admin.categories.edit', $category) }}" class="btn btn-sm btn-icon btn-text-secondary" title="Ubah">
+                            <i class="icon-base ti tabler-pencil"></i>
+                        </a>
+                        <x-admin.delete
+                            :action="route('admin.categories.destroy', $category)"
+                            :confirm="'Hapus kategori \'' . $category->name . '\'?'" />
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+    @endif
 </div>
-<div class="bg-brand-surface border border-brand-border rounded-xl overflow-hidden">
-    <table class="w-full">
-        <thead>
-            <tr class="border-b border-brand-border">
-                <th class="text-left px-5 py-3 text-xs font-medium text-text-muted uppercase">Name</th>
-                <th class="text-center px-5 py-3 text-xs font-medium text-text-muted uppercase">Posts</th>
-                <th class="text-right px-5 py-3 text-xs font-medium text-text-muted uppercase">Actions</th>
-            </tr>
-        </thead>
-        <tbody class="divide-y divide-brand-border">
-            @forelse($categories as $cat)
-            <tr class="hover:bg-brand-surface-2/50">
-                <td class="px-5 py-4 text-sm text-text-primary">{{ $cat->name }}</td>
-                <td class="px-5 py-4 text-center text-sm text-text-muted">{{ $cat->posts_count }}</td>
-                <td class="px-5 py-4 text-right">
-                    <div class="flex items-center justify-end gap-2">
-                        <a href="{{ route('admin.categories.edit', $cat) }}" class="text-xs text-accent hover:text-accent-light">Edit</a>
-                        <form method="POST" action="{{ route('admin.categories.destroy', $cat) }}" onsubmit="return confirm('Delete?')">
-                            @csrf @method('DELETE')
-                            <button type="submit" class="text-xs text-danger hover:text-danger-dark">Delete</button>
-                        </form>
-                    </div>
-                </td>
-            </tr>
-            @empty
-            <tr><td colspan="3" class="px-5 py-8 text-center text-text-muted text-sm">No categories yet.</td></tr>
-            @endforelse
-        </tbody>
-    </table>
-</div>
+
 @endsection

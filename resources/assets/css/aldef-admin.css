@@ -1,0 +1,247 @@
+/* ============================================================================
+   ALDEF TECH — ADMIN SKIN
+   ----------------------------------------------------------------------------
+   Layered on top of Vuexy (Bootstrap 5). Deliberately small: it re-tunes
+   typography, elevation, and the champagne accents so the console reads as the
+   same brand as aldeftech.com, without fighting the template's own components.
+   The public Tailwind bundle is NOT loaded here — it would reset Bootstrap.
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Instrument+Serif:ital@0;1&display=swap');
+
+:root {
+  --aldef-gold-100: #FAF3E4;
+  --aldef-gold-200: #F2E5C9;
+  --aldef-gold-300: #E8D3A7;
+  --aldef-gold-500: #C29F60;
+  --aldef-gold-600: #A0804A;
+  --aldef-gold-700: #8A6C3C;
+
+  --aldef-ink-900: #0D1420;
+  --aldef-ink-800: #16202D;
+
+  --aldef-display: 'Sora', 'Public Sans', system-ui, sans-serif;
+  --aldef-serif: 'Instrument Serif', Georgia, serif;
+
+  --aldef-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ── Typography ──────────────────────────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6,
+.card-title,
+.app-brand-text {
+  font-family: var(--aldef-display);
+  letter-spacing: -0.018em;
+}
+
+.fw-bold, .fw-semibold { letter-spacing: -0.01em; }
+
+/* ── Brand mark in the sidebar ───────────────────────────────────────────── */
+.app-brand-logo img,
+.app-brand-logo svg { max-height: 2rem; width: auto; }
+
+.app-brand-text {
+  font-weight: 600;
+  font-size: 1.0625rem !important;
+  letter-spacing: -0.02em;
+}
+
+/* ── Cards: softer edges, warmer elevation, gentler hover ────────────────── */
+.card {
+  border-radius: 0.875rem;
+  box-shadow: 0 1px 2px rgba(13, 20, 32, 0.04), 0 2px 8px rgba(13, 20, 32, 0.03);
+  transition: box-shadow 520ms var(--aldef-ease), transform 520ms var(--aldef-ease);
+}
+
+@media (hover: hover) {
+  .card:hover {
+    box-shadow: 0 10px 28px -14px rgba(13, 20, 32, 0.18), 0 2px 6px rgba(13, 20, 32, 0.04);
+  }
+}
+
+.card-header { padding-block: 1.25rem; }
+
+/* Cards that link somewhere lift a little */
+@media (hover: hover) {
+  a.card:hover, .card-hover:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 22px 44px -22px rgba(13, 20, 32, 0.28);
+  }
+}
+
+/* ── Buttons: no snap, subtle bloom ──────────────────────────────────────── */
+.btn {
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition:
+    transform 480ms var(--aldef-ease),
+    box-shadow 480ms var(--aldef-ease),
+    background-color 260ms ease,
+    border-color 260ms ease,
+    color 260ms ease;
+}
+
+@media (hover: hover) {
+  .btn:not(.btn-link):not(:disabled):hover { transform: translateY(-1px); }
+}
+
+.btn:active { transform: translateY(0) scale(0.99); transition-duration: 110ms; }
+
+/* ── Sidebar menu: champagne active state ────────────────────────────────── */
+.menu-item .menu-link {
+  border-radius: 0.5rem;
+  transition:
+    background-color 300ms ease,
+    color 300ms ease,
+    transform 480ms var(--aldef-ease);
+}
+
+@media (hover: hover) {
+  .menu-item:not(.active) > .menu-link:hover { transform: translateX(2px); }
+}
+
+.menu-header-text {
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+/* ── Tables ──────────────────────────────────────────────────────────────── */
+.table > :not(caption) > * > * { padding-block: 0.875rem; }
+
+.table thead th {
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.table-hover > tbody > tr { transition: background-color 260ms ease; }
+
+/* ── Forms ───────────────────────────────────────────────────────────────── */
+.form-control,
+.form-select {
+  border-radius: 0.5rem;
+  transition: border-color 260ms ease, box-shadow 260ms ease, background-color 260ms ease;
+}
+
+.form-label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.005em;
+}
+
+/* ── Stat figures ────────────────────────────────────────────────────────── */
+.aldef-stat {
+  font-family: var(--aldef-display);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+
+.aldef-numeral {
+  font-family: var(--aldef-serif);
+  font-style: italic;
+  line-height: 1;
+  color: var(--aldef-gold-500);
+}
+
+/* ── Page heading ────────────────────────────────────────────────────────── */
+.aldef-page-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.aldef-page-head .aldef-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--aldef-display);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--aldef-gold-600);
+  margin-bottom: 0.4rem;
+}
+
+.aldef-page-head .aldef-eyebrow::before {
+  content: '';
+  width: 1.5rem;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--aldef-gold-500));
+}
+
+.aldef-page-head h4 { margin-bottom: 0.25rem; }
+
+/* ── Empty state ─────────────────────────────────────────────────────────── */
+.aldef-empty {
+  text-align: center;
+  padding-block: 3.5rem;
+}
+
+.aldef-empty i {
+  font-size: 2.75rem;
+  color: var(--aldef-gold-300);
+  display: block;
+  margin-bottom: 0.875rem;
+}
+
+/* ── Drag handle for sortable lists ──────────────────────────────────────── */
+.aldef-handle {
+  cursor: grab;
+  color: #A7ACB2;
+  transition: color 260ms ease;
+}
+.aldef-handle:hover { color: var(--aldef-gold-600); }
+.aldef-handle:active { cursor: grabbing; }
+
+.sortable-ghost { opacity: 0.4; }
+
+/* ── Image preview thumbs ────────────────────────────────────────────────── */
+.aldef-thumb {
+  width: 3rem;
+  height: 3rem;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(13, 20, 32, 0.08);
+  background: #F4F2EE;
+}
+
+.aldef-thumb-lg {
+  width: 100%;
+  max-width: 18rem;
+  height: auto;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  border-radius: 0.625rem;
+  border: 1px solid rgba(13, 20, 32, 0.08);
+  background: #F4F2EE;
+}
+
+/* ── Auth screen: obsidian brand panel ───────────────────────────────────── */
+.aldef-auth-brand {
+  background:
+    radial-gradient(120% 90% at 78% 8%, rgba(52, 175, 212, 0.16) 0%, transparent 55%),
+    radial-gradient(100% 80% at 14% 92%, rgba(217, 184, 124, 0.16) 0%, transparent 58%),
+    linear-gradient(168deg, #080D14 0%, #0A1017 42%, #0E151E 100%);
+}
+
+.aldef-auth-quote {
+  font-family: var(--aldef-serif);
+  font-style: italic;
+  color: var(--aldef-gold-300);
+}
+
+/* ── Reduced motion ──────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

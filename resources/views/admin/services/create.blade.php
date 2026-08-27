@@ -1,14 +1,23 @@
-@extends('layouts.admin')
-@php $pageTitle = 'Create Service'; @endphp
+@extends('layouts.layoutMaster')
+
+@section('title', 'Tambah Layanan')
+
 @section('content')
-<div class="max-w-2xl">
-    <form method="POST" action="{{ route('admin.services.store') }}">
-        @csrf
-        @include('admin.services._form')
-        <div class="flex items-center gap-3 mt-6">
-            <button type="submit" class="btn-primary text-sm py-2.5 px-6">Save Service</button>
-            <a href="{{ route('admin.services.index') }}" class="btn-secondary text-sm py-2.5 px-6">Cancel</a>
-        </div>
-    </form>
-</div>
+
+<form method="POST" action="{{ route('admin.services.store') }}">
+    @csrf
+
+    <x-admin.page-head
+        eyebrow="Layanan"
+        title="Tambah Layanan"
+        :back="route('admin.services.index')">
+        <a href="{{ route('admin.services.index') }}" class="btn btn-outline-secondary">Batal</a>
+        <button type="submit" class="btn btn-primary">
+            <i class="icon-base ti tabler-device-floppy me-2"></i>Simpan
+        </button>
+    </x-admin.page-head>
+
+    @include('admin.services._form')
+</form>
+
 @endsection

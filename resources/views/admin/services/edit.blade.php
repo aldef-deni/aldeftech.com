@@ -1,14 +1,25 @@
-@extends('layouts.admin')
-@php $pageTitle = 'Edit Service — ' . $service->title; @endphp
+@extends('layouts.layoutMaster')
+
+@section('title', 'Ubah Layanan')
+
 @section('content')
-<div class="max-w-2xl">
-    <form method="POST" action="{{ route('admin.services.update', $service) }}">
-        @csrf @method('PUT')
-        @include('admin.services._form')
-        <div class="flex items-center gap-3 mt-6">
-            <button type="submit" class="btn-primary text-sm py-2.5 px-6">Update Service</button>
-            <a href="{{ route('admin.services.index') }}" class="btn-secondary text-sm py-2.5 px-6">Cancel</a>
-        </div>
-    </form>
-</div>
+
+<form method="POST" action="{{ route('admin.services.update', $service) }}">
+    @csrf
+    @method('PUT')
+
+    <x-admin.page-head
+        eyebrow="Layanan"
+        :title="$service->title"
+        subtitle="Terakhir diubah {{ $service->updated_at?->diffForHumans() }}"
+        :back="route('admin.services.index')">
+        <a href="{{ route('admin.services.index') }}" class="btn btn-outline-secondary">Batal</a>
+        <button type="submit" class="btn btn-primary">
+            <i class="icon-base ti tabler-device-floppy me-2"></i>Simpan Perubahan
+        </button>
+    </x-admin.page-head>
+
+    @include('admin.services._form')
+</form>
+
 @endsection

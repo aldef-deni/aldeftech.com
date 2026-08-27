@@ -1,14 +1,35 @@
-@extends('layouts.admin')
-@php $pageTitle = 'Edit Tag — ' . $tag->name; @endphp
+@extends('layouts.layoutMaster')
+
+@section('title', 'Ubah Tag')
+
 @section('content')
-<div class="max-w-lg">
-    <form method="POST" action="{{ route('admin.tags.update', $tag) }}">
-        @csrf @method('PUT')
-        <x-admin.form.input label="Name" name="name" :value="$tag->name" required />
-        <div class="flex items-center gap-3 mt-6">
-            <button type="submit" class="btn-primary text-sm py-2.5 px-6">Update Tag</button>
-            <a href="{{ route('admin.tags.index') }}" class="btn-secondary text-sm py-2.5 px-6">Cancel</a>
+
+<form method="POST" action="{{ route('admin.tags.update', $tag) }}">
+    @csrf
+    @method('PUT')
+
+    <x-admin.page-head
+        eyebrow="Tag"
+        :title="$tag->name"
+        :subtitle="'/' . $tag->slug"
+        :back="route('admin.tags.index')">
+        <a href="{{ route('admin.tags.index') }}" class="btn btn-outline-secondary">Batal</a>
+        <button type="submit" class="btn btn-primary">
+            <i class="icon-base ti tabler-device-floppy me-2"></i>Simpan Perubahan
+        </button>
+    </x-admin.page-head>
+
+    <div class="row">
+        <div class="col-12 col-lg-5">
+            <div class="card">
+                <div class="card-body">
+                    <x-admin.form.input
+                        label="Nama Tag" name="name" :value="$tag->name" required
+                        help="Slug diperbarui otomatis mengikuti nama." />
+                </div>
+            </div>
         </div>
-    </form>
-</div>
+    </div>
+</form>
+
 @endsection

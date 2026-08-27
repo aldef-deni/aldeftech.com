@@ -64,6 +64,8 @@
               <div class="{{ $container }} flex-grow-1 container-p-y">
           @endif
 
+          @include('layouts.sections.flash')
+
           @yield('content')
 
         </div>

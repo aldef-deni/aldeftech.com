@@ -27,7 +27,7 @@ return [
     'seo' => [
         'default_title' => 'Aldef Tech — Jasa Pembuatan Sistem, Aplikasi, SaaS & AI',
         'default_description' => 'Aldef Tech membantu bisnis membangun sistem, aplikasi custom, SaaS, website, AI, dan automasi bisnis sesuai kebutuhan. Konsultasi bersama Deni Afrizal.',
-        'default_image' => '/images/og-default.jpg',
+        'default_image' => '/images/aldef-tech-banner.png',
     ],
 
     'admin' => [

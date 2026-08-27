@@ -26,6 +26,6 @@
 <!-- Page Styles -->
 @yield('page-style')
 
-<!-- app CSS -->
-@vite(['resources/css/app.css'])
-<!-- END: app CSS-->
+<!-- Aldef Tech admin skin (Bootstrap-compatible; the public Tailwind bundle is
+     deliberately NOT loaded here — it resets Bootstrap's base styles) -->
+@vite(['resources/assets/css/aldef-admin.css'])

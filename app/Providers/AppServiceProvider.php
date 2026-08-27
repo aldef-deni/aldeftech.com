@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\SiteSetting;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -16,6 +17,10 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        // The admin console runs on Bootstrap 5; the public site passes its own
+        // paginator view explicitly, so this default only affects the admin.
+        Paginator::useBootstrapFive();
+
         // Share site settings with all frontend views
         View::composer('layouts.app', function ($view) {
             $view->with('siteSettings', SiteSetting::getGroup('general'));

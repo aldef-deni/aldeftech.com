@@ -1,86 +1,151 @@
 @extends('layouts.app')
-@section('content')
+
 @php
-$pageTitle = $post->meta_title ?? $post->title . ' — Aldef Tech Insights';
-$metaDescription = $post->meta_description ?? $post->excerpt;
+    $pageTitle = $post->meta_title ?: $post->title . ' — Aldef Tech';
+    $metaDescription = $post->meta_description ?: excerpt_text($post->excerpt ?: $post->content, 160);
+    $ogImage = media_url($post->featured_image, 'images/aldef-tech-banner.png');
+    $ogType = 'article';
+    $canonical = $post->canonical_url ?: route('blog.show', $post->slug);
+
+    $readMinutes = max(1, (int) ceil(str_word_count(strip_tags((string) $post->content)) / 200));
 @endphp
 
-<article class="section-padding bg-white pt-16 lg:pt-24 relative overflow-hidden">
-    {{-- Header --}}
-    <div class="max-w-4xl mx-auto px-5 sm:px-8 lg:px-10 relative z-10">
-        <a href="{{ route('blog') }}" class="btn-link mb-8 reveal inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-blue-600 uppercase tracking-wider">
-            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 12H5m7 7l-7-7 7-7"/></svg>
-            Kembali ke Insights
-        </a>
+@push('schema')
+<script type="application/ld+json">
+{!! json_encode([
+    '@' . 'context' => 'https://schema.org',
+    '@type' => 'BlogPosting',
+    'headline' => $post->title,
+    'description' => $metaDescription,
+    'image' => $ogImage,
+    'datePublished' => optional($post->published_at)->toIso8601String(),
+    'dateModified' => optional($post->updated_at)->toIso8601String(),
+    'author' => ['@type' => 'Person', 'name' => $post->author->name ?? 'Aldef Tech'],
+    'publisher' => [
+        '@type' => 'Organization',
+        'name' => 'Aldef Tech',
+        'logo' => ['@type' => 'ImageObject', 'url' => asset('images/logo.png')],
+    ],
+    'mainEntityOfPage' => $canonical,
+], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}
+</script>
+@endpush
 
-        <div class="reveal reveal-delay-1">
-            @if($post->category)
-            <span class="section-eyebrow mb-3">{{ $post->category->name }}</span>
-            @endif
-            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold text-slate-900 mb-6 leading-tight tracking-tight">
-                {{ $post->title }}
-            </h1>
-            <div class="flex flex-wrap items-center gap-4 text-sm text-slate-500 pb-8 border-b border-slate-200">
-                <span class="font-medium">{{ $post->published_at->format('d M Y') }}</span>
-                <span>•</span>
-                @if($post->author)
-                <span class="flex items-center gap-2">
-                    <span class="w-7 h-7 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-xs font-display font-bold">
-                        {{ substr($post->author->name, 0, 1) }}
-                    </span>
-                    <span class="text-slate-800 font-semibold">{{ $post->author->name }}</span>
+@section('content')
+
+<x-page-hero
+    :eyebrow="$post->category->name ?? 'Insight'"
+    :title="$post->title"
+    align="left"
+    compact
+    :breadcrumbs="[
+        ['label' => 'Insight', 'url' => route('blog')],
+        ['label' => $post->title],
+    ]" />
+
+{{-- ── Byline ───────────────────────────────────────────────────────────── --}}
+<section class="surface-ivory-deep border-b border-line">
+    <div class="shell">
+        <div class="py-6 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-graphite-500 reveal">
+            <span class="flex items-center gap-2.5">
+                <span class="w-8 h-8 rounded-full bg-gold-100 border border-gold-200 text-gold-700 font-display text-[0.6875rem] font-semibold flex items-center justify-center">
+                    {{ initials_of($post->author->name ?? 'Aldef Tech') }}
                 </span>
+                <span class="text-graphite-700 font-medium">{{ $post->author->name ?? 'Aldef Tech' }}</span>
+            </span>
+
+            @if($post->published_at)
+            <span class="flex items-center gap-2">
+                <x-lux-icon name="clock" class="w-4 h-4 text-gold-600" />
+                <time datetime="{{ $post->published_at->toDateString() }}">{{ $post->published_at->translatedFormat('d F Y') }}</time>
+            </span>
+            @endif
+
+            <span class="tabular">{{ $readMinutes }} menit baca</span>
+        </div>
+    </div>
+</section>
+
+{{-- ── Featured image ───────────────────────────────────────────────────── --}}
+@if($src = media_url($post->featured_image))
+<section class="surface-ivory pt-12 lg:pt-16">
+    <div class="shell">
+        <figure class="frame-lux reveal-scale max-w-4xl mx-auto">
+            <img src="{{ $src }}" alt="{{ $post->title }}" class="!h-auto" decoding="async">
+        </figure>
+    </div>
+</section>
+@endif
+
+{{-- ── Article ──────────────────────────────────────────────────────────── --}}
+<section class="section-padding surface-ivory">
+    <div class="shell">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14">
+
+            <article class="lg:col-span-8">
+                <div class="prose-lux reveal">
+                    {!! $post->content !!}
+                </div>
+
+                @if($post->tags && $post->tags->isNotEmpty())
+                <div class="mt-12 pt-8 border-t border-line">
+                    <p class="eyebrow mb-4">Topik</p>
+                    <div class="flex flex-wrap gap-2">
+                        @foreach($post->tags as $tag)
+                            <span class="chip chip-neutral">{{ $tag->name }}</span>
+                        @endforeach
+                    </div>
+                </div>
                 @endif
-            </div>
+
+                <div class="mt-10">
+                    <a href="{{ route('blog') }}" class="link-arrow">
+                        <svg class="w-3.5 h-3.5 rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                        <span>Semua tulisan</span>
+                    </a>
+                </div>
+            </article>
+
+            <aside class="lg:col-span-4">
+                <div class="lg:sticky lg:top-28 card-lux card-lux-featured p-6 lg:p-7 reveal">
+                    <span class="icon-plate icon-plate-sm"><x-lux-icon name="spark" /></span>
+                    <p class="mt-4 font-display text-base font-semibold text-graphite-900">
+                        Ingin menerapkannya di bisnis Anda?
+                    </p>
+                    <p class="mt-2 text-[0.8125rem] leading-relaxed text-graphite-600">
+                        Kami bantu terjemahkan ide di tulisan ini menjadi sistem yang benar-benar berjalan.
+                    </p>
+                    <a href="{{ \App\Services\WhatsAppService::getUrl() }}" target="_blank" rel="noopener"
+                       class="btn btn-primary btn-sm btn-block mt-5">
+                        <span>Konsultasi gratis</span>
+                    </a>
+                </div>
+            </aside>
         </div>
     </div>
+</section>
 
-    {{-- Featured Image --}}
-    @if($post->featured_image)
-    <div class="max-w-4xl mx-auto px-5 sm:px-8 lg:px-10 mt-10 mb-12 reveal-scale">
-        <div class="rounded-2xl overflow-hidden border border-slate-200/90 shadow-card bg-slate-50">
-            <img src="{{ asset('storage/' . $post->featured_image) }}" alt="{{ $post->title }}" class="w-full">
-        </div>
-    </div>
-    @endif
+{{-- ── Related ──────────────────────────────────────────────────────────── --}}
+@if($relatedPosts->isNotEmpty())
+<section class="section-padding-sm surface-parchment border-t border-line">
+    <div class="shell">
+        <p class="eyebrow reveal">Bacaan Lain</p>
 
-    {{-- Body Content --}}
-    <div class="max-w-3xl mx-auto px-5 sm:px-8 lg:px-10">
-        <div class="prose-light leading-relaxed text-base lg:text-lg reveal">
-            {!! $post->content !!}
-        </div>
-
-        {{-- Tags --}}
-        @if($post->tags->count())
-        <div class="mt-12 pt-8 border-t border-slate-200 reveal">
-            <div class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Topic Tags</div>
-            <div class="flex flex-wrap gap-2">
-                @foreach($post->tags as $tag)
-                <span class="tag tag-accent text-xs">#{{ $tag->name }}</span>
-                @endforeach
-            </div>
-        </div>
-        @endif
-    </div>
-</article>
-
-{{-- Related Articles --}}
-@if($relatedPosts->count())
-<section class="section-padding bg-slate-50/80 border-t border-slate-200/80">
-    <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
-        <h2 class="text-2xl lg:text-3xl font-display font-bold text-slate-900 mb-8">Related Articles</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-5 lg:gap-6" data-reveal-group="80">
             @foreach($relatedPosts as $related)
-            <a href="{{ route('blog.show', $related->slug) }}" class="premium-card overflow-hidden group">
-                <div class="aspect-[16/10] bg-slate-100">
-                    @if($related->featured_image)
-                    <img src="{{ asset('storage/' . $related->featured_image) }}" alt="{{ $related->title }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+            <a href="{{ route('blog.show', $related->slug) }}" class="card-lux reveal group overflow-hidden">
+                <div class="frame-lux !rounded-none !border-0 !border-b !border-line aspect-[16/10] bg-ivory-200">
+                    @if($rsrc = media_url($related->featured_image))
+                        <img src="{{ $rsrc }}" alt="{{ $related->title }}" loading="lazy" decoding="async">
+                    @else
+                        <span class="absolute inset-0 flex items-center justify-center text-gold-400/50">
+                            <x-lux-icon name="code" class="w-10 h-10" />
+                        </span>
                     @endif
                 </div>
                 <div class="p-6">
-                    <span class="text-[0.6875rem] font-bold tracking-wider text-blue-600 uppercase">{{ $related->category->name ?? '' }}</span>
-                    <h3 class="font-display font-bold text-slate-900 text-base mt-2 group-hover:text-blue-600 transition-colors">{{ $related->title }}</h3>
-                    <span class="text-xs text-slate-400 mt-3 block font-medium">{{ $related->published_at->format('d M Y') }}</span>
+                    <p class="text-[0.6875rem] uppercase tracking-[0.14em] text-gold-700">{{ $related->category->name ?? 'Insight' }}</p>
+                    <h3 class="mt-3 text-base leading-snug">{{ $related->title }}</h3>
                 </div>
             </a>
             @endforeach
@@ -89,19 +154,6 @@ $metaDescription = $post->meta_description ?? $post->excerpt;
 </section>
 @endif
 
-{{-- Striking Dark CTA Section --}}
-<section class="py-20 lg:py-28 relative bg-[#090D16] text-white overflow-hidden">
-    <div class="max-w-4xl mx-auto px-5 sm:px-8 lg:px-10 text-center relative z-10">
-        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold text-white mb-6 leading-tight tracking-tight reveal">
-            Ingin Mengimplementasikan Solusi Serupa?
-        </h2>
-        <p class="text-slate-300 text-lg mb-10 max-w-2xl mx-auto reveal reveal-delay-1">
-            Hubungi tim Aldef Tech untuk eksplorasi arsitektur dan estimasi pengembangan proyek Anda.
-        </p>
-        <a href="{{ \App\Services\WhatsAppService::getUrl() }}" target="_blank" rel="noopener" class="btn-primary btn-lg shadow-lg reveal reveal-delay-2">
-            <span>Mulai Konsultasi Gratis</span>
-            <svg class="w-4 h-4 ml-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-        </a>
-    </div>
-</section>
+<x-cta-band />
+
 @endsection
