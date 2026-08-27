@@ -107,7 +107,7 @@
                 @if(!empty($ceoProfile->skills))
                 <div class="mt-9">
                     <p class="eyebrow mb-4">{{ __('pages.about.skills') }}</p>
-                    <div class="flex flex-wrap gap-2">
+                    <div class="chip-strip flex gap-2 sm:flex-wrap">
                         @foreach((array) $ceoProfile->skills as $skill)
                             <span class="chip chip-neutral">{{ $skill }}</span>
                         @endforeach

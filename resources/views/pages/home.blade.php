@@ -397,7 +397,7 @@
                 </div>
 
                 @if(!empty($ceoProfile->skills))
-                <div class="mt-8 flex flex-wrap gap-2">
+                <div class="mt-8 chip-strip flex gap-2 sm:flex-wrap">
                     @foreach(array_slice((array) $ceoProfile->skills, 0, 8) as $skill)
                         <span class="chip chip-neutral">{{ $skill }}</span>
                     @endforeach

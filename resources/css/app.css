@@ -975,6 +975,25 @@
 }
 
 /* Position dots, injected by app.js for rails with more than one page. */
+/* Chip strip — on a phone a wrapped row of 8 chips turns into a ragged
+   three-line block. Below 640px it becomes one tidy line that scrolls, with a
+   fade at the right edge so the overflow reads as scrollable rather than cut. */
+@media (max-width: 639px) {
+  .chip-strip {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    margin-inline: -1.375rem;
+    padding-inline: 1.375rem;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -webkit-mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 2.75rem), transparent 100%);
+    mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 2.75rem), transparent 100%);
+  }
+  .chip-strip::-webkit-scrollbar { display: none; }
+  .chip-strip > * { flex: 0 0 auto; white-space: nowrap; }
+}
+
 .swipe-dots {
   display: none;
   justify-content: center;
@@ -1669,7 +1688,20 @@
 /* ============================================================================
    WHATSAPP WIDGET
    ========================================================================== */
-.wa-widget { position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 55; }
+.wa-widget {
+  position: fixed;
+  right: 1.5rem;
+  z-index: 55;
+  /* The footer's copyright line is centred, so on a narrow screen it runs
+     right under the button once you hit the bottom of the page. Sit above it. */
+  bottom: calc(1.75rem + env(safe-area-inset-bottom, 0px));
+}
+@media (max-width: 767px) {
+  .wa-widget {
+    right: 1.125rem;
+    bottom: calc(4.25rem + env(safe-area-inset-bottom, 0px));
+  }
+}
 
 .wa-btn {
   width: 3.5rem;
