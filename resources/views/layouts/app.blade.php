@@ -26,8 +26,11 @@
     <meta name="twitter:image" content="{{ $ogImage ?? asset(config('aldeftech.seo.default_image')) }}">
 
     {{-- Favicon --}}
-    <link rel="icon" type="image/png" href="{{ asset('images/logo-square.png') }}">
-    <link rel="apple-touch-icon" href="{{ asset('images/logo-square.png') }}">
+    {{-- logo-square.png is 1.3 MB; these are generated crops of the "A" mark. --}}
+    <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/favicon-32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/favicon-16.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('images/apple-touch-icon.png') }}">
 
     {{-- Google Search Console --}}
     @if($googleVerification = \App\Models\SiteSetting::get('google_search_console_verification'))

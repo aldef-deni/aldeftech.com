@@ -1,10 +1,11 @@
 @php
-  // Aldef Tech brand mark. The logo artwork carries its own colour gradient, so
-  // it is used as an image rather than a currentColor SVG.
+  // Aldef Tech brand mark: the glyph on a transparent ground. The full
+  // lock-up (logo-square.png) is 1.3 MB and its wordmark is illegible at this
+  // size, so a generated crop of the "A" is used instead.
   $height = $height ?? '30';
 @endphp
 
-<img src="{{ asset('images/logo-square.png') }}"
+<img src="{{ asset('images/logo-mark.png') }}"
      alt="{{ config('variables.templateName', 'Aldef Tech') }}"
      height="{{ $height }}"
      style="height: {{ $height }}px; width: auto; display: block;">
