@@ -54,6 +54,51 @@
                         label="Alamat" name="address" :value="SiteSetting::get('address', '')" :rows="3"
                         help="Tampil di footer dan halaman Kontak, sekaligus jadi kueri Google Maps." />
 
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title mb-1">Alamat Terstruktur</h5>
+                    <small class="text-body-secondary">
+                        Dibaca mesin pencari lewat Schema.org. Google mencocokkannya dengan
+                        Profil Bisnis Anda, jadi isinya sebaiknya sama persis.
+                    </small>
+                </div>
+                <div class="card-body">
+                    <x-admin.form.input
+                        label="Alamat Jalan" name="address_street"
+                        :value="SiteSetting::get('address_street', '')"
+                        placeholder="Rumah Chiara 2, Jl. Curug Induk, Bojong Kulur" />
+
+                    <div class="row">
+                        <x-admin.form.input
+                            col="12 col-md-4" label="Kota / Kecamatan" name="address_locality"
+                            :value="SiteSetting::get('address_locality', '')"
+                            placeholder="Gunung Putri" />
+
+                        <x-admin.form.input
+                            col="12 col-md-4" label="Provinsi" name="address_region"
+                            :value="SiteSetting::get('address_region', '')"
+                            placeholder="Jawa Barat" />
+
+                        <x-admin.form.input
+                            col="12 col-md-4" label="Kode Pos" name="postal_code"
+                            :value="SiteSetting::get('postal_code', '')"
+                            placeholder="16969" />
+                    </div>
+
+                    <x-admin.form.input
+                        label="Wilayah Layanan" name="service_areas"
+                        :value="SiteSetting::get('service_areas', '')"
+                        placeholder="Bogor, Depok, Jakarta, Bekasi, Tangerang"
+                        help="Pisahkan dengan koma. Samakan dengan wilayah layanan di Google Business Profile." />
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header"><h5 class="card-title mb-0">Peta</h5></div>
+                <div class="card-body">
                     <x-admin.form.input
                         label="URL Google Maps" name="google_maps_url" type="url"
                         :value="SiteSetting::get('google_maps_url', '')"

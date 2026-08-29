@@ -19,6 +19,8 @@ class SiteSettingController extends Controller
             'site_name', 'site_tagline', 'site_description',
             'site_logo', 'site_favicon',
             'email', 'phone', 'address',
+            'address_street', 'address_locality', 'address_region', 'postal_code',
+            'service_areas',
             'google_maps_url',
             'copyright',
             'footer_description',

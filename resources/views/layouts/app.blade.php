@@ -56,7 +56,7 @@
 
     {{-- Schema.org (JSON-LD) --}}
     <script type="application/ld+json">
-    {!! json_encode([
+    {!! json_encode(array_filter([
         '@' . 'context' => 'https://schema.org',
         '@type' => 'ProfessionalService',
         'name' => 'Aldef Tech',
@@ -67,18 +67,26 @@
         'image' => asset('images/logo.png'),
         'email' => \App\Models\SiteSetting::get('email', 'info@aldeftech.com'),
         'telephone' => '+' . preg_replace('/\D/', '', \App\Models\SiteSetting::get('whatsapp_number', '628128968609')),
-        'address' => [
+        // Filled from Pengaturan > Situs. array_filter drops anything still
+        // blank, so an unset postcode never ships as an empty schema field.
+        'address' => array_filter([
             '@type' => 'PostalAddress',
+            'streetAddress' => \App\Models\SiteSetting::get('address_street'),
+            'addressLocality' => \App\Models\SiteSetting::get('address_locality'),
+            'addressRegion' => \App\Models\SiteSetting::get('address_region'),
+            'postalCode' => \App\Models\SiteSetting::get('postal_code'),
             'addressCountry' => 'ID',
-            'addressLocality' => \App\Models\SiteSetting::get('address', 'Indonesia')
-        ],
+        ]),
+        // Should mirror the service areas set on the Google Business Profile.
+        'areaServed' => collect(explode(',', (string) \App\Models\SiteSetting::get('service_areas')))
+            ->map(fn ($a) => trim($a))->filter()->values()->all(),
         'priceRange' => '$$$',
-        'sameAs' => array_values(array_filter([
-            \App\Models\SiteSetting::get('linkedin'),
-            \App\Models\SiteSetting::get('github'),
-            \App\Models\SiteSetting::get('instagram')
-        ]))
-    ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}
+        // Reads the Media Sosial screen. It used to read site settings keys that
+        // nothing ever wrote, so sameAs shipped empty no matter what was saved.
+        'sameAs' => \Illuminate\Support\Facades\Cache::remember('schema.same_as', 3600, fn () => \App\Models\SocialLink::query()
+            ->where('is_active', true)->orderBy('sort_order')
+            ->pluck('url')->filter()->values()->all())
+    ]), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}
     </script>
     @stack('schema')
 
