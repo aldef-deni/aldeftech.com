@@ -52,6 +52,18 @@ class PortfolioDemoTest extends TestCase
         $this->get('/portfolio')->assertSee('Demo tersedia', false);
     }
 
+    public function test_modal_never_opens_on_its_own(): void
+    {
+        $this->portfolio(['demo_url' => 'https://demo.aldeftech.com/inventory']);
+
+        $response = $this->get('/portfolio/sistem-inventory');
+
+        // Only the button opens it — nothing auto-fires, nothing is remembered.
+        $response->assertSee('x-data="demoModal()"', false);
+        $response->assertDontSee('setTimeout', false);
+        $response->assertDontSee('aldef.demo-seen', false);
+    }
+
     public function test_credentials_are_shown_when_provided(): void
     {
         $this->portfolio([

@@ -2,6 +2,29 @@ import './bootstrap';
 import Alpine from 'alpinejs';
 
 window.Alpine = Alpine;
+
+/**
+ * Demo modal on a portfolio detail page.
+ *
+ * Lives here rather than in an x-data attribute: Alpine evaluates an attribute
+ * as a single expression, where a stray // comment silently swallows the rest
+ * and fails with nothing in the console.
+ *
+ * Opens only when the visitor presses the button. Nothing pops up on its own —
+ * an interstitial the visitor did not ask for interrupts reading, and Google
+ * treats intrusive interstitials on mobile as a ranking problem.
+ */
+Alpine.data('demoModal', () => ({
+  open: false,
+
+  init() {
+    // The page must not scroll behind the modal; on mobile that reads as broken.
+    this.$watch('open', (value) => {
+      document.body.style.overflow = value ? 'hidden' : '';
+    });
+  },
+}));
+
 Alpine.start();
 
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;

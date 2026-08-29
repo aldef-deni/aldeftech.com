@@ -5,12 +5,14 @@
     $hasCredentials = filled($portfolio->demo_username) || filled($portfolio->demo_password);
 @endphp
 
-<div x-data="{ open: false }" @keydown.escape.window="open = false">
+{{-- Behaviour lives in Alpine.data('demoModal') in resources/js/app.js. --}}
+<div x-data="demoModal()"
+     @keydown.escape.window="open = false">
 
     {{-- Trigger. Deliberately a button the visitor chooses to press: a modal
          that opens by itself interrupts reading, and Google treats intrusive
          interstitials on mobile as a ranking problem. --}}
-    <button type="button" @click="open = true" class="btn btn-primary w-full sm:w-auto magnetic reveal">
+    <button type="button" @click="open = true" class="btn btn-primary magnetic btn-pulse">
         <span class="relative flex h-2 w-2 mr-2.5" aria-hidden="true">
             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-ink-900/40"></span>
             <span class="relative inline-flex rounded-full h-2 w-2 bg-ink-900"></span>

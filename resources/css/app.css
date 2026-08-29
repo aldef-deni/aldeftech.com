@@ -994,6 +994,45 @@
   .chip-strip > * { flex: 0 0 auto; white-space: nowrap; }
 }
 
+/* Pulsing call-to-action ----------------------------------------------------
+   For the demo button, which now sits alone under the hero image and has to
+   earn a glance without shouting. Two rings expand outward on a stagger, so
+   the pulse reads as continuous rather than as a repeating blink — a hard
+   opacity flash is hard to read against and unpleasant to sit next to. The
+   rings are drawn on pseudo-elements behind the button, so its label never
+   moves and hover/press transitions stay untouched. */
+.btn-pulse { position: relative; isolation: isolate; }
+
+.btn-pulse::before,
+.btn-pulse::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  border: 1.5px solid var(--color-gold-500, #C29F60);
+  opacity: 0;
+  animation: btn-pulse-ring 2600ms var(--e-soft, cubic-bezier(0.22, 1, 0.36, 1)) infinite;
+  pointer-events: none;
+}
+
+/* Second ring starts halfway through the first one's cycle. */
+.btn-pulse::after { animation-delay: 1300ms; }
+
+@keyframes btn-pulse-ring {
+  0%   { transform: scale(1);    opacity: 0.55; }
+  70%  { transform: scale(1.28); opacity: 0; }
+  100% { transform: scale(1.28); opacity: 0; }
+}
+
+/* A slow breath on the shadow, so the button itself feels alive too. */
+.btn-pulse { animation: btn-pulse-glow 2600ms ease-in-out infinite; }
+
+@keyframes btn-pulse-glow {
+  0%, 100% { box-shadow: var(--shadow-gold), inset 0 1px 0 rgba(255, 255, 255, 0.5); }
+  50%      { box-shadow: var(--shadow-gold-lg), inset 0 1px 0 rgba(255, 255, 255, 0.5); }
+}
+
 .swipe-dots {
   display: none;
   justify-content: center;

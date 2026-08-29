@@ -65,11 +65,6 @@
             @endif
         </dl>
 
-        @if($portfolio->hasDemo())
-        <div class="pb-9 lg:pb-11">
-            <x-demo-modal :portfolio="$portfolio" />
-        </div>
-        @endif
 
         @if(!empty($portfolio->technologies))
         <div class="pb-9 lg:pb-11 reveal">
@@ -91,6 +86,19 @@
         <figure class="frame-lux reveal-scale">
             <img src="{{ $src }}" alt="{{ $portfolio->title }}" class="!h-auto" decoding="async">
         </figure>
+    </div>
+</section>
+@endif
+
+{{-- ── Demo ─────────────────────────────────────────────────────────────────
+     Its own section rather than inside the hero-image block, which only renders
+     when a featured image exists — the demo must show either way. --}}
+@if($portfolio->hasDemo())
+<section class="surface-ivory pt-11 lg:pt-14">
+    <div class="shell">
+        <div class="flex justify-center reveal">
+            <x-demo-modal :portfolio="$portfolio" />
+        </div>
     </div>
 </section>
 @endif
