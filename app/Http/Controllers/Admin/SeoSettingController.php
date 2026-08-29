@@ -17,6 +17,7 @@ class SeoSettingController extends Controller
     {
         $fields = [
             'seo_default_title', 'seo_default_description', 'seo_default_image',
+            'google_search_console_verification',
         ];
 
         foreach ($fields as $field) {

@@ -33,6 +33,13 @@
                         placeholder="Aldef Tech — Jasa Pembuatan Sistem, Aplikasi, SaaS & AI"
                         help="Dipakai halaman yang tidak punya judul sendiri. Idealnya 50-60 karakter." />
 
+                    <x-admin.form.input
+                        label="Kode Verifikasi Google Search Console"
+                        name="google_search_console_verification"
+                        :value="SiteSetting::get('google_search_console_verification', '')"
+                        placeholder="contoh: aBcD1eFgH2iJkL3mNoP4qRsT5uVwX6yZ"
+                        help="Isi hanya nilai content-nya, bukan seluruh tag &lt;meta&gt;. Search Console memberi tag lengkap; ambil teks di dalam tanda kutip content." />
+
                     <x-admin.form.textarea
                         label="Deskripsi Bawaan" name="seo_default_description"
                         :value="SiteSetting::get('seo_default_description', '')" :rows="4"
