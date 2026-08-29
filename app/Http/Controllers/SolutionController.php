@@ -93,9 +93,7 @@ class SolutionController extends Controller
 
         return view('pages.solutions', [
             'solutions' => $solutions,
-            'pageTitle' => 'Solusi Software Enterprise & AI — Aldef Tech',
-            'metaDescription' => 'Solusi software enterprise untuk ERP, CRM, POS, inventory, warehouse, finance, HR, dashboard, AI customer service, AI Agent, dan business automation.',
-            'canonical' => route('solutions'),
+            'canonical' => lroute('solutions'),
         ]);
     }
 }

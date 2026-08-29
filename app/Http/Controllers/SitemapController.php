@@ -42,18 +42,19 @@ class SitemapController extends Controller
         ];
 
         $xml = '<?xml version="1.0" encoding="UTF-8"?>';
-        $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
+        $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"'
+              . ' xmlns:xhtml="http://www.w3.org/1999/xhtml">';
 
         foreach ($pages as $path => $meta) {
-            $xml .= $this->urlNode($url . $path, $meta['lastmod'], $meta['priority']);
+            $xml .= $this->urlNode($path, $meta['lastmod'], $meta['priority']);
         }
 
         Portfolio::published()->get()->each(function ($portfolio) use (&$xml, $url) {
-            $xml .= $this->urlNode($url . '/portfolio/' . $portfolio->slug, $portfolio->updated_at, '0.7');
+            $xml .= $this->urlNode('/portfolio/' . $portfolio->slug, $portfolio->updated_at, '0.7');
         });
 
         BlogPost::published()->get()->each(function ($post) use (&$xml, $url) {
-            $xml .= $this->urlNode($url . '/blog/' . $post->slug, $post->updated_at, '0.6');
+            $xml .= $this->urlNode('/blog/' . $post->slug, $post->updated_at, '0.6');
         });
 
         $xml .= '</urlset>';
@@ -86,17 +87,46 @@ class SitemapController extends Controller
             ->header('Content-Type', 'text/plain; charset=UTF-8');
     }
 
-    private function urlNode(string $loc, ?Carbon $lastmod, string $priority): string
+    /**
+     * One <url> per language, each listing every language as an alternate.
+     *
+     * Google wants the alternates repeated inside every entry — a page that
+     * only points outward, without the return link, has its hreflang ignored.
+     *
+     * @param  string  $path  path after the locale prefix, e.g. '/services'
+     */
+    private function urlNode(string $path, ?Carbon $lastmod, string $priority): string
     {
-        $node = '<url><loc>' . e($loc) . '</loc>';
+        $base = rtrim(config('app.url', 'https://aldeftech.com'), '/');
+        $default = config('locales.default', 'id');
+        $locales = config('locales.available', []);
 
-        if ($lastmod) {
-            $node .= '<lastmod>' . $lastmod->toAtomString() . '</lastmod>';
+        $hrefs = [];
+        foreach ($locales as $code => $meta) {
+            $prefix = $code === $default ? '' : '/' . $code;
+            $hrefs[$code] = $base . $prefix . ($path === '/' ? '' : $path);
+        }
+        // '/' collapses to the bare host, which some validators reject.
+        $hrefs = array_map(fn ($h) => $h === $base ? $base . '/' : $h, $hrefs);
+
+        $alternates = '';
+        foreach ($hrefs as $code => $href) {
+            $alternates .= '<xhtml:link rel="alternate" hreflang="'
+                . ($locales[$code]['html'] ?? $code) . '" href="' . e($href) . '"/>';
+        }
+        $alternates .= '<xhtml:link rel="alternate" hreflang="x-default" href="'
+            . e($hrefs[$default]) . '"/>';
+
+        $out = '';
+        foreach ($hrefs as $href) {
+            $out .= '<url><loc>' . e($href) . '</loc>';
+            if ($lastmod) {
+                $out .= '<lastmod>' . $lastmod->toAtomString() . '</lastmod>';
+            }
+            $out .= '<priority>' . $priority . '</priority>' . $alternates . '</url>';
         }
 
-        $node .= '<priority>' . $priority . '</priority></url>';
-
-        return $node;
+        return $out;
     }
 
     /**

@@ -17,7 +17,7 @@
             <span>{{ __('pages.solutions.cta_find') }}</span>
             <svg class="btn-arrow w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
         </a>
-        <a href="{{ route('services') }}" class="btn btn-ghost w-full sm:w-auto"><span>{{ __('pages.solutions.cta_services') }}</span></a>
+        <a href="{{ lroute('services') }}" class="btn btn-ghost w-full sm:w-auto"><span>{{ __('pages.solutions.cta_services') }}</span></a>
     </div>
 </x-page-hero>
 

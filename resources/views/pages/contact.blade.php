@@ -73,7 +73,7 @@
 
                     <hr class="rule-fade my-8">
 
-                    <form method="POST" action="{{ route('contact.store') }}" class="space-y-5" novalidate>
+                    <form method="POST" action="{{ lroute('contact.store') }}" class="space-y-5" novalidate>
                         @csrf
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">

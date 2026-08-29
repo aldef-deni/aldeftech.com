@@ -56,7 +56,7 @@ class ContactController extends Controller
                 ));
         }
 
-        return redirect()->route('contact')
+        return redirect(lroute('contact'))
             ->with('success', 'Brief Anda sudah kami terima. Tim kami akan menghubungi Anda dalam waktu dekat.')
             ->with('whatsapp_url', WhatsAppService::getUrl());
     }

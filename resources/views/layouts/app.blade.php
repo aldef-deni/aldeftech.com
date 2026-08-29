@@ -10,6 +10,13 @@
     <meta name="description" content="{{ $metaDescription ?? config('aldeftech.seo.default_description') }}">
     <link rel="canonical" href="{{ $canonical ?? url()->current() }}">
 
+    {{-- Language alternates. Without these Google treats /services and
+         /en/services as unrelated pages competing with each other. --}}
+    @foreach(locale_alternates() as $code => $href)
+        <link rel="alternate" hreflang="{{ config('locales.available.'.$code.'.html', $code) }}" href="{{ $href }}">
+    @endforeach
+    <link rel="alternate" hreflang="x-default" href="{{ locale_url(config('locales.default', 'id')) }}">
+
     {{-- Open Graph --}}
     <meta property="og:type" content="{{ $ogType ?? 'website' }}">
     <meta property="og:title" content="{{ $pageTitle ?? $metaTitle ?? config('aldeftech.seo.default_title') }}">
@@ -17,7 +24,12 @@
     <meta property="og:image" content="{{ $ogImage ?? asset(config('aldeftech.seo.default_image')) }}">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:site_name" content="{{ config('app.name') }}">
-    <meta property="og:locale" content="id_ID">
+    <meta property="og:locale" content="{{ config('locales.available.'.app()->getLocale().'.og', 'id_ID') }}">
+    @foreach(locale_alternates() as $code => $href)
+        @if($code !== app()->getLocale())
+    <meta property="og:locale:alternate" content="{{ config('locales.available.'.$code.'.og') }}">
+        @endif
+    @endforeach
 
     {{-- Twitter Card --}}
     <meta name="twitter:card" content="summary_large_image">

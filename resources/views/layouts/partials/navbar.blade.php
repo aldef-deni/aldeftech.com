@@ -22,7 +22,7 @@
         <div class="flex items-center justify-between h-[5.5rem] lg:h-[6.5rem]">
 
             {{-- Wordmark --}}
-            <a href="{{ route('home') }}" class="shrink-0 group flex items-center"
+            <a href="{{ lroute('home') }}" class="shrink-0 group flex items-center"
                aria-label="{{ __('site.nav.to_home', ['name' => config('app.name')]) }}">
                 <img src="{{ asset('images/logo.webp') }}"
                      alt="{{ config('app.name') }}"
@@ -33,9 +33,9 @@
             {{-- Desktop rail --}}
             <div class="nav-rail" role="navigation" aria-label="{{ __('site.nav.menu') }}">
                 @foreach($navLinks as $link)
-                    <a href="{{ route($link['route']) }}"
-                       class="nav-link {{ request()->routeIs($link['route'].'*') ? 'nav-link-active' : '' }}"
-                       @if(request()->routeIs($link['route'].'*')) aria-current="page" @endif>
+                    <a href="{{ lroute($link['route']) }}"
+                       class="nav-link {{ is_current_page($link['route']) ? 'nav-link-active' : '' }}"
+                       @if(is_current_page($link['route'])) aria-current="page" @endif>
                         {{ $link['label'] }}
                     </a>
                 @endforeach
@@ -97,8 +97,8 @@
         <div class="max-h-[calc(100dvh-8rem)] overflow-y-auto no-scrollbar p-3">
             <div class="space-y-0.5">
                 @foreach($navLinks as $link)
-                    <a href="{{ route($link['route']) }}" @click="open = false"
-                       class="nav-row {{ request()->routeIs($link['route'].'*') ? 'nav-row-active' : '' }}">
+                    <a href="{{ lroute($link['route']) }}" @click="open = false"
+                       class="nav-row {{ is_current_page($link['route']) ? 'nav-row-active' : '' }}">
                         <span>{{ $link['label'] }}</span>
                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M9 5l7 7-7 7"/>

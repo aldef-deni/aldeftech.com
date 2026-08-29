@@ -23,7 +23,7 @@
     align="left"
     compact
     :breadcrumbs="[
-        ['label' => __('site.nav.portfolio'), 'url' => route('portfolio')],
+        ['label' => __('site.nav.portfolio'), 'url' => lroute('portfolio')],
         ['label' => $portfolio->title],
     ]" />
 
@@ -141,12 +141,12 @@
                             <span>{{ __('pages.portfolio.detail.consult_now') }}</span>
                             <svg class="btn-arrow w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                         </a>
-                        <a href="{{ route('contact') }}" class="btn btn-outline btn-block mt-2.5">
+                        <a href="{{ lroute('contact') }}" class="btn btn-outline btn-block mt-2.5">
                             <span>{{ __('pages.portfolio.detail.send_brief') }}</span>
                         </a>
                     </div>
 
-                    <a href="{{ route('portfolio') }}" class="link-arrow">
+                    <a href="{{ lroute('portfolio') }}" class="link-arrow">
                         <svg class="w-3.5 h-3.5 rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                         <span>{{ __('pages.portfolio.detail.all_portfolio') }}</span>
                     </a>
@@ -164,7 +164,7 @@
 
         <div class="mt-8 cards-swipe md:grid md:grid-cols-3 gap-5 lg:gap-6" data-reveal-group="80">
             @foreach($relatedPortfolios as $related)
-            <a href="{{ route('portfolio.show', $related->slug) }}" class="card-lux reveal group overflow-hidden">
+            <a href="{{ lroute('portfolio.show', $related->slug) }}" class="card-lux reveal group overflow-hidden">
                 <div class="frame-lux !rounded-none !border-0 !border-b !border-line aspect-[16/10] bg-ivory-200">
                     @if($rsrc = media_url($related->featured_image))
                         <img src="{{ $rsrc }}" alt="{{ $related->title }}" loading="lazy" decoding="async">

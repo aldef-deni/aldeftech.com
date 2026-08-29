@@ -38,7 +38,7 @@
          class="lang-menu"
          role="menu">
         @foreach($locales as $code => $meta)
-        <a href="{{ route('locale.switch', $code) }}"
+        <a href="{{ locale_url($code) }}"
            class="lang-option {{ $code === $current ? 'is-active' : '' }}"
            role="menuitem"
            hreflang="{{ $meta['html'] }}"
@@ -61,7 +61,7 @@
     </p>
     <div class="grid grid-cols-2 gap-2">
         @foreach($locales as $code => $meta)
-        <a href="{{ route('locale.switch', $code) }}"
+        <a href="{{ locale_url($code) }}"
            hreflang="{{ $meta['html'] }}"
            class="flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl border text-sm font-medium transition-all duration-500 ease-[cubic-bezier(.22,1,.36,1)]
                   {{ $code === $current

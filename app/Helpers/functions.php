@@ -141,3 +141,105 @@ if (! function_exists('effective_upload_label')) {
         return format_upload_mb(max_upload_bytes());
     }
 }
+
+if (! function_exists('locale_route_name')) {
+    /**
+     * Strip any language prefix from a route name: 'en.services' -> 'services'.
+     */
+    function locale_route_name(?string $name): ?string
+    {
+        if (! $name) {
+            return null;
+        }
+
+        foreach (array_keys(config('locales.available', [])) as $code) {
+            if (str_starts_with($name, $code . '.')) {
+                return substr($name, strlen($code) + 1);
+            }
+        }
+
+        return $name;
+    }
+}
+
+if (! function_exists('lroute')) {
+    /**
+     * route() for public pages, aware of the language being read.
+     *
+     * lroute('services') gives /services in Indonesian and /en/services in
+     * English. Falls back to the plain name when a localized variant does not
+     * exist, so admin and utility routes keep working through it unchanged.
+     */
+    function lroute(string $name, $parameters = [], bool $absolute = true): string
+    {
+        $default = config('locales.default', 'id');
+        $locale = app()->getLocale();
+        $bare = locale_route_name($name);
+
+        if ($locale !== $default && \Illuminate\Support\Facades\Route::has($locale . '.' . $bare)) {
+            return route($locale . '.' . $bare, $parameters, $absolute);
+        }
+
+        return route($bare, $parameters, $absolute);
+    }
+}
+
+if (! function_exists('locale_url')) {
+    /**
+     * The page currently being viewed, addressed in another language.
+     *
+     * Rebuilt from the matched route rather than by rewriting the URL string,
+     * so /portfolio/{slug} keeps its slug and a path that merely starts with
+     * the letters "en" is never mangled.
+     */
+    function locale_url(string $locale): string
+    {
+        $default = config('locales.default', 'id');
+        $current = \Illuminate\Support\Facades\Route::current();
+        $bare = locale_route_name(\Illuminate\Support\Facades\Route::currentRouteName());
+
+        if (! $current || ! $bare) {
+            return url($locale === $default ? '/' : '/' . $locale);
+        }
+
+        $target = $locale === $default ? $bare : $locale . '.' . $bare;
+
+        if (! \Illuminate\Support\Facades\Route::has($target)) {
+            return url($locale === $default ? '/' : '/' . $locale);
+        }
+
+        return route($target, $current->parameters());
+    }
+}
+
+if (! function_exists('locale_alternates')) {
+    /**
+     * [locale code => absolute URL] for every language this page exists in.
+     */
+    function locale_alternates(): array
+    {
+        $out = [];
+
+        foreach (array_keys(config('locales.available', [])) as $code) {
+            $out[$code] = locale_url($code);
+        }
+
+        return $out;
+    }
+}
+
+if (! function_exists('is_current_page')) {
+    /**
+     * Is this the page being viewed, in either language?
+     *
+     * request()->routeIs('services*') misses the English mount, whose route is
+     * named en.services — which silently left the menu with no active item on
+     * every /en page.
+     */
+    function is_current_page(string $name): bool
+    {
+        $current = locale_route_name(\Illuminate\Support\Facades\Route::currentRouteName());
+
+        return $current === $name || str_starts_with((string) $current, $name . '.');
+    }
+}

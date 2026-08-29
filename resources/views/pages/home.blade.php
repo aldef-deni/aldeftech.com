@@ -59,7 +59,7 @@
                     <span>{{ __('site.cta.consult_free') }}</span>
                     <svg class="btn-arrow w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                 </a>
-                <a href="{{ route('portfolio') }}" class="btn btn-ghost btn-lg w-full sm:w-auto">
+                <a href="{{ lroute('portfolio') }}" class="btn btn-ghost btn-lg w-full sm:w-auto">
                     <span>{{ __('home.hero.view_portfolio') }}</span>
                 </a>
             </div>
@@ -164,7 +164,7 @@
                 @endif
 
                 <div class="mt-auto pt-7">
-                    <a href="{{ route('services') }}" class="link-arrow">
+                    <a href="{{ lroute('services') }}" class="link-arrow">
                         <span>{{ __('site.common.read_more') }}</span>
                         <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                     </a>
@@ -174,7 +174,7 @@
         </div>
 
         <div class="mt-12 text-center reveal">
-            <a href="{{ route('services') }}" class="btn btn-outline">
+            <a href="{{ lroute('services') }}" class="btn btn-outline">
                 <span>{{ __('home.services.all') }}</span>
                 <svg class="btn-arrow w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
             </a>
@@ -201,7 +201,7 @@
                 </p>
 
                 <div class="mt-9 flex flex-wrap gap-3">
-                    <a href="{{ route('about') }}" class="btn btn-obsidian">
+                    <a href="{{ lroute('about') }}" class="btn btn-obsidian">
                         <span>{{ __('home.pillars.cta') }}</span>
                         <svg class="btn-arrow w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                     </a>
@@ -276,7 +276,7 @@
                     {{ __('home.portfolio.title') }} <span class="accent-serif accent-champagne">{{ __('home.portfolio.accent') }}</span> {{ __('home.portfolio.title_after') }}
                 </h2>
             </div>
-            <a href="{{ route('portfolio') }}" class="link-arrow link-arrow-light shrink-0">
+            <a href="{{ lroute('portfolio') }}" class="link-arrow link-arrow-light shrink-0">
                 <span>{{ __('home.portfolio.all') }}</span>
                 <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
             </a>
@@ -285,7 +285,7 @@
         <div class="mt-12 lg:mt-16 cards-swipe md:grid md:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6"
              data-reveal-group="90">
             @foreach($portfolios as $item)
-            <a href="{{ route('portfolio.show', $item->slug) }}" class="card-obsidian reveal group overflow-hidden">
+            <a href="{{ lroute('portfolio.show', $item->slug) }}" class="card-obsidian reveal group overflow-hidden">
                 <div class="frame-lux !rounded-none !border-0 !border-b !border-white/10 aspect-[16/10] bg-ink-800">
                     @if($src = media_url($item->featured_image))
                         <img src="{{ $src }}" alt="{{ $item->title }}" loading="lazy" decoding="async">
@@ -350,7 +350,7 @@
         <div class="mt-12 lg:mt-16 cards-swipe cards-swipe-tight md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4"
              data-reveal-group="50">
             @foreach($solutions as $solution)
-            <a href="{{ route('solutions') }}" class="card-quiet reveal group p-6 flex flex-col">
+            <a href="{{ lroute('solutions') }}" class="card-quiet reveal group p-6 flex flex-col">
                 <span class="icon-plate icon-plate-sm">
                     <x-lux-icon :name="$solution->icon" />
                 </span>
@@ -405,7 +405,7 @@
                 @endif
 
                 <div class="mt-9">
-                    <a href="{{ route('about') }}" class="link-arrow">
+                    <a href="{{ lroute('about') }}" class="link-arrow">
                         <span>{{ __('home.leadership.full_profile') }}</span>
                         <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                     </a>
@@ -476,7 +476,7 @@
                 <p class="eyebrow">{{ __('home.insights.eyebrow') }}</p>
                 <h2 class="mt-5 text-3xl sm:text-4xl">{{ __('home.insights.title') }}</h2>
             </div>
-            <a href="{{ route('blog') }}" class="link-arrow shrink-0">
+            <a href="{{ lroute('blog') }}" class="link-arrow shrink-0">
                 <span>{{ __('home.insights.all') }}</span>
                 <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
             </a>
@@ -484,7 +484,7 @@
 
         <div class="mt-12 cards-swipe md:grid md:grid-cols-3 gap-5 lg:gap-6" data-reveal-group="80">
             @foreach($latestPosts as $post)
-            <a href="{{ route('blog.show', $post->slug) }}" class="card-lux reveal group overflow-hidden">
+            <a href="{{ lroute('blog.show', $post->slug) }}" class="card-lux reveal group overflow-hidden">
                 <div class="frame-lux !rounded-none !border-0 !border-b !border-line aspect-[16/10]">
                     @if($src = media_url($post->featured_image))
                         <img src="{{ $src }}" alt="{{ $post->title }}" loading="lazy" decoding="async">
@@ -540,7 +540,7 @@
                     <span>{{ __('site.cta.via_whatsapp') }}</span>
                     <svg class="btn-arrow w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                 </a>
-                <a href="{{ route('contact') }}" class="btn btn-ghost btn-lg w-full sm:w-auto">
+                <a href="{{ lroute('contact') }}" class="btn btn-ghost btn-lg w-full sm:w-auto">
                     <span>{{ __('site.cta.send_brief') }}</span>
                 </a>
             </div>

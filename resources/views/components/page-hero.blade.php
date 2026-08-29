@@ -22,7 +22,7 @@
 
             @if(!empty($breadcrumbs))
             <nav class="mb-6 flex flex-wrap items-center gap-2 text-xs text-graphite-400 {{ $align === 'center' ? 'justify-center' : '' }} reveal" aria-label="Breadcrumb">
-                <a href="{{ route('home') }}" class="hover:text-spectrum-violet-soft transition-colors duration-300">Beranda</a>
+                <a href="{{ lroute('home') }}" class="hover:text-spectrum-violet-soft transition-colors duration-300">Beranda</a>
                 @foreach($breadcrumbs as $crumb)
                     <span class="text-graphite-500" aria-hidden="true">/</span>
                     @if(!empty($crumb['url']))

@@ -27,7 +27,7 @@
 
             {{-- Brand --}}
             <div class="col-span-2 lg:col-span-4">
-                <a href="{{ route('home') }}" class="inline-block group" aria-label="{{ config('app.name') }}">
+                <a href="{{ lroute('home') }}" class="inline-block group" aria-label="{{ config('app.name') }}">
                     <img src="{{ asset('images/logo.webp') }}" alt="{{ config('app.name') }}"
                          width="880" height="341" loading="lazy" decoding="async"
                          class="h-20 sm:h-24 lg:h-28 w-auto transition-transform duration-700 ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-[1.03]">
@@ -70,9 +70,9 @@
                 <h4 class="font-display text-[0.6875rem] font-semibold uppercase tracking-[0.18em] text-gold-400">{{ __('site.footer.services') }}</h4>
                 <ul class="mt-5 space-y-3">
                     @forelse($footerServices as $service)
-                        <li><a href="{{ route('services') }}#{{ $service->slug ?? '' }}" class="footer-link">{{ $service->title }}</a></li>
+                        <li><a href="{{ lroute('services') }}#{{ $service->slug ?? '' }}" class="footer-link">{{ $service->title }}</a></li>
                     @empty
-                        <li><a href="{{ route('services') }}" class="footer-link">{{ __('site.footer.all_services') }}</a></li>
+                        <li><a href="{{ lroute('services') }}" class="footer-link">{{ __('site.footer.all_services') }}</a></li>
                     @endforelse
                 </ul>
             </div>
@@ -81,12 +81,12 @@
             <div class="lg:col-span-2">
                 <h4 class="font-display text-[0.6875rem] font-semibold uppercase tracking-[0.18em] text-gold-400">{{ __('site.footer.company') }}</h4>
                 <ul class="mt-5 space-y-3">
-                    <li><a href="{{ route('about') }}" class="footer-link">{{ __('site.footer.about_us') }}</a></li>
-                    <li><a href="{{ route('solutions') }}" class="footer-link">{{ __('site.footer.industry_solutions') }}</a></li>
-                    <li><a href="{{ route('portfolio') }}" class="footer-link">{{ __('site.nav.portfolio') }}</a></li>
-                    <li><a href="{{ route('blog') }}" class="footer-link">{{ __('site.nav.blog') }}</a></li>
-                    <li><a href="{{ route('faq') }}" class="footer-link">{{ __('site.nav.faq') }}</a></li>
-                    <li><a href="{{ route('contact') }}" class="footer-link">{{ __('site.nav.contact') }}</a></li>
+                    <li><a href="{{ lroute('about') }}" class="footer-link">{{ __('site.footer.about_us') }}</a></li>
+                    <li><a href="{{ lroute('solutions') }}" class="footer-link">{{ __('site.footer.industry_solutions') }}</a></li>
+                    <li><a href="{{ lroute('portfolio') }}" class="footer-link">{{ __('site.nav.portfolio') }}</a></li>
+                    <li><a href="{{ lroute('blog') }}" class="footer-link">{{ __('site.nav.blog') }}</a></li>
+                    <li><a href="{{ lroute('faq') }}" class="footer-link">{{ __('site.nav.faq') }}</a></li>
+                    <li><a href="{{ lroute('contact') }}" class="footer-link">{{ __('site.nav.contact') }}</a></li>
                 </ul>
             </div>
 
@@ -111,7 +111,7 @@
                     </li>
                 </ul>
 
-                <a href="{{ route('contact') }}" class="btn btn-ghost btn-sm mt-6">
+                <a href="{{ lroute('contact') }}" class="btn btn-ghost btn-sm mt-6">
                     <span>{{ __('site.cta.start_project') }}</span>
                     <svg class="btn-arrow w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                 </a>

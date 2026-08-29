@@ -29,7 +29,7 @@
                         <p class="mt-3 text-sm text-graphite-600 max-w-md mx-auto leading-relaxed">
                             {{ __('pages.blog.empty_body') }}
                         </p>
-                        <a href="{{ route('portfolio') }}" class="btn btn-outline mt-7">
+                        <a href="{{ lroute('portfolio') }}" class="btn btn-outline mt-7">
                             <span>{{ __('pages.blog.empty_cta') }}</span>
                             <svg class="btn-arrow w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                         </a>
@@ -38,7 +38,7 @@
                     <div class="cards-swipe md:grid md:grid-cols-2 gap-5 lg:gap-6" data-reveal-group="80">
                         @foreach($posts as $post)
                         <article class="reveal">
-                            <a href="{{ route('blog.show', $post->slug) }}" class="card-lux group h-full overflow-hidden">
+                            <a href="{{ lroute('blog.show', $post->slug) }}" class="card-lux group h-full overflow-hidden">
                                 <div class="frame-lux !rounded-none !border-0 !border-b !border-line aspect-[16/10] bg-ivory-200">
                                     @if($src = media_url($post->featured_image))
                                         <img src="{{ $src }}" alt="{{ $post->title }}" loading="lazy" decoding="async">
@@ -92,7 +92,7 @@
                         <ul class="space-y-1">
                             @foreach($categories as $category)
                             <li>
-                                <a href="{{ route('blog') }}?category={{ $category->slug }}"
+                                <a href="{{ lroute('blog') }}?category={{ $category->slug }}"
                                    class="flex items-center justify-between gap-3 px-3 py-2.5 -mx-1 rounded-lg text-sm text-graphite-600 transition-all duration-500 ease-[cubic-bezier(.22,1,.36,1)] hover:bg-ivory-100 hover:text-graphite-900 hover:translate-x-1">
                                     <span>{{ $category->name }}</span>
                                     <span class="text-xs text-graphite-400 tabular">{{ $category->posts_count ?? 0 }}</span>

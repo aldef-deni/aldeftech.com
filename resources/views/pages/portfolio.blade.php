@@ -51,7 +51,7 @@
 
             <article class="reveal"
                      @if($catName) x-show="filter === 'all' || filter === @js($catName)" x-transition.opacity.duration.400ms @endif>
-                <a href="{{ route('portfolio.show', $item->slug) }}" class="card-lux group h-full overflow-hidden">
+                <a href="{{ lroute('portfolio.show', $item->slug) }}" class="card-lux group h-full overflow-hidden">
 
                     <div class="frame-lux !rounded-none !border-0 !border-b !border-line aspect-[16/10] bg-ivory-200">
                         @if($src = media_url($item->featured_image))
