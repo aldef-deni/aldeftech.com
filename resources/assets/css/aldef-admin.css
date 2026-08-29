@@ -372,6 +372,34 @@ h1, h2, h3, h4, h5, h6,
   max-width: 22rem;
 }
 
+/* Search-result preview -------------------------------------------------- */
+.aldef-serp {
+  padding: 0.875rem 1rem;
+  border: 1px solid rgba(13, 20, 32, 0.08);
+  border-radius: 0.625rem;
+  background: #FBFAF8;
+}
+.aldef-serp-url { font-size: 0.75rem; color: #5F6368; margin-bottom: 0.125rem; }
+.aldef-serp-title {
+  font-size: 1.0625rem;
+  line-height: 1.35;
+  color: #1A0DAB;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.aldef-serp-desc {
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: #4D5156;
+  margin-top: 0.25rem;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
 /* ── Reduced motion ──────────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

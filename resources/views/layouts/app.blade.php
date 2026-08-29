@@ -5,9 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    {{-- SEO Meta --}}
-    <title>{{ $pageTitle ?? $metaTitle ?? config('aldeftech.seo.default_title') }}</title>
-    <meta name="description" content="{{ $metaDescription ?? config('aldeftech.seo.default_description') }}">
+    {{-- SEO Meta
+         Resolution order: what an editor set in Pengaturan > SEO Halaman, then
+         whatever this page set for itself, then the site-wide default. A blank
+         override falls through rather than blanking the tag. --}}
+    @php
+        $seoOverride = \App\Models\PageSeo::forCurrentRoute();
+
+        $resolvedTitle = filled($seoOverride?->meta_title)
+            ? $seoOverride->meta_title
+            : ($pageTitle ?? $metaTitle ?? config('aldeftech.seo.default_title'));
+
+        $resolvedDescription = filled($seoOverride?->meta_description)
+            ? $seoOverride->meta_description
+            : ($metaDescription ?? config('aldeftech.seo.default_description'));
+
+        $resolvedImage = filled($seoOverride?->og_image)
+            ? media_url($seoOverride->og_image)
+            : ($ogImage ?? asset(config('aldeftech.seo.default_image')));
+    @endphp
+
+    <title>{{ $resolvedTitle }}</title>
+    <meta name="description" content="{{ $resolvedDescription }}">
+    @if($seoOverride?->noindex)
+        <meta name="robots" content="noindex, nofollow">
+    @endif
     <link rel="canonical" href="{{ $canonical ?? url()->current() }}">
 
     {{-- Language alternates. Without these Google treats /services and
@@ -19,9 +41,9 @@
 
     {{-- Open Graph --}}
     <meta property="og:type" content="{{ $ogType ?? 'website' }}">
-    <meta property="og:title" content="{{ $pageTitle ?? $metaTitle ?? config('aldeftech.seo.default_title') }}">
-    <meta property="og:description" content="{{ $metaDescription ?? config('aldeftech.seo.default_description') }}">
-    <meta property="og:image" content="{{ $ogImage ?? asset(config('aldeftech.seo.default_image')) }}">
+    <meta property="og:title" content="{{ $resolvedTitle }}">
+    <meta property="og:description" content="{{ $resolvedDescription }}">
+    <meta property="og:image" content="{{ $resolvedImage }}">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:site_name" content="{{ config('app.name') }}">
     <meta property="og:locale" content="{{ config('locales.available.'.app()->getLocale().'.og', 'id_ID') }}">
@@ -33,9 +55,9 @@
 
     {{-- Twitter Card --}}
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="{{ $pageTitle ?? $metaTitle ?? config('aldeftech.seo.default_title') }}">
-    <meta name="twitter:description" content="{{ $metaDescription ?? config('aldeftech.seo.default_description') }}">
-    <meta name="twitter:image" content="{{ $ogImage ?? asset(config('aldeftech.seo.default_image')) }}">
+    <meta name="twitter:title" content="{{ $resolvedTitle }}">
+    <meta name="twitter:description" content="{{ $resolvedDescription }}">
+    <meta name="twitter:image" content="{{ $resolvedImage }}">
 
     {{-- Favicon --}}
     {{-- logo-square.png is 1.3 MB; these are generated crops of the "A" mark. --}}

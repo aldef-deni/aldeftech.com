@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\BlogTagController as AdminBlogTagController;
 use App\Http\Controllers\Admin\LeadController as AdminLeadController;
 use App\Http\Controllers\Admin\CeoProfileController as AdminCeoProfileController;
 use App\Http\Controllers\Admin\SiteSettingController;
+use App\Http\Controllers\Admin\PageSeoController;
 use App\Http\Controllers\Admin\SeoSettingController;
 use App\Http\Controllers\Admin\WhatsAppSettingController;
 use App\Http\Controllers\Admin\AnalyticsSettingController;
@@ -278,6 +279,16 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
 
         Route::put('settings/seo', [SeoSettingController::class, 'update'])
             ->name('settings.seo.update');
+
+        // Per-page, per-language meta
+        Route::get('settings/page-seo', [PageSeoController::class, 'index'])
+            ->name('settings.page-seo.index');
+
+        Route::get('settings/page-seo/{page}', [PageSeoController::class, 'edit'])
+            ->name('settings.page-seo.edit');
+
+        Route::put('settings/page-seo/{page}', [PageSeoController::class, 'update'])
+            ->name('settings.page-seo.update');
 
         // WhatsApp Settings
         Route::get('settings/whatsapp', [WhatsAppSettingController::class, 'edit'])

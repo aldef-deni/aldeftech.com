@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\BlogPost;
 use App\Models\CeoProfile;
 use App\Models\Faq;
+use App\Models\PageSeo;
 use App\Models\Portfolio;
 use App\Models\Service;
 use App\Models\SiteSetting;
@@ -45,7 +46,17 @@ class SitemapController extends Controller
         $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"'
               . ' xmlns:xhtml="http://www.w3.org/1999/xhtml">';
 
+        // A page hidden from search must not be advertised in the sitemap either;
+        // the two saying different things is a contradiction Google reports.
+        $hidden = PageSeo::where('noindex', true)->pluck('route_name')->unique();
+
         foreach ($pages as $path => $meta) {
+            $route = $path === '/' ? 'home' : ltrim($path, '/');
+
+            if ($hidden->contains($route)) {
+                continue;
+            }
+
             $xml .= $this->urlNode($path, $meta['lastmod'], $meta['priority']);
         }
 

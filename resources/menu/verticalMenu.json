@@ -109,6 +109,12 @@
       "slug": "admin.settings.seo"
     },
     {
+      "url": "admin/settings/page-seo",
+      "name": "SEO Halaman",
+      "icon": "menu-icon tf-icons ti tabler-file-text",
+      "slug": "admin.settings.page-seo"
+    },
+    {
       "url": "admin/settings/whatsapp",
       "name": "WhatsApp",
       "icon": "menu-icon tf-icons ti tabler-brand-whatsapp",

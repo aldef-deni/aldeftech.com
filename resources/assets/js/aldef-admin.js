@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
   initSlugFrom();
   initRepeater();
   initAutoDismissAlerts();
+  initSeoPreview();
 });
 
 /**
@@ -223,5 +224,43 @@ function initAutoDismissAlerts() {
         alert.remove();
       }
     }, 6000);
+  });
+}
+
+/**
+ * Character counters and a rough search-result preview.
+ *
+ * The counter turns amber past the ideal length rather than blocking: Google
+ * truncates, it does not reject, and a slightly long title is sometimes the
+ * right call. Showing the consequence beats enforcing a limit.
+ */
+function initSeoPreview() {
+  document.querySelectorAll('[data-seo-preview]').forEach(function (card) {
+    const title = card.querySelector('[data-seo-title]');
+    const desc = card.querySelector('[data-seo-desc]');
+    const countTitle = card.querySelector('[data-seo-count-title]');
+    const countDesc = card.querySelector('[data-seo-count-desc]');
+    const serpTitle = card.querySelector('[data-seo-serp-title]');
+    const serpDesc = card.querySelector('[data-seo-serp-desc]');
+
+    const wire = (input, counter, serp, placeholder) => {
+      if (!input) return;
+      const ideal = parseInt(input.dataset.seoIdeal, 10) || 60;
+
+      const sync = () => {
+        const len = input.value.length;
+        if (counter) {
+          counter.textContent = len + ' / ' + ideal;
+          counter.classList.toggle('text-warning', len > ideal);
+        }
+        if (serp) serp.textContent = input.value.trim() || placeholder;
+      };
+
+      input.addEventListener('input', sync);
+      sync();
+    };
+
+    wire(title, countTitle, serpTitle, 'Memakai judul bawaan halaman');
+    wire(desc, countDesc, serpDesc, 'Memakai deskripsi bawaan halaman');
   });
 }
