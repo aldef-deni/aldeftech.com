@@ -5,7 +5,7 @@
   $height = $height ?? '30';
 @endphp
 
-<img src="{{ asset('images/logo-mark.png') }}"
+<img src="{{ asset('images/logo-mark.webp') }}"
      alt="{{ config('variables.templateName', 'Aldef Tech') }}"
      height="{{ $height }}"
      style="height: {{ $height }}px; width: auto; display: block;">

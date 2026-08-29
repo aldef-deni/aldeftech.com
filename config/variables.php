@@ -16,7 +16,7 @@ return [
   "support" => "https://aldeftech.com/contact",
   "moreThemes" => "https://aldeftech.com",
   "ogTitle" => "Aldef Tech Admin Console",
-  "ogImage" => "/images/aldef-tech-banner.png",
+  "ogImage" => "/images/og-image.jpg",
   "ogType" => "website",
   "documentation" => "https://aldeftech.com",
   "generator" => "",

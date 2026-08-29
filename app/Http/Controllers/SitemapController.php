@@ -3,8 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\BlogPost;
+use App\Models\CeoProfile;
+use App\Models\Faq;
 use App\Models\Portfolio;
+use App\Models\Service;
+use App\Models\SiteSetting;
+use App\Models\Solution;
+use App\Models\Testimonial;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Response;
+use Illuminate\Support\Carbon;
 
 class SitemapController extends Controller
 {
@@ -12,65 +20,41 @@ class SitemapController extends Controller
     {
         $url = rtrim(config('app.url', 'https://aldeftech.com'), '/');
 
+        /*
+         * Static pages.
+         *
+         * lastmod is derived from the content each page actually renders, not
+         * invented — Google ignores a lastmod it finds untrustworthy, and a
+         * date that never matches a real change is worse than none at all.
+         */
         $pages = [
-            '/' => ['changefreq' => 'weekly', 'priority' => '1.0'],
-            '/about' => ['changefreq' => 'monthly', 'priority' => '0.8'],
-            '/services' => ['changefreq' => 'monthly', 'priority' => '0.9'],
-            '/solutions' => ['changefreq' => 'monthly', 'priority' => '0.9'],
-            '/portfolio' => ['changefreq' => 'weekly', 'priority' => '0.8'],
-            '/blog' => ['changefreq' => 'weekly', 'priority' => '0.8'],
-            '/contact' => ['changefreq' => 'monthly', 'priority' => '0.7'],
+            '/' => [
+                'priority' => '1.0',
+                'lastmod' => $this->latestOf([Service::class, Solution::class, Portfolio::class, Testimonial::class, BlogPost::class]),
+            ],
+            '/services' => ['priority' => '0.9', 'lastmod' => $this->latestOf([Service::class])],
+            '/solutions' => ['priority' => '0.9', 'lastmod' => $this->latestOf([Solution::class])],
+            '/portfolio' => ['priority' => '0.8', 'lastmod' => $this->latestOf([Portfolio::class])],
+            '/blog' => ['priority' => '0.8', 'lastmod' => $this->latestOf([BlogPost::class])],
+            '/faq' => ['priority' => '0.7', 'lastmod' => $this->latestOf([Faq::class])],
+            '/about' => ['priority' => '0.8', 'lastmod' => $this->latestOf([CeoProfile::class, SiteSetting::class])],
+            '/contact' => ['priority' => '0.7', 'lastmod' => $this->latestOf([SiteSetting::class])],
         ];
 
         $xml = '<?xml version="1.0" encoding="UTF-8"?>';
         $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
 
-        /*
-         * Static pages
-         */
-        foreach ($pages as $path => $settings) {
-            $xml .= '<url>';
-            $xml .= '<loc>' . e($url . $path) . '</loc>';
-            $xml .= '<changefreq>' . $settings['changefreq'] . '</changefreq>';
-            $xml .= '<priority>' . $settings['priority'] . '</priority>';
-            $xml .= '</url>';
+        foreach ($pages as $path => $meta) {
+            $xml .= $this->urlNode($url . $path, $meta['lastmod'], $meta['priority']);
         }
 
-        /*
-         * Published portfolio pages
-         */
-        Portfolio::published()
-            ->get()
-            ->each(function ($portfolio) use (&$xml, $url) {
-                $xml .= '<url>';
-                $xml .= '<loc>' . e($url . '/portfolio/' . $portfolio->slug) . '</loc>';
+        Portfolio::published()->get()->each(function ($portfolio) use (&$xml, $url) {
+            $xml .= $this->urlNode($url . '/portfolio/' . $portfolio->slug, $portfolio->updated_at, '0.7');
+        });
 
-                if ($portfolio->updated_at) {
-                    $xml .= '<lastmod>' . $portfolio->updated_at->format('Y-m-d') . '</lastmod>';
-                }
-
-                $xml .= '<changefreq>monthly</changefreq>';
-                $xml .= '<priority>0.7</priority>';
-                $xml .= '</url>';
-            });
-
-        /*
-         * Published blog pages
-         */
-        BlogPost::published()
-            ->get()
-            ->each(function ($post) use (&$xml, $url) {
-                $xml .= '<url>';
-                $xml .= '<loc>' . e($url . '/blog/' . $post->slug) . '</loc>';
-
-                if ($post->updated_at) {
-                    $xml .= '<lastmod>' . $post->updated_at->format('Y-m-d') . '</lastmod>';
-                }
-
-                $xml .= '<changefreq>monthly</changefreq>';
-                $xml .= '<priority>0.6</priority>';
-                $xml .= '</url>';
-            });
+        BlogPost::published()->get()->each(function ($post) use (&$xml, $url) {
+            $xml .= $this->urlNode($url . '/blog/' . $post->slug, $post->updated_at, '0.6');
+        });
 
         $xml .= '</urlset>';
 
@@ -83,13 +67,61 @@ class SitemapController extends Controller
     {
         $url = rtrim(config('app.url', 'https://aldeftech.com'), '/');
 
-        $robots = "User-agent: *\n";
-        $robots .= "Allow: /\n";
-        $robots .= "Disallow: /admin/\n";
-        $robots .= "Disallow: /storage/\n\n";
-        $robots .= "Sitemap: {$url}/sitemap.xml\n";
+        $lines = [
+            'User-agent: *',
+            'Allow: /',
+            '',
+            'Disallow: /admin/',
+            'Disallow: /storage/',
+            // Switches the session locale and bounces straight back, so every
+            // one of these is a duplicate of a page already in the sitemap.
+            'Disallow: /lang/',
+            'Disallow: /clear-cache',
+            '',
+            "Sitemap: {$url}/sitemap.xml",
+            '',
+        ];
 
-        return response($robots, 200)
-            ->header('Content-Type: text/plain; charset=UTF-8');
+        return response(implode("\n", $lines), 200)
+            ->header('Content-Type', 'text/plain; charset=UTF-8');
+    }
+
+    private function urlNode(string $loc, ?Carbon $lastmod, string $priority): string
+    {
+        $node = '<url><loc>' . e($loc) . '</loc>';
+
+        if ($lastmod) {
+            $node .= '<lastmod>' . $lastmod->toAtomString() . '</lastmod>';
+        }
+
+        $node .= '<priority>' . $priority . '</priority></url>';
+
+        return $node;
+    }
+
+    /**
+     * Newest updated_at across the given models, or null when nothing exists.
+     *
+     * @param  array<class-string<Model>>  $models
+     */
+    private function latestOf(array $models): ?Carbon
+    {
+        $latest = null;
+
+        foreach ($models as $model) {
+            $stamp = $model::query()->max('updated_at');
+
+            if (! $stamp) {
+                continue;
+            }
+
+            $stamp = Carbon::parse($stamp);
+
+            if (! $latest || $stamp->greaterThan($latest)) {
+                $latest = $stamp;
+            }
+        }
+
+        return $latest;
     }
 }

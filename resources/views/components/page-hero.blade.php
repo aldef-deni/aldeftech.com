@@ -10,7 +10,7 @@
 ])
 
 <section class="surface-hero-image {{ $edge ? 'spectrum-edge' : '' }} relative overflow-hidden {{ $compact ? 'pt-32 pb-14 lg:pt-40 lg:pb-20' : 'pt-36 pb-20 lg:pt-48 lg:pb-28' }}"
-         style="--hero-bg: url('{{ asset('images/hero-banner.png') }}');">
+         style="--hero-bg: url('{{ asset('images/hero-banner.webp') }}');">
     <div class="absolute inset-0 veil-grid pointer-events-none" aria-hidden="true"></div>
 
     {{-- One soft violet bloom bridges the artwork's red and teal ends back to the

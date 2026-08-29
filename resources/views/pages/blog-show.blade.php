@@ -3,7 +3,7 @@
 @php
     $pageTitle = $post->meta_title ?: $post->title . ' — Aldef Tech';
     $metaDescription = $post->meta_description ?: excerpt_text($post->excerpt ?: $post->content, 160);
-    $ogImage = media_url($post->featured_image, 'images/aldef-tech-banner.png');
+    $ogImage = media_url($post->featured_image, 'images/og-image.jpg');
     $ogType = 'article';
     $canonical = $post->canonical_url ?: route('blog.show', $post->slug);
 

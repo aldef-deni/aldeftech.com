@@ -3,7 +3,7 @@
 @php
     $pageTitle = $portfolio->meta_title ?: $portfolio->title . ' — ' . __('pages.portfolio.detail.fallback_case') . ' | Aldef Tech';
     $metaDescription = $portfolio->meta_description ?: excerpt_text($portfolio->short_description, 160);
-    $ogImage = media_url($portfolio->featured_image, 'images/aldef-tech-banner.png');
+    $ogImage = media_url($portfolio->featured_image, 'images/og-image.jpg');
     $ogType = 'article';
 
     $narrative = array_filter([

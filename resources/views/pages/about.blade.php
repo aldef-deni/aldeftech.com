@@ -42,7 +42,7 @@
 <section class="bg-hero-ground spectrum-edge relative overflow-hidden pb-16 lg:pb-24">
     <div class="shell relative z-10">
         <figure class="max-w-4xl mx-auto frame-banner reveal-scale" data-tilt="2.5">
-            <img src="{{ asset('images/aldef-tech-banner.png') }}"
+            <img src="{{ asset('images/aldef-tech-banner.webp') }}"
                  alt="Aldef Tech — pengembangan sistem, aplikasi, kecerdasan buatan, dan solusi IT"
                  width="1376" height="768" loading="lazy" decoding="async">
         </figure>

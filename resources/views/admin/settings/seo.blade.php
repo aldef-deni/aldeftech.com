@@ -41,7 +41,7 @@
                     <x-admin.form.input
                         label="Gambar Bagikan (OG Image)" name="seo_default_image"
                         :value="SiteSetting::get('seo_default_image', '')"
-                        placeholder="images/aldef-tech-banner.png"
+                        placeholder="images/og-image.jpg"
                         help="Tampil saat tautan situs dibagikan di WhatsApp, LinkedIn, atau X. Rasio 1200x630 paling aman." />
                 </div>
             </div>
@@ -51,7 +51,7 @@
             <div class="card mb-4">
                 <div class="card-header"><h5 class="card-title mb-0">Pratinjau Gambar Bagikan</h5></div>
                 <div class="card-body">
-                    <img src="{{ media_url(SiteSetting::get('seo_default_image', ''), 'images/aldef-tech-banner.png') }}"
+                    <img src="{{ media_url(SiteSetting::get('seo_default_image', ''), 'images/og-image.jpg') }}"
                          alt="Pratinjau OG image" class="img-fluid rounded border">
                 </div>
             </div>

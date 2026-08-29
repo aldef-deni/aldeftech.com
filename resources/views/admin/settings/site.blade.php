@@ -83,7 +83,7 @@
                 <div class="card-body">
                     <x-admin.form.image
                         label="Logo" name="site_logo" :value="SiteSetting::get('site_logo', '')"
-                        ratio="16 / 6" dark fallback="images/logo.png"
+                        ratio="16 / 6" dark fallback="images/logo.webp"
                         help="Tampil di navbar dan footer. Latar transparan (PNG/SVG) paling baik." />
 
                     <x-admin.form.image

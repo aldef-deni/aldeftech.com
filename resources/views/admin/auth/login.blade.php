@@ -69,7 +69,7 @@
     <div class="col-lg-6 col-xl-7 aldef-auth-panel aldef-auth-brand align-items-center justify-content-center p-5">
         <div class="aldef-auth-panel-inner text-center" style="max-width: 34rem;">
             <div class="aldef-auth-banner mb-5">
-                <img src="{{ asset('images/aldef-tech-banner.png') }}" alt="Aldef Tech" width="1376" height="768">
+                <img src="{{ asset('images/aldef-tech-banner.webp') }}" alt="Aldef Tech" width="1376" height="768">
             </div>
             <p class="aldef-auth-eyebrow mb-3">Admin Console</p>
             <p class="aldef-auth-quote fs-4 mb-0" style="line-height: 1.4;">
@@ -85,7 +85,7 @@
             <div class="app-brand mb-5">
                 <a href="{{ route('home') }}" class="app-brand-link">
                     <span class="app-brand-logo">
-                        <img src="{{ asset('images/logo.png') }}" alt="Aldef Tech" style="height: 34px; width: auto;">
+                        <img src="{{ asset('images/logo.webp') }}" alt="Aldef Tech" style="height: 34px; width: auto;">
                     </span>
                 </a>
             </div>

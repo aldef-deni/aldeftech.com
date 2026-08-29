@@ -35,7 +35,7 @@
      HERO
      ══════════════════════════════════════════════════════════════════ --}}
 <section class="surface-hero-image spectrum-edge relative overflow-hidden pt-36 pb-0 lg:pt-48"
-         style="--hero-bg: url('{{ asset('images/hero-banner.png') }}');">
+         style="--hero-bg: url('{{ asset('images/hero-banner.webp') }}');">
     <div class="absolute inset-0 veil-grid pointer-events-none" aria-hidden="true"></div>
     <div class="bloom bloom-violet w-[34rem] h-[34rem] -top-60 left-1/2 -translate-x-1/2 opacity-25" aria-hidden="true"></div>
 
@@ -73,7 +73,7 @@
         {{-- Brand key visual --}}
         <div class="mt-14 lg:mt-20 max-w-5xl mx-auto reveal-scale reveal-d3" data-tilt="3">
             <figure class="frame-banner">
-                <img src="{{ asset('images/aldef-tech-banner.png') }}"
+                <img src="{{ asset('images/aldef-tech-banner.webp') }}"
                      alt="{{ __('home.hero.banner_alt') }}"
                      width="1376" height="768" fetchpriority="high" decoding="async">
             </figure>
