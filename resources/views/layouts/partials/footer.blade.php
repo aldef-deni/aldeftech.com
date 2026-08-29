@@ -28,8 +28,10 @@
             {{-- Brand --}}
             <div class="col-span-2 lg:col-span-4">
                 <a href="{{ lroute('home') }}" class="inline-block group" aria-label="{{ config('app.name') }}">
-                    <img src="{{ asset('images/logo.webp') }}" alt="{{ config('app.name') }}"
-                         width="880" height="341" loading="lazy" decoding="async"
+                    @php $logo = site_logo(); @endphp
+                    <img src="{{ $logo['url'] }}" alt="{{ config('app.name') }}"
+                         @if($logo['width']) width="{{ $logo['width'] }}" height="{{ $logo['height'] }}" @endif
+                         loading="lazy" decoding="async"
                          class="h-20 sm:h-24 lg:h-28 w-auto transition-transform duration-700 ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-[1.03]">
                 </a>
 

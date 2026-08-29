@@ -59,12 +59,19 @@
     <meta name="twitter:description" content="{{ $resolvedDescription }}">
     <meta name="twitter:image" content="{{ $resolvedImage }}">
 
-    {{-- Favicon --}}
-    {{-- logo-square.png is 1.3 MB; these are generated crops of the "A" mark. --}}
-    <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="any">
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/favicon-32.png') }}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/favicon-16.png') }}">
-    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('images/apple-touch-icon.png') }}">
+    {{-- Favicon
+         An upload from Pengaturan > Situs wins. Otherwise the bundled set is
+         kept: it carries proper 16/32/180px crops, which one uploaded file
+         cannot, and logo-square.png at 1.3 MB is far too heavy to serve here. --}}
+    @if($customFavicon = site_favicon())
+        <link rel="icon" href="{{ $customFavicon }}">
+        <link rel="apple-touch-icon" href="{{ $customFavicon }}">
+    @else
+        <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="any">
+        <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/favicon-32.png') }}">
+        <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/favicon-16.png') }}">
+        <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('images/apple-touch-icon.png') }}">
+    @endif
 
     {{-- Google Search Console --}}
     @if($googleVerification = \App\Models\SiteSetting::get('google_search_console_verification'))

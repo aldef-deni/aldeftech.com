@@ -73,11 +73,6 @@ Route::get('/lang/{locale}', function (string $locale) {
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 Route::get('/robots.txt', [SitemapController::class, 'robots'])->name('robots');
 
-// System utilities for shared hosting deployment
-Route::get('/clear-cache', function() {
-    \Illuminate\Support\Facades\Artisan::call('optimize:clear');
-    return "All caches cleared successfully! Please visit /admin/login now.";
-});
 
 // Load admin routes
 require __DIR__ . '/admin.php';

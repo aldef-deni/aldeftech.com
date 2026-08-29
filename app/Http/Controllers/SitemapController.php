@@ -88,7 +88,6 @@ class SitemapController extends Controller
             // Switches the session locale and bounces straight back, so every
             // one of these is a duplicate of a page already in the sitemap.
             'Disallow: /lang/',
-            'Disallow: /clear-cache',
             '',
             "Sitemap: {$url}/sitemap.xml",
             '',

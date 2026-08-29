@@ -18,10 +18,21 @@ class Portfolio extends Model
     protected $fillable = [
         'title', 'slug', 'short_description', 'description',
         'category_id', 'client', 'year', 'featured_image',
-        'technologies', 'project_url', 'challenge', 'approach',
+        'technologies', 'project_url',
+        'demo_url', 'demo_username', 'demo_password', 'demo_note',
+        'challenge', 'approach',
         'solution', 'results', 'is_featured', 'is_published',
         'published_at', 'meta_title', 'meta_description', 'sort_order',
     ];
+
+    /**
+     * Only a filled demo_url makes a project testable; credentials are optional
+     * because some demos are open.
+     */
+    public function hasDemo(): bool
+    {
+        return filled($this->demo_url);
+    }
 
     protected $casts = [
         'technologies' => 'array',

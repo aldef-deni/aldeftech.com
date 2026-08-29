@@ -243,3 +243,72 @@ if (! function_exists('is_current_page')) {
         return $current === $name || str_starts_with((string) $current, $name . '.');
     }
 }
+
+if (! function_exists('media_path')) {
+    /**
+     * Filesystem path behind a stored media reference, or null when it is
+     * remote (or otherwise not something we can open).
+     *
+     * Mirrors media_url() so the two never disagree about where a file lives.
+     */
+    function media_path(?string $path): ?string
+    {
+        $path = ltrim(trim((string) $path), '/');
+
+        if ($path === '' || \Illuminate\Support\Str::startsWith($path, ['http://', 'https://', '//', 'data:'])) {
+            return null;
+        }
+
+        if (\Illuminate\Support\Str::startsWith($path, 'storage/')) {
+            return storage_path('app/public/' . substr($path, 8));
+        }
+
+        if (\Illuminate\Support\Str::startsWith($path, ['images/', 'assets/', 'build/'])) {
+            return public_path($path);
+        }
+
+        return storage_path('app/public/' . $path);
+    }
+}
+
+if (! function_exists('site_logo')) {
+    /**
+     * The site logo: whatever an editor uploaded, else the bundled mark.
+     *
+     * Intrinsic dimensions are read off the file rather than hardcoded. The
+     * markup used to carry the bundled logo's 880x341, so a custom upload with
+     * a different shape would have reserved the wrong space and shifted the
+     * header as it loaded — the exact layout shift Core Web Vitals penalises.
+     *
+     * @return array{url: ?string, width: ?int, height: ?int}
+     */
+    function site_logo(): array
+    {
+        $stored = \App\Models\SiteSetting::get('site_logo');
+        $reference = filled($stored) ? $stored : 'images/logo.webp';
+
+        return \Illuminate\Support\Facades\Cache::rememberForever('site_logo.' . md5($reference), function () use ($reference) {
+            $out = ['url' => media_url($reference), 'width' => null, 'height' => null];
+
+            $file = media_path($reference);
+
+            if ($file && is_file($file) && ($size = @getimagesize($file))) {
+                $out['width'] = $size[0];
+                $out['height'] = $size[1];
+            }
+
+            return $out;
+        });
+    }
+}
+
+if (! function_exists('site_favicon')) {
+    /**
+     * A custom favicon if one was uploaded, otherwise null so the layout keeps
+     * its generated icon set — which covers more sizes than a single upload can.
+     */
+    function site_favicon(): ?string
+    {
+        return media_url(\App\Models\SiteSetting::get('site_favicon')) ?: null;
+    }
+}

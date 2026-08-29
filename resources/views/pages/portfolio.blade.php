@@ -74,6 +74,25 @@
 
                         <h2 class="mt-3.5 text-lg leading-snug">{{ $item->title }}</h2>
 
+                        @if(filled($item->demo_url ?? null))
+                        {{-- Tells a visitor a demo exists before they commit to
+                             opening the case study.
+
+                             Checks the property rather than calling hasDemo():
+                             when the database is empty this controller falls back
+                             to hardcoded stdClass placeholders, which carry no
+                             model methods. --}}
+                        <span class="mt-2.5 inline-flex items-center gap-1.5 self-start rounded-full
+                                     border border-gold-300 bg-gold-100 px-2.5 py-1
+                                     text-[0.625rem] font-semibold uppercase tracking-[0.1em] text-gold-700">
+                            <span class="relative flex h-1.5 w-1.5" aria-hidden="true">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-gold-500/60"></span>
+                                <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-gold-500"></span>
+                            </span>
+                            {{ __('pages.portfolio.detail.demo_badge') }}
+                        </span>
+                        @endif
+
                         @if(!empty($item->client))
                         <p class="mt-1.5 text-xs text-graphite-500">{{ $item->client }}</p>
                         @endif

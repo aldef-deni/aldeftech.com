@@ -108,8 +108,8 @@ class DatabaseSeeder extends Seeder
         $settings = [
             ['key' => 'site_name', 'value' => 'Aldef Tech', 'type' => 'text', 'group' => 'general'],
             ['key' => 'site_tagline', 'value' => 'Bangun Sistem Digital yang Menggerakkan Bisnis.', 'type' => 'text', 'group' => 'general'],
-            ['key' => 'site_logo', 'value' => 'images/logo.png', 'type' => 'text', 'group' => 'general'],
-            ['key' => 'site_favicon', 'value' => 'images/logo-square.png', 'type' => 'text', 'group' => 'general'],
+            ['key' => 'site_logo', 'value' => 'images/logo.webp', 'type' => 'text', 'group' => 'general'],
+            ['key' => 'site_favicon', 'value' => '', 'type' => 'text', 'group' => 'general'],
             ['key' => 'email', 'value' => 'info@aldeftech.com', 'type' => 'text', 'group' => 'general'],
             ['key' => 'phone', 'value' => '+62 812-3456-7890', 'type' => 'text', 'group' => 'general'],
             ['key' => 'whatsapp_number', 'value' => '628128968609', 'type' => 'text', 'group' => 'general'],

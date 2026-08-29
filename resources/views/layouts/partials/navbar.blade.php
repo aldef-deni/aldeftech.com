@@ -24,9 +24,11 @@
             {{-- Wordmark --}}
             <a href="{{ lroute('home') }}" class="shrink-0 group flex items-center"
                aria-label="{{ __('site.nav.to_home', ['name' => config('app.name')]) }}">
-                <img src="{{ asset('images/logo.webp') }}"
+                @php $logo = site_logo(); @endphp
+                <img src="{{ $logo['url'] }}"
                      alt="{{ config('app.name') }}"
-                     width="880" height="341" fetchpriority="high"
+                     @if($logo['width']) width="{{ $logo['width'] }}" height="{{ $logo['height'] }}" @endif
+                     fetchpriority="high"
                      class="h-12 sm:h-14 lg:h-16 w-auto transition-transform duration-700 ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-[1.03]">
             </a>
 

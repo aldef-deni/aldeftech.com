@@ -65,6 +65,12 @@
             @endif
         </dl>
 
+        @if($portfolio->hasDemo())
+        <div class="pb-9 lg:pb-11">
+            <x-demo-modal :portfolio="$portfolio" />
+        </div>
+        @endif
+
         @if(!empty($portfolio->technologies))
         <div class="pb-9 lg:pb-11 reveal">
             <p class="eyebrow mb-4">{{ __('pages.portfolio.detail.tech') }}</p>

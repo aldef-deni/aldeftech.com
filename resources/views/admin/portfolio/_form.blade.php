@@ -110,7 +110,41 @@
 
                 <x-admin.form.input
                     label="Tautan Proyek" name="project_url" type="url" :value="$portfolio->project_url ?? ''"
-                    placeholder="https://..." />
+                    placeholder="https://..."
+                    help="Situs milik klien. Bukan demo." />
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5 class="card-title mb-1">Demo</h5>
+                <small class="text-body-secondary">
+                    Isi Tautan Demo untuk memunculkan tombol &ldquo;Coba Demo&rdquo; di halaman ini.
+                    Dikosongkan berarti proyek ini tidak menampilkan apa pun soal demo.
+                </small>
+            </div>
+            <div class="card-body">
+                <x-admin.form.input
+                    label="Tautan Demo" name="demo_url" type="url" :value="$portfolio->demo_url ?? ''"
+                    placeholder="https://demo.aldeftech.com/inventory"
+                    help="Satu-satunya penentu apakah proyek ini punya demo." />
+
+                <div class="row">
+                    <x-admin.form.input
+                        col="12 col-md-6" label="Username Demo" name="demo_username"
+                        :value="$portfolio->demo_username ?? ''"
+                        placeholder="demo" help="Kosongkan bila demo tidak perlu login." />
+
+                    <x-admin.form.input
+                        col="12 col-md-6" label="Password Demo" name="demo_password"
+                        :value="$portfolio->demo_password ?? ''"
+                        placeholder="demo123" />
+                </div>
+
+                <x-admin.form.textarea
+                    label="Catatan Demo" name="demo_note" :value="$portfolio->demo_note ?? ''" :rows="3"
+                    placeholder="mis. Data direset otomatis setiap 24 jam."
+                    help="Opsional. Tampil di dalam modal sebagai pengingat bagi pengunjung." />
             </div>
         </div>
 
