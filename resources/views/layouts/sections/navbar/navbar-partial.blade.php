@@ -145,9 +145,13 @@
         <li class="nav-item navbar-dropdown dropdown-user dropdown ms-2">
             <a class="nav-link dropdown-toggle hide-arrow p-0" href="javascript:void(0);" data-bs-toggle="dropdown" aria-label="Menu pengguna">
                 <div class="avatar avatar-online">
+                    @if($user?->avatar_url)
+                        <img src="{{ $user->avatar_url }}" alt="{{ $user->name }}" class="rounded-circle">
+                    @else
                     <span class="avatar-initial rounded-circle bg-label-primary">
                         {{ initials_of($user?->name) }}
                     </span>
+                    @endif
                 </div>
             </a>
 
@@ -157,9 +161,13 @@
                         <div class="d-flex align-items-center">
                             <div class="flex-shrink-0 me-2">
                                 <div class="avatar avatar-online">
+                                    @if($user?->avatar_url)
+                                        <img src="{{ $user->avatar_url }}" alt="{{ $user->name }}" class="rounded-circle">
+                                    @else
                                     <span class="avatar-initial rounded-circle bg-label-primary">
                                         {{ initials_of($user?->name) }}
                                     </span>
+                                    @endif
                                 </div>
                             </div>
                             <div class="flex-grow-1">

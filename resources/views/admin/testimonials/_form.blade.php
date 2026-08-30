@@ -53,7 +53,7 @@
 
                 <x-admin.form.image
                     label="Foto Klien" name="photo" :value="$testimonial->photo ?? ''"
-                    ratio="1 / 1" hint="Seret foto ke sini atau klik"
+                    ratio="1 / 1" width="12rem" round hint="Seret foto ke sini atau klik"
                     help="Tampil bulat di kartu testimoni, jadi wajah sebaiknya di tengah." />
             </div>
         </div>

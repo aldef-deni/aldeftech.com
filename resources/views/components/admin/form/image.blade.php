@@ -8,6 +8,9 @@
     'hint' => 'Seret berkas ke sini atau klik untuk memilih',
     'dark' => false,           // preview on obsidian, for logos with transparency
     'fallback' => null,        // shown when the field is empty (e.g. bundled default)
+    'width' => null,           // cap the drop area; a square avatar box at full
+                               // width is a huge empty square on the page
+    'round' => false,          // preview as a circle, matching where it lands
 ])
 
 @php
@@ -24,10 +27,10 @@
 <div class="{{ $col ? 'col-' . $col : '' }} mb-4">
     <label class="form-label" for="{{ $id }}">{{ $label }}</label>
 
-    <div class="aldef-uploader{{ $preview ? ' has-image' : '' }}{{ $dark ? ' is-dark' : '' }}"
+    <div class="aldef-uploader{{ $preview ? ' has-image' : '' }}{{ $dark ? ' is-dark' : '' }}{{ $round ? ' is-round' : '' }}"
          data-uploader
          data-uploader-url="{{ route('admin.uploads.store') }}"
-         style="--aldef-uploader-ratio: {{ $ratio }};">
+         style="--aldef-uploader-ratio: {{ $ratio }};@if($width) --aldef-uploader-width: {{ $width }};@endif">
 
         {{-- What the form actually submits: a path string, exactly as before. --}}
         <input type="hidden" name="{{ $name }}" value="{{ $stored }}" data-uploader-value>

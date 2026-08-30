@@ -24,6 +24,11 @@
                     <x-admin.form.input label="Nama" name="name" required placeholder="Nama lengkap" autocomplete="name" />
                     <x-admin.form.input label="Email" name="email" type="email" required placeholder="nama@aldeftech.com" autocomplete="email" />
 
+                    <x-admin.form.image
+                        label="Foto Profil" name="avatar" :value="old('avatar')"
+                        ratio="1 / 1" width="12rem" round hint="Seret foto ke sini atau klik"
+                        help="Tampil bulat di header dan daftar pengguna, jadi wajah sebaiknya di tengah. Kosongkan untuk memakai inisial nama." />
+
                     <x-admin.form.select
                         label="Peran" name="role" required
                         :options="$roles->pluck('display_name', 'name')->all()"

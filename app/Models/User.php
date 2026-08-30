@@ -13,8 +13,21 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'avatar',
         'password',
     ];
+
+    /**
+     * Resolved avatar URL, or null when the user has not uploaded one.
+     *
+     * Callers fall back to initials rather than to a stock silhouette: a real
+     * person's initials read as identity, a generic placeholder reads as a
+     * broken image.
+     */
+    public function getAvatarUrlAttribute(): ?string
+    {
+        return $this->avatar ? media_url($this->avatar) : null;
+    }
 
     protected $hidden = [
         'password',

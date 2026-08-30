@@ -29,11 +29,13 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:8|confirmed',
             'role' => 'required|exists:roles,name',
+            'avatar' => 'nullable|string|max:500',
         ]);
 
         $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
+            'avatar' => $validated['avatar'] ?? null,
             'password' => Hash::make($validated['password']),
         ]);
 
@@ -55,11 +57,15 @@ class UserController extends Controller
             'email' => "required|email|unique:users,email,{$user->id}",
             'password' => 'nullable|min:8|confirmed',
             'role' => 'required|exists:roles,name',
+            'avatar' => 'nullable|string|max:500',
         ]);
 
         $data = [
             'name' => $validated['name'],
             'email' => $validated['email'],
+            // Clearing the uploader is a deliberate act, so an empty value
+            // means "go back to initials" rather than "leave it alone".
+            'avatar' => $validated['avatar'] ?: null,
         ];
 
         if (!empty($validated['password'])) {

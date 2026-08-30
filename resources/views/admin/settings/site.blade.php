@@ -133,7 +133,7 @@
 
                     <x-admin.form.image
                         label="Favicon" name="site_favicon" :value="SiteSetting::get('site_favicon', '')"
-                        ratio="1 / 1" dark
+                        ratio="1 / 1" width="10rem" dark
                         help="Ikon tab browser. Persegi, minimal 256×256." />
                 </div>
             </div>

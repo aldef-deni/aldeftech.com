@@ -30,7 +30,11 @@
                     <td>
                         <div class="d-flex align-items-center gap-3">
                             <span class="avatar avatar-sm">
-                                <span class="avatar-initial rounded-circle bg-label-primary">{{ initials_of($user->name) }}</span>
+                                @if($user->avatar_url)
+                                    <img src="{{ $user->avatar_url }}" alt="{{ $user->name }}" class="rounded-circle">
+                                @else
+                                    <span class="avatar-initial rounded-circle bg-label-primary">{{ initials_of($user->name) }}</span>
+                                @endif
                             </span>
                             <div class="text-truncate">
                                 <a href="{{ route('admin.users.edit', $user) }}" class="fw-medium text-body d-block text-truncate">
