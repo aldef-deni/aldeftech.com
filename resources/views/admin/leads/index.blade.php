@@ -23,6 +23,19 @@
             <i class="icon-base ti tabler-archive me-2"></i>Arsip
         </a>
     @endif
+    @if($viewingSpam)
+        <a href="{{ route('admin.leads.index') }}" class="btn btn-outline-secondary">
+            <i class="icon-base ti tabler-inbox me-2"></i>Daftar Utama
+        </a>
+    @else
+        <a href="{{ route('admin.leads.index', ['spam' => 1]) }}"
+           class="btn btn-outline-secondary position-relative">
+            <i class="icon-base ti tabler-shield-x me-2"></i>Spam
+            @if($spamCount > 0)
+                <span class="badge bg-label-danger ms-2">{{ $spamCount }}</span>
+            @endif
+        </a>
+    @endif
     <a href="{{ route('admin.leads.export', request()->only('archived')) }}" class="btn btn-primary">
         <i class="icon-base ti tabler-download me-2"></i>Ekspor CSV
     </a>
@@ -33,6 +46,7 @@
     <div class="card-body">
         <form method="GET" action="{{ route('admin.leads.index') }}" class="row g-3 align-items-end">
             @if($isArchived)<input type="hidden" name="archived" value="1">@endif
+            @if($viewingSpam)<input type="hidden" name="spam" value="1">@endif
 
             <div class="col-12 col-md-5">
                 <label for="search" class="form-label">Cari</label>
@@ -132,6 +146,15 @@
                             <button type="submit" class="btn btn-sm btn-icon btn-text-secondary"
                                     title="{{ $lead->archived_at ? 'Kembalikan' : 'Arsipkan' }}">
                                 <i class="icon-base ti {{ $lead->archived_at ? 'tabler-archive-off' : 'tabler-archive' }}"></i>
+                            </button>
+                        </form>
+                        <form method="POST" action="{{ route('admin.leads.spam', $lead) }}" class="d-inline">
+                            @csrf
+                            @method('PUT')
+                            <button type="submit"
+                                    class="btn btn-sm btn-icon {{ $lead->is_spam ? 'btn-text-success' : 'btn-text-secondary' }}"
+                                    title="{{ $lead->is_spam ? 'Bukan spam — kembalikan ke daftar utama' : 'Tandai sebagai spam' }}">
+                                <i class="icon-base ti {{ $lead->is_spam ? 'tabler-shield-check' : 'tabler-shield-x' }}"></i>
                             </button>
                         </form>
                         <x-admin.delete

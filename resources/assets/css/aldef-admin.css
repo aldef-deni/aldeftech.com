@@ -372,6 +372,38 @@ h1, h2, h3, h4, h5, h6,
   max-width: 22rem;
 }
 
+/* Notification dropdown -------------------------------------------------- */
+.aldef-notif {
+  width: 22rem;
+  max-width: calc(100vw - 2rem);
+  padding: 0;
+  overflow: hidden;
+}
+
+/* Tall enough for all five rows, but never taller than the viewport allows. */
+.aldef-notif .dropdown-notifications-list {
+  max-height: min(31rem, 60vh);
+  overflow-y: auto;
+}
+
+.aldef-notif .list-group-item {
+  padding: 0.875rem 1rem;
+  border-left: 0;
+  border-right: 0;
+}
+
+.aldef-notif-item a { text-decoration: none; }
+.aldef-notif-item a:hover .fw-semibold { color: var(--aldef-gold-700); }
+
+/* Visible but quiet, so the list does not read as a row of trash cans while
+   the action stays discoverable without hunting for it. */
+.aldef-notif-item form button {
+  opacity: 0.4;
+  transition: opacity 220ms var(--aldef-ease);
+}
+.aldef-notif-item:hover form button,
+.aldef-notif-item form button:focus-visible { opacity: 1; }
+
 /* Search-result preview -------------------------------------------------- */
 .aldef-serp {
   padding: 0.875rem 1rem;

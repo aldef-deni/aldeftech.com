@@ -46,7 +46,10 @@ $publicPages = function () {
     Route::get('/blog/{post:slug}', [BlogController::class, 'show'])->name('blog.show');
 
     Route::get('/contact', [ContactController::class, 'index'])->name('contact');
-    Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+    // A human sends one brief, maybe two. Anything past this is a script.
+    Route::post('/contact', [ContactController::class, 'store'])
+        ->middleware('throttle:5,1')
+        ->name('contact.store');
 };
 
 Route::group([], $publicPages);                                  // id — kanonik

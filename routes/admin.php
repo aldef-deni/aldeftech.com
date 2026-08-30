@@ -212,6 +212,17 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
         Route::get('leads/export', [AdminLeadController::class, 'export'])
             ->name('leads.export');
 
+        // Notification bell. read-all is declared before leads/{lead} so the
+        // literal segment is never captured as a lead id.
+        Route::post('leads/read-all', [AdminLeadController::class, 'markAllRead'])
+            ->name('leads.read-all');
+
+        Route::put('leads/{lead}/read', [AdminLeadController::class, 'markRead'])
+            ->name('leads.read');
+
+        Route::put('leads/{lead}/spam', [AdminLeadController::class, 'toggleSpam'])
+            ->name('leads.spam');
+
         Route::get('leads/{lead}', [AdminLeadController::class, 'show'])
             ->name('leads.show');
 

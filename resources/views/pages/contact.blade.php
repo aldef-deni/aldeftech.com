@@ -76,6 +76,24 @@
                     <form method="POST" action="{{ lroute('contact.store') }}" class="space-y-5" novalidate>
                         @csrf
 
+                        {{-- Spam traps. Neither is visible to a visitor, and
+                             neither can reject a submission on its own — they
+                             only feed the score, so a false positive costs an
+                             editor one click rather than costing a real lead.
+
+                             The field is named "website_url" because that is
+                             what an automated form-filler goes looking for.
+                             aria-hidden and tabindex keep it away from anyone
+                             using a screen reader or the keyboard. --}}
+                        <div class="hidden" aria-hidden="true">
+                            <label for="website_url">Jangan isi kolom ini</label>
+                            <input type="text" id="website_url" name="website_url"
+                                   tabindex="-1" autocomplete="off">
+                        </div>
+
+                        {{-- Encrypted so the timestamp cannot simply be rewritten. --}}
+                        <input type="hidden" name="form_started_at" value="{{ encrypt(now()->timestamp) }}">
+
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                             <div>
                                 <label for="name" class="form-label">{{ __('pages.contact.form.name') }} <span class="required">*</span></label>

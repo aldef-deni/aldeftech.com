@@ -13,12 +13,40 @@ class Lead extends Model
     protected $fillable = [
         'name', 'company', 'email', 'whatsapp', 'project_type',
         'budget_range', 'message', 'status', 'source',
-        'assigned_to', 'archived_at',
+        'assigned_to', 'archived_at', 'read_at',
+        'is_spam', 'spam_score', 'spam_reasons', 'ip_address',
     ];
 
     protected $casts = [
         'archived_at' => 'datetime',
+        'read_at' => 'datetime',
+        'is_spam' => 'boolean',
+        'spam_reasons' => 'array',
     ];
+
+    /** Junk stays out of the working list and out of the bell count. */
+    public function scopeNotSpam($query)
+    {
+        return $query->where('is_spam', false);
+    }
+
+    public function scopeSpam($query)
+    {
+        return $query->where('is_spam', true);
+    }
+
+    /** Leads an admin has not opened yet — what the navbar bell counts. */
+    public function scopeUnread($query)
+    {
+        return $query->whereNull('read_at')->whereNull('archived_at')->where('is_spam', false);
+    }
+
+    public function markAsRead(): void
+    {
+        if (! $this->read_at) {
+            $this->forceFill(['read_at' => now()])->save();
+        }
+    }
 
     public function assignee()
     {

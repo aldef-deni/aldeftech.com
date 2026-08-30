@@ -5,11 +5,18 @@
     $userRole = $user?->roles?->first()?->display_name
         ?? ucwords(str_replace('-', ' ', $user?->roles?->first()?->name ?? 'Pengguna'));
 
-    // Cheap enough for a navbar badge; the table is small and indexed on status.
+    // The bell is only meaningful to someone who can open a lead.
+    $canSeeLeads = (bool) $user?->hasPermission('manage-leads');
+
+    // Cheap enough for a navbar badge: read_at is indexed and the list is capped.
     try {
-        $newLeads = \App\Models\Lead::where('status', 'new')->count();
+        $unreadLeads = $canSeeLeads ? \App\Models\Lead::unread()->count() : 0;
+        $recentLeads = $canSeeLeads
+            ? \App\Models\Lead::unread()->orderByDesc('created_at')->orderByDesc('id')->take(5)->get()
+            : collect();
     } catch (\Throwable $e) {
-        $newLeads = 0;
+        $unreadLeads = 0;
+        $recentLeads = collect();
     }
 @endphp
 
@@ -49,18 +56,90 @@
             </a>
         </li>
 
-        {{-- New leads --}}
-        <li class="nav-item">
-            <a class="nav-link position-relative" href="{{ route('admin.leads.index') }}" title="Leads baru">
+        {{-- Leads baru --}}
+        @if ($canSeeLeads)
+        <li class="nav-item navbar-dropdown dropdown">
+            <a class="nav-link position-relative" href="javascript:void(0);"
+               data-bs-toggle="dropdown" data-bs-auto-close="outside"
+               aria-expanded="false" aria-label="Notifikasi lead baru">
                 <i class="icon-base ti tabler-bell icon-md"></i>
-                @if ($newLeads > 0)
+                @if ($unreadLeads > 0)
                 <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                    {{ $newLeads > 99 ? '99+' : $newLeads }}
-                    <span class="visually-hidden">leads baru</span>
+                    {{ $unreadLeads > 99 ? '99+' : $unreadLeads }}
+                    <span class="visually-hidden">lead belum dibaca</span>
                 </span>
                 @endif
             </a>
+
+            <ul class="dropdown-menu dropdown-menu-end aldef-notif">
+
+                <li class="dropdown-menu-header border-bottom">
+                    <div class="dropdown-header d-flex align-items-center justify-content-between py-3">
+                        <h6 class="mb-0 me-auto">Lead Baru</h6>
+                        @if ($unreadLeads > 0)
+                        <span class="badge bg-label-primary me-2">{{ $unreadLeads }} baru</span>
+                        <form method="POST" action="{{ route('admin.leads.read-all') }}" class="d-inline">
+                            @csrf
+                            <button type="submit" class="btn btn-text-secondary btn-icon btn-sm rounded-pill"
+                                    title="Tandai semua sudah dibaca">
+                                <i class="icon-base ti tabler-mail-opened icon-sm"></i>
+                            </button>
+                        </form>
+                        @endif
+                    </div>
+                </li>
+
+                <li class="dropdown-notifications-list">
+                    <ul class="list-group list-group-flush">
+                        @forelse ($recentLeads as $lead)
+                        <li class="list-group-item list-group-item-action aldef-notif-item">
+                            <div class="d-flex align-items-start gap-3">
+                                <div class="avatar avatar-sm flex-shrink-0">
+                                    <span class="avatar-initial rounded-circle bg-label-primary">
+                                        {{ initials_of($lead->name) }}
+                                    </span>
+                                </div>
+
+                                <a href="{{ route('admin.leads.show', $lead) }}" class="flex-grow-1 min-w-0 text-body">
+                                    <span class="d-block fw-semibold text-truncate">{{ $lead->name }}</span>
+                                    <small class="d-block text-body-secondary text-truncate">
+                                        {{ $lead->company ?: $lead->email }}
+                                    </small>
+                                    <small class="d-block text-body-secondary mt-1">
+                                        {{ $lead->created_at?->diffForHumans() }}
+                                    </small>
+                                </a>
+
+                                <form method="POST" action="{{ route('admin.leads.destroy', $lead) }}"
+                                      class="flex-shrink-0"
+                                      onsubmit="return confirm('Hapus lead dari {{ addslashes($lead->name) }}?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-text-danger btn-icon btn-sm rounded-pill"
+                                            title="Hapus lead">
+                                        <i class="icon-base ti tabler-trash icon-sm"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </li>
+                        @empty
+                        <li class="list-group-item text-center text-body-secondary py-5">
+                            <i class="icon-base ti tabler-inbox icon-lg d-block mb-2 opacity-50"></i>
+                            <small>Tidak ada lead baru.</small>
+                        </li>
+                        @endforelse
+                    </ul>
+                </li>
+
+                <li class="dropdown-menu-footer border-top">
+                    <a href="{{ route('admin.leads.index') }}"
+                       class="dropdown-item d-flex justify-content-center py-3 text-primary">
+                        Lihat semua lead
+                    </a>
+                </li>
+            </ul>
         </li>
+        @endif
 
         {{-- User --}}
         <li class="nav-item navbar-dropdown dropdown-user dropdown ms-2">

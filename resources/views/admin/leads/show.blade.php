@@ -44,6 +44,39 @@
     {{-- Message + notes ----------------------------------------------------}}
     <div class="col-12 col-lg-8">
 
+        @if($lead->is_spam || !empty($lead->spam_reasons))
+        {{-- Shown whenever the scorer had something to say, flagged or not, so
+             the judgement can be checked instead of taken on trust. --}}
+        <div class="alert {{ $lead->is_spam ? 'alert-danger' : 'alert-warning' }} mb-4" role="alert">
+            <div class="d-flex align-items-start gap-3">
+                <i class="icon-base ti {{ $lead->is_spam ? 'tabler-shield-x' : 'tabler-alert-triangle' }} icon-md mt-1"></i>
+                <div class="flex-grow-1">
+                    <h6 class="alert-heading mb-1">
+                        {{ $lead->is_spam ? 'Ditandai sebagai spam' : 'Ada sinyal mencurigakan' }}
+                        <span class="badge bg-label-secondary ms-1">skor {{ $lead->spam_score }}/100</span>
+                    </h6>
+
+                    @if(!empty($lead->spam_reasons))
+                    <ul class="mb-2 ps-3 small">
+                        @foreach($lead->spam_reasons as $reason)
+                            <li>{{ $reason }}</li>
+                        @endforeach
+                    </ul>
+                    @endif
+
+                    <form method="POST" action="{{ route('admin.leads.spam', $lead) }}">
+                        @csrf
+                        @method('PUT')
+                        <button type="submit" class="btn btn-sm {{ $lead->is_spam ? 'btn-success' : 'btn-outline-danger' }}">
+                            <i class="icon-base ti {{ $lead->is_spam ? 'tabler-shield-check' : 'tabler-shield-x' }} me-1"></i>
+                            {{ $lead->is_spam ? 'Bukan spam' : 'Tandai spam' }}
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        @endif
+
         <div class="card mb-4">
             <div class="card-header d-flex align-items-center justify-content-between">
                 <h5 class="card-title mb-0">Pesan</h5>

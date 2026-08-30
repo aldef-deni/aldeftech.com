@@ -37,13 +37,28 @@ class LeadController extends Controller
             $query->active();
         }
 
+        // Junk is hidden unless asked for, so the working list stays the list of
+        // people worth replying to.
+        if ($request->boolean('spam')) {
+            $query->spam();
+        } else {
+            $query->notSpam();
+        }
+
         $leads = $query->latest()->paginate(20)->withQueryString();
 
-        return view('admin.leads.index', ['leads' => $leads]);
+        return view('admin.leads.index', [
+            'leads' => $leads,
+            'spamCount' => Lead::spam()->active()->count(),
+            'viewingSpam' => $request->boolean('spam'),
+        ]);
     }
 
     public function show(Lead $lead)
     {
+        // Opening a lead is the most honest signal that it has been seen.
+        $lead->markAsRead();
+
         $lead->load(['notes.user', 'assignee']);
 
         return view('admin.leads.show', ['lead' => $lead]);
@@ -87,6 +102,37 @@ class LeadController extends Controller
         $lead->update(['archived_at' => $lead->archived_at ? null : now()]);
 
         return back()->with('success', $lead->archived_at ? 'Lead archived.' : 'Lead restored.');
+    }
+
+    public function toggleSpam(Lead $lead)
+    {
+        $lead->forceFill(['is_spam' => ! $lead->is_spam])->save();
+
+        ActivityLog::log(
+            $lead->is_spam ? 'lead.marked_spam' : 'lead.marked_ham',
+            ($lead->is_spam ? 'Menandai spam' : 'Mengembalikan dari spam') . ": {$lead->name}",
+            $lead
+        );
+
+        return back()->with('success', $lead->is_spam
+            ? 'Lead dipindahkan ke Spam.'
+            : 'Lead dikembalikan ke daftar utama.');
+    }
+
+    public function markRead(Lead $lead)
+    {
+        $lead->markAsRead();
+
+        return back()->with('success', 'Lead ditandai sudah dibaca.');
+    }
+
+    public function markAllRead()
+    {
+        $count = Lead::unread()->update(['read_at' => now()]);
+
+        return back()->with('success', $count > 0
+            ? "{$count} notifikasi ditandai sudah dibaca."
+            : 'Tidak ada notifikasi baru.');
     }
 
     public function destroy(Lead $lead)
