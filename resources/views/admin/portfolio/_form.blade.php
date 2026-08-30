@@ -7,8 +7,14 @@
             <div class="card-header"><h5 class="card-title mb-0">Ringkasan Proyek</h5></div>
             <div class="card-body">
                 <x-admin.form.input
-                    label="Judul Proyek" name="title" :value="$portfolio->title ?? ''" required
+                    label="Judul Proyek" name="title" id="title" :value="$portfolio->title ?? ''" required
                     placeholder="mis. Arahinn Mobile — OTA & Travel Platform" />
+
+                <x-admin.form.input
+                    label="Slug URL" name="slug" :value="$portfolio->slug ?? ''"
+                    data-slug-from="#title"
+                    placeholder="arahinn-mobile-ota-travel-platform"
+                    :help="'Alamat halaman: ' . rtrim(config('app.url'), '/') . '/portfolio/' . ($portfolio->slug ?? '…') . '. Terisi otomatis dari judul saat membuat proyek baru. Mengubahnya mengubah URL — tautan lama akan mati.'" />
 
                 <x-admin.form.textarea
                     label="Deskripsi Singkat" name="short_description" :value="$portfolio->short_description ?? ''" required

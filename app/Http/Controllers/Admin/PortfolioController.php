@@ -10,6 +10,7 @@ use App\Models\PortfolioImage;
 use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class PortfolioController extends Controller
 {
@@ -31,6 +32,8 @@ class PortfolioController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
+            'slug' => ['nullable', 'string', 'max:255', 'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/',
+                Rule::unique('portfolios', 'slug')],
             'short_description' => 'required|string|max:500',
             'description' => 'nullable|string',
             'category_id' => 'nullable|exists:portfolio_categories,id',
@@ -60,7 +63,12 @@ class PortfolioController extends Controller
             'captions.*' => 'string|max:255',
         ]);
 
-        $validated['slug'] = Str::slug($validated['title']);
+        // A blank slug falls back to the title; a filled one is respected, so an
+        // editor can rename a project without changing a URL that is already
+        // indexed — and can fix a wrong slug when they do want it changed.
+        $validated['slug'] = filled($validated['slug'] ?? null)
+            ? Str::slug($validated['slug'])
+            : Str::slug($validated['title']);
         $validated['technologies'] = $request->input('technologies', []);
         $validated['is_featured'] = $request->boolean('is_featured');
         $validated['is_published'] = $request->boolean('is_published');
@@ -98,6 +106,8 @@ class PortfolioController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
+            'slug' => ['nullable', 'string', 'max:255', 'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/',
+                Rule::unique('portfolios', 'slug')->ignore($portfolio->id)],
             'short_description' => 'required|string|max:500',
             'description' => 'nullable|string',
             'category_id' => 'nullable|exists:portfolio_categories,id',
@@ -123,6 +133,12 @@ class PortfolioController extends Controller
             'sort_order' => 'integer|min:0',
         ]);
 
+        // A blank slug falls back to the title; a filled one is respected, so an
+        // editor can rename a project without changing a URL that is already
+        // indexed — and can fix a wrong slug when they do want it changed.
+        $validated['slug'] = filled($validated['slug'] ?? null)
+            ? Str::slug($validated['slug'])
+            : Str::slug($validated['title']);
         $validated['technologies'] = $request->input('technologies', []);
         $validated['is_featured'] = $request->boolean('is_featured');
         $validated['is_published'] = $request->boolean('is_published');

@@ -10,8 +10,14 @@
             <div class="card-header"><h5 class="card-title mb-0">Isi Artikel</h5></div>
             <div class="card-body">
                 <x-admin.form.input
-                    label="Judul" name="title" :value="$post->title ?? ''" required
+                    label="Judul" name="title" id="title" :value="$post->title ?? ''" required
                     placeholder="Judul artikel" />
+
+                <x-admin.form.input
+                    label="Slug URL" name="slug" :value="$post->slug ?? ''"
+                    data-slug-from="#title"
+                    placeholder="judul-artikel"
+                    :help="'Alamat halaman: ' . rtrim(config('app.url'), '/') . '/blog/' . ($post->slug ?? '…') . '. Terisi otomatis dari judul saat menulis artikel baru. Mengubahnya mengubah URL — tautan lama akan mati.'" />
 
                 <x-admin.form.textarea
                     label="Ringkasan" name="excerpt" :value="$post->excerpt ?? ''" :rows="3"

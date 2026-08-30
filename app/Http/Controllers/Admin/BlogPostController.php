@@ -9,6 +9,7 @@ use App\Models\BlogTag;
 use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class BlogPostController extends Controller
 {
@@ -29,6 +30,8 @@ class BlogPostController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
+            'slug' => ['nullable', 'string', 'max:255', 'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/',
+                Rule::unique('blog_posts', 'slug')],
             'excerpt' => 'nullable|string|max:500',
             'content' => 'required|string',
             'featured_image' => 'nullable|string|max:500',
@@ -42,7 +45,12 @@ class BlogPostController extends Controller
             'tags.*' => 'exists:blog_tags,id',
         ]);
 
-        $validated['slug'] = Str::slug($validated['title']);
+        // A blank slug falls back to the title; a filled one is respected, so an
+        // editor can reword a headline without moving a URL that is already
+        // indexed — and can still fix a wrong slug deliberately.
+        $validated['slug'] = filled($validated['slug'] ?? null)
+            ? Str::slug($validated['slug'])
+            : Str::slug($validated['title']);
         $validated['author_id'] = auth()->id();
         $validated['published_at'] = $validated['status'] === 'published'
             ? ($validated['published_at'] ?? now())
@@ -72,6 +80,8 @@ class BlogPostController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
+            'slug' => ['nullable', 'string', 'max:255', 'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/',
+                Rule::unique('blog_posts', 'slug')->ignore($blog->id)],
             'excerpt' => 'nullable|string|max:500',
             'content' => 'required|string',
             'featured_image' => 'nullable|string|max:500',
@@ -85,10 +95,18 @@ class BlogPostController extends Controller
             'tags.*' => 'exists:blog_tags,id',
         ]);
 
-        $validated['slug'] = Str::slug($validated['title']);
-        $validated['published_at'] = $validated['status'] === 'published' && !$blog->published_at
-            ? now()
-            : $validated['published_at'];
+        // A blank slug falls back to the title; a filled one is respected, so an
+        // editor can reword a headline without moving a URL that is already
+        // indexed — and can still fix a wrong slug deliberately.
+        $validated['slug'] = filled($validated['slug'] ?? null)
+            ? Str::slug($validated['slug'])
+            : Str::slug($validated['title']);
+        // published_at is nullable, so Laravel drops the key entirely when the
+        // field is not submitted — reading it directly threw a 500 on every
+        // save that did not touch the date.
+        $validated['published_at'] = $validated['status'] === 'published' && ! $blog->published_at
+            ? ($validated['published_at'] ?? now())
+            : ($validated['published_at'] ?? $blog->published_at);
 
         $tags = $validated['tags'] ?? [];
         unset($validated['tags']);
