@@ -25,18 +25,27 @@ class SeoVerificationTest extends TestCase
         return $user;
     }
 
+    /**
+     * The field lives on the Analytics screen, next to GTM and Meta Pixel —
+     * one home for every third-party verification code.
+     */
     public function test_verification_code_can_be_saved_and_reaches_the_page(): void
     {
         $admin = $this->admin();
 
-        $this->actingAs($admin)->get('/admin/settings/seo')
+        $this->actingAs($admin)->get('/admin/settings/analytics')
             ->assertOk()
             ->assertSee('google_search_console_verification', false);
 
-        $this->actingAs($admin)->put('/admin/settings/seo', [
-            'seo_default_title' => 'Aldef Tech',
-            'seo_default_description' => 'Deskripsi',
-            'seo_default_image' => '',
+        // And nowhere else: two fields writing one key is a trap.
+        $this->actingAs($admin)->get('/admin/settings/seo')
+            ->assertOk()
+            ->assertDontSee('google_search_console_verification', false);
+
+        $this->actingAs($admin)->put('/admin/settings/analytics', [
+            'google_analytics_id' => 'G-RBWMWTEHKG',
+            'google_tag_manager_id' => '',
+            'meta_pixel_id' => '',
             'google_search_console_verification' => 'TOKEN-UJI-123',
         ])->assertRedirect();
 
