@@ -8,6 +8,7 @@
     eyebrow="Blog"
     title="Artikel"
     subtitle="{{ $posts->total() ?? $posts->count() }} artikel">
+    <a href="{{ route('admin.blog.ai.create') }}" class="btn btn-outline-primary">Generate Artikel dengan AI</a>
     <a href="{{ route('admin.blog.create') }}" class="btn btn-primary">
         <i class="icon-base ti tabler-plus me-2"></i>Tulis Artikel
     </a>

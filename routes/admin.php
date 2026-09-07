@@ -145,6 +145,12 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
             [ProcessStepController::class, 'reorder']
         )->name('process-steps.reorder');
 
+        // AI article generation uses the same access controls as blog editing.
+        Route::get('blog/ai/create', [\App\Http\Controllers\Admin\AIArticleController::class, 'create'])
+            ->name('blog.ai.create');
+        Route::post('blog/ai', [\App\Http\Controllers\Admin\AIArticleController::class, 'store'])
+            ->middleware('throttle:5,1')->name('blog.ai.store');
+
         // Blog
         Route::resource('blog', AdminBlogPostController::class)
             ->except(['show'])
