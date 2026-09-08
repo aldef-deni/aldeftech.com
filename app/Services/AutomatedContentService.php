@@ -81,6 +81,7 @@ class AutomatedContentService
             $run->update(['topic' => $input['topic']]);
             $stage = 'Pembuatan atau validasi artikel';
             $article = app(ArticleAIService::class)->generate($input);
+            $stage = 'Pemeriksaan duplikat judul';
             if ($this->duplicates($article['title'], $recent, $gemini)) {
                 throw new RuntimeException('Judul terlalu mirip.');
             }
@@ -99,18 +100,75 @@ class AutomatedContentService
                 $path = app(ArticleImageService::class)->generate($article['title'], $authorId);
                 $post->update(['featured_image' => $path]);
             } catch (Throwable $e) {
-                $run->update(['error_message' => 'Draf selesai; gambar tidak tersedia. Tambahkan gambar melalui editor.']);
+                $safe = $this->safeFailure($e);
+                \Illuminate\Support\Facades\Log::warning($safe, ['run_id' => $run->id, 'stage' => 'Gambar']);
+                $run->update(['error_message' => $safe]);
             }
             return $post;
         } catch (Throwable $e) {
-            // Never persist provider exceptions: they may contain credentials or payloads.
+            $safe = $this->safeFailure($e);
+            \Illuminate\Support\Facades\Log::error($safe, ['run_id' => $run?->id, 'stage' => $stage]);
             if ($run && $run->status !== 'completed') {
-                $run->update(['status' => 'failed', 'error_message' => $stage . ' gagal. Periksa konfigurasi dan coba lagi.', 'completed_at' => now()]);
+                $run->update(['status' => 'failed', 'error_message' => $stage . ': ' . $safe, 'completed_at' => now()]);
             }
-            throw new RuntimeException('Pembuatan otomatis belum berhasil. Periksa riwayat ai_content_runs.');
+            throw new RuntimeException($safe);
         } finally {
             $lock->release();
         }
+    }
+
+    private function safeFailure(Throwable $e): string
+    {
+        // Only application-owned literal messages are safe to persist verbatim.
+        // Never log the exception object, trace arguments, SQL, URLs or response body.
+        $allowed = [
+            'Artikel memuat klaim yang belum terverifikasi.',
+            'Artikel yang dihasilkan Gemini tidak lengkap.',
+            'Dimensi gambar tidak valid.',
+            'Format HTML artikel tidak aman.',
+            'Format HTML artikel tidak lengkap.',
+            'GEMINI_API_KEY belum dikonfigurasi.',
+            'GEMINI_MODEL belum dikonfigurasi.',
+            'Gambar kosong.',
+            'Gambar tidak dapat dibaca.',
+            'Gemini belum menghasilkan artikel lengkap.',
+            'Gemini tidak mengembalikan JSON.',
+            'Gemini tidak mengembalikan gambar.',
+            'Gemini tidak mengembalikan response text.',
+            'JSON Gemini harus berupa objek artikel.',
+            'JSON Gemini tidak valid.',
+            'Judul terlalu mirip.',
+            'Kategori belum tersedia.',
+            'Optimasi WebP tidak tersedia.',
+            'Optimasi gambar gagal.',
+            'Pembuatan otomatis belum berhasil. Periksa riwayat ai_content_runs.',
+            'Pemeriksaan duplikat tidak valid.',
+            'Pencatatan gambar gagal.',
+            'Penyimpanan gambar gagal.',
+            'Respons Gemini tidak valid.',
+            'Topik baru belum tersedia.',
+            'Topik tidak lengkap.',
+        ];
+        $message = $e->getMessage();
+        if (! in_array($message, $allowed, true)
+            && ! preg_match('/^Gemini API Error \[\d{3}\]\. Coba lagi nanti\.$/', $message)
+            && ! preg_match('/^Artikel memuat klaim yang belum terverifikasi \(field: (title|slug|excerpt|content|meta_title|meta_description); rule: (number|source-or-quantity)\)\.$/', $message)) {
+            if ($e instanceof \Illuminate\Database\QueryException) {
+                $message = 'Database error; SQLSTATE ' . preg_replace('/[^A-Z0-9]/i', '', (string) $e->getCode());
+            } elseif ($e instanceof \Illuminate\Http\Client\ConnectionException) {
+                $message = 'Gemini connection failed (timeout, DNS, or transport error).';
+            } else {
+                $message = 'Unexpected ' . class_basename($e) . '; sensitive exception details withheld.';
+            }
+        }
+        $origin = 'AutomatedContentService::generate';
+        foreach ($e->getTrace() as $frame) {
+            if (in_array($frame['class'] ?? '', [self::class, ArticleAIService::class, GeminiService::class, ArticleImageService::class], true)) {
+                $origin = class_basename($frame['class']) . '::' . $frame['function'];
+                break;
+            }
+        }
+        return $origin . ': ' . $message;
     }
 
     private function duplicates(string $topic, array $recent, GeminiService $gemini): bool
