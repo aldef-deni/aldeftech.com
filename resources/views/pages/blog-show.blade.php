@@ -66,7 +66,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14">
 
             <article class="lg:col-span-8">
-                <div class="prose-lux reveal">
+                <div class="prose-lux">
                     {!! $post->content !!}
                 </div>
 
