@@ -85,26 +85,28 @@ class AutomatedContentService
             if ($this->duplicates($article['title'], $recent, $gemini)) {
                 throw new RuntimeException('Judul terlalu mirip.');
             }
-            $stage = 'Penyimpanan draf';
-            // Commit the draft and completion together before attempting optional media.
-            $post = DB::transaction(function () use ($article, $category, $authorId, $run) {
-                $article['slug'] = (Str::limit(Str::slug($article['slug']), 180, '') ?: 'artikel') . '-' . Str::uuid();
-                $post = BlogPost::create(array_merge($article, [
-                    'category_id' => $category->id, 'author_id' => $authorId,
-                    'status' => 'draft', 'published_at' => null,
-                ]));
-                $run->update(['blog_post_id' => $post->id, 'status' => 'completed', 'completed_at' => now()]);
-                return $post;
-            });
+            $stage = 'Gambar';
+            $path = null;
             try {
                 $path = app(ArticleImageService::class)->generate($article['title'], $authorId);
-                $post->update(['featured_image' => $path]);
             } catch (Throwable $e) {
                 $safe = $this->safeFailure($e);
                 \Illuminate\Support\Facades\Log::warning($safe, ['run_id' => $run->id, 'stage' => 'Gambar']);
                 $run->update(['error_message' => $safe]);
             }
-            return $post;
+            $stage = 'Penyimpanan dan publikasi artikel';
+            // Validation and optional image generation finish before publication.
+            // Persist the complete article and successful run atomically.
+            return DB::transaction(function () use ($article, $category, $authorId, $run, $path) {
+                $article['slug'] = (Str::limit(Str::slug($article['slug']), 180, '') ?: 'artikel') . '-' . Str::uuid();
+                $post = BlogPost::create(array_merge($article, [
+                    'category_id' => $category->id, 'author_id' => $authorId,
+                    'featured_image' => $path,
+                    'status' => 'published', 'published_at' => now(),
+                ]));
+                $run->update(['blog_post_id' => $post->id, 'status' => 'completed', 'completed_at' => now()]);
+                return $post;
+            });
         } catch (Throwable $e) {
             $safe = $this->safeFailure($e);
             \Illuminate\Support\Facades\Log::error($safe, ['run_id' => $run?->id, 'stage' => $stage]);
