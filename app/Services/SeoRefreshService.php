@@ -52,12 +52,22 @@ class SeoRefreshService
         if (! $research && isset($previous?->recommendations['editorial_draft'])) {
             $details['editorial_draft'] = $previous->recommendations['editorial_draft'];
         }
-        return SeoPageReview::updateOrCreate(['blog_post_id' => $post->id], [
+        $review = SeoPageReview::updateOrCreate(['blog_post_id' => $post->id], [
             'page_url' => route('blog.show', $post->slug),
             'target_keyword' => $previous?->target_keyword,
             'optimization_status' => 'review_needed',
             'recommendations' => $details, 'analyzed_at' => now(),
             'next_review_at' => $research ? now()->addDays((int) config('seo_growth.review_days', 90)) : now(),
         ]);
+        SeoActivityService::record('seo.analysis', 'Analyzed article', $review, ['status' => 'completed']);
+        if ($related) {
+            SeoActivityService::record('seo.internal_link', 'Prepared internal link recommendations', $review,
+                ['mode' => 'recommended', 'count' => count($related)]);
+        }
+        if ($research) {
+            SeoActivityService::record('seo.content_refresh', 'Prepared article refresh recommendations', $review,
+                ['mode' => 'recommended', 'count' => 1]);
+        }
+        return $review;
     }
 }

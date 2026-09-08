@@ -27,6 +27,11 @@ class SeoGrowthService
             $optimized['content'] = app(InternalLinkService::class)->improve($article['content'], $article['title']);
             // Heading structure, FAQ, keyword placement and safe claims remain the
             // responsibility of the existing validated article generator.
+            $added = max(0, preg_match_all('/<a\b/i', $optimized['content']) - preg_match_all('/<a\b/i', $article['content']));
+            $optimized['_seo_activity'] = [
+                'links_added' => $added,
+                'optimized' => $optimized !== $article,
+            ];
             return $optimized;
         } catch (Throwable $e) {
             Log::warning('SEO enhancement skipped; validated article preserved.');
@@ -46,6 +51,7 @@ class SeoGrowthService
         }
         $period = $weekly ? now('Asia/Jakarta')->format('o-W') : now('Asia/Jakarta')->format('Y-m-d');
         $task = $weekly ? 'weekly' : 'daily';
+        $run = null;
         try {
             $key = $task . ':' . $period;
             if (SeoGrowthRun::where('run_key', $key)->exists()) {
@@ -98,10 +104,16 @@ class SeoGrowthService
                     $results[$stage] = ['status' => 'deferred', 'reason' => 'Dibatasi, konfigurasi belum tersedia, atau hasil belum valid; coba pada jadwal berikutnya.'];
                     Log::warning('SEO growth stage deferred.', ['run_id' => $run->id, 'stage' => $stage]);
                 }
+                $run->update(['result' => $results]);
             }
             $partial = collect($results)->contains(fn ($item) => $item['status'] !== 'completed' || data_get($item, 'result.deferred', 0) > 0);
             $run->update(['status' => $partial ? 'partial' : 'completed', 'result' => $results]);
             return ['status' => $run->status, 'stages' => $results];
+        } catch (Throwable $e) {
+            if ($run) {
+                $run->update(['status' => 'failed', 'error_message' => 'SEO Growth failed; sensitive error details withheld.']);
+            }
+            throw $e;
         } finally {
             $lock->release();
         }

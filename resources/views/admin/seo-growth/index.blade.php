@@ -8,6 +8,7 @@
 @if(!$ready)
 <div class="alert alert-info">SEO Growth belum siap. Jalankan migrasi penambahan tabel SEO Growth.</div>
 @else
+@include('admin.seo-growth.activity')
 <div class="alert alert-info">
     SEO Growth {{ config('seo_growth.enabled') ? 'aktif' : 'nonaktif' }}.
     Skor relevansi adalah penilaian internal, bukan DA/DR. Metrik authority, traffic dan Search Console belum tersedia.
@@ -22,7 +23,7 @@
     <div class="card-header"><h5 class="mb-0">Backlink Prospects</h5></div>
     <div class="card-body">
     @forelse($prospects as $prospect)
-        <div class="border-bottom pb-4 mb-4">
+        <div class="border-bottom pb-4 mb-4" id="prospect-{{ $prospect->id }}">
             <h6><a href="{{ $prospect->url }}" target="_blank" rel="noopener noreferrer">{{ $prospect->website_name }}</a></h6>
             <p class="text-break">{{ $prospect->url }}</p>
             <p>{{ $prospect->category }} · Relevansi internal: {{ $prospect->relevance_score }}/100 ·
@@ -74,7 +75,7 @@
     <div class="card-header"><h5 class="mb-0">Content Opportunities &amp; Clusters</h5></div>
     <div class="card-body">
     @forelse($opportunities as $opportunity)
-        <div class="border-bottom pb-3 mb-3">
+        <div class="border-bottom pb-3 mb-3" id="opportunity-{{ $opportunity->id }}">
             <h6>{{ $opportunity->topic }}</h6><p>{{ $opportunity->category }} · Cluster: {{ $opportunity->cluster }} · Prioritas: {{ $opportunity->priority }}/5 · {{ $opportunity->status }}</p>
             <p>Keyword: {{ $opportunity->keyword }}</p><p>{{ $opportunity->reason }}</p>
             @if($opportunity->pillar_blog_post_id)<p><a href="{{ route('admin.blog.edit', $opportunity->pillar_blog_post_id) }}">Tinjau artikel pilar</a></p>@endif
@@ -124,7 +125,7 @@
     <div class="card-header"><h5 class="mb-0">Distribution Packs</h5></div>
     <div class="card-body">
     @forelse($distributions as $pack)
-        <details class="mb-3"><summary>{{ $pack->title }} · {{ $pack->status }}</summary>
+        <details class="mb-3" id="pack-{{ $pack->id }}" @if(request('pack_id')) open @endif><summary>{{ $pack->title }} · {{ $pack->status }}</summary>
             <p class="mt-3">{{ $pack->excerpt }}</p><p class="text-break">URL artikel: {{ $pack->content }}</p>
             @foreach($pack->platform_posts ?? [] as $platform => $copy)
             <h6>{{ ucfirst($platform) }}</h6>
@@ -137,7 +138,7 @@
 </div>
 <div class="card"><div class="card-header"><h5 class="mb-0">Aktivitas &amp; Ringkasan Mingguan</h5></div><div class="card-body">
     @forelse($runs as $run)
-    <details class="mb-2"><summary>{{ $run->task }} · {{ $run->created_at->format('d M Y H:i') }} · {{ $run->status }}</summary>
+    <details class="mb-2" id="run-{{ $run->id }}" @if(request('run_id')) open @endif><summary>{{ $run->task }} · {{ $run->created_at->format('d M Y H:i') }} · {{ $run->status }}</summary>
         <pre class="text-wrap text-break mt-2">{{ json_encode($run->result, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) }}</pre>
     </details>
     @empty<p>Belum ada pekerjaan SEO Growth.</p>@endforelse

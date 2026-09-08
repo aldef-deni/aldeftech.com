@@ -10,4 +10,6 @@ return [
     'daily_api_limit' => (int) env('SEO_DAILY_API_LIMIT', 8),
     'grounding_enabled' => env('SEO_GROUNDING_ENABLED', true),
     'review_days' => 90,
+    // Shared by scheduler registration and the admin next-run calculation.
+    'schedules' => ['daily' => '0 10 * * *', 'weekly' => '0 11 * * 1'],
 ];

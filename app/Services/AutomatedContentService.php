@@ -98,12 +98,15 @@ class AutomatedContentService
             // Validation and optional image generation finish before publication.
             // Persist the complete article and successful run atomically.
             return DB::transaction(function () use ($article, $category, $authorId, $run, $path) {
+                $seoActivity = $article['_seo_activity'] ?? [];
+                unset($article['_seo_activity']);
                 $article['slug'] = (Str::limit(Str::slug($article['slug']), 180, '') ?: 'artikel') . '-' . Str::uuid();
                 $post = BlogPost::create(array_merge($article, [
                     'category_id' => $category->id, 'author_id' => $authorId,
                     'featured_image' => $path,
                     'status' => 'published', 'published_at' => now(),
                 ]));
+                SeoActivityService::articleSaved($post, $seoActivity);
                 $run->update(['blog_post_id' => $post->id, 'status' => 'completed', 'completed_at' => now()]);
                 return $post;
             });

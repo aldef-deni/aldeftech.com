@@ -71,6 +71,7 @@ class AIArticleController extends Controller
                     'status' => 'draft',
                     'published_at' => null,
                 ]);
+                \App\Services\SeoActivityService::articleSaved($post, $article['_seo_activity'] ?? []);
                 ActivityLog::log('blog.created', "Created AI draft \"{$post->title}\"", $post);
 
                 return $post;

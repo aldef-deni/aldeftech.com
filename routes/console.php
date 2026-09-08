@@ -126,7 +126,7 @@ Artisan::command('seo:growth {--weekly : Prepare refresh recommendations and sum
     }
 })->purpose('Prepare bounded SEO analysis, opportunities and distribution drafts');
 
-Schedule::command('seo:growth')->timezone('Asia/Jakarta')->dailyAt('10:00')
+Schedule::command('seo:growth')->timezone('Asia/Jakarta')->cron(config('seo_growth.schedules.daily'))
     ->when(fn () => (bool) config('seo_growth.enabled'))->withoutOverlapping(60);
-Schedule::command('seo:growth --weekly')->timezone('Asia/Jakarta')->weeklyOn(1, '11:00')
+Schedule::command('seo:growth --weekly')->timezone('Asia/Jakarta')->cron(config('seo_growth.schedules.weekly'))
     ->when(fn () => (bool) config('seo_growth.enabled'))->withoutOverlapping(60);

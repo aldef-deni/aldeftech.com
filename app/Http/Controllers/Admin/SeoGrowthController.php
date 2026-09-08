@@ -18,13 +18,18 @@ use Throwable;
 
 class SeoGrowthController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         if (! Schema::hasTable('seo_outreach_drafts')) {
             return view('admin.seo-growth.index', ['ready' => false]);
         }
+        $focus = $request->validate([
+            'prospect_id' => 'nullable|integer|min:1', 'opportunity_id' => 'nullable|integer|min:1',
+            'pack_id' => 'nullable|integer|min:1', 'run_id' => 'nullable|integer|min:1',
+        ]);
         return view('admin.seo-growth.index', [
             'ready' => true,
+            'activity' => app(\App\Services\SeoActivityService::class)->dashboard(),
             'stats' => [
                 'Artikel terbit' => BlogPost::published()->count(),
                 'Peluang konten' => SeoOpportunity::where('status', 'new')->count(),
@@ -33,11 +38,11 @@ class SeoGrowthController extends Controller
                 'Draf outreach' => SeoOutreachDraft::where('status', 'draft')->count(),
                 'Rekomendasi refresh' => SeoPageReview::where('optimization_status', 'review_needed')->count(),
             ],
-            'prospects' => BacklinkProspect::with('post', 'outreach')->latest()->paginate(10, ['*'], 'prospects'),
-            'opportunities' => SeoOpportunity::orderByDesc('priority')->latest()->paginate(10, ['*'], 'opportunities'),
+            'prospects' => BacklinkProspect::with('post', 'outreach')->when($focus['prospect_id'] ?? null, fn ($q, $id) => $q->whereKey($id))->latest()->paginate(10, ['*'], 'prospects'),
+            'opportunities' => SeoOpportunity::when($focus['opportunity_id'] ?? null, fn ($q, $id) => $q->whereKey($id))->orderByDesc('priority')->latest()->paginate(10, ['*'], 'opportunities'),
             'reviews' => SeoPageReview::with('post')->latest('analyzed_at')->paginate(10, ['*'], 'reviews'),
-            'distributions' => MarketingContent::with('blogPost')->where('content_type', 'distribution')->latest()->paginate(5, ['*'], 'packs'),
-            'runs' => SeoGrowthRun::whereIn('task', ['daily', 'weekly'])->latest()->limit(8)->get(),
+            'distributions' => MarketingContent::with('blogPost')->where('content_type', 'distribution')->when($focus['pack_id'] ?? null, fn ($q, $id) => $q->whereKey($id))->latest()->paginate(5, ['*'], 'packs'),
+            'runs' => SeoGrowthRun::whereIn('task', ['daily', 'weekly'])->when($focus['run_id'] ?? null, fn ($q, $id) => $q->whereKey($id))->latest()->limit(8)->get(),
         ]);
     }
 
