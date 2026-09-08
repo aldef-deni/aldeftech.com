@@ -28,6 +28,18 @@
 </script>
 @endpush
 
+@push('styles')
+<style>
+    .prose-lux p:not(figcaption p) {
+        text-align: justify;
+        text-align-last: start;
+        text-justify: inter-word;
+        overflow-wrap: break-word;
+        hyphens: auto;
+    }
+</style>
+@endpush
+
 @section('content')
 
 <x-page-hero
