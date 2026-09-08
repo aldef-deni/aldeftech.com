@@ -152,7 +152,7 @@ class AutomatedContentService
         $message = $e->getMessage();
         if (! in_array($message, $allowed, true)
             && ! preg_match('/^Gemini API Error \[\d{3}\]\. Coba lagi nanti\.$/', $message)
-            && ! preg_match('/^Artikel memuat klaim yang belum terverifikasi \(field: (title|slug|excerpt|content|meta_title|meta_description); rule: (number|source-or-quantity)\)\.$/', $message)) {
+            && ! ($e instanceof \App\Exceptions\ArticleClaimException)) {
             if ($e instanceof \Illuminate\Database\QueryException) {
                 $message = 'Database error; SQLSTATE ' . preg_replace('/[^A-Z0-9]/i', '', (string) $e->getCode());
             } elseif ($e instanceof \Illuminate\Http\Client\ConnectionException) {
