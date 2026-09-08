@@ -18,6 +18,16 @@ class ArticleImageService
         if (! function_exists('imagecreatefromstring') || ! function_exists('imagewebp')) {
             throw new RuntimeException('Optimasi WebP tidak tersedia.');
         }
+        // CLI automation and web uploads must both be able to write here.
+        // Fail before paying for generation when local media permissions are wrong.
+        $disk = Storage::disk('public');
+        if (config('filesystems.disks.public.driver') === 'local') {
+            $directory = $disk->path('media');
+            if ((! is_dir($directory) && ! $disk->makeDirectory('media')) || ! is_writable($directory)) {
+                \Illuminate\Support\Facades\Log::warning('Public media directory is not writable by the current process.');
+                throw new RuntimeException('Penyimpanan gambar gagal.');
+            }
+        }
         $bytes = $this->gemini->generateImage(
             'Create a professional editorial featured image for ALDEFTECH, an Indonesian technology and business consultancy. '
             . 'Premium realistic technology illustration, graphite and navy with restrained gold accents, clean composition, '
