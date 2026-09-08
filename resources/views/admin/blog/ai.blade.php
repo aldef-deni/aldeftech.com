@@ -16,8 +16,8 @@
             @error('generation')
                 <div class="alert alert-danger" role="alert">{{ $message }}</div>
             @enderror
-            <x-admin.form.textarea label="Topik Artikel" name="topic" required :rows="3" placeholder="Contoh: Manfaat otomasi proses bisnis" />
-            <x-admin.form.input label="Keyword Utama" name="primary_keyword" />
+            <x-admin.form.textarea label="Topik Artikel" name="topic" :value="$defaults['topic'] ?? ''" required :rows="3" placeholder="Contoh: Manfaat otomasi proses bisnis" />
+            <x-admin.form.input label="Keyword Utama" name="primary_keyword" :value="$defaults['primary_keyword'] ?? ''" />
             <x-admin.form.textarea label="Keyword Tambahan" name="secondary_keywords" :rows="2" help="Pisahkan keyword dengan koma." />
             <x-admin.form.select label="Kategori" name="category_id"
                 :options="$categories->pluck('name', 'id')->all()" placeholder="Tanpa kategori" />

@@ -72,11 +72,12 @@ class GeminiService
 
     public function generateJson(
         string $prompt,
-        array $schema = []
+        array $schema = [],
+        int $maxOutputTokens = 16384
     ): array {
         $generationConfig = [
             'temperature' => 0.7,
-            'maxOutputTokens' => 16384,
+            'maxOutputTokens' => min(16384, max(256, $maxOutputTokens)),
             'responseMimeType' => 'application/json',
         ];
 
@@ -128,6 +129,24 @@ class GeminiService
         }
 
         return $decoded;
+    }
+
+    public function search(string $prompt): array
+    {
+        $response = $this->request([
+            'contents' => [['role' => 'user', 'parts' => [['text' => $prompt]]]],
+            'tools' => [['google_search' => (object) []]],
+            'generationConfig' => ['temperature' => 0.2, 'maxOutputTokens' => 4096],
+        ]);
+        $metadata = data_get($response, 'candidates.0.groundingMetadata', []);
+        if (empty($metadata['groundingChunks']) || empty($metadata['groundingSupports'])) {
+            throw new RuntimeException('Sumber pencarian terverifikasi belum tersedia.');
+        }
+
+        return [
+            'text' => collect(data_get($response, 'candidates.0.content.parts', []))->pluck('text')->filter()->implode("\n"),
+            'metadata' => $metadata,
+        ];
     }
 
     public function generateImage(string $prompt): string

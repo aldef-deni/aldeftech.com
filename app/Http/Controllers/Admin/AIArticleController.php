@@ -29,9 +29,11 @@ class AIArticleController extends Controller
             . ($post->featured_image ? '' : ' Gambar belum tersedia; tambahkan melalui editor.'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
+        $defaults = $request->validate(['topic' => 'nullable|string|max:500', 'primary_keyword' => 'nullable|string|max:150']);
         return view('admin.blog.ai', [
+            'defaults' => $defaults,
             'categories' => BlogCategory::orderBy('name')->get(),
         ]);
     }

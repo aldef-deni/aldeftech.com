@@ -214,7 +214,7 @@ PROMPT;
             throw new RuntimeException('Format HTML artikel tidak lengkap.');
         }
 
-        return [
+        $article = [
             'title' => Str::limit(
                 strip_tags($result['title']),
                 255,
@@ -245,6 +245,8 @@ PROMPT;
                 ''
             ),
         ];
+
+        return app(SeoGrowthService::class)->prepareArticle($article);
     }
 
     private function validateClaims(string $text, string $field): void

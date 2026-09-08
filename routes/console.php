@@ -114,3 +114,19 @@ Schedule::command('content:generate --scheduled')
     ->timezone('Asia/Jakarta')
     ->dailyAt('07:00')
     ->withoutOverlapping(60);
+
+Artisan::command('seo:growth {--weekly : Prepare refresh recommendations and summary}', function () {
+    try {
+        $result = app(\App\Services\SeoGrowthService::class)->run((bool) $this->option('weekly'));
+        $this->info('SEO Growth: ' . $result['status']);
+        return $result['status'] === 'partial' ? 1 : 0;
+    } catch (\Throwable $e) {
+        $this->error('SEO Growth unavailable. Check migrations, configuration and safe application logs.');
+        return 1;
+    }
+})->purpose('Prepare bounded SEO analysis, opportunities and distribution drafts');
+
+Schedule::command('seo:growth')->timezone('Asia/Jakarta')->dailyAt('10:00')
+    ->when(fn () => (bool) config('seo_growth.enabled'))->withoutOverlapping(60);
+Schedule::command('seo:growth --weekly')->timezone('Asia/Jakarta')->weeklyOn(1, '11:00')
+    ->when(fn () => (bool) config('seo_growth.enabled'))->withoutOverlapping(60);
