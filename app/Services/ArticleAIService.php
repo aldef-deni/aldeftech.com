@@ -72,6 +72,8 @@ GAYA PENULISAN:
 - Informatif
 - Berorientasi pada masalah dan solusi bisnis
 - Jangan melakukan keyword stuffing
+- Jangan menjanjikan hasil pasti, mengarang fakta produk, harga, hukum, atau kemampuan teknis.
+  Jika tidak terverifikasi, hilangkan klaim spesifik dan gunakan pertimbangan umum bersyarat.
 - Jangan membuat klaim, persentase, statistik, angka riset,
   jumlah pengguna, pertumbuhan, penghematan biaya, atau data numerik
   termasuk angka yang diberikan di dalam topik atau keyword: input bukan sumber terverifikasi

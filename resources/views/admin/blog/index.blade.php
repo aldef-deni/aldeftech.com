@@ -8,11 +8,19 @@
     eyebrow="Blog"
     title="Artikel"
     subtitle="{{ $posts->total() ?? $posts->count() }} artikel">
+    <form method="POST" action="{{ route('admin.blog.ai.automatic') }}" onsubmit="this.querySelector('button').disabled = true; this.querySelector('button').textContent = 'Sedang membuat draf…';">
+        @csrf
+        <button type="submit" class="btn btn-outline-primary">Generate Otomatis Sekarang</button>
+    </form>
     <a href="{{ route('admin.blog.ai.create') }}" class="btn btn-outline-primary">Generate Artikel dengan AI</a>
     <a href="{{ route('admin.blog.create') }}" class="btn btn-primary">
         <i class="icon-base ti tabler-plus me-2"></i>Tulis Artikel
     </a>
 </x-admin.page-head>
+
+@error('generation')
+    <div class="alert alert-danger" role="alert">{{ $message }}</div>
+@enderror
 
 <div class="card">
     @if($posts->isEmpty())

@@ -151,6 +151,9 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
         Route::post('blog/ai', [\App\Http\Controllers\Admin\AIArticleController::class, 'store'])
             ->middleware('throttle:5,1')->name('blog.ai.store');
 
+        Route::post('blog/ai/automatic', [\App\Http\Controllers\Admin\AIArticleController::class, 'automatic'])
+            ->middleware('throttle:1,10')->name('blog.ai.automatic');
+
         // Blog
         Route::resource('blog', AdminBlogPostController::class)
             ->except(['show'])

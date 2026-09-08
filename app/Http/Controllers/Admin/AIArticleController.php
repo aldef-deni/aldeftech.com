@@ -14,6 +14,21 @@ use Throwable;
 
 class AIArticleController extends Controller
 {
+    public function automatic(Request $request)
+    {
+        try {
+            $post = app(\App\Services\AutomatedContentService::class)->generate(false, $request->user()->id);
+        } catch (Throwable $e) {
+            return back()->withErrors(['generation' => 'Pembuatan otomatis gagal. Periksa riwayat ai_content_runs dan konfigurasi layanan.']);
+        }
+        if (! $post) {
+            return back()->withErrors(['generation' => 'Pembuatan otomatis sedang berjalan. Tunggu sebelum mencoba lagi.']);
+        }
+        return redirect()->route('admin.blog.edit', $post)->with('success',
+            'Draf otomatis berhasil dibuat. Periksa isi sebelum menerbitkan.'
+            . ($post->featured_image ? '' : ' Gambar belum tersedia; tambahkan melalui editor.'));
+    }
+
     public function create()
     {
         return view('admin.blog.ai', [

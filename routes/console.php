@@ -98,3 +98,19 @@ Artisan::command('marketing:run {--ideas=12} {--content=3}', function () {
 Schedule::command('marketing:run --ideas=12 --content=3')
     ->dailyAt('09:00')
     ->withoutOverlapping();
+
+Artisan::command('content:generate {--scheduled : Respect the three-day interval}', function () {
+    try {
+        $post = app(\App\Services\AutomatedContentService::class)->generate((bool) $this->option('scheduled'));
+        $this->info($post ? "Draft #{$post->id} created." : 'Skipped: not due or generation already running.');
+        return 0;
+    } catch (\Throwable $e) {
+        $this->error('Automatic draft generation failed. Check ai_content_runs and service configuration.');
+        return 1;
+    }
+})->purpose('Generate an automatic blog draft');
+
+Schedule::command('content:generate --scheduled')
+    ->timezone('Asia/Jakarta')
+    ->dailyAt('07:00')
+    ->withoutOverlapping(60);

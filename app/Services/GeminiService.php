@@ -130,15 +130,41 @@ class GeminiService
         return $decoded;
     }
 
-    protected function request(array $payload): array
+    public function generateImage(string $prompt): string
+    {
+        $response = $this->request([
+            'contents' => [['role' => 'user', 'parts' => [['text' => $prompt]]]],
+            'generationConfig' => [
+                'responseModalities' => ['TEXT', 'IMAGE'],
+                'imageConfig' => ['aspectRatio' => '16:9'],
+            ],
+        ], (string) config('services.gemini.image_model', 'gemini-2.5-flash-image'));
+
+        foreach (data_get($response, 'candidates.0.content.parts', []) as $part) {
+            $data = $part['inlineData'] ?? [];
+            if (! in_array($data['mimeType'] ?? '', ['image/png', 'image/jpeg', 'image/webp'], true)) {
+                continue;
+            }
+            if (! is_string($data['data'] ?? null) || strlen($data['data']) > 28000000) {
+                continue;
+            }
+            $bytes = base64_decode($data['data'], true);
+            if ($bytes !== false && $bytes !== '') {
+                return $bytes;
+            }
+        }
+        throw new RuntimeException('Gemini tidak mengembalikan gambar.');
+    }
+
+    protected function request(array $payload, ?string $model = null): array
     {
         $url = sprintf(
             '%s/models/%s:generateContent',
             $this->baseUrl,
-            $this->model
+            $model ?? $this->model
         );
 
-        $response = Http::timeout($this->timeout)
+        $response = Http::connectTimeout(15)->timeout(min(180, max(1, $this->timeout)))
             ->acceptJson()
             ->withHeaders([
                 'x-goog-api-key' => $this->apiKey,
