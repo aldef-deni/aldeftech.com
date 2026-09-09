@@ -54,47 +54,17 @@ Fitur utamanya meliputi:
 | Asset bundler | Vite 8 |
 | Testing | PHPUnit 12 |
 
-## Menjalankan Secara Lokal
+## Kustomisasi
 
-### Prasyarat
+<p align="center">
+  <strong>JIKA BERMINAT UNTUK KUSTOMISASI BISA MENGHUBUNGI DENI AFRIZAL</strong>
+</p>
 
-- PHP 8.3 atau lebih baru
-- Composer
-- Node.js dan npm
-- MySQL
-
-### Instalasi
-
-```bash
-git clone https://github.com/aldef-deni/aldeftech.com.git
-cd aldeftech.com
-composer install
-npm install
-cp .env.example .env
-php artisan key:generate
-```
-
-Sesuaikan koneksi database dan konfigurasi lain di `.env`, lalu jalankan:
-
-```bash
-php artisan migrate --seed
-npm run build
-php artisan serve
-```
-
-Untuk mode pengembangan dengan server Laravel, queue worker, log viewer, dan Vite yang berjalan bersamaan:
-
-```bash
-composer run dev
-```
-
-Aplikasi dapat diakses melalui `http://localhost:8000`, sedangkan panel pengelola tersedia di `http://localhost:8000/admin`.
-
-## Pengujian
-
-```bash
-composer test
-```
+<p align="center">
+  <a href="https://wa.me/628128968609" target="_blank">
+    <img src="https://img.shields.io/badge/WhatsApp-Hubungi_Deni_Afrizal-25D366?style=for-the-badge&logo=whatsapp&logoColor=white" alt="Hubungi Deni Afrizal melalui WhatsApp">
+  </a>
+</p>
 
 ## Kontak
 
