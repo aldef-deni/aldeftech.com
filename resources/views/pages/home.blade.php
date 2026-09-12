@@ -170,22 +170,26 @@
 {{-- ══════════════════════════════════════════════════════════════════════
      DIFFERENTIATORS
      ══════════════════════════════════════════════════════════════════ --}}
-<section class="section-padding surface-parchment border-y border-line">
-    <div class="shell">
+<section class="home-pillars-dark section-padding relative overflow-hidden">
+    <div class="home-pillars-glow home-pillars-glow-left" aria-hidden="true"></div>
+    <div class="home-pillars-glow home-pillars-glow-right" aria-hidden="true"></div>
+    <div class="absolute inset-0 veil-grid pointer-events-none" aria-hidden="true"></div>
+
+    <div class="shell relative z-10">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
 
             <div class="lg:col-span-5 lg:sticky lg:top-32 lg:self-start reveal-left">
-                <p class="eyebrow">{{ __('home.pillars.eyebrow') }}</p>
-                <h2 class="mt-5 text-3xl sm:text-4xl lg:text-[2.75rem]">
+                <p class="eyebrow home-pillars-eyebrow">{{ __('home.pillars.eyebrow') }}</p>
+                <h2 class="mt-5 text-3xl sm:text-4xl lg:text-[2.75rem] text-white">
                     {{ __('home.pillars.title') }}
-                    <span class="accent-serif accent-gold">{{ __('home.pillars.accent') }}</span>{{ __('home.pillars.title_after') }}
+                    <span class="accent-serif home-pillars-accent">{{ __('home.pillars.accent') }}</span>{{ __('home.pillars.title_after') }}
                 </h2>
-                <p class="mt-6 text-base leading-relaxed text-graphite-600">
+                <p class="mt-6 text-base leading-relaxed text-graphite-300">
                     {{ __('home.pillars.lead') }}
                 </p>
 
                 <div class="mt-9 flex flex-wrap gap-3">
-                    <a href="{{ lroute('about') }}" class="btn btn-obsidian">
+                    <a href="{{ lroute('about') }}" class="btn btn-ghost home-pillars-cta">
                         <span>{{ __('home.pillars.cta') }}</span>
                         <svg class="btn-arrow w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                     </a>
@@ -194,13 +198,13 @@
 
             <div class="lg:col-span-7 cards-swipe md:space-y-4" data-reveal-group="90">
                 @foreach($pillars as $i => $pillar)
-                <article class="card-lux reveal group p-6 lg:p-8 !flex-row items-start gap-5">
-                    <span class="icon-plate">
+                <article class="card-obsidian home-pillar-card reveal group p-6 lg:p-8 !flex-row items-start gap-5">
+                    <span class="icon-plate icon-plate-dark home-pillar-icon">
                         <x-lux-icon :name="$pillar['icon']" />
                     </span>
                     <div class="min-w-0">
-                        <h3 class="text-base lg:text-lg">{{ __('home.pillars.' . $pillar['key'] . '.title') }}</h3>
-                        <p class="mt-2.5 text-sm leading-relaxed text-graphite-600">{{ __('home.pillars.' . $pillar['key'] . '.body') }}</p>
+                        <h3 class="text-base lg:text-lg text-white">{{ __('home.pillars.' . $pillar['key'] . '.title') }}</h3>
+                        <p class="mt-2.5 text-sm leading-relaxed text-graphite-300">{{ __('home.pillars.' . $pillar['key'] . '.body') }}</p>
                     </div>
                 </article>
                 @endforeach
@@ -536,6 +540,97 @@
 
 @push('styles')
 <style>
+    .home-pillars-dark {
+        isolation: isolate;
+        color: #e8eaee;
+        background:
+            radial-gradient(85% 110% at 102% 54%, rgb(123 12 24 / 42%) 0%, rgb(85 7 16 / 17%) 42%, transparent 72%),
+            radial-gradient(64% 90% at -8% 4%, rgb(195 30 48 / 18%) 0%, transparent 67%),
+            linear-gradient(135deg, #050506 0%, #090709 38%, #12070a 69%, #21070b 100%);
+        border-block: 1px solid rgb(255 255 255 / 7%);
+    }
+    .home-pillars-dark::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+        background: linear-gradient(112deg, transparent 18%, rgb(255 255 255 / 2.5%) 49%, transparent 76%);
+    }
+    .home-pillars-glow {
+        position: absolute;
+        z-index: -1;
+        border-radius: 999px;
+        filter: blur(90px);
+        pointer-events: none;
+    }
+    .home-pillars-glow-left {
+        width: 24rem;
+        height: 24rem;
+        left: -15rem;
+        top: -8rem;
+        background: rgb(225 38 58 / 18%);
+    }
+    .home-pillars-glow-right {
+        width: 32rem;
+        height: 32rem;
+        right: -19rem;
+        bottom: -15rem;
+        background: rgb(159 13 31 / 25%);
+    }
+    .home-pillars-eyebrow { color: #ffb1b9; }
+    .home-pillars-eyebrow::before {
+        background: linear-gradient(90deg, transparent, #e23c4f);
+    }
+    .home-pillars-accent {
+        background: linear-gradient(105deg, #f3d8c7 0%, #ff9ba7 45%, #df3a4d 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+    }
+    .home-pillar-card {
+        background: linear-gradient(145deg, rgb(255 255 255 / 5.5%), rgb(114 9 21 / 9%));
+        border-color: rgb(255 255 255 / 10%);
+        box-shadow: inset 0 1px 0 rgb(255 255 255 / 4%), 0 24px 55px -40px rgb(0 0 0 / 90%);
+    }
+    .home-pillar-card::after {
+        background: linear-gradient(90deg, transparent, rgb(232 62 80 / 80%), rgb(243 216 199 / 65%), transparent);
+    }
+    .home-pillar-icon {
+        color: #ffadb6;
+        background: linear-gradient(145deg, rgb(199 30 49 / 18%), rgb(255 255 255 / 4%));
+        border-color: rgb(232 62 80 / 25%);
+    }
+    .home-pillars-cta {
+        border-color: rgb(232 62 80 / 32%);
+        box-shadow: inset 0 1px 0 rgb(255 255 255 / 6%);
+    }
+    @media (hover: hover) {
+        .home-pillar-card:hover {
+            background: linear-gradient(145deg, rgb(255 255 255 / 7%), rgb(142 12 28 / 15%));
+            border-color: rgb(232 62 80 / 34%);
+            box-shadow: 0 30px 64px -35px rgb(109 5 18 / 75%), inset 0 1px 0 rgb(255 255 255 / 6%);
+        }
+        .home-pillar-card:hover .home-pillar-icon {
+            color: #fff5f2;
+            background: linear-gradient(145deg, #b3192d, #77101f);
+            border-color: rgb(255 143 156 / 48%);
+            box-shadow: 0 14px 30px -14px rgb(216 38 59 / 70%);
+        }
+        .home-pillars-cta:hover {
+            background: rgb(173 20 38 / 20%);
+            border-color: rgb(255 122 137 / 52%);
+        }
+    }
+    @supports not ((-webkit-background-clip: text) or (background-clip: text)) {
+        .home-pillars-accent {
+            background: none;
+            -webkit-text-fill-color: currentColor;
+            color: #ff9ba7;
+        }
+    }
+
     .home-video-hero {
         position: relative; overflow: hidden; padding-top: 8.25rem;
         background: radial-gradient(ellipse at 50% 0, #23313a 0, #10171c 48%, #090e13 100%);
