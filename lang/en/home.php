@@ -10,6 +10,10 @@ return [
     'video' => [
         'title' => 'Get to know Aldef Tech',
         'watch' => 'Watch Our Introduction',
+        'play' => 'Play video',
+        'pause' => 'Pause video',
+        'unmute' => 'Enable sound',
+        'mute' => 'Mute sound',
     ],
 
     'hero' => [

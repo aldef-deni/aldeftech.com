@@ -10,6 +10,10 @@ return [
     'video' => [
         'title' => 'Kenali Aldef Tech lebih dekat',
         'watch' => 'Tonton Video Perkenalan',
+        'play' => 'Putar video',
+        'pause' => 'Jeda video',
+        'unmute' => 'Aktifkan suara',
+        'mute' => 'Matikan suara',
     ],
 
     'hero' => [

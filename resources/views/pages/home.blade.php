@@ -34,56 +34,34 @@
 {{-- ══════════════════════════════════════════════════════════════════════
      HERO
      ══════════════════════════════════════════════════════════════════ --}}
-<section class="surface-hero-image spectrum-edge relative overflow-hidden pt-36 pb-0 lg:pt-48"
-         style="--hero-bg: url('{{ asset('images/hero-banner.webp') }}');">
-    <div class="absolute inset-0 veil-grid pointer-events-none" aria-hidden="true"></div>
-    <div class="bloom bloom-violet w-[34rem] h-[34rem] -top-60 left-1/2 -translate-x-1/2 opacity-25" aria-hidden="true"></div>
-
-    <div class="shell relative z-10">
-        <div class="max-w-4xl mx-auto text-center">
-
-            <p class="eyebrow eyebrow-center eyebrow-spectrum reveal">{{ __('home.hero.eyebrow') }}</p>
-
-            <h1 class="mt-7 text-[2.5rem] leading-[1.08] sm:text-5xl lg:text-[4rem] text-white reveal reveal-d1">
-                {{ __('home.hero.title') }}
-                <span class="accent-serif accent-spectrum">{{ __('home.hero.accent') }}</span>
-                {{ __('home.hero.title_after') }}
-            </h1>
-
-            <p class="mt-7 text-base sm:text-lg leading-relaxed text-graphite-300 max-w-2xl mx-auto reveal reveal-d2">
-                {{ __('home.hero.lead') }}
-            </p>
-
-            <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3.5 reveal reveal-d3">
-                <a href="{{ $waUrl }}" target="_blank" rel="noopener" class="btn btn-primary btn-lg w-full sm:w-auto magnetic" data-magnetic="0.1">
-                    <span>{{ __('site.cta.consult_free') }}</span>
-                    <svg class="btn-arrow w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-                </a>
-                <a href="{{ lroute('portfolio') }}" class="btn btn-ghost btn-lg w-full sm:w-auto">
-                    <span>{{ __('home.hero.view_portfolio') }}</span>
-                </a>
-            </div>
-
+<section class="home-video-hero spectrum-edge" aria-label="{{ __('home.video.title') }}">
+    <h1 class="home-video-heading">Aldef Tech</h1>
+    <div class="shell">
+        <figure class="home-video-frame">
+            <img class="home-video-poster" src="{{ asset('images/aldef-tech-banner.webp') }}"
+                 alt="{{ __('home.hero.banner_alt') }}" width="1376" height="768" fetchpriority="high">
             @if($previewVideoUrl)
-                <x-video-popup :src="$previewVideoUrl"
-                    :title="__('home.video.title')" :watch="__('home.video.watch')"
-                    :poster="asset('images/aldef-tech-banner.webp')" trigger-class="btn-ghost" />
+                <video id="home-banner-video" src="{{ $previewVideoUrl }}"
+                       poster="{{ asset('images/aldef-tech-banner.webp') }}"
+                       autoplay loop playsinline controls preload="auto"
+                       aria-label="{{ __('home.video.title') }}"></video>
+                <div id="home-video-actions" class="home-video-actions" hidden>
+                    <button id="home-video-toggle" type="button" aria-label="{{ __('home.video.pause') }}"
+                            data-play="{{ __('home.video.play') }}" data-pause="{{ __('home.video.pause') }}">
+                        <svg data-icon="pause" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 4h4v16H6zm8 0h4v16h-4z" /></svg>
+                        <svg data-icon="play" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" hidden><path d="M8 5v14l11-7z" /></svg>
+                    </button>
+                    <button id="home-video-sound" type="button" aria-label="{{ __('home.video.mute') }}"
+                            data-unmute="{{ __('home.video.unmute') }}" data-mute="{{ __('home.video.mute') }}">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                            <path d="M11 5 6 9H3v6h3l5 4z" />
+                            <path data-icon="sound" d="M15 8a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14" />
+                            <path data-icon="muted" d="m16 9 6 6m0-6-6 6" hidden />
+                        </svg>
+                    </button>
+                </div>
             @endif
-
-            <p class="mt-5 inline-flex items-center gap-2.5 text-xs text-graphite-400 reveal reveal-d4">
-                <span class="pulse-dot"></span>
-                {{ __('site.cta.response_time') }}
-            </p>
-        </div>
-
-        {{-- Brand key visual --}}
-        <div class="mt-14 lg:mt-20 max-w-5xl mx-auto reveal-scale reveal-d3" data-tilt="3">
-            <figure class="frame-banner">
-                <img src="{{ asset('images/aldef-tech-banner.webp') }}"
-                     alt="{{ __('home.hero.banner_alt') }}"
-                     width="1376" height="768" fetchpriority="high" decoding="async">
-            </figure>
-        </div>
+        </figure>
 
         {{-- Trust metrics --}}
         <div class="max-w-4xl mx-auto mt-14 lg:mt-16 grid grid-cols-2 sm:grid-cols-4 gap-y-9 gap-x-6 pb-16 lg:pb-20"
@@ -555,3 +533,112 @@
 </section>
 
 @endsection
+
+@push('styles')
+<style>
+    .home-video-hero {
+        position: relative; overflow: hidden; padding-top: 8.25rem;
+        background: radial-gradient(ellipse at 50% 0, #23313a 0, #10171c 48%, #090e13 100%);
+    }
+    .home-video-heading {
+        position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+        overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0;
+    }
+    .home-video-frame {
+        position: relative; isolation: isolate; width: 100%; max-width: 80rem; aspect-ratio: 16 / 9;
+        margin: 0 auto; overflow: hidden; border: 1px solid rgb(206 174 114 / 45%); border-radius: 1.5rem;
+        background: #090e13; box-shadow: 0 28px 70px rgb(0 0 0 / 35%), 0 0 0 5px rgb(206 174 114 / 3%);
+    }
+    .home-video-poster, #home-banner-video {
+        position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain;
+    }
+    #home-banner-video { z-index: 1; background: #090e13; }
+    .home-video-actions:not([hidden]) {
+        position: absolute; right: 1rem; bottom: 1rem; z-index: 2; display: flex; gap: .5rem;
+    }
+    .home-video-actions button {
+        display: grid; place-items: center; width: 44px; height: 44px; cursor: pointer;
+        color: #f1d8a8; background: rgb(9 14 19 / 80%); backdrop-filter: blur(12px);
+        border: 1px solid rgb(224 197 142 / 40%); border-radius: 50%;
+        box-shadow: 0 4px 16px rgb(0 0 0 / 20%);
+    }
+    .home-video-actions button:hover { background: #283038; }
+    .home-video-actions button:focus-visible { outline: 2px solid #f1d8a8; outline-offset: 3px; }
+    .home-video-actions [hidden] { display: none; }
+    @media (max-width: 1023px) {
+        .home-video-hero { padding-top: 6.75rem; }
+    }
+    @media (max-width: 640px) {
+        .home-video-hero > .shell { padding-inline: .75rem; }
+        .home-video-frame { border-radius: 1rem; }
+        .home-video-actions:not([hidden]) { right: .5rem; bottom: .5rem; gap: .375rem; }
+    }
+</style>
+@endpush
+
+@push('scripts')
+<script>
+(() => {
+    const video = document.getElementById('home-banner-video');
+    if (!video) return;
+    const actions = document.getElementById('home-video-actions');
+    const toggle = document.getElementById('home-video-toggle');
+    const sound = document.getElementById('home-video-sound');
+    let pageActive = true;
+
+    const updateControls = () => {
+        toggle.setAttribute('aria-label', video.paused ? toggle.dataset.play : toggle.dataset.pause);
+        toggle.querySelector('[data-icon="play"]').toggleAttribute('hidden', !video.paused);
+        toggle.querySelector('[data-icon="pause"]').toggleAttribute('hidden', video.paused);
+        const muted = video.muted || video.volume === 0;
+        sound.setAttribute('aria-label', muted ? sound.dataset.unmute : sound.dataset.mute);
+        sound.querySelector('[data-icon="sound"]').toggleAttribute('hidden', muted);
+        sound.querySelector('[data-icon="muted"]').toggleAttribute('hidden', !muted);
+    };
+
+    const playVideo = async () => {
+        if (!pageActive) return;
+        try {
+            await video.play();
+        } catch (failure) {
+            if (pageActive && failure.name === 'NotAllowedError' && !video.muted) {
+                // Keep the banner moving when the browser blocks audible autoplay.
+                video.muted = true;
+                try { await video.play(); } catch { /* The play control remains available. */ }
+            }
+        }
+        updateControls();
+    };
+
+    toggle.addEventListener('click', () => video.paused ? playVideo() : video.pause());
+    sound.addEventListener('click', () => {
+        video.muted = !(video.muted || video.volume === 0);
+        if (!video.muted) video.volume = 1;
+        if (video.paused) playVideo();
+    });
+    video.addEventListener('play', updateControls);
+    video.addEventListener('pause', updateControls);
+    video.addEventListener('volumechange', updateControls);
+    video.addEventListener('playing', () => { if (!pageActive) video.pause(); });
+    const showPoster = () => {
+        video.hidden = true;
+        actions.hidden = true;
+    };
+    video.addEventListener('error', showPoster);
+    window.addEventListener('pagehide', () => {
+        pageActive = false;
+        video.pause();
+    });
+    window.addEventListener('pageshow', (event) => {
+        pageActive = true;
+        if (event.persisted) playVideo();
+    });
+
+    video.controls = false;
+    actions.hidden = false;
+    updateControls();
+    if (video.error) showPoster();
+    else playVideo();
+})();
+</script>
+@endpush
