@@ -553,6 +553,7 @@
         position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain;
     }
     #home-banner-video { z-index: 1; background: #090e13; }
+    #home-banner-video:focus-visible { outline: 2px solid #f1d8a8; outline-offset: -4px; }
     .home-video-actions:not([hidden]) {
         position: absolute; right: 1rem; bottom: 1rem; z-index: 2; display: flex; gap: .5rem;
     }
@@ -565,6 +566,18 @@
     .home-video-actions button:hover { background: #283038; }
     .home-video-actions button:focus-visible { outline: 2px solid #f1d8a8; outline-offset: 3px; }
     .home-video-actions [hidden] { display: none; }
+    @media (min-width: 1024px) {
+        .home-video-hero { padding-top: 0; }
+        .home-video-hero > .shell { width: 100%; max-width: none; padding-inline: 0; }
+        .home-video-frame { max-width: none; border: 0; border-radius: 0; box-shadow: none; }
+    }
+    @media (prefers-reduced-motion: no-preference) {
+        .home-video-actions:not([hidden]) { animation: home-video-controls-in .2s ease-out; }
+        @keyframes home-video-controls-in {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: none; }
+        }
+    }
     @media (max-width: 1023px) {
         .home-video-hero { padding-top: 6.75rem; }
     }
@@ -585,6 +598,38 @@
     const toggle = document.getElementById('home-video-toggle');
     const sound = document.getElementById('home-video-sound');
     let pageActive = true;
+    let controlsTimer;
+
+    const hideControls = () => {
+        clearTimeout(controlsTimer);
+        actions.hidden = true;
+    };
+    const showControls = () => {
+        if (video.hidden || !pageActive) return;
+        clearTimeout(controlsTimer);
+        actions.hidden = false;
+        controlsTimer = setTimeout(() => {
+            // Keep keyboard controls available while a button has keyboard focus.
+            if (!actions.querySelector(':focus-visible')) hideControls();
+        }, 3000);
+    };
+    video.addEventListener('click', showControls);
+    video.addEventListener('focus', () => { if (video.matches(':focus-visible')) showControls(); });
+    video.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            showControls();
+        } else if (event.key === 'Escape') hideControls();
+    });
+    actions.addEventListener('click', showControls);
+    actions.addEventListener('focusin', showControls);
+    actions.addEventListener('focusout', showControls);
+    actions.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+            video.focus({ preventScroll: true });
+            hideControls();
+        }
+    });
 
     const updateControls = () => {
         toggle.setAttribute('aria-label', video.paused ? toggle.dataset.play : toggle.dataset.pause);
@@ -622,11 +667,12 @@
     video.addEventListener('playing', () => { if (!pageActive) video.pause(); });
     const showPoster = () => {
         video.hidden = true;
-        actions.hidden = true;
+        hideControls();
     };
     video.addEventListener('error', showPoster);
     window.addEventListener('pagehide', () => {
         pageActive = false;
+        hideControls();
         video.pause();
     });
     window.addEventListener('pageshow', (event) => {
@@ -635,7 +681,8 @@
     });
 
     video.controls = false;
-    actions.hidden = false;
+    video.tabIndex = 0;
+    video.setAttribute('aria-controls', 'home-video-actions');
     updateControls();
     if (video.error) showPoster();
     else playVideo();
