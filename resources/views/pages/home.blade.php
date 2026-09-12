@@ -148,7 +148,10 @@
                 @endif
 
                 <div class="mt-auto pt-7">
-                    <a href="{{ lroute('services') }}" class="link-arrow">
+                    <a href="{{ isset(config('service_landings.pages')[$service->slug]) ? lroute('services.show', $service->slug) : lroute('services') }}"
+                       class="link-arrow" data-analytics-event="cta_click"
+                       data-analytics-cta-location="service_card" data-analytics-service="{{ $service->title }}"
+                       data-analytics-destination="service_detail">
                         <span>{{ __('site.common.read_more') }}</span>
                         <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                     </a>

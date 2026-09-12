@@ -197,6 +197,32 @@
             </div>
         </div>
 
+        @if($lead->utm_source || $lead->utm_medium || $lead->utm_campaign || $lead->landing_page || $lead->referrer)
+        <div class="card mb-4">
+            <div class="card-header"><h5 class="card-title mb-0">Atribusi Marketing</h5></div>
+            <div class="card-body">
+                <dl class="mb-0">
+                    @foreach([
+                        'UTM Source' => $lead->utm_source,
+                        'UTM Medium' => $lead->utm_medium,
+                        'UTM Campaign' => $lead->utm_campaign,
+                        'UTM Term' => $lead->utm_term,
+                        'UTM Content' => $lead->utm_content,
+                        'GCLID' => $lead->gclid,
+                        'FBCLID' => $lead->fbclid,
+                        'Landing Page' => $lead->landing_page,
+                        'Referrer' => $lead->referrer,
+                    ] as $label => $value)
+                        @if($value)
+                            <dt class="small text-body-secondary fw-normal">{{ $label }}</dt>
+                            <dd class="mb-3 text-break">{{ $value }}</dd>
+                        @endif
+                    @endforeach
+                </dl>
+            </div>
+        </div>
+        @endif
+
         <x-admin.delete
             :action="route('admin.leads.destroy', $lead)"
             :confirm="'Hapus lead dari ' . $lead->name . '? Data ini tidak dapat dipulihkan.'"

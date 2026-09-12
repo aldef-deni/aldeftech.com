@@ -15,7 +15,7 @@ return [
     'default' => 'id',
 
     'available' => [
-        'id' => ['native' => 'Bahasa Indonesia', 'short' => 'ID', 'html' => 'id', 'og' => 'id_ID'],
+        'id' => ['native' => 'Bahasa Indonesia', 'short' => 'ID', 'html' => 'id-ID', 'og' => 'id_ID'],
         'en' => ['native' => 'English',          'short' => 'EN', 'html' => 'en', 'og' => 'en_US'],
     ],
 ];

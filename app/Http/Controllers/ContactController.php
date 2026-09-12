@@ -8,12 +8,20 @@ use App\Services\SpamScorer;
 use App\Services\WhatsAppService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class ContactController extends Controller
 {
     public function index()
     {
         return view('pages.contact');
+    }
+
+    public function thankYou()
+    {
+        return view('pages.contact-thank-you', [
+            'leadConversion' => session()->pull('lead_conversion'),
+        ]);
     }
 
     public function store(Request $request)
@@ -26,6 +34,17 @@ class ContactController extends Controller
             'project_type' => 'nullable|string|max:100',
             'budget_range' => 'nullable|string|max:100',
             'message' => 'required|string|max:5000',
+            'utm_source' => 'nullable|string|max:160',
+            'utm_medium' => 'nullable|string|max:160',
+            'utm_campaign' => 'nullable|string|max:160',
+            'utm_term' => 'nullable|string|max:160',
+            'utm_content' => 'nullable|string|max:160',
+            'gclid' => 'nullable|string|max:160',
+            'gbraid' => 'nullable|string|max:160',
+            'wbraid' => 'nullable|string|max:160',
+            'fbclid' => 'nullable|string|max:160',
+            'landing_page' => 'nullable|string|max:500',
+            'referrer' => 'nullable|string|max:500',
         ], [
             'name.required' => 'Nama wajib diisi.',
             'email.required' => 'Email wajib diisi.',
@@ -57,6 +76,15 @@ class ContactController extends Controller
         $validated['spam_score'] = $assessment['score'];
         $validated['spam_reasons'] = $assessment['reasons'];
         $validated['is_spam'] = app(SpamScorer::class)->isSpam($assessment['score']);
+        $utmSource = Str::lower((string) ($validated['utm_source'] ?? ''));
+        $validated['source'] = match (true) {
+            filled($validated['gclid'] ?? null) || str_contains($utmSource, 'google') => 'google',
+            filled($validated['fbclid'] ?? null) || str_contains($utmSource, 'facebook') || str_contains($utmSource, 'meta') => 'facebook',
+            str_contains($utmSource, 'instagram') => 'instagram',
+            str_contains($utmSource, 'linkedin') => 'linkedin',
+            str_contains($utmSource, 'referral') => 'referral',
+            default => 'website',
+        };
 
         try {
             $lead = Lead::create($validated);
@@ -84,8 +112,18 @@ class ContactController extends Controller
                 ));
         }
 
-        return redirect(lroute('contact'))
-            ->with('success', 'Brief Anda sudah kami terima. Tim kami akan menghubungi Anda dalam waktu dekat.')
-            ->with('whatsapp_url', WhatsAppService::getUrl());
+        $conversion = [
+            'id' => (string) Str::uuid(),
+            'form_name' => 'project_brief',
+            'lead_source' => $lead->source,
+            'project_type' => $lead->project_type,
+            'budget_range' => $lead->budget_range,
+        ];
+        foreach (['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'gclid', 'gbraid', 'wbraid', 'fbclid'] as $field) {
+            $conversion[$field] = $lead->{$field};
+        }
+
+        return redirect(lroute('contact.thank-you'))
+            ->with('lead_conversion', $conversion);
     }
 }

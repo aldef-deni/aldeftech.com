@@ -25,7 +25,7 @@ class AIArticleController extends Controller
             return back()->withErrors(['generation' => 'Pembuatan otomatis sedang berjalan. Tunggu sebelum mencoba lagi.']);
         }
         return redirect()->route('admin.blog.edit', $post)->with('success',
-            'Artikel otomatis berhasil diterbitkan.'
+            'Draf artikel otomatis berhasil dibuat. Periksa isi dan klaim sebelum menerbitkan.'
             . ($post->featured_image ? '' : ' Gambar belum tersedia; tambahkan melalui editor.'));
     }
 

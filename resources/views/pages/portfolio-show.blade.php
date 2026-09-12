@@ -5,6 +5,9 @@
     $metaDescription = $portfolio->meta_description ?: excerpt_text($portfolio->short_description, 160);
     $ogImage = media_url($portfolio->featured_image, 'images/og-image.jpg');
     $ogType = 'article';
+    $analyticsPageType = 'case-study';
+    $analyticsItem = $portfolio->slug;
+    $relatedServiceSlug = service_landing_slug_for($portfolio->category?->name . ' ' . $portfolio->title);
 
     $narrative = array_filter([
         __('pages.portfolio.detail.challenge') => $portfolio->challenge,
@@ -84,7 +87,7 @@
 <section class="surface-ivory pt-12 lg:pt-16">
     <div class="shell">
         <figure class="frame-lux reveal-scale">
-            <img src="{{ $src }}" alt="{{ $portfolio->title }}" class="!h-auto" decoding="async">
+            <img src="{{ $src }}" alt="{{ $portfolio->title }}" class="!h-auto" decoding="async" fetchpriority="high">
         </figure>
     </div>
 </section>
@@ -151,13 +154,29 @@
                             {{ __('pages.portfolio.detail.similar_lead') }}
                         </p>
                         <a href="{{ \App\Services\WhatsAppService::getProjectUrl($portfolio->title) }}"
-                           target="_blank" rel="noopener" class="btn btn-primary btn-block mt-6">
+                           target="_blank" rel="noopener" class="btn btn-primary btn-block mt-6"
+                           data-analytics-event="cta_click" data-analytics-also-event="whatsapp_click"
+                           data-analytics-cta-location="portfolio_detail"
+                           data-analytics-portfolio-slug="{{ $portfolio->slug }}"
+                           data-analytics-destination="whatsapp">
                             <span>{{ __('pages.portfolio.detail.consult_now') }}</span>
                             <svg class="btn-arrow w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                         </a>
-                        <a href="{{ lroute('contact') }}" class="btn btn-outline btn-block mt-2.5">
+                        <a href="{{ lroute('contact') }}" class="btn btn-outline btn-block mt-2.5"
+                           data-analytics-event="cta_click" data-analytics-cta-location="portfolio_detail"
+                           data-analytics-portfolio-slug="{{ $portfolio->slug }}"
+                           data-analytics-destination="contact">
                             <span>{{ __('pages.portfolio.detail.send_brief') }}</span>
                         </a>
+                        @if($relatedServiceSlug)
+                        <a href="{{ lroute('services.show', $relatedServiceSlug) }}"
+                           class="btn btn-outline btn-block mt-2.5"
+                           data-analytics-event="cta_click" data-analytics-cta-location="portfolio_detail"
+                           data-analytics-portfolio-slug="{{ $portfolio->slug }}"
+                           data-analytics-destination="service">
+                            {{ app()->isLocale('id') ? 'Lihat layanan terkait' : 'View related service' }}
+                        </a>
+                        @endif
                     </div>
 
                     <a href="{{ lroute('portfolio') }}" class="link-arrow">

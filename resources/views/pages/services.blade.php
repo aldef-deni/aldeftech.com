@@ -13,7 +13,9 @@
     :accent="__('pages.services.accent')"
     :lead="__('pages.services.lead')">
     <div class="flex flex-col sm:flex-row items-center justify-center gap-3.5">
-        <a href="{{ \App\Services\WhatsAppService::getUrl() }}" target="_blank" rel="noopener" class="btn btn-primary w-full sm:w-auto">
+        <a href="{{ \App\Services\WhatsAppService::getUrl() }}" target="_blank" rel="noopener" class="btn btn-primary w-full sm:w-auto"
+           data-analytics-event="whatsapp_click" data-analytics-cta-location="hero"
+           data-analytics-destination="whatsapp">
             <span>{{ __('pages.services.cta_discuss') }}</span>
             <svg class="btn-arrow w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
         </a>
@@ -27,6 +29,7 @@
 
     <div class="shell relative z-10 space-y-5 lg:space-y-6">
         @foreach($services as $i => $service)
+        @php $landingAvailable = isset(config('service_landings.pages')[$service->slug]); @endphp
         <article id="{{ $service->slug ?? \Illuminate\Support\Str::slug($service->title) }}"
                  class="card-lux reveal group scroll-mt-28 p-7 sm:p-8 lg:p-10">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-7 lg:gap-12 items-start">
@@ -74,9 +77,19 @@
                 </div>
             </div>
 
-            <div class="mt-8 pt-6 border-t border-line-soft">
+                    <div class="mt-8 pt-6 border-t border-line-soft">
+                @if($landingAvailable)
+                <a href="{{ lroute('services.show', $service->slug) }}" class="link-arrow"
+                   data-analytics-event="cta_click" data-analytics-cta-location="service_card"
+                   data-analytics-service="{{ $service->title }}" data-analytics-destination="service_detail">
+                    <span>{{ app()->isLocale('id') ? 'Lihat detail layanan' : 'View service details' }}</span>
+                    <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                </a>
+                @endif
                 <a href="{{ \App\Services\WhatsAppService::getProjectUrl($service->title) }}"
-                   target="_blank" rel="noopener" class="link-arrow">
+                   target="_blank" rel="noopener" class="link-arrow {{ $landingAvailable ? 'mt-3' : '' }}"
+                   data-analytics-event="whatsapp_click" data-analytics-cta-location="service_card"
+                   data-analytics-service="{{ $service->title }}" data-analytics-destination="whatsapp">
                     <span>{{ __('pages.services.consult_this') }}</span>
                     <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                 </a>

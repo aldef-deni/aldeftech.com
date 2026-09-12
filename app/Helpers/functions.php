@@ -312,3 +312,37 @@ if (! function_exists('site_favicon')) {
         return media_url(\App\Models\SiteSetting::get('site_favicon')) ?: null;
     }
 }
+
+if (! function_exists('service_landing_slug_for')) {
+    /**
+     * Map editorial categories to a relevant service landing without inventing
+     * a relationship in the database. Returns null when no safe match exists.
+     */
+    function service_landing_slug_for(?string $text): ?string
+    {
+        $text = \Illuminate\Support\Str::lower((string) $text);
+        $matches = [
+            'ai' => 'ai-development',
+            'chatbot' => 'ai-development',
+            'saas' => 'saas-development',
+            'cloud' => 'saas-development',
+            'api' => 'system-integration',
+            'integration' => 'system-integration',
+            'automation' => 'business-automation',
+            'website' => 'website-development',
+            'web' => 'web-application',
+            'consult' => 'it-consulting',
+            'erp' => 'custom-software-development',
+            'system' => 'custom-software-development',
+        ];
+
+        foreach ($matches as $needle => $slug) {
+            if (\Illuminate\Support\Str::contains($text, $needle)
+                && isset(config('service_landings.pages')[$slug])) {
+                return $slug;
+            }
+        }
+
+        return null;
+    }
+}

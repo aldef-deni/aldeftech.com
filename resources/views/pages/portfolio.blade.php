@@ -3,6 +3,7 @@
 @php
     $pageTitle = __('pages.portfolio.meta_title');
     $metaDescription = __('pages.portfolio.meta_description');
+    $analyticsPageType = 'portfolio';
 
     // Fallback entries carry a plain object category; database rows carry a relation.
     $filters = collect($portfolios)
@@ -51,7 +52,9 @@
 
             <article class="reveal"
                      @if($catName) x-show="filter === 'all' || filter === @js($catName)" x-transition.opacity.duration.400ms @endif>
-                <a href="{{ lroute('portfolio.show', $item->slug) }}" class="card-lux group h-full overflow-hidden">
+                <a href="{{ lroute('portfolio.show', $item->slug) }}" class="card-lux group h-full overflow-hidden"
+                   data-analytics-event="cta_click" data-analytics-cta-location="portfolio"
+                   data-analytics-portfolio-slug="{{ $item->slug }}" data-analytics-destination="case_study">
 
                     <div class="frame-lux !rounded-none !border-0 !border-b !border-line aspect-[16/10] bg-ivory-200">
                         @if($src = media_url($item->featured_image))

@@ -109,7 +109,9 @@
                             {{ __('pages.blog.similar_body') }}
                         </p>
                         <a href="{{ \App\Services\WhatsAppService::getUrl() }}" target="_blank" rel="noopener"
-                           class="btn btn-primary btn-sm btn-block mt-5">
+                           class="btn btn-primary btn-sm btn-block mt-5"
+                           data-analytics-event="whatsapp_click" data-analytics-cta-location="article_index"
+                           data-analytics-destination="whatsapp">
                             <span>{{ __('pages.blog.start_discussion') }}</span>
                         </a>
                     </div>

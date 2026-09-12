@@ -50,7 +50,9 @@
                 </div>
 
                 <a href="{{ $waUrl }}" target="_blank" rel="noopener"
-                   class="hidden xl:inline-flex btn btn-primary btn-sm magnetic" data-magnetic="0.12">
+                   class="hidden xl:inline-flex btn btn-primary btn-sm magnetic" data-magnetic="0.12"
+                   data-analytics-event="whatsapp_click" data-analytics-cta-location="navbar"
+                   data-analytics-destination="whatsapp">
                     <span>{{ __('site.cta.consult') }}</span>
                     <svg class="btn-arrow w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
@@ -114,7 +116,9 @@
             <div class="px-1.5 pb-1.5 space-y-4">
                 <x-language-switcher variant="mobile" />
 
-                <a href="{{ $waUrl }}" target="_blank" rel="noopener" class="btn btn-primary btn-block">
+                <a href="{{ $waUrl }}" target="_blank" rel="noopener" class="btn btn-primary btn-block"
+                   data-analytics-event="whatsapp_click" data-analytics-cta-location="navbar"
+                   data-analytics-destination="whatsapp">
                     <span>{{ __('site.cta.consult_free') }}</span>
                     <svg class="btn-arrow w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>

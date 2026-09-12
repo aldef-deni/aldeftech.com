@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth">
+<html lang="{{ config('locales.available.'.app()->getLocale().'.html', str_replace('_', '-', app()->getLocale())) }}" class="scroll-smooth">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -23,14 +23,27 @@
         $resolvedImage = filled($seoOverride?->og_image)
             ? media_url($seoOverride->og_image)
             : ($ogImage ?? asset(config('aldeftech.seo.default_image')));
+
+        $canonicalUrl = $canonical ?? url()->current();
+        $gtmId = \App\Models\SiteSetting::get('google_tag_manager_id')
+            ?: config('aldeftech.analytics.google_tag_manager_id', '');
+        $gaId = \App\Models\SiteSetting::get('google_analytics_id')
+            ?: config('aldeftech.analytics.google_analytics_id', '');
+        // GTM owns the page view and events whenever it is configured. This
+        // prevents a GA4 tag in GTM plus standalone gtag from double counting.
+        $analyticsMode = filled($gtmId) ? 'gtm' : (filled($gaId) ? 'gtag' : 'none');
+        $analyticsConfig = [
+            'mode' => $analyticsMode,
+            'debug' => app()->environment(['local', 'testing']),
+        ];
     @endphp
 
     <title>{{ $resolvedTitle }}</title>
     <meta name="description" content="{{ $resolvedDescription }}">
-    @if($seoOverride?->noindex)
+    @if(($noindex ?? false) || $seoOverride?->noindex)
         <meta name="robots" content="noindex, nofollow">
     @endif
-    <link rel="canonical" href="{{ $canonical ?? url()->current() }}">
+    <link rel="canonical" href="{{ $canonicalUrl }}">
 
     {{-- Language alternates. Without these Google treats /services and
          /en/services as unrelated pages competing with each other. --}}
@@ -44,7 +57,7 @@
     <meta property="og:title" content="{{ $resolvedTitle }}">
     <meta property="og:description" content="{{ $resolvedDescription }}">
     <meta property="og:image" content="{{ $resolvedImage }}">
-    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:url" content="{{ $canonicalUrl }}">
     <meta property="og:site_name" content="{{ config('app.name') }}">
     <meta property="og:locale" content="{{ config('locales.available.'.app()->getLocale().'.og', 'id_ID') }}">
     @foreach(locale_alternates() as $code => $href)
@@ -87,7 +100,8 @@
     <script type="application/ld+json">
     {!! json_encode(array_filter([
         '@' . 'context' => 'https://schema.org',
-        '@type' => 'ProfessionalService',
+        '@type' => 'Organization',
+        '@id' => rtrim(config('app.url'), '/') . '#organization',
         'name' => 'Aldef Tech',
         'alternateName' => 'Aldef Technology Studio',
         'description' => 'Aldef Tech is a premium software engineering and AI technology company building custom applications, software systems, SaaS platforms, AI solutions, and business automation.',
@@ -109,7 +123,6 @@
         // Should mirror the service areas set on the Google Business Profile.
         'areaServed' => collect(explode(',', (string) \App\Models\SiteSetting::get('service_areas')))
             ->map(fn ($a) => trim($a))->filter()->values()->all(),
-        'priceRange' => '$$$',
         // Reads the Media Sosial screen. It used to read site settings keys that
         // nothing ever wrote, so sameAs shipped empty no matter what was saved.
         'sameAs' => \Illuminate\Support\Facades\Cache::remember('schema.same_as', 3600, fn () => \App\Models\SocialLink::query()
@@ -117,14 +130,31 @@
             ->pluck('url')->filter()->values()->all())
     ]), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}
     </script>
+    <script type="application/ld+json">
+    {!! json_encode([
+        '@' . 'context' => 'https://schema.org',
+        '@type' => 'WebSite',
+        '@id' => rtrim(config('app.url'), '/') . '#website',
+        'name' => 'Aldef Tech',
+        'url' => rtrim(config('app.url'), '/') . '/',
+        'publisher' => ['@id' => rtrim(config('app.url'), '/') . '#organization'],
+        'inLanguage' => [config('locales.available.id.html', 'id'), config('locales.available.en.html', 'en')],
+    ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}
+    </script>
     @stack('schema')
 
     {{-- Vite Assets --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')
 
+    {{-- Analytics bootstrap. Only one vendor configuration is emitted. --}}
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        window.__aldefAnalytics = {!! json_encode($analyticsConfig, JSON_UNESCAPED_SLASHES) !!};
+    </script>
+
     {{-- Google Tag Manager --}}
-    @if($gtmId = \App\Models\SiteSetting::get('google_tag_manager_id'))
+    @if($analyticsMode === 'gtm')
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
@@ -132,20 +162,25 @@
     })(window,document,'script','dataLayer','{{ $gtmId }}');</script>
     @endif
 
-    {{-- Google Analytics --}}
-    @if($gaId = \App\Models\SiteSetting::get('google_analytics_id'))
+    {{-- Standalone Google Analytics --}}
+    @if($analyticsMode === 'gtag')
     <script async src="https://www.googletagmanager.com/gtag/js?id={{ $gaId }}"></script>
     <script>
-        window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
         gtag('config', '{{ $gaId }}');
     </script>
     @endif
+
+    @if(!empty($analyticsLeadConversion))
+    <script>window.__aldefLeadConversion = @json($analyticsLeadConversion);</script>
+    @endif
 </head>
-<body class="surface-ivory font-sans antialiased" data-ambient-glow>
+<body class="surface-ivory font-sans antialiased" data-ambient-glow
+      data-analytics-page-type="{{ $analyticsPageType ?? '' }}"
+      data-analytics-item="{{ $analyticsItem ?? '' }}">
     {{-- GTM Noscript --}}
-    @if($gtmId = \App\Models\SiteSetting::get('google_tag_manager_id'))
+    @if($analyticsMode === 'gtm')
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ $gtmId }}" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     @endif
 

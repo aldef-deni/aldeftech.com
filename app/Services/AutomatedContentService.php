@@ -94,9 +94,9 @@ class AutomatedContentService
                 \Illuminate\Support\Facades\Log::warning($safe, ['run_id' => $run->id, 'stage' => 'Gambar']);
                 $run->update(['error_message' => $safe]);
             }
-            $stage = 'Penyimpanan dan publikasi artikel';
-            // Validation and optional image generation finish before publication.
-            // Persist the complete article and successful run atomically.
+            $stage = 'Penyimpanan draf artikel';
+            // AI output is never published automatically. Persist the complete
+            // article as a draft so an editor can verify it first.
             return DB::transaction(function () use ($article, $category, $authorId, $run, $path) {
                 $seoActivity = $article['_seo_activity'] ?? [];
                 unset($article['_seo_activity']);
@@ -104,7 +104,7 @@ class AutomatedContentService
                 $post = BlogPost::create(array_merge($article, [
                     'category_id' => $category->id, 'author_id' => $authorId,
                     'featured_image' => $path,
-                    'status' => 'published', 'published_at' => now(),
+                    'status' => 'draft', 'published_at' => null,
                 ]));
                 SeoActivityService::articleSaved($post, $seoActivity);
                 $run->update(['blog_post_id' => $post->id, 'status' => 'completed', 'completed_at' => now()]);

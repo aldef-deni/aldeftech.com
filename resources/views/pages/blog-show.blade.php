@@ -6,6 +6,7 @@
     $ogImage = media_url($post->featured_image, 'images/og-image.jpg');
     $ogType = 'article';
     $canonical = $post->canonical_url ?: lroute('blog.show', $post->slug);
+    $relatedServiceSlug = service_landing_slug_for($post->category?->name . ' ' . $post->title);
 
     $readMinutes = max(1, (int) ceil(str_word_count(strip_tags((string) $post->content)) / 200));
 @endphp
@@ -18,6 +19,13 @@
     'headline' => $post->title,
     'description' => $metaDescription,
     'image' => $ogImage,
+    'author' => [
+        '@type' => 'Person',
+        'name' => $post->author->name ?? 'Aldef Tech',
+    ],
+    'datePublished' => optional($post->published_at)->toAtomString(),
+    'dateModified' => optional($post->updated_at)->toAtomString(),
+    'inLanguage' => app()->getLocale(),
     'publisher' => [
         '@type' => 'Organization',
         'name' => 'Aldef Tech',
@@ -66,7 +74,7 @@
 <section class="surface-ivory pt-12 lg:pt-16">
     <div class="shell">
         <figure class="frame-lux reveal-scale max-w-4xl mx-auto">
-            <img src="{{ $src }}" alt="{{ $post->title }}" class="!h-auto" decoding="async">
+            <img src="{{ $src }}" alt="{{ $post->title }}" class="!h-auto" decoding="async" fetchpriority="high">
         </figure>
     </div>
 </section>
@@ -101,8 +109,8 @@
                 </div>
             </article>
 
-            <aside class="lg:col-span-4">
-                <div class="lg:sticky lg:top-28 card-lux card-lux-featured p-6 lg:p-7 reveal">
+                <aside class="lg:col-span-4">
+                    <div class="lg:sticky lg:top-28 card-lux card-lux-featured p-6 lg:p-7 reveal">
                     <span class="icon-plate icon-plate-sm"><x-lux-icon name="spark" /></span>
                     <p class="mt-4 font-display text-base font-semibold text-graphite-900">
                         {{ __('pages.blog.detail.apply_title') }}
@@ -111,9 +119,19 @@
                         {{ __('pages.blog.detail.apply_body') }}
                     </p>
                     <a href="{{ \App\Services\WhatsAppService::getUrl() }}" target="_blank" rel="noopener"
-                       class="btn btn-primary btn-sm btn-block mt-5">
+                       class="btn btn-primary btn-sm btn-block mt-5"
+                       data-analytics-event="whatsapp_click" data-analytics-cta-location="article_detail"
+                       data-analytics-destination="whatsapp">
                         <span>{{ __('pages.blog.detail.consult') }}</span>
                     </a>
+                    @if($relatedServiceSlug)
+                    <a href="{{ lroute('services.show', $relatedServiceSlug) }}"
+                       class="btn btn-outline btn-sm btn-block mt-2.5"
+                       data-analytics-event="cta_click" data-analytics-cta-location="article_detail"
+                       data-analytics-destination="service">
+                        {{ app()->isLocale('id') ? 'Lihat layanan terkait' : 'View related service' }}
+                    </a>
+                    @endif
                 </div>
             </aside>
         </div>

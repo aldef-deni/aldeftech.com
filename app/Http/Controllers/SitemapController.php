@@ -60,6 +60,10 @@ class SitemapController extends Controller
             $xml .= $this->urlNode($path, $meta['lastmod'], $meta['priority']);
         }
 
+        foreach (array_keys(config('service_landings.pages', [])) as $slug) {
+            $xml .= $this->urlNode('/services/' . $slug, null, '0.8');
+        }
+
         Portfolio::published()->get()->each(function ($portfolio) use (&$xml, $url) {
             $xml .= $this->urlNode('/portfolio/' . $portfolio->slug, $portfolio->updated_at, '0.7');
         });

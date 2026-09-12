@@ -15,6 +15,13 @@ class AnalyticsSettingController extends Controller
 
     public function update(Request $request)
     {
+        $request->validate([
+            'google_analytics_id' => ['nullable', 'string', 'max:30', 'regex:/^G-[A-Z0-9]+$/i'],
+            'google_tag_manager_id' => ['nullable', 'string', 'max:30', 'regex:/^GTM-[A-Z0-9]+$/i'],
+            'meta_pixel_id' => ['nullable', 'string', 'max:30', 'regex:/^[0-9]+$/'],
+            'google_search_console_verification' => ['nullable', 'string', 'max:255'],
+        ]);
+
         $fields = [
             'google_analytics_id', 'google_tag_manager_id',
             'meta_pixel_id', 'google_search_console_verification',
