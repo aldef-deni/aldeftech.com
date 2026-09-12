@@ -86,6 +86,9 @@
                     <img src="{{ media_url($ceoProfile->profile_photo ?? null, 'images/deni-afrizal.jpg') }}"
                          alt="{{ $ceoProfile->name }}" loading="lazy" decoding="async">
                 </figure>
+                @if($founderVideoUrl)
+                    <x-founder-video :src="$founderVideoUrl" />
+                @endif
             </div>
 
             <div class="lg:col-span-7 reveal-right">

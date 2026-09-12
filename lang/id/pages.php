@@ -151,6 +151,14 @@ return [
         'mission'   => 'Misi',
         'vision'    => 'Visi',
         'founder'   => 'Pendiri',
+        'founder_video' => [
+            'watch' => 'Tonton Video Pendiri',
+            'title' => 'Kenali Pendiri Aldef Tech',
+            'close' => 'Tutup video',
+            'hint' => 'Aktifkan suara melalui kontrol video.',
+            'error' => 'Video belum dapat diputar. Silakan coba lagi nanti.',
+            'download' => 'Buka video',
+        ],
         'skills'    => 'Bidang Keahlian',
         'experience' => 'Pengalaman',
 
