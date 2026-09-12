@@ -108,3 +108,11 @@ After every commit, verify:
 
 git log -1 --format='%an <%ae>'
 git log -1 --format='%B'
+
+## Required Git Workflow
+
+- Every completed code or content change must be committed.
+- After the commit is verified, push it to the current remote branch.
+- Do not run `git pull` as part of this workflow.
+- All commits and pushes must use only the author `aldef-deni <deniafrizal2904@gmail.com>`.
+- Never add co-author, contributor, or AI attribution metadata.
