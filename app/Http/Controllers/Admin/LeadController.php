@@ -154,13 +154,27 @@ class LeadController extends Controller
 
         $leads = $query->latest()->get();
 
-        $csv = "Name,Company,Email,WhatsApp,Project Type,Budget,Message,Status,Source,Created At\n";
+        $handle = fopen('php://temp', 'r+');
+        fputcsv($handle, [
+            'Name', 'Company', 'Email', 'WhatsApp', 'Project Type', 'Budget',
+            'Message', 'Status', 'Source', 'UTM Source', 'UTM Medium',
+            'UTM Campaign', 'UTM Term', 'UTM Content', 'Landing Page',
+            'Referrer', 'Created At',
+        ]);
 
         foreach ($leads as $lead) {
-            $csv .= "\"{$lead->name}\",\"{$lead->company}\",\"{$lead->email}\",\"{$lead->whatsapp}\",";
-            $csv .= "\"{$lead->project_type}\",\"{$lead->budget_range}\",\"{$lead->message}\",";
-            $csv .= "\"{$lead->status_label}\",\"{$lead->source_label}\",\"{$lead->created_at}\"\n";
+            fputcsv($handle, [
+                $lead->name, $lead->company, $lead->email, $lead->whatsapp,
+                $lead->project_type, $lead->budget_range, $lead->message,
+                $lead->status_label, $lead->source_label, $lead->utm_source,
+                $lead->utm_medium, $lead->utm_campaign, $lead->utm_term,
+                $lead->utm_content, $lead->landing_page, $lead->referrer,
+                $lead->created_at,
+            ]);
         }
+        rewind($handle);
+        $csv = stream_get_contents($handle);
+        fclose($handle);
 
         return Response::make($csv, 200, [
             'Content-Type' => 'text/csv',

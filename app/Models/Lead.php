@@ -15,6 +15,8 @@ class Lead extends Model
         'budget_range', 'message', 'status', 'source',
         'assigned_to', 'archived_at', 'read_at',
         'is_spam', 'spam_score', 'spam_reasons', 'ip_address',
+        'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content',
+        'gclid', 'gbraid', 'wbraid', 'fbclid', 'landing_page', 'referrer',
     ];
 
     protected $casts = [

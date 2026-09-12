@@ -77,6 +77,7 @@ return [
             'whatsapp' => 'WhatsApp',
             'facebook' => 'Facebook',
             'instagram' => 'Instagram',
+            'linkedin' => 'LinkedIn',
             'google' => 'Google',
             'referral' => 'Referral',
             'other' => 'Other',

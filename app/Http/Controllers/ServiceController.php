@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Portfolio;
 use App\Models\Service;
 
 class ServiceController extends Controller
@@ -112,6 +113,35 @@ class ServiceController extends Controller
         return view('pages.services', [
             'services' => $services,
             'canonical' => lroute('services'),
+        ]);
+    }
+
+    public function show(string $slug)
+    {
+        $pages = config('service_landings.pages', []);
+        abort_unless(isset($pages[$slug]), 404);
+
+        $copy = $pages[$slug][app()->getLocale()] ?? $pages[$slug][config('locales.default', 'id')];
+        $service = Service::published()->where('slug', $slug)->first();
+
+        $portfolio = Portfolio::published()
+            ->with('category')
+            ->where(function ($query) use ($copy) {
+                foreach ($copy['portfolio_terms'] as $term) {
+                    $query->orWhere('title', 'like', '%' . $term . '%')
+                        ->orWhere('short_description', 'like', '%' . $term . '%');
+                }
+            })
+            ->limit(3)
+            ->get();
+
+        return view('pages.service-show', [
+            'page' => $copy,
+            'service' => $service,
+            'portfolios' => $portfolio,
+            'canonical' => lroute('services.show', $slug),
+            'analyticsPageType' => 'service',
+            'analyticsItem' => $slug,
         ]);
     }
 }

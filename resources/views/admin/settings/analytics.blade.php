@@ -34,7 +34,7 @@
                         label="Google Tag Manager ID" name="google_tag_manager_id"
                         :value="SiteSetting::get('google_tag_manager_id', '')"
                         placeholder="GTM-XXXXXXX" class="font-monospace"
-                        help="Bila memakai GTM, biasanya GA4 dipasang dari dalam GTM — cukup isi salah satu." />
+                        help="Jika GTM diisi, GTM menjadi pemilik tracking dan gtag standalone tidak dimuat. Pastikan GA4 sudah dikonfigurasi di dalam GTM." />
 
                     <x-admin.form.input
                         label="Verifikasi Search Console" name="google_search_console_verification"
@@ -75,6 +75,11 @@
                         </li>
                         @endforeach
                     </ul>
+                    @if(filled(SiteSetting::get('google_tag_manager_id')) && filled(SiteSetting::get('google_analytics_id')))
+                        <div class="alert alert-warning mt-4 mb-0">
+                            GTM diprioritaskan. ID GA4 tetap tersimpan untuk referensi, tetapi tidak dimuat sebagai gtag kedua.
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>

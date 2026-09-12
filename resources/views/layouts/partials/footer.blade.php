@@ -72,7 +72,10 @@
                 <h4 class="font-display text-[0.6875rem] font-semibold uppercase tracking-[0.18em] text-gold-400">{{ __('site.footer.services') }}</h4>
                 <ul class="mt-5 space-y-3">
                     @forelse($footerServices as $service)
-                        <li><a href="{{ lroute('services') }}#{{ $service->slug ?? '' }}" class="footer-link">{{ $service->title }}</a></li>
+                        <li><a href="{{ isset(config('service_landings.pages')[$service->slug]) ? lroute('services.show', $service->slug) : lroute('services') . '#' . ($service->slug ?? '') }}"
+                               class="footer-link" data-analytics-event="cta_click"
+                               data-analytics-cta-location="footer" data-analytics-service="{{ $service->title }}"
+                               data-analytics-destination="service">{{ $service->title }}</a></li>
                     @empty
                         <li><a href="{{ lroute('services') }}" class="footer-link">{{ __('site.footer.all_services') }}</a></li>
                     @endforelse
