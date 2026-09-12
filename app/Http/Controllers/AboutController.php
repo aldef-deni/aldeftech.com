@@ -25,12 +25,13 @@ class AboutController extends Controller
             ];
         }
 
-        $founderVideoPath = 'videos/CEO-aldeftech.mp4';
+        $founderVideoPath = 'videos/CEO-aldeftech3.mp4';
+        $founderVideoFile = public_path($founderVideoPath);
 
         return view('pages.about', [
             'ceoProfile' => $ceoProfile,
-            'founderVideoUrl' => is_file(public_path($founderVideoPath))
-                ? asset($founderVideoPath)
+            'founderVideoUrl' => is_file($founderVideoFile)
+                ? asset($founderVideoPath) . '?v=' . filemtime($founderVideoFile)
                 : null,
         ]);
     }

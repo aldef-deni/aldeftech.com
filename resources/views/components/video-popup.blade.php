@@ -18,7 +18,7 @@
     </button>
     <div class="intro-video-stage">
         <video id="intro-video-player" src="{{ $src }}" poster="{{ $poster }}"
-               controls playsinline preload="metadata" aria-label="{{ $title }}"></video>
+               controls autoplay playsinline preload="auto" aria-label="{{ $title }}"></video>
         <div id="intro-video-play-prompt" hidden>
             <button type="button" id="intro-video-play" aria-label="{{ __('video.play') }}">
                 <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -34,9 +34,11 @@
 <style>
     .intro-video-launch { margin-top: 1.5rem; text-align: center; }
     #intro-video-dialog {
+        --intro-video-aspect: 1.777778;
+        --intro-video-fit-width: 160dvh;
+        --intro-video-mobile-fit-width: calc(100vw - .5rem);
         box-sizing: border-box;
-        width: min(94vw, 160vh, 88rem);
-        width: min(94vw, 160dvh, 88rem);
+        width: min(94vw, var(--intro-video-fit-width), 88rem);
         max-width: none; max-height: 90vh; max-height: 90dvh;
         margin: auto; padding: 0; border: 1px solid rgb(224 197 142 / 42%); border-radius: 1.25rem;
         background: #08090a; color: #fff; overflow: hidden;
@@ -56,7 +58,7 @@
         outline: 2px solid #e0c58e; outline-offset: 4px;
     }
     .intro-video-stage {
-        position: relative; width: 100%; aspect-ratio: 16 / 9; background: #08090a;
+        position: relative; width: 100%; aspect-ratio: var(--intro-video-aspect); background: #08090a;
     }
     #intro-video-player { display: block; width: 100%; height: 100%; object-fit: contain; }
     #intro-video-play-prompt:not([hidden]) {
@@ -76,13 +78,16 @@
         overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
     }
     @media (max-width: 640px) {
-        #intro-video-dialog { width: calc(100% - 1rem); border-radius: .9rem; }
+        #intro-video-dialog {
+            width: min(calc(100vw - .5rem), var(--intro-video-mobile-fit-width));
+            max-height: calc(100dvh - .5rem); border-radius: .75rem;
+        }
         #intro-video-close { top: .65rem; right: .65rem; width: 42px; height: 42px; }
         #intro-video-play { width: 56px; height: 56px; }
         .intro-video-launch .btn { max-width: 100%; white-space: normal; }
     }
     @media (max-height: 500px) and (orientation: landscape) {
-        #intro-video-dialog { width: min(94vw, 156vh); width: min(94vw, 156dvh); max-height: 88dvh; }
+        #intro-video-dialog { width: min(94vw, var(--intro-video-mobile-fit-width)); max-height: calc(100dvh - .5rem); }
         #intro-video-close { top: .5rem; right: .5rem; width: 40px; height: 40px; }
     }
     @media (prefers-reduced-motion: no-preference) {
@@ -101,12 +106,23 @@
     const prompt = document.getElementById('intro-video-play-prompt');
     const error = document.getElementById('intro-video-error');
     if (!dialog || typeof dialog.showModal !== 'function') return;
+    video.loop = false;
 
     // Avoid the page sections' scroll-reveal transforms.
     document.body.append(dialog);
     let previousFocus;
     let previousOverflow;
     let previousRootOverflow;
+
+    const syncVideoSize = () => {
+        if (!video.videoWidth || !video.videoHeight) return;
+
+        const aspect = video.videoWidth / video.videoHeight;
+        const viewportHeight = window.visualViewport?.height || window.innerHeight;
+        dialog.style.setProperty('--intro-video-aspect', String(aspect));
+        dialog.style.setProperty('--intro-video-fit-width', `${viewportHeight * .88 * aspect}px`);
+        dialog.style.setProperty('--intro-video-mobile-fit-width', `${(viewportHeight - 8) * aspect}px`);
+    };
 
     const playWithSound = () => {
         prompt.hidden = true;
@@ -162,6 +178,9 @@
         prompt.hidden = true;
         error.hidden = false;
     });
+    video.addEventListener('loadedmetadata', syncVideoSize);
+    window.addEventListener('resize', syncVideoSize);
+    window.visualViewport?.addEventListener('resize', syncVideoSize);
     window.addEventListener('pagehide', () => video.pause());
     window.addEventListener('pageshow', (event) => {
         if (!event.persisted) return;
@@ -178,6 +197,8 @@
     } else {
         openVideo();
     }
+
+    syncVideoSize();
 })();
 </script>
 @endpush
