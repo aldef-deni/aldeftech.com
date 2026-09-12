@@ -35,6 +35,7 @@ $publicPages = function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
     Route::get('/about', [AboutController::class, 'index'])->name('about');
     Route::get('/services', [ServiceController::class, 'index'])->name('services');
+    Route::get('/services/{slug}', [ServiceController::class, 'show'])->name('services.show');
     Route::get('/solutions', [SolutionController::class, 'index'])->name('solutions');
 
     Route::get('/portfolio', [PortfolioController::class, 'index'])->name('portfolio');
@@ -46,6 +47,7 @@ $publicPages = function () {
     Route::get('/blog/{post:slug}', [BlogController::class, 'show'])->name('blog.show');
 
     Route::get('/contact', [ContactController::class, 'index'])->name('contact');
+    Route::get('/contact/thank-you', [ContactController::class, 'thankYou'])->name('contact.thank-you');
     // A human sends one brief, maybe two. Anything past this is a script.
     Route::post('/contact', [ContactController::class, 'store'])
         ->middleware('throttle:5,1')

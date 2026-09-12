@@ -145,6 +145,15 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
             [ProcessStepController::class, 'reorder']
         )->name('process-steps.reorder');
 
+        // AI article generation uses the same access controls as blog editing.
+        Route::get('blog/ai/create', [\App\Http\Controllers\Admin\AIArticleController::class, 'create'])
+            ->name('blog.ai.create');
+        Route::post('blog/ai', [\App\Http\Controllers\Admin\AIArticleController::class, 'store'])
+            ->middleware('throttle:5,1')->name('blog.ai.store');
+
+        Route::post('blog/ai/automatic', [\App\Http\Controllers\Admin\AIArticleController::class, 'automatic'])
+            ->middleware('throttle:1,10')->name('blog.ai.automatic');
+
         // Blog
         Route::resource('blog', AdminBlogPostController::class)
             ->except(['show'])
@@ -154,6 +163,15 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
             'blog/{blog}/toggle-publish',
             [AdminBlogPostController::class, 'togglePublish']
         )->name('blog.toggle-publish');
+
+        Route::prefix('seo-growth')->name('seo-growth.')->group(function () {
+            Route::get('/', [\App\Http\Controllers\Admin\SeoGrowthController::class, 'index'])->name('index');
+            Route::patch('prospects/{prospect}', [\App\Http\Controllers\Admin\SeoGrowthController::class, 'prospect'])->name('prospect');
+            Route::post('prospects/{prospect}/outreach', [\App\Http\Controllers\Admin\SeoGrowthController::class, 'outreach'])
+                ->middleware('throttle:2,10')->name('outreach');
+            Route::patch('opportunities/{opportunity}', [\App\Http\Controllers\Admin\SeoGrowthController::class, 'opportunity'])->name('opportunity');
+            Route::patch('reviews/{review}', [\App\Http\Controllers\Admin\SeoGrowthController::class, 'review'])->name('review');
+        });
 
         // AI Marketing Center
         Route::get('marketing', [MarketingController::class, 'index'])
