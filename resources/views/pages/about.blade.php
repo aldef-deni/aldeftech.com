@@ -87,7 +87,10 @@
                          alt="{{ $ceoProfile->name }}" loading="lazy" decoding="async">
                 </figure>
                 @if($founderVideoUrl)
-                    <x-founder-video :src="$founderVideoUrl" />
+                    <x-video-popup :src="$founderVideoUrl"
+                        :title="__('pages.about.founder_video.title')"
+                        :watch="__('pages.about.founder_video.watch')"
+                        :poster="media_url($ceoProfile->profile_photo ?? null, 'images/deni-afrizal.jpg')" />
                 @endif
             </div>
 

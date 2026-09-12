@@ -7,6 +7,11 @@ return [
         'description' => 'Aldef Tech membangun sistem custom, aplikasi web, platform SaaS, dan automasi AI untuk perusahaan. Mitra transformasi digital korporasi Anda.',
     ],
 
+    'video' => [
+        'title' => 'Kenali Aldef Tech lebih dekat',
+        'watch' => 'Tonton Video Perkenalan',
+    ],
+
     'hero' => [
         'eyebrow'  => 'Software Engineering · AI · Automation',
         'title'    => 'Sistem digital yang benar-benar',

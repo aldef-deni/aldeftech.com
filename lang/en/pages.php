@@ -154,10 +154,6 @@ return [
         'founder_video' => [
             'watch' => 'Watch Founder Video',
             'title' => 'Meet the Founder of Aldef Tech',
-            'close' => 'Close video',
-            'hint' => 'Enable sound using the video controls.',
-            'error' => 'The video could not be played. Please try again later.',
-            'download' => 'Open video',
         ],
         'skills'    => 'Areas of Expertise',
         'experience' => 'Experience',

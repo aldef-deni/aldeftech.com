@@ -64,6 +64,12 @@
                 </a>
             </div>
 
+            @if($previewVideoUrl)
+                <x-video-popup :src="$previewVideoUrl"
+                    :title="__('home.video.title')" :watch="__('home.video.watch')"
+                    :poster="asset('images/aldef-tech-banner.webp')" trigger-class="btn-ghost" />
+            @endif
+
             <p class="mt-5 inline-flex items-center gap-2.5 text-xs text-graphite-400 reveal reveal-d4">
                 <span class="pulse-dot"></span>
                 {{ __('site.cta.response_time') }}

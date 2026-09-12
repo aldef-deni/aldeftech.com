@@ -23,10 +23,14 @@ class HomeController extends Controller
         $testimonials = Testimonial::published()->ordered()->get();
         $latestPosts = BlogPost::published()->with('category')->latest('published_at')->limit(3)->get();
         $ceoProfile = \App\Models\CeoProfile::active()->first();
+        $previewVideoPath = 'videos/aldeftech-preview.mp4';
+        $previewVideoUrl = is_file(public_path($previewVideoPath))
+            ? asset($previewVideoPath)
+            : null;
 
         return view('pages.home', compact(
             'hero', 'services', 'solutions', 'portfolios',
-            'processSteps', 'testimonials', 'latestPosts', 'ceoProfile'
+            'processSteps', 'testimonials', 'latestPosts', 'ceoProfile', 'previewVideoUrl'
         ));
     }
 }
