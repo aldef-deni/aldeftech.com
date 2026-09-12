@@ -357,12 +357,16 @@
      LEADERSHIP
      ══════════════════════════════════════════════════════════════════ --}}
 @if($ceoProfile)
-<section class="section-padding surface-parchment border-y border-line">
-    <div class="shell">
+<section class="home-pillars-dark section-padding relative overflow-hidden">
+    <div class="home-pillars-glow home-pillars-glow-left" aria-hidden="true"></div>
+    <div class="home-pillars-glow home-pillars-glow-right" aria-hidden="true"></div>
+    <div class="absolute inset-0 veil-grid pointer-events-none" aria-hidden="true"></div>
+
+    <div class="shell relative z-10">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
 
             <div class="lg:col-span-5 reveal-left">
-                <figure class="frame-lux aspect-[4/5] max-w-sm mx-auto lg:max-w-none">
+                <figure class="frame-lux home-leadership-frame aspect-[4/5] max-w-sm mx-auto lg:max-w-none">
                     @if($src = media_url($ceoProfile->profile_photo, 'images/deni-afrizal.jpg'))
                         <img src="{{ $src }}" alt="{{ $ceoProfile->name }}" loading="lazy" decoding="async">
                     @endif
@@ -370,30 +374,30 @@
             </div>
 
             <div class="lg:col-span-7 reveal-right">
-                <p class="eyebrow">{{ __('home.leadership.eyebrow') }}</p>
+                <p class="eyebrow home-pillars-eyebrow">{{ __('home.leadership.eyebrow') }}</p>
 
-                <blockquote class="mt-6 font-serif-accent italic text-2xl sm:text-3xl lg:text-[2.125rem] leading-[1.35] text-graphite-900">
+                <blockquote class="mt-6 font-serif-accent italic text-2xl sm:text-3xl lg:text-[2.125rem] leading-[1.35] text-white">
                     “{{ excerpt_text($ceoProfile->short_bio, 210) ?: __('home.leadership.fallback_quote') }}”
                 </blockquote>
 
                 <div class="mt-8 flex items-center gap-4">
                     <span class="w-10 h-px bg-gold-500" aria-hidden="true"></span>
                     <div>
-                        <p class="font-display text-base font-semibold text-graphite-900">{{ $ceoProfile->name }}</p>
-                        <p class="text-sm text-graphite-500 mt-0.5">{{ $ceoProfile->position }}</p>
+                        <p class="font-display text-base font-semibold text-white">{{ $ceoProfile->name }}</p>
+                        <p class="text-sm text-graphite-300 mt-0.5">{{ $ceoProfile->position }}</p>
                     </div>
                 </div>
 
                 @if(!empty($ceoProfile->skills))
                 <div class="mt-8 chip-strip flex gap-2 sm:flex-wrap">
                     @foreach(array_slice((array) $ceoProfile->skills, 0, 8) as $skill)
-                        <span class="chip chip-neutral">{{ $skill }}</span>
+                        <span class="chip chip-dark">{{ $skill }}</span>
                     @endforeach
                 </div>
                 @endif
 
                 <div class="mt-9">
-                    <a href="{{ lroute('about') }}" class="link-arrow">
+                    <a href="{{ lroute('about') }}" class="link-arrow link-arrow-light">
                         <span>{{ __('home.leadership.full_profile') }}</span>
                         <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                     </a>
@@ -601,6 +605,11 @@
         color: #ffadb6;
         background: linear-gradient(145deg, rgb(199 30 49 / 18%), rgb(255 255 255 / 4%));
         border-color: rgb(232 62 80 / 25%);
+    }
+    .home-leadership-frame {
+        border-color: rgb(232 62 80 / 30%);
+        background: #12070a;
+        box-shadow: 0 30px 70px -38px rgb(0 0 0 / 90%), 0 0 0 1px rgb(255 255 255 / 5%);
     }
     .home-pillars-cta {
         border-color: rgb(232 62 80 / 32%);
