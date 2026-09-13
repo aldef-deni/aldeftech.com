@@ -1242,10 +1242,10 @@
     --mobile-drawer-radius: 1.125rem;
     box-sizing: border-box;
     top: calc(100% + 0.375rem);
-    right: 0.625rem;
+    right: auto;
     left: 0.625rem;
-    width: auto;
-    max-width: calc(100% - 1.25rem);
+    width: calc(100dvw - 1.25rem);
+    max-width: calc(100vw - 1.25rem);
     margin-right: 0;
     margin-left: 0;
     border-top-left-radius: var(--mobile-drawer-radius);

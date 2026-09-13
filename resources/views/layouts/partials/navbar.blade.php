@@ -96,7 +96,7 @@
          x-transition:leave="transition ease-in duration-200"
          x-transition:leave-start="opacity-100 translate-y-0"
          x-transition:leave-end="opacity-0 -translate-y-3"
-         class="xl:hidden absolute inset-x-0 top-full mx-3 mb-3 rounded-2xl border border-line bg-ivory-50/97 backdrop-blur-2xl shadow-[0_40px_80px_-32px_rgba(13,20,32,0.45)] overflow-hidden">
+         class="mobile-nav-card xl:hidden absolute mb-3 shadow-[0_40px_80px_-32px_rgba(13,20,32,0.45)]">
 
         <div class="max-h-[calc(100dvh-8rem)] overflow-y-auto no-scrollbar p-3">
             <div class="space-y-0.5">
