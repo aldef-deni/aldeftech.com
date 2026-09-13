@@ -118,7 +118,7 @@
         <div class="mt-12 lg:mt-16 cards-swipe md:grid md:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6"
              data-reveal-group="70">
             @foreach($services->take(3) as $i => $service)
-            <article class="card-lux reveal group p-7 lg:p-8">
+            <article class="card-lux home-dark-red-card reveal group p-7 lg:p-8">
                 <div class="flex items-start justify-between gap-4">
                     <span class="icon-plate">
                         <x-lux-icon :name="$service->icon" />
@@ -173,22 +173,26 @@
 {{-- ══════════════════════════════════════════════════════════════════════
      DIFFERENTIATORS
      ══════════════════════════════════════════════════════════════════ --}}
-<section class="section-padding surface-parchment border-y border-line">
-    <div class="shell">
+<section class="home-pillars-dark section-padding relative overflow-hidden">
+    <div class="home-pillars-glow home-pillars-glow-left" aria-hidden="true"></div>
+    <div class="home-pillars-glow home-pillars-glow-right" aria-hidden="true"></div>
+    <div class="absolute inset-0 veil-grid pointer-events-none" aria-hidden="true"></div>
+
+    <div class="shell relative z-10">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
 
             <div class="lg:col-span-5 lg:sticky lg:top-32 lg:self-start reveal-left">
-                <p class="eyebrow">{{ __('home.pillars.eyebrow') }}</p>
-                <h2 class="mt-5 text-3xl sm:text-4xl lg:text-[2.75rem]">
+                <p class="eyebrow home-pillars-eyebrow">{{ __('home.pillars.eyebrow') }}</p>
+                <h2 class="mt-5 text-3xl sm:text-4xl lg:text-[2.75rem] text-white">
                     {{ __('home.pillars.title') }}
-                    <span class="accent-serif accent-gold">{{ __('home.pillars.accent') }}</span>{{ __('home.pillars.title_after') }}
+                    <span class="accent-serif home-pillars-accent">{{ __('home.pillars.accent') }}</span>{{ __('home.pillars.title_after') }}
                 </h2>
-                <p class="mt-6 text-base leading-relaxed text-graphite-600">
+                <p class="mt-6 text-base leading-relaxed text-graphite-300">
                     {{ __('home.pillars.lead') }}
                 </p>
 
                 <div class="mt-9 flex flex-wrap gap-3">
-                    <a href="{{ lroute('about') }}" class="btn btn-obsidian">
+                    <a href="{{ lroute('about') }}" class="btn btn-ghost home-pillars-cta">
                         <span>{{ __('home.pillars.cta') }}</span>
                         <svg class="btn-arrow w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                     </a>
@@ -197,13 +201,13 @@
 
             <div class="lg:col-span-7 cards-swipe md:space-y-4" data-reveal-group="90">
                 @foreach($pillars as $i => $pillar)
-                <article class="card-lux reveal group p-6 lg:p-8 !flex-row items-start gap-5">
-                    <span class="icon-plate">
+                <article class="card-obsidian home-pillar-card reveal group p-6 lg:p-8 !flex-row items-start gap-5">
+                    <span class="icon-plate icon-plate-dark home-pillar-icon">
                         <x-lux-icon :name="$pillar['icon']" />
                     </span>
                     <div class="min-w-0">
-                        <h3 class="text-base lg:text-lg">{{ __('home.pillars.' . $pillar['key'] . '.title') }}</h3>
-                        <p class="mt-2.5 text-sm leading-relaxed text-graphite-600">{{ __('home.pillars.' . $pillar['key'] . '.body') }}</p>
+                        <h3 class="text-base lg:text-lg text-white">{{ __('home.pillars.' . $pillar['key'] . '.title') }}</h3>
+                        <p class="mt-2.5 text-sm leading-relaxed text-graphite-300">{{ __('home.pillars.' . $pillar['key'] . '.body') }}</p>
                     </div>
                 </article>
                 @endforeach
@@ -231,7 +235,7 @@
         <ol class="mt-14 lg:mt-20 cards-swipe cards-swipe-tight md:grid md:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10"
             data-reveal-group="70">
             @foreach($processSteps as $step)
-            <li class="reveal group relative pt-7">
+            <li class="home-dark-red-card home-process-card reveal group relative p-6 lg:p-7">
                 <span class="absolute top-0 left-0 right-0 h-px bg-line transition-colors duration-700 group-hover:bg-gold-400" aria-hidden="true"></span>
 
                 <span class="step-numeral block">{{ str_pad($step->step_number ?? $loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
@@ -337,7 +341,7 @@
         <div class="mt-12 lg:mt-16 cards-swipe cards-swipe-tight md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4"
              data-reveal-group="50">
             @foreach($solutions as $solution)
-            <a href="{{ lroute('solutions') }}" class="card-quiet reveal group p-6 flex flex-col">
+            <a href="{{ lroute('solutions') }}" class="card-quiet home-dark-red-card reveal group p-6 flex flex-col">
                 <span class="icon-plate icon-plate-sm">
                     <x-lux-icon :name="$solution->icon" />
                 </span>
@@ -356,12 +360,16 @@
      LEADERSHIP
      ══════════════════════════════════════════════════════════════════ --}}
 @if($ceoProfile)
-<section class="section-padding surface-parchment border-y border-line">
-    <div class="shell">
+<section class="home-pillars-dark section-padding relative overflow-hidden">
+    <div class="home-pillars-glow home-pillars-glow-left" aria-hidden="true"></div>
+    <div class="home-pillars-glow home-pillars-glow-right" aria-hidden="true"></div>
+    <div class="absolute inset-0 veil-grid pointer-events-none" aria-hidden="true"></div>
+
+    <div class="shell relative z-10">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
 
             <div class="lg:col-span-5 reveal-left">
-                <figure class="frame-lux aspect-[4/5] max-w-sm mx-auto lg:max-w-none">
+                <figure class="frame-lux home-leadership-frame aspect-[4/5] max-w-sm mx-auto lg:max-w-none">
                     @if($src = media_url($ceoProfile->profile_photo, 'images/deni-afrizal.jpg'))
                         <img src="{{ $src }}" alt="{{ $ceoProfile->name }}" loading="lazy" decoding="async">
                     @endif
@@ -369,30 +377,30 @@
             </div>
 
             <div class="lg:col-span-7 reveal-right">
-                <p class="eyebrow">{{ __('home.leadership.eyebrow') }}</p>
+                <p class="eyebrow home-pillars-eyebrow">{{ __('home.leadership.eyebrow') }}</p>
 
-                <blockquote class="mt-6 font-serif-accent italic text-2xl sm:text-3xl lg:text-[2.125rem] leading-[1.35] text-graphite-900">
+                <blockquote class="mt-6 font-serif-accent italic text-2xl sm:text-3xl lg:text-[2.125rem] leading-[1.35] text-white">
                     “{{ excerpt_text($ceoProfile->short_bio, 210) ?: __('home.leadership.fallback_quote') }}”
                 </blockquote>
 
                 <div class="mt-8 flex items-center gap-4">
                     <span class="w-10 h-px bg-gold-500" aria-hidden="true"></span>
                     <div>
-                        <p class="font-display text-base font-semibold text-graphite-900">{{ $ceoProfile->name }}</p>
-                        <p class="text-sm text-graphite-500 mt-0.5">{{ $ceoProfile->position }}</p>
+                        <p class="font-display text-base font-semibold text-white">{{ $ceoProfile->name }}</p>
+                        <p class="text-sm text-graphite-300 mt-0.5">{{ $ceoProfile->position }}</p>
                     </div>
                 </div>
 
                 @if(!empty($ceoProfile->skills))
                 <div class="mt-8 chip-strip flex gap-2 sm:flex-wrap">
                     @foreach(array_slice((array) $ceoProfile->skills, 0, 8) as $skill)
-                        <span class="chip chip-neutral">{{ $skill }}</span>
+                        <span class="chip chip-dark">{{ $skill }}</span>
                     @endforeach
                 </div>
                 @endif
 
                 <div class="mt-9">
-                    <a href="{{ lroute('about') }}" class="link-arrow">
+                    <a href="{{ lroute('about') }}" class="link-arrow link-arrow-light">
                         <span>{{ __('home.leadership.full_profile') }}</span>
                         <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                     </a>
@@ -539,6 +547,184 @@
 
 @push('styles')
 <style>
+    .home-pillars-dark {
+        isolation: isolate;
+        color: #e8eaee;
+        background:
+            radial-gradient(85% 110% at 102% 54%, rgb(123 12 24 / 42%) 0%, rgb(85 7 16 / 17%) 42%, transparent 72%),
+            radial-gradient(64% 90% at -8% 4%, rgb(195 30 48 / 18%) 0%, transparent 67%),
+            linear-gradient(135deg, #050506 0%, #090709 38%, #12070a 69%, #21070b 100%);
+        border-block: 1px solid rgb(255 255 255 / 7%);
+    }
+    .home-pillars-dark::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+        background: linear-gradient(112deg, transparent 18%, rgb(255 255 255 / 2.5%) 49%, transparent 76%);
+    }
+    .home-pillars-glow {
+        position: absolute;
+        z-index: -1;
+        border-radius: 999px;
+        filter: blur(90px);
+        pointer-events: none;
+    }
+    .home-pillars-glow-left {
+        width: 24rem;
+        height: 24rem;
+        left: -15rem;
+        top: -8rem;
+        background: rgb(225 38 58 / 18%);
+    }
+    .home-pillars-glow-right {
+        width: 32rem;
+        height: 32rem;
+        right: -19rem;
+        bottom: -15rem;
+        background: rgb(159 13 31 / 25%);
+    }
+    .home-pillars-eyebrow { color: #ffb1b9; }
+    .home-pillars-eyebrow::before {
+        background: linear-gradient(90deg, transparent, #e23c4f);
+    }
+    .home-pillars-accent {
+        background: linear-gradient(105deg, #f3d8c7 0%, #ff9ba7 45%, #df3a4d 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+    }
+    .home-pillar-card {
+        background: linear-gradient(145deg, rgb(255 255 255 / 5.5%), rgb(114 9 21 / 9%));
+        border-color: rgb(255 255 255 / 10%);
+        box-shadow: inset 0 1px 0 rgb(255 255 255 / 4%), 0 24px 55px -40px rgb(0 0 0 / 90%);
+    }
+    .home-pillar-card::after {
+        background: linear-gradient(90deg, transparent, rgb(232 62 80 / 80%), rgb(243 216 199 / 65%), transparent);
+    }
+    .home-pillar-icon {
+        color: #ffadb6;
+        background: linear-gradient(145deg, rgb(199 30 49 / 18%), rgb(255 255 255 / 4%));
+        border-color: rgb(232 62 80 / 25%);
+    }
+    .home-leadership-frame {
+        border-color: rgb(232 62 80 / 30%);
+        background: #12070a;
+        box-shadow: 0 30px 70px -38px rgb(0 0 0 / 90%), 0 0 0 1px rgb(255 255 255 / 5%);
+    }
+    .home-pillars-cta {
+        border-color: rgb(232 62 80 / 32%);
+        box-shadow: inset 0 1px 0 rgb(255 255 255 / 6%);
+    }
+
+    .home-dark-red-card {
+        position: relative;
+        isolation: isolate;
+        overflow: hidden;
+        color: #f4eff0;
+        border: 1px solid rgb(207 53 72 / 18%);
+        border-radius: 1.125rem;
+        background:
+            radial-gradient(90% 75% at 100% 100%, rgb(139 17 34 / 24%) 0%, transparent 68%),
+            linear-gradient(137deg, #080a0d 0%, #101014 48%, #241014 100%);
+        box-shadow: inset 0 1px 0 rgb(255 255 255 / 4%), 0 20px 46px -32px rgb(22 4 8 / 75%);
+        transition: transform 620ms var(--e-soft), border-color 420ms var(--e-glide), box-shadow 620ms var(--e-soft), background 420ms var(--e-glide);
+    }
+    .home-dark-red-card:nth-child(3n + 2) {
+        background:
+            radial-gradient(80% 90% at 0% 0%, rgb(160 22 40 / 15%) 0%, transparent 62%),
+            linear-gradient(142deg, #111014 0%, #080a0d 52%, #2d0e15 100%);
+    }
+    .home-dark-red-card:nth-child(3n + 3) {
+        background:
+            radial-gradient(75% 85% at 86% 12%, rgb(177 25 44 / 16%) 0%, transparent 60%),
+            linear-gradient(132deg, #07090c 0%, #111014 58%, #251015 100%);
+    }
+    .home-dark-red-card::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+        opacity: 1;
+        background: linear-gradient(118deg, transparent 22%, rgb(255 255 255 / 2.5%) 50%, transparent 76%);
+    }
+    .home-dark-red-card::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 14%;
+        left: 14%;
+        height: 1px;
+        opacity: .7;
+        transform: none;
+        background: linear-gradient(90deg, transparent, rgb(230 74 91 / 58%), transparent);
+    }
+    .home-dark-red-card h3 { color: #faf6f6; }
+    .home-dark-red-card p,
+    .home-dark-red-card .feature-row { color: #b9b5ba; }
+    .home-dark-red-card .link-arrow { color: #efc1c6; }
+    .home-dark-red-card .icon-plate {
+        color: #ffadb6;
+        border-color: rgb(224 68 86 / 23%);
+        background: linear-gradient(145deg, rgb(173 21 40 / 23%), rgb(255 255 255 / 4%));
+    }
+    .home-dark-red-card .feature-row .tick {
+        color: #f3a8b1;
+        background: rgb(177 27 45 / 18%);
+    }
+    .home-dark-red-card .step-numeral { color: #d98b95; }
+    .home-process-card > span:first-child {
+        right: 1.5rem;
+        left: 1.5rem;
+        background: linear-gradient(90deg, transparent, rgb(220 66 84 / 34%), transparent);
+    }
+
+    @media (hover: hover) {
+        .home-pillar-card:hover {
+            background: linear-gradient(145deg, rgb(255 255 255 / 7%), rgb(142 12 28 / 15%));
+            border-color: rgb(232 62 80 / 34%);
+            box-shadow: 0 30px 64px -35px rgb(109 5 18 / 75%), inset 0 1px 0 rgb(255 255 255 / 6%);
+        }
+        .home-pillar-card:hover .home-pillar-icon {
+            color: #fff5f2;
+            background: linear-gradient(145deg, #b3192d, #77101f);
+            border-color: rgb(255 143 156 / 48%);
+            box-shadow: 0 14px 30px -14px rgb(216 38 59 / 70%);
+        }
+        .home-pillars-cta:hover {
+            background: rgb(173 20 38 / 20%);
+            border-color: rgb(255 122 137 / 52%);
+        }
+        .home-dark-red-card:hover {
+            transform: translateY(-4px);
+            border-color: rgb(226 72 89 / 32%);
+            background:
+                radial-gradient(95% 85% at 100% 100%, rgb(155 20 39 / 29%) 0%, transparent 68%),
+                linear-gradient(137deg, #0a0c10 0%, #131116 48%, #2b1117 100%);
+            box-shadow: inset 0 1px 0 rgb(255 255 255 / 6%), 0 26px 54px -32px rgb(89 5 18 / 56%);
+        }
+        .home-dark-red-card:hover .icon-plate {
+            color: #fff4f4;
+            border-color: rgb(235 92 108 / 38%);
+            background: linear-gradient(145deg, rgb(183 26 46 / 48%), rgb(92 12 25 / 62%));
+            box-shadow: 0 12px 28px -16px rgb(195 28 49 / 65%);
+        }
+    }
+    @supports not ((-webkit-background-clip: text) or (background-clip: text)) {
+        .home-pillars-accent {
+            background: none;
+            -webkit-text-fill-color: currentColor;
+            color: #ff9ba7;
+        }
+    }
+    @media (max-width: 640px) {
+        .home-dark-red-card { border-radius: 1rem; }
+        .home-process-card > span:first-child { right: 1.25rem; left: 1.25rem; }
+    }
+
     .home-video-hero {
         position: relative; overflow: hidden; padding-top: 8.25rem;
         background: radial-gradient(ellipse at 50% 0, #23313a 0, #10171c 48%, #090e13 100%);
