@@ -1254,10 +1254,27 @@
     border-bottom-left-radius: var(--mobile-drawer-radius);
     overflow: hidden;
     background-clip: padding-box;
+    background-color: transparent;
+    border-color: transparent;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
     isolation: isolate;
   }
 
+  #mobile-drawer::before {
+    content: '';
+    position: absolute;
+    z-index: 0;
+    inset: 0;
+    border: 1px solid var(--color-line, #E8E3D8);
+    border-radius: inherit;
+    background: var(--color-ivory-50, #FDFCFA);
+    pointer-events: none;
+  }
+
   #mobile-drawer > div {
+    position: relative;
+    z-index: 1;
     border-radius: inherit;
     overflow-x: hidden;
   }
