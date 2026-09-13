@@ -1197,6 +1197,47 @@
   .nav-burger:hover { background: rgba(217, 184, 124, 0.12); color: #0D1420; }
 }
 
+/* Keep the compact mobile identity centered in both resting and scrolled states. */
+@media (max-width: 48rem) {
+  .nav-primary-row {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.1875rem;
+    height: 6.5rem;
+  }
+
+  .nav-brand,
+  .nav-actions,
+  .nav-burger {
+    margin-inline: auto;
+  }
+
+  .nav-brand img {
+    width: auto;
+    height: 2.625rem;
+  }
+
+  .nav-actions {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .nav-language-desktop {
+    display: none;
+  }
+
+  .nav-burger {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.75rem;
+  }
+
+  .nav-mobile-overlay {
+    top: 6.5rem;
+  }
+}
+
 .nav-link {
   position: relative;
   display: inline-flex;

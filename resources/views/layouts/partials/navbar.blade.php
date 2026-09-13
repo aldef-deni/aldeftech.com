@@ -19,10 +19,10 @@
      class="nav-shell nav-over-dark">
 
     <div class="shell">
-        <div class="flex items-center justify-between h-[5.5rem] lg:h-[6.5rem]">
+        <div class="nav-primary-row flex items-center justify-between h-[5.5rem] lg:h-[6.5rem]">
 
             {{-- Wordmark --}}
-            <a href="{{ lroute('home') }}" class="shrink-0 group flex items-center"
+            <a href="{{ lroute('home') }}" class="nav-brand shrink-0 group flex items-center"
                aria-label="{{ __('site.nav.to_home', ['name' => config('app.name')]) }}">
                 @php $logo = site_logo(); @endphp
                 <img src="{{ $logo['url'] }}"
@@ -44,8 +44,8 @@
             </div>
 
             {{-- Actions --}}
-            <div class="flex items-center gap-2 sm:gap-3">
-                <div class="hidden sm:block">
+            <div class="nav-actions flex items-center gap-2 sm:gap-3">
+                <div class="nav-language-desktop hidden sm:block">
                     <x-language-switcher />
                 </div>
 
@@ -85,7 +85,7 @@
          x-transition:leave-start="opacity-100"
          x-transition:leave-end="opacity-0"
          @click="open = false"
-         class="xl:hidden fixed inset-0 top-[5.5rem] bg-ink-950/50 backdrop-blur-sm"
+         class="nav-mobile-overlay xl:hidden fixed inset-0 top-[5.5rem] bg-ink-950/50 backdrop-blur-sm"
          aria-hidden="true"></div>
 
     <div id="mobile-drawer"
