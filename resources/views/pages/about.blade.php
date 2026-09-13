@@ -57,7 +57,7 @@
     <div class="shell relative z-10">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6" data-reveal-group="120">
             @if($mission)
-            <article class="card-lux reveal group p-8 lg:p-10">
+            <article class="card-lux about-premium-card reveal group p-8 lg:p-10">
                 <span class="icon-plate"><x-lux-icon name="target" /></span>
                 <h2 class="mt-6 text-2xl">{{ __('pages.about.mission') }}</h2>
                 <p class="mt-4 text-[0.9375rem] leading-[1.8] text-graphite-600">{{ $mission }}</p>
@@ -65,7 +65,7 @@
             @endif
 
             @if($vision)
-            <article class="card-lux reveal group p-8 lg:p-10">
+            <article class="card-lux about-premium-card reveal group p-8 lg:p-10">
                 <span class="icon-plate"><x-lux-icon name="rocket" /></span>
                 <h2 class="mt-6 text-2xl">{{ __('pages.about.vision') }}</h2>
                 <p class="mt-4 text-[0.9375rem] leading-[1.8] text-graphite-600">{{ $vision }}</p>
@@ -165,7 +165,7 @@
 
         <div class="mt-12 lg:mt-16 cards-swipe md:grid md:grid-cols-2 gap-5 lg:gap-6" data-reveal-group="90">
             @foreach($values as $value)
-            <article class="card-lux reveal group p-7 lg:p-8 !flex-row items-start gap-5">
+            <article class="card-lux about-premium-card reveal group p-7 lg:p-8 !flex-row items-start gap-5">
                 <span class="icon-plate"><x-lux-icon :name="$value['icon']" /></span>
                 <div class="min-w-0">
                     <h3 class="text-lg">{{ __('pages.about.values.' . $value['key'] . '.title') }}</h3>
@@ -209,3 +209,78 @@
     :lead="__('pages.about.closing.lead')" />
 
 @endsection
+
+@push('styles')
+<style>
+    .about-premium-card {
+        color: #f4eff0;
+        border-color: rgb(196 151 69 / 20%);
+        background:
+            radial-gradient(90% 75% at 100% 100%, rgb(139 17 34 / 24%) 0%, transparent 68%),
+            linear-gradient(137deg, #080a0d 0%, #101014 48%, #241014 100%);
+        box-shadow:
+            inset 0 1px 0 rgb(255 255 255 / 4%),
+            0 20px 46px -32px rgb(22 4 8 / 75%);
+        transition:
+            transform 620ms var(--e-soft),
+            border-color 420ms var(--e-glide),
+            box-shadow 620ms var(--e-soft),
+            background 420ms var(--e-glide);
+    }
+    .about-premium-card:nth-child(3n + 2) {
+        background:
+            radial-gradient(80% 90% at 0% 0%, rgb(160 22 40 / 15%) 0%, transparent 62%),
+            linear-gradient(142deg, #111014 0%, #080a0d 52%, #2d0e15 100%);
+    }
+    .about-premium-card:nth-child(3n + 3) {
+        background:
+            radial-gradient(75% 85% at 86% 12%, rgb(177 25 44 / 16%) 0%, transparent 60%),
+            linear-gradient(132deg, #07090c 0%, #111014 58%, #251015 100%);
+    }
+    .about-premium-card::before {
+        opacity: 1;
+        background: linear-gradient(118deg, transparent 22%, rgb(255 255 255 / 2.5%) 50%, transparent 76%);
+    }
+    .about-premium-card::after {
+        right: 14%;
+        left: 14%;
+        opacity: .72;
+        transform: none;
+        background: linear-gradient(90deg, transparent, rgb(215 173 94 / 72%), rgb(206 61 78 / 44%), transparent);
+    }
+    .about-premium-card h2,
+    .about-premium-card h3 { color: #faf6f6; }
+    .about-premium-card p { color: #bbb7bc; }
+    .about-premium-card .icon-plate {
+        color: #d9b87c;
+        border-color: rgb(217 184 124 / 24%);
+        background: linear-gradient(145deg, rgb(217 184 124 / 14%), rgb(116 17 31 / 19%));
+    }
+
+    @media (hover: hover) {
+        .about-premium-card:hover {
+            transform: translateY(-4px);
+            border-color: rgb(217 184 124 / 36%);
+            background:
+                radial-gradient(95% 85% at 100% 100%, rgb(155 20 39 / 29%) 0%, transparent 68%),
+                linear-gradient(137deg, #0a0c10 0%, #131116 48%, #2b1117 100%);
+            box-shadow:
+                inset 0 1px 0 rgb(255 255 255 / 6%),
+                0 26px 54px -32px rgb(89 5 18 / 56%),
+                0 0 28px rgb(142 17 32 / 9%);
+        }
+        .about-premium-card:hover::before { opacity: 1; }
+        .about-premium-card:hover::after { opacity: 1; transform: none; }
+        .about-premium-card:hover .icon-plate {
+            color: #f5e8cc;
+            border-color: rgb(232 211 167 / 42%);
+            background: linear-gradient(145deg, rgb(217 184 124 / 22%), rgb(119 15 31 / 28%));
+            box-shadow: 0 12px 28px -16px rgb(217 184 124 / 52%);
+        }
+    }
+
+    @media (max-width: 640px) {
+        .about-premium-card { border-radius: 1rem; }
+    }
+</style>
+@endpush
