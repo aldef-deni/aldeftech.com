@@ -36,6 +36,18 @@
 </script>
 @endpush
 
+@push('styles')
+<style>
+    .prose-lux p:not(figcaption p) {
+        text-align: justify;
+        text-align-last: start;
+        text-justify: inter-word;
+        overflow-wrap: break-word;
+        hyphens: auto;
+    }
+</style>
+@endpush
+
 @section('content')
 
 <x-page-hero
@@ -52,20 +64,6 @@
 <section class="surface-ivory-deep border-b border-line">
     <div class="shell">
         <div class="py-6 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-graphite-500 reveal">
-            <span class="flex items-center gap-2.5">
-                <span class="w-8 h-8 rounded-full bg-gold-100 border border-gold-200 text-gold-700 font-display text-[0.6875rem] font-semibold flex items-center justify-center">
-                    {{ initials_of($post->author->name ?? 'Aldef Tech') }}
-                </span>
-                <span class="text-graphite-700 font-medium">{{ $post->author->name ?? 'Aldef Tech' }}</span>
-            </span>
-
-            @if($post->published_at)
-            <span class="flex items-center gap-2">
-                <x-lux-icon name="clock" class="w-4 h-4 text-gold-600" />
-                <time datetime="{{ $post->published_at->toDateString() }}">{{ $post->published_at->translatedFormat('d F Y') }}</time>
-            </span>
-            @endif
-
             <span class="tabular">{{ __('site.common.minutes_read', ['count' => $readMinutes]) }}</span>
         </div>
     </div>
@@ -88,7 +86,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14">
 
             <article class="lg:col-span-8">
-                <div class="prose-lux reveal">
+                <div class="prose-lux">
                     {!! $post->content !!}
                 </div>
 

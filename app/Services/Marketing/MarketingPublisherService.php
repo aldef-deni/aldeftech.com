@@ -12,6 +12,10 @@ class MarketingPublisherService
 {
     public function publishToBlog(MarketingContent $content, ?int $authorId): BlogPost
     {
+        if ($content->content_type === 'distribution') {
+            throw new \RuntimeException('Paket distribusi hanya untuk review dan tidak dapat diterbitkan sebagai artikel.');
+        }
+
         $content->load(['campaign', 'idea.contentPillar', 'blogPost']);
 
         $category = BlogCategory::firstOrCreate(

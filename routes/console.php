@@ -98,3 +98,35 @@ Artisan::command('marketing:run {--ideas=12} {--content=3}', function () {
 Schedule::command('marketing:run --ideas=12 --content=3')
     ->dailyAt('09:00')
     ->withoutOverlapping();
+
+Artisan::command('content:generate {--scheduled : Respect the three-day interval}', function () {
+    try {
+        $post = app(\App\Services\AutomatedContentService::class)->generate((bool) $this->option('scheduled'));
+        $this->info($post ? "Article #{$post->id} published." : 'Skipped: not due or generation already running.');
+        return 0;
+    } catch (\Throwable $e) {
+        $this->error('Automatic article generation failed. Check ai_content_runs and service configuration.');
+        return 1;
+    }
+})->purpose('Generate and publish an automatic blog article');
+
+Schedule::command('content:generate --scheduled')
+    ->timezone('Asia/Jakarta')
+    ->dailyAt('07:00')
+    ->withoutOverlapping(60);
+
+Artisan::command('seo:growth {--weekly : Prepare refresh recommendations and summary}', function () {
+    try {
+        $result = app(\App\Services\SeoGrowthService::class)->run((bool) $this->option('weekly'));
+        $this->info('SEO Growth: ' . $result['status']);
+        return $result['status'] === 'partial' ? 1 : 0;
+    } catch (\Throwable $e) {
+        $this->error('SEO Growth unavailable. Check migrations, configuration and safe application logs.');
+        return 1;
+    }
+})->purpose('Prepare bounded SEO analysis, opportunities and distribution drafts');
+
+Schedule::command('seo:growth')->timezone('Asia/Jakarta')->cron(config('seo_growth.schedules.daily'))
+    ->when(fn () => (bool) config('seo_growth.enabled'))->withoutOverlapping(60);
+Schedule::command('seo:growth --weekly')->timezone('Asia/Jakarta')->cron(config('seo_growth.schedules.weekly'))
+    ->when(fn () => (bool) config('seo_growth.enabled'))->withoutOverlapping(60);

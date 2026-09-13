@@ -94,6 +94,12 @@
       "slug": "admin.marketing"
     },
     {
+      "url": "admin/seo-growth",
+      "name": "SEO Growth",
+      "icon": "menu-icon tf-icons ti tabler-chart-line",
+      "slug": "admin.seo-growth"
+    },
+    {
       "menuHeader": "Pengaturan"
     },
     {

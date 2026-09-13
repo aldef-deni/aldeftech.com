@@ -618,7 +618,6 @@
         border-color: rgb(232 62 80 / 32%);
         box-shadow: inset 0 1px 0 rgb(255 255 255 / 6%);
     }
-
     .home-dark-red-card {
         position: relative;
         isolation: isolate;

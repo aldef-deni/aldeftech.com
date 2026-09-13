@@ -52,10 +52,7 @@
                                 <div class="p-6 lg:p-7 flex-1 flex flex-col">
                                     <div class="flex items-center gap-2.5 text-[0.6875rem] uppercase tracking-[0.14em] text-gold-700">
                                         <span>{{ $post->category->name ?? __('site.common.insight') }}</span>
-                                        @if($post->published_at)
-                                            <span class="w-1 h-1 rounded-full bg-gold-400" aria-hidden="true"></span>
-                                            <time datetime="{{ $post->published_at->toDateString() }}">{{ $post->published_at->translatedFormat('d M Y') }}</time>
-                                        @endif
+
                                     </div>
 
                                     <h2 class="mt-3.5 text-lg leading-snug">{{ $post->title }}</h2>

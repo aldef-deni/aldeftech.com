@@ -20,6 +20,7 @@ class AppServiceProvider extends ServiceProvider
         // The admin console runs on Bootstrap 5; the public site passes its own
         // paginator view explicitly, so this default only affects the admin.
         Paginator::useBootstrapFive();
+        \App\Services\SeoActivityService::register();
 
         // Share site settings with all frontend views
         View::composer('layouts.app', function ($view) {
