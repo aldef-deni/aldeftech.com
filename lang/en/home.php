@@ -7,6 +7,15 @@ return [
         'description' => 'Aldef Tech builds custom systems, web applications, SaaS platforms, and AI automation for companies. Your corporate digital transformation partner.',
     ],
 
+    'video' => [
+        'title' => 'Get to know Aldef Tech',
+        'watch' => 'Watch Our Introduction',
+        'play' => 'Play video',
+        'pause' => 'Pause video',
+        'unmute' => 'Enable sound',
+        'mute' => 'Mute sound',
+    ],
+
     'hero' => [
         'eyebrow'  => 'Software Engineering · AI · Automation',
         'title'    => 'Digital systems that genuinely',

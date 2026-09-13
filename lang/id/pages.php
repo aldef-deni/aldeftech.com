@@ -151,6 +151,10 @@ return [
         'mission'   => 'Misi',
         'vision'    => 'Visi',
         'founder'   => 'Pendiri',
+        'founder_video' => [
+            'watch' => 'Tonton Video Pendiri',
+            'title' => 'Kenali Pendiri Aldef Tech',
+        ],
         'skills'    => 'Bidang Keahlian',
         'experience' => 'Pengalaman',
 
