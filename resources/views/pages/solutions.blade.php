@@ -29,7 +29,7 @@
         <div class="cards-swipe md:grid md:grid-cols-2 xl:grid-cols-3 gap-5 lg:gap-6" data-reveal-group="70">
             @foreach($solutions as $i => $solution)
             <article id="{{ $solution->slug ?? \Illuminate\Support\Str::slug($solution->title) }}"
-                     class="card-lux reveal group scroll-mt-28 p-7 lg:p-8">
+                     class="card-lux solution-premium-card reveal group scroll-mt-28 p-7 lg:p-8">
 
                 <div class="flex items-start justify-between gap-4">
                     <span class="icon-plate">
@@ -110,3 +110,93 @@
     :lead="__('pages.solutions.closing.lead')" />
 
 @endsection
+
+@push('styles')
+<style>
+    .solution-premium-card {
+        color: #f4eff0;
+        border-color: rgb(196 151 69 / 20%);
+        background:
+            radial-gradient(90% 75% at 100% 100%, rgb(139 17 34 / 24%) 0%, transparent 68%),
+            linear-gradient(137deg, #080a0d 0%, #101014 48%, #241014 100%);
+        box-shadow:
+            inset 0 1px 0 rgb(255 255 255 / 4%),
+            0 20px 46px -32px rgb(22 4 8 / 75%);
+        transition:
+            transform 620ms var(--e-soft),
+            border-color 420ms var(--e-glide),
+            box-shadow 620ms var(--e-soft),
+            background 420ms var(--e-glide);
+    }
+    .solution-premium-card:nth-child(3n + 2) {
+        background:
+            radial-gradient(80% 90% at 0% 0%, rgb(160 22 40 / 15%) 0%, transparent 62%),
+            linear-gradient(142deg, #111014 0%, #080a0d 52%, #2d0e15 100%);
+    }
+    .solution-premium-card:nth-child(3n + 3) {
+        background:
+            radial-gradient(75% 85% at 86% 12%, rgb(177 25 44 / 16%) 0%, transparent 60%),
+            linear-gradient(132deg, #07090c 0%, #111014 58%, #251015 100%);
+    }
+    .solution-premium-card::before {
+        opacity: 1;
+        background: linear-gradient(118deg, transparent 22%, rgb(255 255 255 / 2.5%) 50%, transparent 76%);
+    }
+    .solution-premium-card::after {
+        right: 14%;
+        left: 14%;
+        opacity: .72;
+        transform: none;
+        background: linear-gradient(90deg, transparent, rgb(215 173 94 / 72%), rgb(206 61 78 / 44%), transparent);
+    }
+    .solution-premium-card h2 { color: #faf6f6; }
+    .solution-premium-card p,
+    .solution-premium-card .feature-row { color: #bbb7bc; }
+    .solution-premium-card .rule-fade {
+        background: linear-gradient(90deg, transparent, rgb(217 184 124 / 24%) 18%, rgb(190 51 68 / 23%) 82%, transparent);
+    }
+    .solution-premium-card .icon-plate {
+        color: #d9b87c;
+        border-color: rgb(217 184 124 / 24%);
+        background: linear-gradient(145deg, rgb(217 184 124 / 14%), rgb(116 17 31 / 19%));
+    }
+    .solution-premium-card .font-serif-accent { color: #d9b87c; }
+    .solution-premium-card .feature-row .tick {
+        color: #e8d3a7;
+        background: rgb(217 184 124 / 13%);
+    }
+    .solution-premium-card .link-arrow { color: #d9b87c; }
+
+    @media (hover: hover) {
+        .solution-premium-card:hover {
+            transform: translateY(-4px);
+            border-color: rgb(217 184 124 / 36%);
+            background:
+                radial-gradient(95% 85% at 100% 100%, rgb(155 20 39 / 29%) 0%, transparent 68%),
+                linear-gradient(137deg, #0a0c10 0%, #131116 48%, #2b1117 100%);
+            box-shadow:
+                inset 0 1px 0 rgb(255 255 255 / 6%),
+                0 26px 54px -32px rgb(89 5 18 / 56%),
+                0 0 28px rgb(142 17 32 / 9%);
+        }
+        .solution-premium-card:hover::before { opacity: 1; }
+        .solution-premium-card:hover::after { opacity: 1; transform: none; }
+        .solution-premium-card:hover .icon-plate {
+            color: #f5e8cc;
+            border-color: rgb(232 211 167 / 42%);
+            background: linear-gradient(145deg, rgb(217 184 124 / 22%), rgb(119 15 31 / 28%));
+            box-shadow: 0 12px 28px -16px rgb(217 184 124 / 52%);
+        }
+        .solution-premium-card:hover .font-serif-accent,
+        .solution-premium-card:hover .link-arrow { color: #f0d69f; }
+        .solution-premium-card:hover .feature-row .tick {
+            color: #101014;
+            background: #d9b87c;
+        }
+    }
+
+    @media (max-width: 640px) {
+        .solution-premium-card { border-radius: 1rem; }
+    }
+</style>
+@endpush
