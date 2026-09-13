@@ -1193,6 +1193,7 @@
   transition: background-color var(--t-mid) var(--e-glide), color var(--t-mid) var(--e-glide), transform var(--t-mid) var(--e-soft);
 }
 .nav-burger:active { transform: scale(0.93); }
+.nav-menu-icon { display: block; flex: none; }
 @media (hover: hover) {
   .nav-burger:hover { background: rgba(217, 184, 124, 0.12); color: #0D1420; }
 }
@@ -1235,6 +1236,18 @@
 
   .nav-mobile-overlay {
     top: 6.5rem;
+  }
+
+  #mobile-drawer {
+    box-sizing: border-box;
+    top: calc(100% + 0.375rem);
+    right: 0.625rem;
+    left: 0.625rem;
+    width: auto;
+    max-width: calc(100% - 1.25rem);
+    margin-right: 0;
+    margin-left: 0;
+    border-radius: 1.125rem;
   }
 }
 

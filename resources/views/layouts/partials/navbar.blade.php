@@ -65,10 +65,10 @@
                         :aria-expanded="open.toString()"
                         aria-controls="mobile-drawer"
                         aria-label="{{ __('site.nav.open_menu') }}">
-                    <svg x-show="!open" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-width="1.75" d="M4 7h16M4 12h16M4 17h10"/>
+                    <svg x-show="!open" class="nav-menu-icon w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-width="1.75" d="M3 7.5h18M3 12h18M3 16.5h18"/>
                     </svg>
-                    <svg x-show="open" x-cloak class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <svg x-show="open" x-cloak class="nav-menu-icon w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                         <path stroke-linecap="round" stroke-width="1.75" d="M6 18L18 6M6 6l12 12"/>
                     </svg>
                 </button>
