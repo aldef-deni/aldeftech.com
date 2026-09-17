@@ -35,12 +35,18 @@
     </div>
 
     <div class="col-12 col-lg-4">
-        <div class="card">
+        <div class="card mb-4">
             <div class="card-header"><h5 class="card-title mb-0">Publikasi</h5></div>
             <div class="card-body">
                 <x-admin.form.switch
                     label="Tampilkan di situs" name="is_published"
-                    :checked="$testimonial->is_published ?? true" />
+                    :checked="$testimonial->is_published ?? true"
+                    help="Terbit tampil di beranda; draf hanya tersimpan di dasbor." />
+
+                <x-admin.form.switch
+                    label="Tandai unggulan" name="is_featured"
+                    :checked="$testimonial->is_featured ?? false"
+                    help="Unggulan ditampilkan lebih dulu, tanpa mengubah tata letak." />
 
                 <x-admin.form.select
                     label="Rating" name="rating"
@@ -48,13 +54,23 @@
                     :value="$testimonial->rating ?? 5" required />
 
                 <x-admin.form.input
+                    label="Tanggal Terbit" name="published_at" type="datetime-local"
+                    :value="$testimonial?->published_at?->format('Y-m-d\TH:i') ?? ''"
+                    help="Kosongkan untuk memakai waktu sekarang. Tanggal di masa depan menunda tampil." />
+
+                <x-admin.form.input
                     label="Urutan" name="sort_order" type="number" :value="$testimonial->sort_order ?? 0"
                     help="Angka kecil tampil lebih dulu." />
+            </div>
+        </div>
 
+        <div class="card">
+            <div class="card-header"><h5 class="card-title mb-0">Identitas</h5></div>
+            <div class="card-body">
                 <x-admin.form.image
                     label="Foto Klien" name="photo" :value="$testimonial->photo ?? ''"
                     ratio="1 / 1" width="12rem" round hint="Seret foto ke sini atau klik"
-                    help="Tampil bulat di kartu testimoni, jadi wajah sebaiknya di tengah." />
+                    help="Tampil bulat di kartu testimoni, jadi wajah sebaiknya di tengah. Tanpa foto, inisial nama dipakai." />
             </div>
         </div>
     </div>

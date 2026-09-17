@@ -101,11 +101,16 @@ return [
     ],
 
     'testimonials' => [
-        'eyebrow' => 'Suara Klien',
-        'title'   => 'Dipercaya untuk pekerjaan yang',
-        'accent'  => 'kritikal',
-        'title_after' => '.',
+        'eyebrow' => 'Testimoni Klien',
+        'title'   => 'Kepercayaan yang Dibangun',
+        'accent'  => 'dari Hasil Nyata',
+        'title_after' => '',
+        'lead'    => 'Pengalaman klien yang mempercayakan transformasi digital dan pengembangan teknologi mereka kepada AldefTech.',
         'rating'  => ':rating dari 5',
+        'featured' => 'Unggulan',
+        'prev'    => 'Testimoni sebelumnya',
+        'next'    => 'Testimoni berikutnya',
+        'slides'  => 'Testimoni klien',
     ],
 
     'insights' => [

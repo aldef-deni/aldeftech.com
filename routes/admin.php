@@ -125,6 +125,16 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
             [AdminTestimonialController::class, 'reorder']
         )->name('testimonials.reorder');
 
+        Route::post(
+            'testimonials/{testimonial}/toggle-published',
+            [AdminTestimonialController::class, 'togglePublished']
+        )->name('testimonials.toggle-published');
+
+        Route::post(
+            'testimonials/{testimonial}/toggle-featured',
+            [AdminTestimonialController::class, 'toggleFeatured']
+        )->name('testimonials.toggle-featured');
+
         // FAQ
         Route::resource('faq', AdminFaqController::class)
             ->except(['show'])

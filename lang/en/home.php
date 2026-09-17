@@ -101,11 +101,16 @@ return [
     ],
 
     'testimonials' => [
-        'eyebrow' => 'Client Voices',
-        'title'   => 'Trusted with work that is',
-        'accent'  => 'business-critical',
-        'title_after' => '.',
+        'eyebrow' => 'Client Testimonials',
+        'title'   => 'Trust Built Through',
+        'accent'  => 'Real Results',
+        'title_after' => '',
+        'lead'    => 'The experience of clients who entrusted their digital transformation and technology development to AldefTech.',
         'rating'  => ':rating out of 5',
+        'featured' => 'Featured',
+        'prev'    => 'Previous testimonial',
+        'next'    => 'Next testimonial',
+        'slides'  => 'Client testimonials',
     ],
 
     'insights' => [

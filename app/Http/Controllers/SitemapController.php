@@ -31,7 +31,7 @@ class SitemapController extends Controller
         $pages = [
             '/' => [
                 'priority' => '1.0',
-                'lastmod' => $this->latestOf([Service::class, Solution::class, Portfolio::class, Testimonial::class, fn () => BlogPost::published()]),
+                'lastmod' => $this->latestOf([Service::class, Solution::class, Portfolio::class, fn () => Testimonial::published(), fn () => BlogPost::published()]),
             ],
             '/services' => ['priority' => '0.9', 'lastmod' => $this->latestOf([Service::class])],
             '/solutions' => ['priority' => '0.9', 'lastmod' => $this->latestOf([Solution::class])],

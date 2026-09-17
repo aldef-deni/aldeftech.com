@@ -415,46 +415,87 @@
      TESTIMONIALS
      ══════════════════════════════════════════════════════════════════ --}}
 @if($testimonials->isNotEmpty())
-<section class="section-padding surface-ivory">
-    <div class="shell">
-        <header class="max-w-2xl mx-auto text-center reveal">
-            <p class="eyebrow eyebrow-center">{{ __('home.testimonials.eyebrow') }}</p>
-            <h2 class="mt-5 text-3xl sm:text-4xl lg:text-[2.75rem]">
-                {{ __('home.testimonials.title') }} <span class="accent-serif accent-gold">{{ __('home.testimonials.accent') }}</span>{{ __('home.testimonials.title_after') }}
+@php $testimonialSlider = $testimonials->count() > 3; @endphp
+<section id="testimoni" class="home-testimonials section-padding relative overflow-hidden">
+    <div class="absolute inset-0 veil-grid pointer-events-none" aria-hidden="true"></div>
+    <div class="home-testimonials-glow home-testimonials-glow-left" aria-hidden="true"></div>
+    <div class="home-testimonials-glow home-testimonials-glow-right" aria-hidden="true"></div>
+
+    <div class="shell relative z-10">
+        <header class="max-w-2xl reveal">
+            <p class="eyebrow home-testimonials-eyebrow">{{ __('home.testimonials.eyebrow') }}</p>
+            <h2 class="mt-5 text-3xl sm:text-4xl lg:text-[2.75rem] text-white">
+                {{ __('home.testimonials.title') }} <span class="accent-serif home-testimonials-accent">{{ __('home.testimonials.accent') }}</span>{{ __('home.testimonials.title_after') }}
             </h2>
+            <p class="mt-5 text-base leading-relaxed text-graphite-300">{{ __('home.testimonials.lead') }}</p>
         </header>
 
-        <div class="mt-12 lg:mt-16 cards-swipe md:grid md:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6"
-             data-reveal-group="80">
-            @foreach($testimonials->take(6) as $t)
-            <figure class="card-lux reveal p-7 lg:p-8">
-                @if($t->rating)
-                <div class="flex gap-1 text-gold-500" aria-label="{{ __('home.testimonials.rating', ['rating' => $t->rating]) }}">
-                    @for($s = 1; $s <= 5; $s++)
-                        <svg class="w-3.5 h-3.5 {{ $s <= $t->rating ? 'opacity-100' : 'opacity-25' }}" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L1.5 7.7l5.9-.9z"/></svg>
-                    @endfor
-                </div>
-                @endif
+        <div class="mt-12 lg:mt-16"
+             @if($testimonialSlider) data-testimonial-slider @endif>
 
-                <blockquote class="mt-5 text-[0.9375rem] leading-relaxed text-graphite-700">
-                    “{{ excerpt_text($t->testimonial, 260) }}”
-                </blockquote>
+            @if($testimonialSlider)
+            <div class="flex justify-end gap-2 mb-6">
+                <button type="button" class="testimonial-nav" data-testimonial-prev
+                        aria-label="{{ __('home.testimonials.prev') }}">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                </button>
+                <button type="button" class="testimonial-nav" data-testimonial-next
+                        aria-label="{{ __('home.testimonials.next') }}">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                </button>
+            </div>
+            @endif
 
-                <figcaption class="mt-7 pt-6 border-t border-line-soft flex items-center gap-3.5">
-                    @if($src = media_url($t->photo))
-                        <img src="{{ $src }}" alt="{{ $t->client_name }}" class="w-11 h-11 rounded-full object-cover border border-line" loading="lazy">
-                    @else
-                        <span class="w-11 h-11 rounded-full bg-gold-100 border border-gold-200 text-gold-700 font-display text-sm font-semibold flex items-center justify-center shrink-0">
-                            {{ initials_of($t->client_name) }}
-                        </span>
-                    @endif
-                    <span class="min-w-0">
-                        <span class="block font-display text-sm font-semibold text-graphite-900 truncate">{{ $t->client_name }}</span>
-                        <span class="block text-xs text-graphite-500 truncate">{{ trim(($t->position ? $t->position . ' · ' : '') . $t->company, ' ·') }}</span>
-                    </span>
-                </figcaption>
-            </figure>
-            @endforeach
+            <ul class="testimonial-rail{{ $testimonialSlider ? ' is-slider' : '' }}" data-testimonial-rail
+                role="list" aria-label="{{ __('home.testimonials.slides') }}"
+                @if($testimonialSlider) tabindex="0" @endif>
+                @foreach($testimonials as $t)
+                <li class="testimonial-slide">
+                    <figure class="card-obsidian testimonial-card h-full{{ $t->is_featured ? ' is-featured' : '' }}">
+                        <span class="testimonial-mark" aria-hidden="true">&ldquo;</span>
+
+                        <div class="flex items-center justify-between gap-3">
+                            @if($t->rating)
+                            <div class="flex gap-1 text-gold-500" aria-label="{{ __('home.testimonials.rating', ['rating' => $t->rating]) }}">
+                                @for($s = 1; $s <= 5; $s++)
+                                    <svg class="w-3.5 h-3.5 {{ $s <= $t->rating ? 'opacity-100' : 'opacity-25' }}" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L1.5 7.7l5.9-.9z"/></svg>
+                                @endfor
+                            </div>
+                            @else
+                            <span></span>
+                            @endif
+
+                            @if($t->is_featured)
+                            <span class="testimonial-badge">{{ __('home.testimonials.featured') }}</span>
+                            @endif
+                        </div>
+
+                        <blockquote class="testimonial-quote mt-5 flex-1 text-[0.9375rem] leading-relaxed">
+                            “{{ excerpt_text($t->testimonial, 300) }}”
+                        </blockquote>
+
+                        <figcaption class="mt-7 pt-6 border-t border-white/10 flex items-center gap-3.5">
+                            @if($src = media_url($t->photo))
+                                <img src="{{ $src }}" alt="{{ $t->client_name }}" width="44" height="44"
+                                     class="testimonial-avatar" loading="lazy" decoding="async">
+                            @else
+                                <span class="testimonial-avatar-fallback" aria-hidden="true">{{ initials_of($t->client_name) }}</span>
+                            @endif
+                            <span class="min-w-0">
+                                <span class="block font-display text-sm font-semibold text-white truncate">{{ $t->client_name }}</span>
+                                <span class="block text-xs text-graphite-400 truncate">{{ $t->roleLine() ?: '—' }}</span>
+                            </span>
+                        </figcaption>
+                    </figure>
+                </li>
+                @endforeach
+            </ul>
+
+            @if($testimonialSlider)
+            <div class="testimonial-dots mt-8" data-testimonial-dots role="group"
+                 data-testimonial-label="{{ __('home.testimonials.slides') }}"
+                 aria-label="{{ __('home.testimonials.slides') }}"></div>
+            @endif
         </div>
     </div>
 </section>
@@ -774,6 +815,206 @@
         .home-video-frame { border-radius: 1rem; }
         .home-video-actions:not([hidden]) { right: .5rem; bottom: .5rem; gap: .375rem; }
     }
+
+    /* ========================================================================
+       TESTIMONI
+       ------------------------------------------------------------------------
+       Same obsidian-and-red band as the differentiators, so the proof sits in
+       the same visual family, with the gold of the design system carrying the
+       quotes. Cards reuse .card-obsidian; only the tint and the rail are local.
+       ========================================================================= */
+    .home-testimonials {
+        isolation: isolate;
+        color: #e8eaee;
+        background:
+            radial-gradient(72% 88% at 106% 6%, rgb(123 12 24 / 34%) 0%, rgb(85 7 16 / 12%) 44%, transparent 70%),
+            radial-gradient(58% 78% at -8% 104%, rgb(195 30 48 / 16%) 0%, transparent 66%),
+            linear-gradient(158deg, #050506 0%, #080708 40%, #140609 72%, #1c060a 100%);
+        border-block: 1px solid rgb(255 255 255 / 7%);
+    }
+    .home-testimonials-glow {
+        position: absolute;
+        z-index: -1;
+        border-radius: 999px;
+        filter: blur(90px);
+        pointer-events: none;
+    }
+    .home-testimonials-glow-left {
+        width: 22rem;
+        height: 22rem;
+        left: -13rem;
+        bottom: -11rem;
+        background: rgb(195 30 48 / 17%);
+    }
+    .home-testimonials-glow-right {
+        width: 30rem;
+        height: 30rem;
+        right: -18rem;
+        top: -15rem;
+        background: rgb(159 13 31 / 22%);
+    }
+    .home-testimonials-eyebrow { color: #ffb1b9; }
+    .home-testimonials-eyebrow::before {
+        background: linear-gradient(90deg, transparent, #e23c4f);
+    }
+    .home-testimonials-accent {
+        background: linear-gradient(105deg, #f3d8c7 0%, #e8d3a7 45%, #df3a4d 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+    }
+
+    /* A 3/2/1 grid while everything fits, a snap rail once it does not. */
+    .testimonial-rail {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+    .testimonial-slide { min-width: 0; }
+    @media (min-width: 768px) {
+        .testimonial-rail { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (min-width: 1024px) {
+        .testimonial-rail { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+    .testimonial-rail.is-slider {
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 1.25rem;
+        overflow-x: auto;
+        overscroll-behavior-x: contain;
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+    }
+    .testimonial-rail.is-slider::-webkit-scrollbar { display: none; }
+    /* Scroll reveals are viewport-based; a slide parked off-canvas would stay
+       invisible, so reveal is disabled inside the rail. */
+    .testimonial-rail.is-slider > .testimonial-slide {
+        flex: 0 0 100%;
+        scroll-snap-align: start;
+    }
+    @media (min-width: 768px) {
+        .testimonial-rail.is-slider > .testimonial-slide { flex-basis: calc((100% - 1.25rem) / 2); }
+    }
+    @media (min-width: 1024px) {
+        .testimonial-rail.is-slider > .testimonial-slide { flex-basis: calc((100% - 2.5rem) / 3); }
+    }
+    .testimonial-rail:focus-visible {
+        outline: 2px solid rgb(232 211 167 / 55%);
+        outline-offset: 4px;
+        border-radius: 1rem;
+    }
+
+    .testimonial-card {
+        position: relative;
+        padding: 1.75rem;
+        background-image: linear-gradient(152deg, rgb(255 255 255 / 5%) 0%, rgb(114 9 21 / 10%) 62%, rgb(28 6 10 / 26%) 100%);
+    }
+    @media (min-width: 1024px) {
+        .testimonial-card { padding: 2rem; }
+    }
+    /* Featured is a tone change, never a size change — the grid must not break. */
+    .testimonial-card.is-featured {
+        border-color: rgb(232 211 167 / 26%);
+        background-image: linear-gradient(152deg, rgb(255 255 255 / 7%) 0%, rgb(217 184 124 / 9%) 58%, rgb(114 9 21 / 12%) 100%);
+    }
+    .testimonial-card.is-featured::after { opacity: 1; transform: scaleX(1); }
+    .testimonial-mark {
+        position: absolute;
+        top: 0.25rem;
+        right: 1.25rem;
+        z-index: -1;
+        font-family: var(--font-serif);
+        font-size: 5rem;
+        line-height: 1;
+        color: rgb(217 184 124 / 14%);
+        pointer-events: none;
+    }
+    .testimonial-quote {
+        color: #d8dce3;
+        /* A long unbroken string in a quote must wrap, not widen the card. */
+        overflow-wrap: break-word;
+    }
+    .testimonial-badge {
+        flex-shrink: 0;
+        padding: 0.2rem 0.6rem;
+        border-radius: 999px;
+        border: 1px solid rgb(232 211 167 / 24%);
+        background: rgb(217 184 124 / 10%);
+        color: #e8d3a7;
+        font-size: 0.625rem;
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+    }
+    .testimonial-avatar {
+        width: 2.75rem;
+        height: 2.75rem;
+        border-radius: 999px;
+        object-fit: cover;
+        border: 1px solid rgb(255 255 255 / 14%);
+        flex-shrink: 0;
+    }
+    .testimonial-avatar-fallback {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 2.75rem;
+        height: 2.75rem;
+        flex-shrink: 0;
+        border-radius: 999px;
+        background: linear-gradient(145deg, rgb(199 30 49 / 22%), rgb(255 255 255 / 5%));
+        border: 1px solid rgb(232 62 80 / 24%);
+        color: #f3d8c7;
+        font-size: 0.8125rem;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+    }
+    .testimonial-nav {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 999px;
+        border: 1px solid rgb(255 255 255 / 14%);
+        background: rgb(255 255 255 / 4%);
+        color: #e8eaee;
+        transition: border-color var(--t-mid) var(--e-glide), background-color var(--t-mid) var(--e-glide);
+    }
+    @media (hover: hover) {
+        .testimonial-nav:hover {
+            border-color: rgb(232 211 167 / 34%);
+            background: rgb(255 255 255 / 8%);
+        }
+    }
+    .testimonial-nav:focus-visible {
+        outline: 2px solid #e8d3a7;
+        outline-offset: 2px;
+    }
+    .testimonial-dots {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+    .testimonial-dot {
+        width: 0.5rem;
+        height: 0.5rem;
+        border-radius: 999px;
+        background: rgb(255 255 255 / 20%);
+        transition: width var(--t-mid) var(--e-soft), background-color var(--t-mid) var(--e-glide);
+    }
+    .testimonial-dot.is-active {
+        width: 1.5rem;
+        background: #dfc28e;
+    }
 </style>
 @endpush
 
@@ -874,6 +1115,121 @@
     updateControls();
     if (video.error) showPoster();
     else playVideo();
+})();
+
+/* ---------------------------------------------------------------------------
+   Testimonial slider
+   The rail is CSS scroll-snap, so touch swipe and keyboard scrolling work with
+   this script absent — it only adds arrows, position dots and a slow autoplay.
+   No new dependency: a carousel of quotes does not justify one.
+   ------------------------------------------------------------------------- */
+(() => {
+    const root = document.querySelector('[data-testimonial-slider]');
+    if (!root) return;
+
+    const rail = root.querySelector('[data-testimonial-rail]');
+    const dotsBox = root.querySelector('[data-testimonial-dots]');
+    const prev = root.querySelector('[data-testimonial-prev]');
+    const next = root.querySelector('[data-testimonial-next]');
+    const slides = rail ? Array.from(rail.children) : [];
+    if (!rail || !dotsBox || !prev || !next || slides.length < 2) return;
+
+    const calm = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let dots = [];
+    let timer = null;
+
+    const perView = () => {
+        const slide = rail.firstElementChild;
+        if (!slide) return 1;
+        const gap = parseFloat(getComputedStyle(rail).columnGap || '0') || 0;
+        const step = slide.getBoundingClientRect().width + gap;
+        return step > 0 ? Math.max(1, Math.round((rail.clientWidth + gap) / step)) : 1;
+    };
+
+    const pageCount = () => Math.max(1, Math.ceil(slides.length / perView()));
+    const pageWidth = () => rail.clientWidth;
+    const activePage = () => Math.round(rail.scrollLeft / Math.max(1, pageWidth()));
+
+    const build = () => {
+        const pages = pageCount();
+        dots.forEach((dot) => dot.remove());
+        const label = dotsBox.dataset.testimonialLabel || '';
+        dots = Array.from({ length: pages }, (_, i) => {
+            const dot = document.createElement('button');
+            dot.type = 'button';
+            dot.className = 'testimonial-dot';
+            dot.setAttribute('aria-label', `${label} ${i + 1} / ${pages}`.trim());
+            dot.addEventListener('click', () => goTo(i));
+            dotsBox.appendChild(dot);
+            return dot;
+        });
+        sync();
+    };
+
+    const sync = () => {
+        const current = activePage();
+        dots.forEach((dot, i) => {
+            dot.classList.toggle('is-active', i === current);
+            if (i === current) dot.setAttribute('aria-current', 'true');
+            else dot.removeAttribute('aria-current');
+        });
+    };
+
+    const goTo = (page) => {
+        const pages = pageCount();
+        const target = ((page % pages) + pages) % pages;
+        rail.scrollTo({
+            left: target * pageWidth(),
+            behavior: calm.matches ? 'auto' : 'smooth',
+        });
+        sync();
+    };
+
+    const stop = () => {
+        if (timer) clearInterval(timer);
+        timer = null;
+    };
+
+    const start = () => {
+        stop();
+        if (calm.matches) return;
+        timer = setInterval(() => goTo(activePage() + 1), 7000);
+    };
+
+    prev.addEventListener('click', () => { goTo(activePage() - 1); start(); });
+    next.addEventListener('click', () => { goTo(activePage() + 1); start(); });
+
+    // Keyboard use keeps the rail's own scrolling disabled in favour of paging.
+    rail.addEventListener('keydown', (event) => {
+        if (event.key === 'ArrowRight') { event.preventDefault(); goTo(activePage() + 1); start(); }
+        if (event.key === 'ArrowLeft') { event.preventDefault(); goTo(activePage() - 1); start(); }
+        if (event.key === 'Home') { event.preventDefault(); goTo(0); start(); }
+        if (event.key === 'End') { event.preventDefault(); goTo(pageCount() - 1); start(); }
+    });
+
+    let scrollFrame = null;
+    rail.addEventListener('scroll', () => {
+        if (scrollFrame) return;
+        scrollFrame = requestAnimationFrame(() => {
+            scrollFrame = null;
+            sync();
+        });
+    }, { passive: true });
+
+    // Pause while a visitor is reading, hovering or tabbing through the cards.
+    ['pointerenter', 'focusin', 'pointerdown'].forEach((event) => root.addEventListener(event, stop));
+    ['pointerleave', 'focusout'].forEach((event) => root.addEventListener(event, start));
+    root.addEventListener('pointerup', start);
+    document.addEventListener('visibilitychange', () => (document.hidden ? stop() : start()));
+
+    let resizeTimer = null;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => { build(); goTo(0); }, 180);
+    });
+
+    build();
+    start();
 })();
 </script>
 @endpush
