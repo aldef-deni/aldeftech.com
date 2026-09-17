@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CeoProfile;
+use App\Models\Client;
 
 class AboutController extends Controller
 {
@@ -28,8 +29,13 @@ class AboutController extends Controller
         $founderVideoPath = 'videos/CEO-aldeftech3.mp4';
         $founderVideoFile = public_path($founderVideoPath);
 
+        // The same table that feeds the homepage marquee; the scope carries the
+        // rule, so the two pages can never disagree about what is publishable.
+        $clients = Client::forAbout()->displayOrder()->get();
+
         return view('pages.about', [
             'ceoProfile' => $ceoProfile,
+            'clients' => $clients,
             'founderVideoUrl' => is_file($founderVideoFile)
                 ? asset($founderVideoPath) . '?v=' . filemtime($founderVideoFile)
                 : null,

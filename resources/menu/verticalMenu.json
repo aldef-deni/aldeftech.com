@@ -40,6 +40,12 @@
       "slug": "admin.portfolio"
     },
     {
+      "url": "admin/clients",
+      "name": "Klien Aldef Tech",
+      "icon": "menu-icon tf-icons ti tabler-building-store",
+      "slug": "admin.clients"
+    },
+    {
       "url": "admin/process-steps",
       "name": "Alur Kerja",
       "icon": "menu-icon tf-icons ti tabler-timeline-event",

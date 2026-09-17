@@ -86,6 +86,14 @@ return [
         'all'     => 'All projects',
     ],
 
+    'clients' => [
+        'eyebrow' => 'Aldef Tech Clients',
+        'title'   => 'Trusted to Build',
+        'accent'  => 'Digital Solutions',
+        'title_after' => '.',
+        'lead'    => 'Collaborating with businesses to deliver technology that is effective, modern, and scalable.',
+    ],
+
     'solutions' => [
         'eyebrow' => 'Ready to Adapt',
         'title'   => 'A',

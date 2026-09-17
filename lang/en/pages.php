@@ -192,6 +192,13 @@ return [
             ],
         ],
 
+        'clients' => [
+            'eyebrow' => 'Aldef Tech Clients',
+            'title'   => 'Trust Built Through',
+            'accent'  => 'Collaboration',
+            'lead'    => "Every collaboration becomes part of Aldef Tech's journey in delivering technology that creates real value.",
+        ],
+
         'closing' => [
             'eyebrow' => 'Say Hello',
             'title'   => 'Let us talk before we',

@@ -323,6 +323,48 @@
 @endif
 
 {{-- ══════════════════════════════════════════════════════════════════════
+     KLIEN ALDEF TECH
+
+     Sits between the work and the offer: the portfolio shows what was built,
+     this band shows who it was built for, and the marquee keeps moving so the
+     strip reads as a list rather than as a banner to be read once.
+     ══════════════════════════════════════════════════════════════════ --}}
+@if($clients->isNotEmpty())
+<section id="klien" class="client-band section-padding-sm relative overflow-hidden">
+    <div class="absolute inset-0 veil-grid pointer-events-none" aria-hidden="true"></div>
+    <div class="client-band-glow" aria-hidden="true"></div>
+
+    <div class="shell relative z-10">
+        <header class="max-w-2xl reveal">
+            <p class="eyebrow client-band-eyebrow">{{ __('home.clients.eyebrow') }}</p>
+            <h2 class="mt-5 text-3xl sm:text-4xl lg:text-[2.75rem] text-white">
+                {{ __('home.clients.title') }} <span class="accent-serif client-band-accent">{{ __('home.clients.accent') }}</span>{{ __('home.clients.title_after') }}
+            </h2>
+            <p class="mt-5 text-base leading-relaxed text-graphite-300">{{ __('home.clients.lead') }}</p>
+        </header>
+    </div>
+
+    {{-- Duration scales with the number of logos, so more clients means the same
+         slow speed rather than a faster blur. --}}
+    <div class="client-marquee mt-12 lg:mt-14" style="--client-marquee-duration: {{ max(46, $clients->count() * 9) }}s">
+        <div class="client-marquee-track">
+            @foreach($clients as $client)
+            <div class="client-marquee-item"><x-client-logo :client="$client" /></div>
+            @endforeach
+
+            {{-- Second pass, marked so it can be dropped for anyone who asked
+                 for less motion. Decorative: the logos above are the content. --}}
+            @foreach($clients as $client)
+            <div class="client-marquee-item" data-client-duplicate>
+                <x-client-logo :client="$client" :decorative="true" />
+            </div>
+            @endforeach
+        </div>
+    </div>
+</section>
+@endif
+
+{{-- ══════════════════════════════════════════════════════════════════════
      SOLUTIONS
      ══════════════════════════════════════════════════════════════════ --}}
 @if($solutions->isNotEmpty())
@@ -1015,7 +1057,64 @@
         width: 1.5rem;
         background: #dfc28e;
     }
+
+    /* ========================================================================
+       KLIEN ALDEF TECH
+       ------------------------------------------------------------------------
+       A marquee, not a carousel: logos are proof, so they should keep moving
+       rather than ask to be clicked. The track holds the logos twice and slides
+       by exactly half its width, which is why the gap is a margin on each item
+       — a flex gap would leave one short space at the seam and the loop would
+       visibly jump.
+       ========================================================================= */
+    .client-marquee {
+        position: relative;
+        overflow: hidden;
+        -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 7%, #000 93%, transparent 100%);
+        mask-image: linear-gradient(90deg, transparent 0, #000 7%, #000 93%, transparent 100%);
+    }
+
+    .client-marquee-track {
+        display: flex;
+        align-items: stretch;
+        width: max-content;
+        animation: clientMarquee var(--client-marquee-duration, 60s) linear infinite;
+    }
+
+    .client-marquee-item {
+        display: flex;
+        flex: 0 0 auto;
+        margin-inline-end: 1rem;
+    }
+
+    /* Reading a logo should not be a race. */
+    .client-marquee:hover .client-marquee-track,
+    .client-marquee:focus-within .client-marquee-track { animation-play-state: paused; }
+
+    @keyframes clientMarquee {
+        from { transform: translateX(0); }
+        to { transform: translateX(-50%); }
+    }
+
+    /* Without the loop the strip is shown as one static, wrapped row instead:
+       every logo stays readable, and nothing moves. */
+    @media (prefers-reduced-motion: reduce) {
+        .client-marquee {
+            -webkit-mask-image: none;
+            mask-image: none;
+        }
+        .client-marquee-track {
+            animation: none;
+            width: 100%;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.875rem;
+        }
+        .client-marquee-item { margin-inline-end: 0; }
+        .client-marquee-item[data-client-duplicate] { display: none; }
+    }
 </style>
+@include('_partials.client-logos-styles')
 @endpush
 
 @push('scripts')

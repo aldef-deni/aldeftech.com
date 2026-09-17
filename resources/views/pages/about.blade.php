@@ -202,6 +202,32 @@
     </div>
 </section>
 
+{{-- ── Klien Aldef Tech ─────────────────────────────────────────────────── --}}
+@if($clients->isNotEmpty())
+<section id="klien" class="client-band section-padding relative overflow-hidden">
+    <div class="absolute inset-0 veil-grid pointer-events-none" aria-hidden="true"></div>
+    <div class="client-band-glow" aria-hidden="true"></div>
+
+    <div class="shell relative z-10">
+        <header class="max-w-2xl reveal">
+            <p class="eyebrow eyebrow-light">{{ __('pages.about.clients.eyebrow') }}</p>
+            <h2 class="mt-5 text-3xl sm:text-4xl text-white">
+                {{ __('pages.about.clients.title') }} <span class="accent-serif accent-champagne">{{ __('pages.about.clients.accent') }}</span>
+            </h2>
+            <p class="mt-5 text-base leading-relaxed text-graphite-400">{{ __('pages.about.clients.lead') }}</p>
+        </header>
+
+        {{-- A grid, not the homepage marquee: this page is read slowly, so the
+             logos are simply there, in the same order the editor set. --}}
+        <div class="client-grid mt-12 lg:mt-14">
+            @foreach($clients as $client)
+            <x-client-logo :client="$client" />
+            @endforeach
+        </div>
+    </div>
+</section>
+@endif
+
 <x-cta-band
     :eyebrow="__('pages.about.closing.eyebrow')"
     :title="__('pages.about.closing.title')"
@@ -283,4 +309,5 @@
         .about-premium-card { border-radius: 1rem; }
     }
 </style>
+@include('_partials.client-logos-styles')
 @endpush

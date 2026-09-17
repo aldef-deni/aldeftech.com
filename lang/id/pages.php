@@ -192,6 +192,13 @@ return [
             ],
         ],
 
+        'clients' => [
+            'eyebrow' => 'Klien Aldef Tech',
+            'title'   => 'Kepercayaan yang Tumbuh dari',
+            'accent'  => 'Kolaborasi',
+            'lead'    => 'Setiap kolaborasi menjadi bagian dari perjalanan Aldef Tech dalam membangun solusi teknologi yang memberikan nilai nyata.',
+        ],
+
         'closing' => [
             'eyebrow' => 'Berkenalan',
             'title'   => 'Mari bicara sebelum',

@@ -86,6 +86,14 @@ return [
         'all'     => 'Semua proyek',
     ],
 
+    'clients' => [
+        'eyebrow' => 'Klien Aldef Tech',
+        'title'   => 'Dipercaya untuk Membangun',
+        'accent'  => 'Solusi Digital',
+        'title_after' => '.',
+        'lead'    => 'Kolaborasi bersama berbagai bisnis dalam menghadirkan teknologi yang lebih efektif, modern, dan scalable.',
+    ],
+
     'solutions' => [
         'eyebrow' => 'Solusi Siap Disesuaikan',
         'title'   => 'Fondasi yang sudah',

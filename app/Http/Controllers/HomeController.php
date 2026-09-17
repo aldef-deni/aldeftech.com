@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\BlogPost;
+use App\Models\Client;
 use App\Models\HomepageSection;
 use App\Models\Portfolio;
 use App\Models\ProcessStep;
@@ -27,6 +28,10 @@ class HomeController extends Controller
             ->translatedIn(app()->getLocale())
             ->displayOrder()
             ->get();
+        // Placement is data: the same table feeds the About grid through
+        // forAbout(). The scope itself already excludes inactive and logo-less
+        // rows, so the section only has to decide whether to render.
+        $clients = Client::forHome()->displayOrder()->get();
         $latestPosts = BlogPost::published()->with('category')->latest('published_at')->limit(3)->get();
         $ceoProfile = \App\Models\CeoProfile::active()->first();
         $previewVideoPath = 'videos/aldeftech-preview.mp4';
@@ -35,7 +40,7 @@ class HomeController extends Controller
             : null;
 
         return view('pages.home', compact(
-            'hero', 'services', 'solutions', 'portfolios',
+            'hero', 'services', 'solutions', 'portfolios', 'clients',
             'processSteps', 'testimonials', 'latestPosts', 'ceoProfile', 'previewVideoUrl'
         ));
     }

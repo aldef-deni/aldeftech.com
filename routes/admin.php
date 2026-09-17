@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ServiceController as AdminServiceController;
 use App\Http\Controllers\Admin\SolutionController as AdminSolutionController;
 use App\Http\Controllers\Admin\PortfolioController as AdminPortfolioController;
+use App\Http\Controllers\Admin\ClientController as AdminClientController;
 use App\Http\Controllers\Admin\TestimonialController as AdminTestimonialController;
 use App\Http\Controllers\Admin\FaqController as AdminFaqController;
 use App\Http\Controllers\Admin\BlogPostController as AdminBlogPostController;
@@ -114,6 +115,16 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
             'portfolio/{portfolio}/image/{image}',
             [AdminPortfolioController::class, 'deleteImage']
         )->name('portfolio.delete-image');
+
+        // Klien Aldef Tech
+        Route::resource('clients', AdminClientController::class)
+            ->except(['show'])
+            ->names('clients');
+
+        Route::post(
+            'clients/{client}/toggle-active',
+            [AdminClientController::class, 'toggleActive']
+        )->name('clients.toggle-active');
 
         // Testimonials
         Route::resource('testimonials', AdminTestimonialController::class)
