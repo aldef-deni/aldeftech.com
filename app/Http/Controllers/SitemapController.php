@@ -31,12 +31,12 @@ class SitemapController extends Controller
         $pages = [
             '/' => [
                 'priority' => '1.0',
-                'lastmod' => $this->latestOf([Service::class, Solution::class, Portfolio::class, Testimonial::class, BlogPost::class]),
+                'lastmod' => $this->latestOf([Service::class, Solution::class, Portfolio::class, Testimonial::class, fn () => BlogPost::published()]),
             ],
             '/services' => ['priority' => '0.9', 'lastmod' => $this->latestOf([Service::class])],
             '/solutions' => ['priority' => '0.9', 'lastmod' => $this->latestOf([Solution::class])],
             '/portfolio' => ['priority' => '0.8', 'lastmod' => $this->latestOf([Portfolio::class])],
-            '/blog' => ['priority' => '0.8', 'lastmod' => $this->latestOf([BlogPost::class])],
+            '/blog' => ['priority' => '0.8', 'lastmod' => $this->latestOf([fn () => BlogPost::published()])],
             '/faq' => ['priority' => '0.7', 'lastmod' => $this->latestOf([Faq::class])],
             '/about' => ['priority' => '0.8', 'lastmod' => $this->latestOf([CeoProfile::class, SiteSetting::class])],
             '/contact' => ['priority' => '0.7', 'lastmod' => $this->latestOf([SiteSetting::class])],
@@ -144,16 +144,21 @@ class SitemapController extends Controller
     }
 
     /**
-     * Newest updated_at across the given models, or null when nothing exists.
+     * Newest updated_at across the given sources, or null when nothing exists.
      *
-     * @param  array<class-string<Model>>  $models
+     * A source is either a model class or a closure returning a query, so a
+     * listing can be pinned to the same "published" rule the page itself uses.
+     * A draft must not move the lastmod of a page it never appears on: Google
+     * discards a lastmod it finds untrustworthy.
+     *
+     * @param  array<class-string<Model>|callable(): \Illuminate\Database\Eloquent\Builder>  $sources
      */
-    private function latestOf(array $models): ?Carbon
+    private function latestOf(array $sources): ?Carbon
     {
         $latest = null;
 
-        foreach ($models as $model) {
-            $stamp = $model::query()->max('updated_at');
+        foreach ($sources as $source) {
+            $stamp = ($source instanceof \Closure ? $source() : $source::query())->max('updated_at');
 
             if (! $stamp) {
                 continue;

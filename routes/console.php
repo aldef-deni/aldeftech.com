@@ -102,7 +102,14 @@ Schedule::command('marketing:run --ideas=12 --content=3')
 Artisan::command('content:generate {--scheduled : Respect the three-day interval}', function () {
     try {
         $post = app(\App\Services\AutomatedContentService::class)->generate((bool) $this->option('scheduled'));
-        $this->info($post ? "Article #{$post->id} published." : 'Skipped: not due or generation already running.');
+        if (! $post) {
+            $this->info('Skipped: not due or generation already running.');
+        } elseif ($post->status === 'published') {
+            $this->info("Article #{$post->id} published at /blog/{$post->slug}.");
+        } else {
+            // The exact reason is stored on the matching ai_content_runs row.
+            $this->warn("Article #{$post->id} kept as draft: it did not pass the publication checks.");
+        }
         return 0;
     } catch (\Throwable $e) {
         $this->error('Automatic article generation failed. Check ai_content_runs and service configuration.');

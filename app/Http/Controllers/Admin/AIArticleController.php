@@ -6,10 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\ActivityLog;
 use App\Models\BlogPost;
 use App\Models\BlogCategory;
+use App\Models\PageSeo;
 use App\Services\ArticleAIService;
+use App\Services\ArticlePublishGuard;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 use Throwable;
 
 class AIArticleController extends Controller
@@ -25,7 +26,9 @@ class AIArticleController extends Controller
             return back()->withErrors(['generation' => 'Pembuatan otomatis sedang berjalan. Tunggu sebelum mencoba lagi.']);
         }
         return redirect()->route('admin.blog.edit', $post)->with('success',
-            'Draf artikel otomatis berhasil dibuat. Periksa isi dan klaim sebelum menerbitkan.'
+            ($post->status === 'published'
+                ? 'Artikel otomatis berhasil dibuat dan diterbitkan.'
+                : 'Draf artikel otomatis dibuat dan ditahan dari publikasi. Periksa isi dan klaim sebelum menerbitkan.')
             . ($post->featured_image ? '' : ' Gambar belum tersedia; tambahkan melalui editor.'));
     }
 
@@ -51,28 +54,38 @@ class AIArticleController extends Controller
         try {
             // Resolve inside the try so missing provider configuration is safe too.
             $article = app(ArticleAIService::class)->generate($input);
-            $post = DB::transaction(function () use ($article, $input, $request) {
-                $base = Str::limit(Str::slug($article['slug'] ?: $article['title']), 200, '') ?: 'artikel';
-                $slug = $base;
-                $suffix = 2;
-                while (BlogPost::withTrashed()->where('slug', $slug)->exists()) {
-                    $slug = $base . '-' . $suffix++;
-                }
+            $guard = app(ArticlePublishGuard::class);
+            // The generator only guarantees content safety. Whether the article
+            // may go live is decided here, by the same gate the scheduler uses;
+            // incomplete, thin or duplicate output is stored as a draft instead.
+            $article['slug'] = $guard->uniqueSlug($article['slug'] ?: $article['title']);
+            $decision = $guard->decision($article);
+            $post = DB::transaction(function () use ($article, $input, $request, $decision) {
+                $seoActivity = $article['_seo_activity'] ?? [];
+                unset($article['_seo_activity']);
 
                 $post = BlogPost::create([
                     'title' => $article['title'],
-                    'slug' => $slug,
+                    'slug' => $article['slug'],
                     'excerpt' => $article['excerpt'],
                     'content' => $article['content'],
                     'meta_title' => $article['meta_title'],
                     'meta_description' => $article['meta_description'],
                     'category_id' => $input['category_id'] ?? null,
                     'author_id' => $request->user()->id,
-                    'status' => 'draft',
-                    'published_at' => null,
+                    'status' => $decision['status'],
+                    'published_at' => $decision['published_at'],
                 ]);
-                \App\Services\SeoActivityService::articleSaved($post, $article['_seo_activity'] ?? []);
-                ActivityLog::log('blog.created', "Created AI draft \"{$post->title}\"", $post);
+                \App\Services\SeoActivityService::articleSaved($post, $seoActivity);
+                if ($post->status === 'published') {
+                    // Cached page SEO for /blog and the homepage must not outlive
+                    // the article that changed the listing.
+                    PageSeo::clearCache();
+                    ActivityLog::log('blog.published', "Published AI article \"{$post->title}\"", $post);
+                } else {
+                    ActivityLog::log('blog.drafted', "Created AI draft \"{$post->title}\"", $post,
+                        ['reasons' => $decision['reasons']]);
+                }
 
                 return $post;
             });
@@ -84,6 +97,8 @@ class AIArticleController extends Controller
         }
 
         return redirect()->route('admin.blog.edit', $post)
-            ->with('success', 'Draf artikel berhasil dibuat. Periksa isi dan kebenaran klaim sebelum menerbitkan.');
+            ->with('success', $post->status === 'published'
+                ? 'Artikel berhasil dibuat dan diterbitkan. Tautan terkait dan sitemap akan mengikuti otomatis.'
+                : 'Artikel disimpan sebagai draf karena: ' . $guard->summary($decision['reasons']) . '. Perbaiki lalu terbitkan manual.');
     }
 }

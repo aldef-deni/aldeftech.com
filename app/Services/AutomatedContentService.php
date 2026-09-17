@@ -3,8 +3,10 @@
 namespace App\Services;
 
 use App\Models\AIContentRun;
+use App\Models\ActivityLog;
 use App\Models\BlogCategory;
 use App\Models\BlogPost;
+use App\Models\PageSeo;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -13,6 +15,14 @@ use Throwable;
 
 class AutomatedContentService
 {
+    /**
+     * Generate one article and decide its status.
+     *
+     * A valid article is published immediately so it appears on /blog, in the
+     * homepage Insights block and in the sitemap; anything that fails the
+     * publication gate in ArticlePublishGuard is stored as a draft instead.
+     * Provider, claim and HTML-safety failures still create no article at all.
+     */
     public function generate(bool $scheduled = false, ?int $authorId = null): ?BlogPost
     {
         // Shared database lock covers both HTTP and scheduler entry points.
@@ -94,22 +104,44 @@ class AutomatedContentService
                 \Illuminate\Support\Facades\Log::warning($safe, ['run_id' => $run->id, 'stage' => 'Gambar']);
                 $run->update(['error_message' => $safe]);
             }
-            $stage = 'Penyimpanan draf artikel';
-            // AI output is never published automatically. Persist the complete
-            // article as a draft so an editor can verify it first.
-            return DB::transaction(function () use ($article, $category, $authorId, $run, $path) {
+            $stage = 'Validasi dan penyimpanan artikel';
+            $guard = app(ArticlePublishGuard::class);
+            // The stored slug is the clean, collision-free one; the decision that
+            // follows is what the admin generator also uses, so both entry points
+            // publish and hold back under exactly the same rules.
+            $article['slug'] = $guard->uniqueSlug($article['slug'] ?: $article['title']);
+            $decision = $guard->decision($article);
+            $summary = $guard->summary($decision['reasons']);
+            $result = DB::transaction(function () use ($article, $category, $authorId, $run, $path, $decision, $summary) {
                 $seoActivity = $article['_seo_activity'] ?? [];
                 unset($article['_seo_activity']);
-                $article['slug'] = (Str::limit(Str::slug($article['slug']), 180, '') ?: 'artikel') . '-' . Str::uuid();
                 $post = BlogPost::create(array_merge($article, [
                     'category_id' => $category->id, 'author_id' => $authorId,
                     'featured_image' => $path,
-                    'status' => 'draft', 'published_at' => null,
+                    'status' => $decision['status'], 'published_at' => $decision['published_at'],
                 ]));
                 SeoActivityService::articleSaved($post, $seoActivity);
-                $run->update(['blog_post_id' => $post->id, 'status' => 'completed', 'completed_at' => now()]);
+                if ($post->status === 'published') {
+                    // The listing pages are live queries, but the cached per-locale
+                    // page SEO must not outlive the article that changed /blog.
+                    PageSeo::clearCache();
+                    ActivityLog::log('blog.published', "Published AI article \"{$post->title}\"", $post);
+                } else {
+                    ActivityLog::log('blog.drafted', "Kept AI article \"{$post->title}\" as draft", $post,
+                        ['reasons' => $decision['reasons']]);
+                }
+                $run->update([
+                    'blog_post_id' => $post->id, 'status' => 'completed', 'completed_at' => now(),
+                    // Safe literals only: the reasons are fixed guard messages.
+                    'error_message' => $post->status === 'draft' ? 'Draf: ' . $summary : null,
+                ]);
                 return $post;
             });
+            \Illuminate\Support\Facades\Log::info('Automated article stored from AI generator.', [
+                'run_id' => $run->id, 'post_id' => $result->id,
+                'status' => $result->status, 'validation' => $summary,
+            ]);
+            return $result;
         } catch (Throwable $e) {
             $safe = $this->safeFailure($e);
             \Illuminate\Support\Facades\Log::error($safe, ['run_id' => $run?->id, 'stage' => $stage]);

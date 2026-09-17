@@ -36,11 +36,20 @@ The ArticleAIService already generates:
 - meta_title
 - meta_description
 
-AI generated articles must always be created as:
+## AI Article Publication Rules
 
-status = draft
+An AI generated article may be published automatically, but only when every
+quality validation passes. Those validations live in
+app/Services/ArticlePublishGuard.php and are shared by the admin generator and
+the scheduler. Never bypass them.
 
-Never automatically publish AI generated content.
+- All validations pass: the article may be saved as status = published with
+  published_at set, so it appears on /blog, in the homepage Insight block and
+  in the sitemap.
+- Any validation fails: the article must stay status = draft with
+  published_at = null, and the reason must be recorded.
+- Never publish: provider/API error responses, empty content, duplicate title
+  or slug, incomplete metadata, raw JSON, or malformed content.
 
 Reuse the existing BlogPost system.
 
