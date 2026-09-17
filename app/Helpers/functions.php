@@ -208,7 +208,48 @@ if (! function_exists('locale_url')) {
             return url($locale === $default ? '/' : '/' . $locale);
         }
 
-        return route($target, $current->parameters());
+        $url = route($target, $current->parameters());
+
+        // The home route generates the bare host, while the sitemap, the
+        // canonical tag and the x-default link all advertise the trailing-slash
+        // form. Publishing one identical URL everywhere keeps every signal on
+        // the same address instead of two spellings of one document.
+        if ($bare === 'home' && trim((string) parse_url($url, PHP_URL_PATH), '/') === '') {
+            $url = rtrim($url, '/') . '/';
+        }
+
+        return $url;
+    }
+}
+
+if (! function_exists('canonical_url')) {
+    /**
+     * The canonical URL of the page being rendered.
+     *
+     * Built from the configured canonical host (APP_URL) plus the path of the
+     * matched request, never from the request's own host or trailing slash.
+     * The old fallback (url()->current()) echoed whatever variant the crawler
+     * happened to use, so https://www.aldeftech.com/faq declared *itself*
+     * canonical while https://aldeftech.com/faq declared the same document on
+     * the bare host: two self-canonical copies of one page, which is what
+     * Search Console reports as "Duplicate, Google chose different canonical".
+     *
+     * The query string is dropped — filters, pagination helpers and campaign
+     * parameters are views of the same document, not new documents.
+     */
+    function canonical_url(?string $path = null): string
+    {
+        $base = rtrim((string) config('app.url'), '/');
+
+        if ($base === '') {
+            $base = rtrim(url('/'), '/');
+        }
+
+        $path = '/' . ltrim($path ?? \Illuminate\Support\Facades\Request::path(), '/');
+
+        // Home keeps the trailing slash the sitemap already advertises; every
+        // other path loses it, so /faq and /faq/ resolve to one address.
+        return $base . ($path === '/' ? '/' : rtrim($path, '/'));
     }
 }
 

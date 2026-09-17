@@ -24,7 +24,9 @@
             ? media_url($seoOverride->og_image)
             : ($ogImage ?? asset(config('aldeftech.seo.default_image')));
 
-        $canonicalUrl = $canonical ?? url()->current();
+        // Always the configured canonical host and slash form, whatever host or
+        // trailing slash the crawler used; see canonical_url().
+        $canonicalUrl = $canonical ?? canonical_url();
         $gtmId = \App\Models\SiteSetting::get('google_tag_manager_id')
             ?: config('aldeftech.analytics.google_tag_manager_id', '');
         $gaId = \App\Models\SiteSetting::get('google_analytics_id')

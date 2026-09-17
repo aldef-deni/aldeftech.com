@@ -18,6 +18,10 @@ return Application::configure(basePath: dirname(__DIR__))
             'permission' => \App\Http\Middleware\CheckPermission::class,
         ]);
 
+        // Collapses www/slash URL variants onto the canonical address before
+        // any controller runs, so Google never sees two self-canonical copies.
+        $middleware->append(\App\Http\Middleware\CanonicalRedirect::class);
+
         $middleware->redirectGuestsTo(function (Request $request) {
             return route('admin.login');
         });
