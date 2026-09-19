@@ -10,7 +10,7 @@ class AboutController extends Controller
     public function index()
     {
         try {
-            $ceoProfile = CeoProfile::active()->first();
+            $ceoProfile = CeoProfile::active()->role(CeoProfile::ROLE_CEO)->first();
         } catch (\Throwable $e) {
             $ceoProfile = null;
         }

@@ -296,6 +296,10 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
         Route::put('ceo', [AdminCeoProfileController::class, 'update'])
             ->name('ceo.update');
 
+        // Lives on the same admin page as the CEO profile.
+        Route::put('ceo/komisaris', [AdminCeoProfileController::class, 'updateCommissioner'])
+            ->name('ceo.commissioner.update');
+
         // About
         Route::get('about', [AdminAboutController::class, 'edit'])
             ->name('about.edit');

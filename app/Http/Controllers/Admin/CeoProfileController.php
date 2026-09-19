@@ -13,16 +13,33 @@ class CeoProfileController extends Controller
 
     public function edit()
     {
-        $profile = CeoProfile::firstOrCreate([], [
-            'name' => 'Deni Afrizal',
-            'position' => 'CEO & System/Application Developer',
-            'is_active' => true,
-        ]);
+        // One page, one menu entry: the CEO profile as before, with the
+        // commissioner profile appended underneath.
+        $profile = CeoProfile::forRole(CeoProfile::ROLE_CEO);
+        $commissioner = CeoProfile::forRole(CeoProfile::ROLE_COMMISSIONER);
 
-        return view('admin.ceo.edit', ['profile' => $profile]);
+        return view('admin.ceo.edit', [
+            'profile' => $profile,
+            'commissioner' => $commissioner,
+        ]);
     }
 
     public function update(Request $request)
+    {
+        $this->persist($request, CeoProfile::forRole(CeoProfile::ROLE_CEO));
+
+        return redirect()->route('admin.ceo.edit')->with('success', 'CEO profile updated successfully.');
+    }
+
+    public function updateCommissioner(Request $request)
+    {
+        $this->persist($request, CeoProfile::forRole(CeoProfile::ROLE_COMMISSIONER));
+
+        return redirect()->route('admin.ceo.edit')->with('success', 'Commissioner profile updated successfully.');
+    }
+
+    /** Validation and persistence shared by every leadership profile. */
+    private function persist(Request $request, CeoProfile $profile): void
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
@@ -45,15 +62,8 @@ class CeoProfileController extends Controller
         $validated['experience'] = $request->input('experience', []);
         $validated['is_active'] = $request->boolean('is_active', true);
 
-        $profile = CeoProfile::first();
-        if ($profile) {
-            $profile->update($validated);
-        } else {
-            $profile = CeoProfile::create($validated);
-        }
+        $profile->update($validated);
 
         $this->saveTranslations($request, $profile);
-
-        return redirect()->route('admin.ceo.edit')->with('success', 'CEO profile updated successfully.');
     }
 }

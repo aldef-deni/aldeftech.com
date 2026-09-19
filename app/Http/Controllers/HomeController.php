@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\BlogPost;
+use App\Models\CeoProfile;
 use App\Models\Client;
 use App\Models\HomepageSection;
 use App\Models\Portfolio;
@@ -33,7 +34,10 @@ class HomeController extends Controller
         // rows, so the section only has to decide whether to render.
         $clients = Client::forHome()->displayOrder()->get();
         $latestPosts = BlogPost::published()->with('category')->latest('published_at')->limit(3)->get();
-        $ceoProfile = \App\Models\CeoProfile::active()->first();
+        // Two leadership rows share one table, told apart by role: the CEO first,
+        // then the commissioner. Either may be missing without breaking the page.
+        $ceoProfile = CeoProfile::active()->role(CeoProfile::ROLE_CEO)->first();
+        $commissionerProfile = CeoProfile::active()->role(CeoProfile::ROLE_COMMISSIONER)->first();
         $previewVideoPath = 'videos/aldeftech-preview.mp4';
         $previewVideoUrl = is_file(public_path($previewVideoPath))
             ? asset($previewVideoPath)
@@ -41,7 +45,8 @@ class HomeController extends Controller
 
         return view('pages.home', compact(
             'hero', 'services', 'solutions', 'portfolios', 'clients',
-            'processSteps', 'testimonials', 'latestPosts', 'ceoProfile', 'previewVideoUrl'
+            'processSteps', 'testimonials', 'latestPosts', 'ceoProfile',
+            'commissionerProfile', 'previewVideoUrl'
         ));
     }
 }

@@ -449,6 +449,68 @@
                 </div>
             </div>
         </div>
+
+        @if($commissionerProfile)
+        @php $commissionerPhoto = media_url($commissionerProfile->profile_photo); @endphp
+        {{-- Commissioner profile: same section, mirrored. Portrait sits right on
+             desktop and first on mobile, matching the CEO block above. Any field
+             the editor left blank is simply not rendered. --}}
+        <div class="mt-16 lg:mt-24 pt-14 lg:pt-20 border-t border-white/10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+
+                @if($commissionerPhoto)
+                <div class="lg:col-span-5 lg:order-2 reveal-right">
+                    <figure class="frame-lux home-leadership-frame aspect-[4/5] max-w-sm mx-auto lg:max-w-none">
+                        <img src="{{ $commissionerPhoto }}" alt="{{ $commissionerProfile->name }}" loading="lazy" decoding="async">
+                    </figure>
+                </div>
+                @endif
+
+                <div class="{{ $commissionerPhoto ? 'lg:col-span-7' : 'lg:col-span-12' }} lg:order-1 reveal-left">
+                    @if($commissionerQuote = excerpt_text($commissionerProfile->short_bio, 210))
+                    <blockquote class="font-serif-accent italic text-2xl sm:text-3xl lg:text-[2.125rem] leading-[1.35] text-white">
+                        “{{ $commissionerQuote }}”
+                    </blockquote>
+                    @endif
+
+                    <div class="{{ $commissionerQuote ? 'mt-8' : '' }} flex items-center gap-4">
+                        <span class="w-10 h-px bg-gold-500" aria-hidden="true"></span>
+                        <div>
+                            <p class="font-display text-base font-semibold text-white">{{ $commissionerProfile->name }}</p>
+                            <p class="text-sm text-graphite-300 mt-0.5">{{ $commissionerProfile->position }}</p>
+                        </div>
+                    </div>
+
+                    @if(!empty($commissionerProfile->skills))
+                    <div class="mt-8 chip-strip flex gap-2 sm:flex-wrap">
+                        @foreach(array_slice((array) $commissionerProfile->skills, 0, 8) as $skill)
+                            <span class="chip chip-dark">{{ $skill }}</span>
+                        @endforeach
+                    </div>
+                    @endif
+
+                    @php
+                        $commissionerLinks = array_filter([
+                            'LinkedIn'  => $commissionerProfile->linkedin,
+                            'GitHub'    => $commissionerProfile->github,
+                            'Instagram' => $commissionerProfile->instagram,
+                            'Email'     => $commissionerProfile->email ? 'mailto:' . $commissionerProfile->email : null,
+                        ]);
+                    @endphp
+                    @if($commissionerLinks)
+                    <div class="mt-9 flex flex-wrap items-center gap-x-6 gap-y-3">
+                        @foreach($commissionerLinks as $label => $href)
+                        <a href="{{ $href }}"@if(! str_starts_with($href, 'mailto:')) target="_blank" rel="noopener"@endif class="link-arrow link-arrow-light">
+                            <span>{{ $label }}</span>
+                            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                        </a>
+                        @endforeach
+                    </div>
+                    @endif
+                </div>
+            </div>
+        </div>
+        @endif
     </div>
 </section>
 @endif
