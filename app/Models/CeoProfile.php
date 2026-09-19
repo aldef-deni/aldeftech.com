@@ -13,6 +13,9 @@ class CeoProfile extends Model
     public const ROLE_CEO = 'ceo';
     public const ROLE_COMMISSIONER = 'komisaris';
 
+    /** Every role, CEO first: the order the site lists the leadership team in. */
+    public const ROLES = [self::ROLE_CEO, self::ROLE_COMMISSIONER];
+
     /** Fields served per locale; see HasTranslations. */
     protected array $translatable = ['position', 'short_bio', 'full_bio', 'skills', 'experience'];
 
@@ -39,16 +42,28 @@ class CeoProfile extends Model
     }
 
     /**
-     * The row for a role, created with the minimum identity data the first time
-     * an administrator opens the profile page. Copy is never invented here: the
-     * editor fills in bio, photo and skills, exactly as for the CEO.
+     * The identity a profile starts from when no row has been stored yet. Only
+     * the public facts belong here — name and role. Bio, photo, skills and links
+     * are never invented: the editor fills those in, exactly as for the CEO.
+     */
+    public static function defaultsFor(string $role): array
+    {
+        return $role === self::ROLE_COMMISSIONER
+            ? ['name' => 'Muhammad Ramadhan', 'position' => 'Komisaris']
+            : ['name' => 'Deni Afrizal', 'position' => 'CEO & System/Application Developer'];
+    }
+
+    /**
+     * The row for a role, or an unsaved model holding that role's defaults.
+     *
+     * Reading a profile must never write: opening the admin page, or submitting a
+     * form that fails validation, has to leave the table exactly as it was. The
+     * role is always part of the lookup, so the CEO row and the commissioner row
+     * can never be confused for one another.
      */
     public static function forRole(string $role): self
     {
-        $defaults = $role === self::ROLE_COMMISSIONER
-            ? ['name' => 'Muhammad Ramadhan', 'position' => 'Komisaris']
-            : ['name' => 'Deni Afrizal', 'position' => 'CEO & System/Application Developer'];
-
-        return static::firstOrCreate(['role' => $role], $defaults + ['is_active' => true]);
+        return static::role($role)->first()
+            ?? new static(static::defaultsFor($role) + ['role' => $role, 'is_active' => true]);
     }
 }

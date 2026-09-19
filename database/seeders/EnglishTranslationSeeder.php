@@ -218,7 +218,8 @@ class EnglishTranslationSeeder extends Seeder
 
     private function ceoProfile(): void
     {
-        $this->apply(CeoProfile::first(), [
+        // Scoped to the CEO row: the table also holds the commissioner profile.
+        $this->apply(CeoProfile::role(CeoProfile::ROLE_CEO)->first(), [
             'position' => 'CEO & System/Application Developer',
             'short_bio' => 'Deni Afrizal is an IT professional who began as a developer and grew into an IT project manager — combining software engineering, system architecture, business process analysis, and project management.',
             'full_bio' => "Deni Afrizal is an IT professional who began his career as a developer and grew into an IT project manager. That path produced an unusual combination: software engineering, system architecture, business process analysis, and project management in one person.\n\nFocusing on custom software development, SaaS, AI, and business automation, Deni helps companies build digital systems that fit how they actually operate.\n\nHis aim is to support the digital transformation of Indonesian business through high-quality software designed on a genuine understanding of the underlying process.",
