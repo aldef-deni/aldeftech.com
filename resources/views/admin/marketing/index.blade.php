@@ -23,6 +23,8 @@
 
 @section('content')
 
+<div class="aldef-marketing-page">
+
 <x-admin.page-head
     eyebrow="CRM &amp; Pemasaran"
     title="AI Marketing"
@@ -81,9 +83,9 @@
                         @foreach($campaigns as $campaign)
                         <tr>
                             <td>
-                                <a href="{{ route('admin.marketing.show', $campaign) }}" class="fw-medium text-body d-block">{{ $campaign->name }}</a>
+                                <a href="{{ route('admin.marketing.show', $campaign) }}" class="fw-medium text-body d-block text-truncate">{{ $campaign->name }}</a>
                                 @if($campaign->objective)
-                                <small class="text-body-secondary d-block text-truncate" style="max-width: 24rem;">{{ $campaign->objective }}</small>
+                                <small class="text-body-secondary d-block text-truncate">{{ $campaign->objective }}</small>
                                 @endif
                             </td>
                             <td class="text-center">
@@ -111,26 +113,26 @@
 
     {{-- Recent content ------------------------------------------------------}}
     <div class="col-12 col-xl-5">
-        <div class="card h-100">
+        <div class="card h-100 overflow-hidden">
             <div class="card-header"><h5 class="card-title mb-0">Konten Terbaru</h5></div>
             <div class="card-body">
                 @if($recentContents->isEmpty())
                     <x-admin.empty icon="tabler-article" title="Belum ada konten dihasilkan" />
                 @else
-                <ul class="list-unstyled mb-0">
+                <ul class="list-unstyled mb-0 aldef-content-list">
                     @foreach($recentContents as $content)
                     <li class="d-flex align-items-start gap-3 py-3 {{ $loop->last ? '' : 'border-bottom' }}">
-                        <span class="badge bg-label-primary rounded p-2 lh-1">
+                        <span class="badge bg-label-primary rounded p-2 lh-1 flex-shrink-0">
                             <i class="icon-base ti tabler-article icon-sm"></i>
                         </span>
-                        <div class="flex-grow-1 min-w-0">
-                            <div class="fw-medium text-truncate">{{ $content->title }}</div>
-                            <small class="text-body-secondary">
+                        <div class="flex-grow-1 overflow-hidden" style="min-width: 0;">
+                            <div class="fw-medium text-truncate" title="{{ $content->title }}">{{ $content->title }}</div>
+                            <small class="text-body-secondary d-block">
                                 {{ $content->campaign->name ?? 'Tanpa kampanye' }}
                                 @if($content->generated_at) · {{ $content->generated_at->diffForHumans(short: true) }} @endif
                             </small>
                         </div>
-                        <span class="badge bg-label-{{ $content->status === 'published' ? 'success' : ($content->status === 'approved' ? 'info' : 'secondary') }} text-nowrap">
+                        <span class="badge bg-label-{{ $content->status === 'published' ? 'success' : ($content->status === 'approved' ? 'info' : 'secondary') }} text-nowrap flex-shrink-0 mt-1">
                             {{ ucfirst((string) $content->status) }}
                         </span>
                     </li>
@@ -141,5 +143,7 @@
         </div>
     </div>
 </div>
+
+</div><!-- /.aldef-marketing-page -->
 
 @endsection

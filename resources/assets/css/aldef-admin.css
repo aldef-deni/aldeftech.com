@@ -442,6 +442,24 @@ h1, h2, h3, h4, h5, h6,
   -webkit-box-orient: vertical;
 }
 
+/* ── Dashboard / AI Marketing panel safety ────────────────────────────────
+   Bootstrap's .row is display:flex on all breakpoints, and none of its column
+   classes set min-width:0. Long unbroken titles (AI content, campaign names)
+   can therefore widen a col-* beyond the grid and push content under the
+   sidebar / off the viewport. These rules only apply inside the marketing
+   page wrapper so the rest of the admin keeps the template defaults. */
+.aldef-marketing-page .row > [class*='col-'] { min-width: 0; }
+
+.aldef-marketing-page .table > :not(caption) > * > * {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Long titles clamp to two lines instead of forcing the badge out of the row. */
+.aldef-content-list .text-truncate {
+  max-width: 100%;
+}
+
 /* ── Reduced motion ──────────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

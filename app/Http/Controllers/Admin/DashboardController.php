@@ -8,11 +8,13 @@ use App\Models\BlogPost;
 use App\Models\Faq;
 use App\Models\Lead;
 use App\Models\Portfolio;
+use App\Models\SeoOpportunity;
 use App\Models\Service;
 use App\Models\Solution;
 use App\Models\Testimonial;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class DashboardController extends Controller
 {
@@ -20,6 +22,12 @@ class DashboardController extends Controller
     {
         $stats = [
             'leads' => Lead::count(),
+            // Same live metric the SEO Growth page reports as "Peluang konten".
+            // Guarded like SeoGrowthController so the dashboard stays up before
+            // the SEO Growth migrations run.
+            'seo_opportunities' => Schema::hasTable('seo_outreach_drafts')
+                ? SeoOpportunity::where('status', 'new')->count()
+                : 0,
             'new_leads' => Lead::where('status', 'new')->count(),
             'won_leads' => Lead::where('status', 'won')->count(),
             'portfolios' => Portfolio::count(),

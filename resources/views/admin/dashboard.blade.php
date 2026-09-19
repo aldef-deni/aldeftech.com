@@ -9,7 +9,7 @@
 
     $tiles = [
         ['label' => 'Total Leads',  'value' => $stats['leads'],       'icon' => 'tabler-users',      'tone' => 'primary', 'url' => route('admin.leads.index')],
-        ['label' => 'Leads Baru',   'value' => $stats['new_leads'],   'icon' => 'tabler-mail-opened','tone' => 'warning', 'url' => route('admin.leads.index')],
+        ['label' => 'SEO Growth',   'value' => $stats['seo_opportunities'], 'icon' => 'tabler-chart-line', 'tone' => 'warning', 'url' => route('admin.seo-growth.index')],
         ['label' => 'Portofolio',   'value' => $stats['portfolios'],  'icon' => 'tabler-briefcase',  'tone' => 'info',    'url' => route('admin.portfolio.index')],
         ['label' => 'Artikel',      'value' => $stats['blog_posts'],  'icon' => 'tabler-news',       'tone' => 'success', 'url' => route('admin.blog.index')],
     ];
