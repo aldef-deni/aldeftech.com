@@ -44,7 +44,10 @@ $publicPages = function () {
     Route::get('/faq', [FaqController::class, 'index'])->name('faq');
 
     Route::get('/blog', [BlogController::class, 'index'])->name('blog');
-    Route::get('/blog/{post:slug}', [BlogController::class, 'show'])->name('blog.show');
+    // Resolved in the controller, not by binding: an address that moved (or one
+    // still carrying the old UUID tail) has to answer 301, and binding would
+    // answer 404 before the controller ever ran.
+    Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
 
     Route::get('/contact', [ContactController::class, 'index'])->name('contact');
     Route::get('/contact/thank-you', [ContactController::class, 'thankYou'])->name('contact.thank-you');
@@ -56,6 +59,18 @@ $publicPages = function () {
 
 Route::group([], $publicPages);                                  // id — kanonik
 Route::prefix('en')->name('en.')->group($publicPages);           // en
+
+/*
+ * Legacy locale prefix. Indonesian never used /id, so every /id/... address is
+ * an old or hand-made spelling of the same page; forwarding it keeps a 404 out
+ * of Search Console without inventing a page. Placed before the language
+ * switcher so /id/lang/x cannot shadow it.
+ */
+Route::get('/id/{path?}', function (?string $path = null) {
+    $target = '/' . ltrim((string) $path, '/');
+
+    return redirect()->to(url($target === '/' ? '/' : $target), 301);
+})->where('path', '.*')->name('locale.legacy');
 
 /*
 |--------------------------------------------------------------------------

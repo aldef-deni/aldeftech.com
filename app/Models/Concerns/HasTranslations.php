@@ -86,6 +86,49 @@ trait HasTranslations
         $this->translations = $all ?: null;
     }
 
+    /**
+     * Locale codes this record actually has copy for.
+     *
+     * The default locale always counts: its columns are the original text. A
+     * translated field left blank is not a translation, so a locale only joins
+     * the list once at least one of its fields carries something.
+     *
+     * Pages use this to decide whether a second-language URL is a real
+     * translation or a duplicate of the original. An untranslated record served
+     * at /en/... is the same document on a second address, and pointing a
+     * canonical at itself there is what Search Console reports as a duplicate.
+     *
+     * @return list<string>
+     */
+    public function translatedLocales(): array
+    {
+        $default = config('locales.default', 'id');
+        $locales = [$default];
+
+        foreach (array_keys((array) $this->translations) as $locale) {
+            if ($locale === $default) {
+                continue;
+            }
+
+            foreach ($this->translatable ?? [] as $key) {
+                if (! $this->isBlank(data_get($this->translations, "{$locale}.{$key}"))) {
+                    $locales[] = $locale;
+                    break;
+                }
+            }
+        }
+
+        return $locales;
+    }
+
+    /** Does this record carry its own copy in the given language? */
+    public function isTranslatedFor(?string $locale = null): bool
+    {
+        $locale ??= app()->getLocale();
+
+        return in_array($locale, $this->translatedLocales(), true);
+    }
+
     private function isBlank($value): bool
     {
         if (is_array($value)) {

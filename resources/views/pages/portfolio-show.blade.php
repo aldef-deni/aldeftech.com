@@ -5,6 +5,14 @@
     $metaDescription = $portfolio->meta_description ?: excerpt_text($portfolio->short_description, 160);
     $ogImage = media_url($portfolio->featured_image, 'images/og-image.jpg');
     $ogType = 'article';
+
+    // Case studies are written once, in Indonesian. Without a saved
+    // translation the /en copy is the same document, so it points its
+    // canonical at the Indonesian original instead of competing with it.
+    $hreflangLocales = $portfolio->translatedLocales();
+    $canonical = $portfolio->isTranslatedFor()
+        ? canonical_url()
+        : locale_url(config('locales.default', 'id'));
     $analyticsPageType = 'case-study';
     $analyticsItem = $portfolio->slug;
     $relatedServiceSlug = service_landing_slug_for($portfolio->category?->name . ' ' . $portfolio->title);

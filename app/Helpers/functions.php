@@ -256,13 +256,22 @@ if (! function_exists('canonical_url')) {
 if (! function_exists('locale_alternates')) {
     /**
      * [locale code => absolute URL] for every language this page exists in.
+     *
+     * Pass the locales a document is actually written in to keep hreflang
+     * honest: an article that was never translated has no English version, and
+     * announcing one sends Google to a page that only repeats the Indonesian.
+     *
+     * @param  list<string>|null  $locales  null means every configured language
      */
-    function locale_alternates(): array
+    function locale_alternates(?array $locales = null): array
     {
+        $locales = $locales ?? array_keys(config('locales.available', []));
         $out = [];
 
-        foreach (array_keys(config('locales.available', [])) as $code) {
-            $out[$code] = locale_url($code);
+        foreach ($locales as $code) {
+            if (array_key_exists($code, config('locales.available', []))) {
+                $out[$code] = locale_url($code);
+            }
         }
 
         return $out;

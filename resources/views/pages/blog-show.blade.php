@@ -5,7 +5,15 @@
     $metaDescription = $post->meta_description ?: excerpt_text($post->excerpt ?: $post->content, 160);
     $ogImage = media_url($post->featured_image, 'images/og-image.jpg');
     $ogType = 'article';
-    $canonical = $post->canonical_url ?: lroute('blog.show', $post->slug);
+
+    // Articles are written once, in Indonesian. Unless an editor has saved a
+    // translation, the /en copy is the same document and both locales must
+    // agree on which address is canonical — an editor-set canonical_url wins
+    // over everything, since that is an explicit instruction.
+    $hreflangLocales = $post->translatedLocales();
+    $canonical = $post->canonical_url ?: ($post->isTranslatedFor()
+        ? canonical_url()
+        : locale_url(config('locales.default', 'id')));
     $relatedServiceSlug = service_landing_slug_for($post->category?->name . ' ' . $post->title);
 
     $readMinutes = max(1, (int) ceil(str_word_count(strip_tags((string) $post->content)) / 200));

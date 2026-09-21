@@ -64,12 +64,20 @@ class SitemapController extends Controller
             $xml .= $this->urlNode('/services/' . $slug, null, '0.8');
         }
 
-        Portfolio::published()->get()->each(function ($portfolio) use (&$xml, $url) {
-            $xml .= $this->urlNode('/portfolio/' . $portfolio->slug, $portfolio->updated_at, '0.7');
+        /*
+         * Records. Only the locales a record is actually written in are listed:
+         * portfolio copy and articles live in Indonesian unless an editor saved
+         * a translation, and an /en URL for untranslated copy canonicalises to
+         * the Indonesian original. Listing it here would advertise a page that
+         * is not the canonical version of itself, which Search Console reports
+         * back as "duplicate, Google chose a different canonical".
+         */
+        Portfolio::published()->get()->each(function ($portfolio) use (&$xml) {
+            $xml .= $this->urlNode('/portfolio/' . $portfolio->slug, $portfolio->updated_at, '0.7', $portfolio->translatedLocales());
         });
 
-        BlogPost::published()->get()->each(function ($post) use (&$xml, $url) {
-            $xml .= $this->urlNode('/blog/' . $post->slug, $post->updated_at, '0.6');
+        BlogPost::published()->get()->each(function ($post) use (&$xml) {
+            $xml .= $this->urlNode('/blog/' . $post->slug, $post->updated_at, '0.6', $post->translatedLocales());
         });
 
         $xml .= '</urlset>';
@@ -108,15 +116,28 @@ class SitemapController extends Controller
      * only points outward, without the return link, has its hreflang ignored.
      *
      * @param  string  $path  path after the locale prefix, e.g. '/services'
+     * @param  list<string>|null  $only  locales this document exists in; null means all
      */
-    private function urlNode(string $path, ?Carbon $lastmod, string $priority): string
+    private function urlNode(string $path, ?Carbon $lastmod, string $priority, ?array $only = null): string
     {
         $base = rtrim(config('app.url', 'https://aldeftech.com'), '/');
         $default = config('locales.default', 'id');
         $locales = config('locales.available', []);
 
+        // null means the page exists in every language (static pages and the
+        // service landings, which are written in the language files). A record
+        // passes its own list, and the default locale is always in it: that is
+        // where the original copy lives.
+        $wanted = $only === null
+            ? array_keys($locales)
+            : array_values(array_unique(array_merge([$default], $only)));
+
         $hrefs = [];
         foreach ($locales as $code => $meta) {
+            if (! in_array($code, $wanted, true)) {
+                continue;
+            }
+
             $prefix = $code === $default ? '' : '/' . $code;
             $hrefs[$code] = $base . $prefix . ($path === '/' ? '' : $path);
         }

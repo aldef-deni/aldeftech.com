@@ -26,7 +26,19 @@
 
         // Always the configured canonical host and slash form, whatever host or
         // trailing slash the crawler used; see canonical_url().
-        $canonicalUrl = $canonical ?? canonical_url();
+        //
+        // $hreflangLocales is set by pages that render a translated record. A
+        // document with no copy in the language being read is the default
+        // language's document on a second address: it declares that original as
+        // canonical instead of itself, which is the one signal Google accepts
+        // for collapsing the pair. Without it, /en/blog/x and /blog/x both
+        // claimed to be canonical and Search Console filed one as a duplicate.
+        $documentLocales = $hreflangLocales ?? null;
+        $isTranslatedHere = $documentLocales === null
+            || in_array(app()->getLocale(), $documentLocales, true);
+
+        $canonicalUrl = $canonical
+            ?? ($isTranslatedHere ? canonical_url() : locale_url(config('locales.default', 'id')));
         $gtmId = \App\Models\SiteSetting::get('google_tag_manager_id')
             ?: config('aldeftech.analytics.google_tag_manager_id', '');
         $gaId = \App\Models\SiteSetting::get('google_analytics_id')
@@ -49,10 +61,10 @@
 
     {{-- Language alternates. Without these Google treats /services and
          /en/services as unrelated pages competing with each other. --}}
-    @foreach(locale_alternates() as $code => $href)
+    @foreach($alternates = locale_alternates($documentLocales) as $code => $href)
         <link rel="alternate" hreflang="{{ config('locales.available.'.$code.'.html', $code) }}" href="{{ $href }}">
     @endforeach
-    <link rel="alternate" hreflang="x-default" href="{{ locale_url(config('locales.default', 'id')) }}">
+    <link rel="alternate" hreflang="x-default" href="{{ $alternates[config('locales.default', 'id')] ?? locale_url(config('locales.default', 'id')) }}">
 
     {{-- Open Graph --}}
     <meta property="og:type" content="{{ $ogType ?? 'website' }}">
@@ -62,7 +74,7 @@
     <meta property="og:url" content="{{ $canonicalUrl }}">
     <meta property="og:site_name" content="{{ config('app.name') }}">
     <meta property="og:locale" content="{{ config('locales.available.'.app()->getLocale().'.og', 'id_ID') }}">
-    @foreach(locale_alternates() as $code => $href)
+    @foreach($alternates as $code => $href)
         @if($code !== app()->getLocale())
     <meta property="og:locale:alternate" content="{{ config('locales.available.'.$code.'.og') }}">
         @endif

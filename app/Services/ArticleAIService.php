@@ -141,6 +141,7 @@ PROMPT;
 
                 'slug' => [
                     'type' => 'STRING',
+                    'description' => 'URL-friendly slug from the title only. No UUID, hash, timestamp or random suffix.',
                 ],
 
                 'excerpt' => [
