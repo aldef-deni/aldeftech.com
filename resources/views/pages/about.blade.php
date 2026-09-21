@@ -77,8 +77,9 @@
 @endif
 
 {{-- ── Founder ──────────────────────────────────────────────────────────── --}}
-<section class="section-padding surface-parchment border-y border-line">
-    <div class="shell">
+<section class="about-leader-ceo section-padding border-y">
+    <div class="absolute inset-0 veil-grid-light pointer-events-none" aria-hidden="true"></div>
+    <div class="shell relative z-10">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
 
             <div class="lg:col-span-5 reveal-left">
@@ -160,32 +161,33 @@
      edited. No field is invented — anything the editor left blank is skipped. --}}
 @if($commissionerProfile)
 @php $commissionerPhoto = media_url($commissionerProfile->profile_photo); @endphp
-<section class="section-padding surface-parchment border-b border-line">
-    <div class="shell">
+<section class="about-leader-komisaris section-padding border-b">
+    <div class="absolute inset-0 veil-grid pointer-events-none" aria-hidden="true"></div>
+    <div class="shell relative z-10">
         <div class="leadership-mirror grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
 
             <div class="leadership-body order-2 lg:order-1 {{ $commissionerPhoto ? 'lg:col-span-7' : 'lg:col-span-12' }} reveal-left">
-                <p class="eyebrow">{{ __('pages.about.commissioner') }}</p>
+                <p class="eyebrow eyebrow-light">{{ __('pages.about.commissioner') }}</p>
 
-                <h2 class="mt-5 text-3xl sm:text-4xl">{{ $commissionerProfile->name }}</h2>
-                <p class="mt-2 text-sm text-gold-700 font-display font-semibold tracking-wide">{{ $commissionerProfile->position }}</p>
+                <h2 class="mt-5 text-3xl sm:text-4xl text-white">{{ $commissionerProfile->name }}</h2>
+                <p class="mt-2 text-sm text-gold-300 font-display font-semibold tracking-wide">{{ $commissionerProfile->position }}</p>
 
                 @if(!empty($commissionerProfile->short_bio))
-                <blockquote class="mt-8 font-serif-accent italic text-xl sm:text-2xl leading-[1.45] text-graphite-900 border-l-2 border-gold-500 pl-6">
+                <blockquote class="mt-8 font-serif-accent italic text-xl sm:text-2xl leading-[1.45] text-white border-l-2 border-gold-500 pl-6">
                     {{ $commissionerProfile->short_bio }}
                 </blockquote>
                 @endif
 
                 @if(!empty($commissionerProfile->full_bio))
-                <p class="mt-8 text-[0.9375rem] leading-[1.85] text-graphite-700">{{ $commissionerProfile->full_bio }}</p>
+                <p class="mt-8 text-[0.9375rem] leading-[1.85] text-graphite-300">{{ $commissionerProfile->full_bio }}</p>
                 @endif
 
                 @if(!empty($commissionerProfile->skills))
                 <div class="mt-9">
-                    <p class="eyebrow mb-4">{{ __('pages.about.skills') }}</p>
+                    <p class="eyebrow eyebrow-light mb-4">{{ __('pages.about.skills') }}</p>
                     <div class="chip-strip flex gap-2 sm:flex-wrap">
                         @foreach((array) $commissionerProfile->skills as $skill)
-                            <span class="chip chip-neutral">{{ $skill }}</span>
+                            <span class="chip chip-dark">{{ $skill }}</span>
                         @endforeach
                     </div>
                 </div>
@@ -193,10 +195,10 @@
 
                 @if(!empty($commissionerProfile->experience))
                 <div class="mt-9">
-                    <p class="eyebrow mb-5">{{ __('pages.about.experience') }}</p>
+                    <p class="eyebrow eyebrow-light mb-5">{{ __('pages.about.experience') }}</p>
                     <ul class="space-y-3">
                         @foreach((array) $commissionerProfile->experience as $exp)
-                        <li class="feature-row">
+                        <li class="feature-row feature-row-dark">
                             <span class="tick">
                                 <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3.5" d="M5 13l4 4L19 7"/></svg>
                             </span>
@@ -218,7 +220,7 @@
                 @if($commissionerLinks)
                 <div class="mt-9 flex flex-wrap items-center gap-3">
                     @foreach($commissionerLinks as $label => $href)
-                    <a href="{{ $href }}"@if(! str_starts_with($href, 'mailto:')) target="_blank" rel="noopener"@endif class="btn btn-outline btn-sm"><span>{{ $label }}</span></a>
+                    <a href="{{ $href }}"@if(! str_starts_with($href, 'mailto:')) target="_blank" rel="noopener"@endif class="btn btn-ghost btn-sm"><span>{{ $label }}</span></a>
                     @endforeach
                 </div>
                 @endif
@@ -390,6 +392,39 @@
 
     @media (max-width: 640px) {
         .about-premium-card { border-radius: 1rem; }
+    }
+
+    /* Leadership panels. Both rows introduce a person, so each gets its own
+       ground: the founder sits on warm champagne, the commissioner on
+       obsidian with a dark-red wash. Same Midnight & Champagne palette, two
+       clearly different moods, and the copy keeps its contrast on either one.
+       Gradients only — no clipping, so the founder portrait stays sticky. */
+    .about-leader-ceo {
+        position: relative;
+        border-color: rgb(217 184 124 / 28%);
+        background:
+            radial-gradient(70% 72% at 88% 4%, rgb(217 184 124 / 26%) 0%, transparent 62%),
+            radial-gradient(56% 68% at 0% 100%, rgb(160 128 74 / 14%) 0%, transparent 66%),
+            linear-gradient(158deg, #FCF8EE 0%, #F6EFE0 46%, #EDDFC4 100%);
+    }
+    .about-leader-ceo .frame-lux {
+        border-color: rgb(217 184 124 / 48%);
+        box-shadow: 0 34px 72px -44px rgb(122 96 56 / 52%), 0 0 0 1px rgb(255 255 255 / 65%);
+    }
+    .about-leader-komisaris {
+        position: relative;
+        color: #e8eaee;
+        border-color: rgb(255 255 255 / 7%);
+        background:
+            linear-gradient(112deg, transparent 22%, rgb(255 255 255 / 2.5%) 49%, transparent 76%),
+            radial-gradient(85% 110% at 102% 46%, rgb(123 12 24 / 42%) 0%, rgb(85 7 16 / 17%) 42%, transparent 72%),
+            radial-gradient(64% 90% at -8% 4%, rgb(195 30 48 / 18%) 0%, transparent 67%),
+            linear-gradient(135deg, #050506 0%, #090709 38%, #12070a 69%, #21070b 100%);
+    }
+    .about-leader-komisaris .frame-lux {
+        border-color: rgb(232 62 80 / 30%);
+        background: #12070a;
+        box-shadow: 0 30px 70px -38px rgb(0 0 0 / 90%), 0 0 0 1px rgb(255 255 255 / 5%);
     }
 
     /* Commissioner row is the mirror of the founder row: portrait first on
