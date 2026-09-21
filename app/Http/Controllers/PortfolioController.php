@@ -4,9 +4,29 @@ namespace App\Http\Controllers;
 
 use App\Models\Portfolio;
 use App\Models\PortfolioCategory;
+use Symfony\Component\HttpFoundation\Response;
 
 class PortfolioController extends Controller
 {
+    /**
+     * Old project addresses that still exist in Google's index, each with the
+     * record that replaced it. They come from the placeholder catalogue the
+     * listing used to fall back on when the table was empty: those cards linked
+     * to these slugs, and no such page was ever created, so the link Google
+     * followed answered 404. Forwarded rather than recreated — the copy lives on
+     * in the current record.
+     *
+     * @var array<string, string>
+     */
+    private const LEGACY_SLUGS = [
+        'arahinn-mobile-ota' => 'arahinn-superapps',
+        'bamboe-oerip-booking-engine' => 'bamboe-oerip-villabox',
+        'aldef-pos-smart-system' => 'sistem-pos-multi-cabang-aldef-tech',
+        'smart-attendance-biometric-face-recognition' => 'absensi-aldef-tech',
+        'aldef-cloud-drive-storage' => 'aplikasi-penyimpanan-drive-aldef-tech',
+        'motoride-connect-touring-telemetry' => 'touring-aldef-tech',
+    ];
+
     public function index()
     {
         try {
@@ -79,8 +99,19 @@ class PortfolioController extends Controller
         return view('pages.portfolio', compact('portfolios', 'categories'));
     }
 
-    public function show(Portfolio $portfolio)
+    public function show(string $slug)
     {
+        /*
+         * Resolved here rather than by route-model binding so a retired address
+         * can answer 301. Binding answers 404 the moment the column misses,
+         * which is what turns a renamed project into a "Not found" report.
+         */
+        $portfolio = Portfolio::where('slug', $slug)->first();
+
+        if (!$portfolio) {
+            return $this->redirectLegacySlug($slug);
+        }
+
         if (!$portfolio->is_published) {
             abort(404);
         }
@@ -94,5 +125,22 @@ class PortfolioController extends Controller
             ->get();
 
         return view('pages.portfolio-show', ['portfolio' => $portfolio, 'relatedPortfolios' => $relatedPortfolios]);
+    }
+
+    /**
+     * The permanent move for an address in LEGACY_SLUGS, or a plain 404 when no
+     * replacement exists. The replacement has to be live, or the redirect would
+     * only trade one missing page for another.
+     */
+    private function redirectLegacySlug(string $slug): Response
+    {
+        $replacement = self::LEGACY_SLUGS[$slug] ?? null;
+        $target = $replacement
+            ? Portfolio::published()->where('slug', $replacement)->first()
+            : null;
+
+        abort_unless($target, 404);
+
+        return redirect()->to(lroute('portfolio.show', $target->slug), 301);
     }
 }

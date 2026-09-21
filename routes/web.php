@@ -39,7 +39,9 @@ $publicPages = function () {
     Route::get('/solutions', [SolutionController::class, 'index'])->name('solutions');
 
     Route::get('/portfolio', [PortfolioController::class, 'index'])->name('portfolio');
-    Route::get('/portfolio/{portfolio:slug}', [PortfolioController::class, 'show'])->name('portfolio.show');
+    // Resolved in the controller: a retired project address has to answer 301,
+    // and binding would answer 404 before the controller ran.
+    Route::get('/portfolio/{slug}', [PortfolioController::class, 'show'])->name('portfolio.show');
 
     Route::get('/faq', [FaqController::class, 'index'])->name('faq');
 
