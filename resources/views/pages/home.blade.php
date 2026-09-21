@@ -452,21 +452,24 @@
 
         @if($commissionerProfile)
         @php $commissionerPhoto = media_url($commissionerProfile->profile_photo); @endphp
-        {{-- Commissioner profile: same section, mirrored. Portrait sits right on
-             desktop and first on mobile, matching the CEO block above. Any field
-             the editor left blank is simply not rendered. --}}
+        {{-- Commissioner profile: same section, mirrored. Mobile stays photo
+             first; from lg up the row flips so the bio sits left and the
+             portrait right. The .home-leadership-mirror rules below enforce
+             that order in CSS, so it cannot be undone by a stale build or by a
+             parent's ordering. Any field the editor left blank is simply not
+             rendered. --}}
         <div class="mt-16 lg:mt-24 pt-14 lg:pt-20 border-t border-white/10">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+            <div class="home-leadership-mirror grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
 
                 @if($commissionerPhoto)
-                <div class="lg:col-span-5 lg:order-2 reveal-right">
+                <div class="home-leadership-media order-1 lg:order-2 lg:col-span-5 reveal-right">
                     <figure class="frame-lux home-leadership-frame aspect-[4/5] max-w-sm mx-auto lg:max-w-none">
                         <img src="{{ $commissionerPhoto }}" alt="{{ $commissionerProfile->name }}" loading="lazy" decoding="async">
                     </figure>
                 </div>
                 @endif
 
-                <div class="{{ $commissionerPhoto ? 'lg:col-span-7' : 'lg:col-span-12' }} lg:order-1 reveal-left">
+                <div class="home-leadership-body order-2 lg:order-1 {{ $commissionerPhoto ? 'lg:col-span-7' : 'lg:col-span-12' }} reveal-left">
                     @if($commissionerQuote = excerpt_text($commissionerProfile->short_bio, 210))
                     <blockquote class="font-serif-accent italic text-2xl sm:text-3xl lg:text-[2.125rem] leading-[1.35] text-white">
                         “{{ $commissionerQuote }}”
@@ -758,6 +761,15 @@
         border-color: rgb(232 62 80 / 30%);
         background: #12070a;
         box-shadow: 0 30px 70px -38px rgb(0 0 0 / 90%), 0 0 0 1px rgb(255 255 255 / 5%);
+    }
+    /* Leadership — commissioner row is the mirror of the CEO row: portrait
+       first on mobile, bio left / portrait right from lg up. Kept here rather
+       than relying on order utilities alone so the mirror always holds. */
+    .home-leadership-mirror > .home-leadership-media { order: 1; }
+    .home-leadership-mirror > .home-leadership-body { order: 2; }
+    @media (min-width: 64rem) {
+        .home-leadership-mirror > .home-leadership-media { order: 2; }
+        .home-leadership-mirror > .home-leadership-body { order: 1; }
     }
     .home-pillars-cta {
         border-color: rgb(232 62 80 / 32%);
