@@ -427,6 +427,25 @@
         box-shadow: 0 30px 70px -38px rgb(0 0 0 / 90%), 0 0 0 1px rgb(255 255 255 / 5%);
     }
 
+    /* Mobile: the profile copy is set justified, so the narrow column reads as
+       a tidy block instead of a ragged edge. Same treatment the article body
+       uses. Desktop keeps the natural edge, and the eyebrows, chips, buttons
+       and headings are left alone — they are labels, not prose. */
+    @media (max-width: 63.9375rem) {
+        .about-leader-ceo p:not(.eyebrow),
+        .about-leader-komisaris p:not(.eyebrow),
+        .about-leader-ceo blockquote,
+        .about-leader-komisaris blockquote,
+        .about-leader-ceo .feature-row span:last-child,
+        .about-leader-komisaris .feature-row span:last-child {
+            text-align: justify;
+            text-align-last: start;
+            text-justify: inter-word;
+            overflow-wrap: break-word;
+            hyphens: auto;
+        }
+    }
+
     /* Commissioner row is the mirror of the founder row: portrait first on
        mobile, bio left / portrait right from lg up. Declared here so the
        ordering cannot be lost to a stylesheet that lags behind the markup. */
