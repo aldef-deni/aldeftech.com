@@ -245,6 +245,10 @@ return [
         'similar_body'  => 'Kami senang membahasnya. Konsultasi awal tanpa biaya dan tanpa kewajiban.',
         'start_discussion' => 'Mulai diskusi',
         'showing' => 'Menampilkan :from–:to dari :total',
+        'pagination'   => 'Navigasi halaman tulisan',
+        'previous_page' => 'Halaman sebelumnya',
+        'next_page'    => 'Halaman berikutnya',
+        'page_number'  => 'Buka halaman :page',
 
         'detail' => [
             'topics'      => 'Topik',

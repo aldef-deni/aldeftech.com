@@ -245,6 +245,10 @@ return [
         'similar_body'  => 'We would be glad to talk it through. The first consultation is free and comes with no obligation.',
         'start_discussion' => 'Start a conversation',
         'showing' => 'Showing :from–:to of :total',
+        'pagination'   => 'Article pagination',
+        'previous_page' => 'Previous page',
+        'next_page'    => 'Next page',
+        'page_number'  => 'Go to page :page',
 
         'detail' => [
             'topics'      => 'Topics',

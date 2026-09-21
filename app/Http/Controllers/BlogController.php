@@ -15,12 +15,16 @@ class BlogController extends Controller
      */
     private const LEGACY_SCAN_LIMIT = 200;
 
+    /** Articles per page. Six fills the two-column grid evenly, so the last
+     *  row is never a single orphaned card when the archive grows. */
+    private const PER_PAGE = 6;
+
     public function index()
     {
         $posts = BlogPost::published()
             ->with('category', 'author')
             ->latest('published_at')
-            ->paginate(9);
+            ->paginate(self::PER_PAGE);
 
         $categories = BlogCategory::withCount('posts')->orderBy('sort_order')->get();
 
