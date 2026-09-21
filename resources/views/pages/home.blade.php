@@ -458,7 +458,7 @@
              that order in CSS, so it cannot be undone by a stale build or by a
              parent's ordering. Any field the editor left blank is simply not
              rendered. --}}
-        <div class="mt-16 lg:mt-24 pt-14 lg:pt-20 border-t border-white/10">
+        <div class="home-leadership-divider mt-20 lg:mt-28 pt-14 lg:pt-20 border-t border-white/10">
             <div class="home-leadership-mirror grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
 
                 @if($commissionerPhoto)
@@ -761,6 +761,13 @@
         border-color: rgb(232 62 80 / 30%);
         background: #12070a;
         box-shadow: 0 30px 70px -38px rgb(0 0 0 / 90%), 0 0 0 1px rgb(255 255 255 / 5%);
+    }
+    /* Leadership — clearance between the CEO row and the commissioner row.
+       Declared here so the breathing room holds regardless of the compiled
+       utility sheet. */
+    .home-leadership-divider { margin-top: 5rem; }
+    @media (min-width: 64rem) {
+        .home-leadership-divider { margin-top: 7rem; }
     }
     /* Leadership — commissioner row is the mirror of the CEO row: portrait
        first on mobile, bio left / portrait right from lg up. Kept here rather
