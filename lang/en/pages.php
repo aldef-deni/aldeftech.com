@@ -151,6 +151,7 @@ return [
         'mission'   => 'Mission',
         'vision'    => 'Vision',
         'founder'   => 'Founder',
+        'commissioner' => 'Commissioner',
         'founder_video' => [
             'watch' => 'Watch Founder Video',
             'title' => 'Meet the Founder of Aldef Tech',

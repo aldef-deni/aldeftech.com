@@ -151,6 +151,7 @@ return [
         'mission'   => 'Misi',
         'vision'    => 'Visi',
         'founder'   => 'Pendiri',
+        'commissioner' => 'Komisaris',
         'founder_video' => [
             'watch' => 'Tonton Video Pendiri',
             'title' => 'Kenali Pendiri Aldef Tech',

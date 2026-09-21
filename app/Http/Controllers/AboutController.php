@@ -15,6 +15,15 @@ class AboutController extends Controller
             $ceoProfile = null;
         }
 
+        // The commissioner shares the same table as the CEO, told apart by role.
+        // Unlike the founder there is no hardcoded fallback: nothing here is
+        // invented, so a missing row simply means the section is not rendered.
+        try {
+            $commissionerProfile = CeoProfile::active()->role(CeoProfile::ROLE_COMMISSIONER)->first();
+        } catch (\Throwable $e) {
+            $commissionerProfile = null;
+        }
+
         if (!$ceoProfile) {
             $ceoProfile = (object)[
                 'name' => 'Deni Afrizal',
@@ -35,6 +44,7 @@ class AboutController extends Controller
 
         return view('pages.about', [
             'ceoProfile' => $ceoProfile,
+            'commissionerProfile' => $commissionerProfile,
             'clients' => $clients,
             'founderVideoUrl' => is_file($founderVideoFile)
                 ? asset($founderVideoPath) . '?v=' . filemtime($founderVideoFile)

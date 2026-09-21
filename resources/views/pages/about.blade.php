@@ -153,6 +153,89 @@
     </div>
 </section>
 
+{{-- ── Commissioner ───────────────────────────────────────────────────────
+     The full commissioner profile, mirroring the founder block above: bio and
+     links left, portrait right from lg up, portrait first on mobile. Both rows
+     read from the same table, so the dashboard is the only place either is
+     edited. No field is invented — anything the editor left blank is skipped. --}}
+@if($commissionerProfile)
+@php $commissionerPhoto = media_url($commissionerProfile->profile_photo); @endphp
+<section class="section-padding surface-parchment border-b border-line">
+    <div class="shell">
+        <div class="leadership-mirror grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+
+            <div class="leadership-body order-2 lg:order-1 {{ $commissionerPhoto ? 'lg:col-span-7' : 'lg:col-span-12' }} reveal-left">
+                <p class="eyebrow">{{ __('pages.about.commissioner') }}</p>
+
+                <h2 class="mt-5 text-3xl sm:text-4xl">{{ $commissionerProfile->name }}</h2>
+                <p class="mt-2 text-sm text-gold-700 font-display font-semibold tracking-wide">{{ $commissionerProfile->position }}</p>
+
+                @if(!empty($commissionerProfile->short_bio))
+                <blockquote class="mt-8 font-serif-accent italic text-xl sm:text-2xl leading-[1.45] text-graphite-900 border-l-2 border-gold-500 pl-6">
+                    {{ $commissionerProfile->short_bio }}
+                </blockquote>
+                @endif
+
+                @if(!empty($commissionerProfile->full_bio))
+                <p class="mt-8 text-[0.9375rem] leading-[1.85] text-graphite-700">{{ $commissionerProfile->full_bio }}</p>
+                @endif
+
+                @if(!empty($commissionerProfile->skills))
+                <div class="mt-9">
+                    <p class="eyebrow mb-4">{{ __('pages.about.skills') }}</p>
+                    <div class="chip-strip flex gap-2 sm:flex-wrap">
+                        @foreach((array) $commissionerProfile->skills as $skill)
+                            <span class="chip chip-neutral">{{ $skill }}</span>
+                        @endforeach
+                    </div>
+                </div>
+                @endif
+
+                @if(!empty($commissionerProfile->experience))
+                <div class="mt-9">
+                    <p class="eyebrow mb-5">{{ __('pages.about.experience') }}</p>
+                    <ul class="space-y-3">
+                        @foreach((array) $commissionerProfile->experience as $exp)
+                        <li class="feature-row">
+                            <span class="tick">
+                                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3.5" d="M5 13l4 4L19 7"/></svg>
+                            </span>
+                            <span>{{ is_array($exp) ? ($exp['title'] ?? reset($exp)) : $exp }}</span>
+                        </li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
+
+                @php
+                    $commissionerLinks = array_filter([
+                        'LinkedIn'  => $commissionerProfile->linkedin,
+                        'GitHub'    => $commissionerProfile->github,
+                        'Instagram' => $commissionerProfile->instagram,
+                        'Email'     => $commissionerProfile->email ? 'mailto:' . $commissionerProfile->email : null,
+                    ]);
+                @endphp
+                @if($commissionerLinks)
+                <div class="mt-9 flex flex-wrap items-center gap-3">
+                    @foreach($commissionerLinks as $label => $href)
+                    <a href="{{ $href }}"@if(! str_starts_with($href, 'mailto:')) target="_blank" rel="noopener"@endif class="btn btn-outline btn-sm"><span>{{ $label }}</span></a>
+                    @endforeach
+                </div>
+                @endif
+            </div>
+
+            @if($commissionerPhoto)
+            <div class="leadership-media order-1 lg:order-2 lg:col-span-5 reveal-right">
+                <figure class="frame-lux aspect-[4/5] max-w-sm mx-auto lg:max-w-none">
+                    <img src="{{ $commissionerPhoto }}" alt="{{ $commissionerProfile->name }}" loading="lazy" decoding="async">
+                </figure>
+            </div>
+            @endif
+        </div>
+    </div>
+</section>
+@endif
+
 {{-- ── Values ───────────────────────────────────────────────────────────── --}}
 <section class="section-padding surface-ivory">
     <div class="shell">
@@ -307,6 +390,16 @@
 
     @media (max-width: 640px) {
         .about-premium-card { border-radius: 1rem; }
+    }
+
+    /* Commissioner row is the mirror of the founder row: portrait first on
+       mobile, bio left / portrait right from lg up. Declared here so the
+       ordering cannot be lost to a stylesheet that lags behind the markup. */
+    .leadership-mirror > .leadership-media { order: 1; }
+    .leadership-mirror > .leadership-body { order: 2; }
+    @media (min-width: 64rem) {
+        .leadership-mirror > .leadership-media { order: 2; }
+        .leadership-mirror > .leadership-body { order: 1; }
     }
 </style>
 @include('_partials.client-logos-styles')
