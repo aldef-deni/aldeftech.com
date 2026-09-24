@@ -3,6 +3,10 @@
 @php
     $pageTitle = __('pages.blog.meta_title');
     $metaDescription = __('pages.blog.meta_description');
+    // Each archive page exposes a different set of article links. Keeping the
+    // page number in its canonical lets crawlers retain page 2+ as crawl paths
+    // instead of collapsing them into the first page.
+    $canonical = lroute('blog') . ($posts->currentPage() > 1 ? '?page=' . $posts->currentPage() : '');
 @endphp
 
 @section('content')
@@ -38,7 +42,7 @@
                     <div class="cards-swipe md:grid md:grid-cols-2 gap-5 lg:gap-6" data-reveal-group="80">
                         @foreach($posts as $post)
                         <article class="reveal">
-                            <a href="{{ lroute('blog.show', $post->slug) }}" class="card-lux group h-full overflow-hidden">
+                            <a href="{{ $post->isTranslatedFor() ? lroute('blog.show', $post->slug) : route('blog.show', $post->slug) }}" class="card-lux group h-full overflow-hidden">
                                 <div class="frame-lux !rounded-none !border-0 !border-b !border-line aspect-[16/10] bg-ivory-200">
                                     @if($src = media_url($post->featured_image))
                                         <img src="{{ $src }}" alt="{{ $post->title }}" loading="lazy" decoding="async">

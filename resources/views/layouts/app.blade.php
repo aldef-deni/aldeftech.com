@@ -56,6 +56,8 @@
     <meta name="description" content="{{ $resolvedDescription }}">
     @if(($noindex ?? false) || $seoOverride?->noindex)
         <meta name="robots" content="noindex, nofollow">
+    @else
+        <meta name="robots" content="index, follow">
     @endif
     <link rel="canonical" href="{{ $canonicalUrl }}">
 

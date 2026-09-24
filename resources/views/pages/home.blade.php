@@ -627,7 +627,7 @@
 
         <div class="mt-12 cards-swipe md:grid md:grid-cols-3 gap-5 lg:gap-6" data-reveal-group="80">
             @foreach($latestPosts as $post)
-            <a href="{{ lroute('blog.show', $post->slug) }}" class="card-lux reveal group overflow-hidden">
+            <a href="{{ $post->isTranslatedFor() ? lroute('blog.show', $post->slug) : route('blog.show', $post->slug) }}" class="card-lux reveal group overflow-hidden">
                 <div class="frame-lux !rounded-none !border-0 !border-b !border-line aspect-[16/10]">
                     @if($src = media_url($post->featured_image))
                         <img src="{{ $src }}" alt="{{ $post->title }}" loading="lazy" decoding="async">

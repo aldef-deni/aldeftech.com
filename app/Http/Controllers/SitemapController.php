@@ -60,8 +60,17 @@ class SitemapController extends Controller
             $xml .= $this->urlNode($path, $meta['lastmod'], $meta['priority']);
         }
 
+        $serviceUpdates = Service::published()
+            ->whereIn('slug', array_keys(config('service_landings.pages', [])))
+            ->pluck('updated_at', 'slug');
+
         foreach (array_keys(config('service_landings.pages', [])) as $slug) {
-            $xml .= $this->urlNode('/services/' . $slug, null, '0.8');
+            $lastmod = $serviceUpdates->get($slug);
+            $xml .= $this->urlNode(
+                '/services/' . $slug,
+                $lastmod ? Carbon::parse($lastmod) : null,
+                '0.8'
+            );
         }
 
         /*
