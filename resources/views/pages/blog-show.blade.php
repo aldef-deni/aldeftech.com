@@ -1,8 +1,11 @@
 @extends('layouts.app')
 
 @php
-    $pageTitle = $post->meta_title ?: $post->title . ' — Aldef Tech';
-    $metaDescription = $post->meta_description ?: excerpt_text($post->excerpt ?: $post->content, 160);
+    // meta_title/meta_description are stored in Indonesian only; a translated
+    // /en article takes its title and summary from the translation instead.
+    $useStoredMeta = app()->getLocale() === config('locales.default', 'id');
+    $pageTitle = ($useStoredMeta ? $post->meta_title : null) ?: $post->title . ' — Aldef Tech';
+    $metaDescription = ($useStoredMeta ? $post->meta_description : null) ?: excerpt_text($post->excerpt ?: $post->content, 160);
     $ogImage = media_url($post->featured_image, 'images/og-image.jpg');
     $ogType = 'article';
 

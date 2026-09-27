@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\BlogCategory;
 use App\Models\BlogPost;
 use App\Models\BlogPostSlugRedirect;
+use Illuminate\Http\Request;
 
 class BlogController extends Controller
 {
@@ -19,12 +20,22 @@ class BlogController extends Controller
      *  row is never a single orphaned card when the archive grows. */
     private const PER_PAGE = 6;
 
-    public function index()
+    public function index(Request $request)
     {
+        // ?page=1 is /blog under a second address; forward it so only one
+        // spelling of the first archive page is ever crawled.
+        if ($request->query('page') !== null && (string) $request->query('page') === '1') {
+            return redirect()->to(lroute('blog'), 301);
+        }
+
         $posts = BlogPost::published()
             ->with('category', 'author')
             ->latest('published_at')
             ->paginate(self::PER_PAGE);
+
+        // A page past the end would render an empty archive with status 200,
+        // which Search Console reports as a soft 404.
+        abort_if($posts->currentPage() > 1 && $posts->isEmpty(), 404);
 
         $categories = BlogCategory::withCount('posts')->orderBy('sort_order')->get();
 

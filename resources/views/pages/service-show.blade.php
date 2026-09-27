@@ -179,6 +179,23 @@
 </section>
 @endif
 
+@if(($articles ?? collect())->isNotEmpty())
+<section class="section-padding surface-ivory border-b border-line">
+    <div class="shell">
+        <p class="eyebrow reveal">{{ app()->isLocale('id') ? 'Artikel terkait' : 'Related articles' }}</p>
+        <div class="mt-8 grid md:grid-cols-3 gap-5 lg:gap-6" data-reveal-group="80">
+            @foreach($articles as $post)
+            {{-- An untranslated article's canonical address is the Indonesian one. --}}
+            <a href="{{ $post->isTranslatedFor() ? lroute('blog.show', $post->slug) : route('blog.show', $post->slug) }}" class="card-lux reveal p-6 group">
+                <p class="text-[0.6875rem] uppercase tracking-[0.14em] text-gold-700">{{ $post->category->name ?? 'Blog' }}</p>
+                <h3 class="mt-3 text-base leading-snug">{{ $post->title }}</h3>
+            </a>
+            @endforeach
+        </div>
+    </div>
+</section>
+@endif
+
 <section class="section-padding surface-ivory">
     <div class="shell max-w-4xl">
         <p class="eyebrow reveal">{{ app()->isLocale('id') ? 'Pertanyaan umum' : 'Frequently asked questions' }}</p>

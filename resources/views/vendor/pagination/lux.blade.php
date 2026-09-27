@@ -55,7 +55,7 @@
                 <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
             </span>
         @else
-            <a href="{{ $paginator->previousPageUrl() }}" rel="prev" class="page-pill" aria-label="{{ __('pages.blog.previous_page') }}">
+            <a href="{{ preg_replace('/[?&]page=1$/', '', $paginator->previousPageUrl()) }}" rel="prev" class="page-pill" aria-label="{{ __('pages.blog.previous_page') }}">
                 <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
             </a>
         @endif
@@ -71,7 +71,7 @@
                     @if ($page == $paginator->currentPage())
                         <span class="page-pill is-current tabular" aria-current="page">{{ $page }}</span>
                     @else
-                        <a href="{{ $url }}" class="page-pill tabular" aria-label="{{ __('pages.blog.page_number', ['page' => $page]) }}">{{ $page }}</a>
+                        <a href="{{ $page === 1 ? preg_replace('/[?&]page=1$/', '', $url) : $url }}" class="page-pill tabular" aria-label="{{ __('pages.blog.page_number', ['page' => $page]) }}">{{ $page }}</a>
                     @endif
                 @endforeach
             @endif

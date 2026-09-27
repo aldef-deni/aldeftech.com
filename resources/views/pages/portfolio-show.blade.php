@@ -1,8 +1,12 @@
 @extends('layouts.app')
 
 @php
-    $pageTitle = $portfolio->meta_title ?: $portfolio->title . ' — ' . __('pages.portfolio.detail.fallback_case') . ' | Aldef Tech';
-    $metaDescription = $portfolio->meta_description ?: excerpt_text($portfolio->short_description, 160);
+    // meta_title/meta_description are stored in Indonesian only. On a
+    // translated /en page they would give an English document an Indonesian
+    // snippet, so the translated title and summary are used there instead.
+    $useStoredMeta = app()->getLocale() === config('locales.default', 'id');
+    $pageTitle = ($useStoredMeta ? $portfolio->meta_title : null) ?: $portfolio->title . ' — ' . __('pages.portfolio.detail.fallback_case') . ' | Aldef Tech';
+    $metaDescription = ($useStoredMeta ? $portfolio->meta_description : null) ?: excerpt_text($portfolio->short_description, 160);
     $ogImage = media_url($portfolio->featured_image, 'images/og-image.jpg');
     $ogType = 'article';
 

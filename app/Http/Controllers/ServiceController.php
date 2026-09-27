@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BlogPost;
 use App\Models\Portfolio;
 use App\Models\Service;
 
@@ -135,10 +136,22 @@ class ServiceController extends Controller
             ->limit(3)
             ->get();
 
+        // Articles on the same topic, matched the way an article picks its own
+        // related service, so each landing links to the posts that link back.
+        $articles = BlogPost::published()
+            ->with('category')
+            ->latest('published_at')
+            ->limit(30)
+            ->get()
+            ->filter(fn ($post) => service_landing_slug_for($post->category?->name . ' ' . $post->title) === $slug)
+            ->take(3)
+            ->values();
+
         return view('pages.service-show', [
             'page' => $copy,
             'service' => $service,
             'portfolios' => $portfolio,
+            'articles' => $articles,
             'canonical' => lroute('services.show', $slug),
             'analyticsPageType' => 'service',
             'analyticsItem' => $slug,
