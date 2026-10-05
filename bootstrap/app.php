@@ -29,6 +29,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // Runs inside the web group so the session is already available.
         $middleware->web(append: [
             \App\Http\Middleware\SetLocale::class,
+            \App\Http\Middleware\PreserveAnalyticsCampaign::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

@@ -26,6 +26,8 @@ class ContactController extends Controller
 
     public function store(Request $request)
     {
+        $request->session()->forget('lead_conversion');
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'company' => 'nullable|string|max:255',
@@ -112,9 +114,14 @@ class ContactController extends Controller
                 ));
         }
 
+        if ($lead->is_spam) {
+            return redirect(lroute('contact.thank-you'));
+        }
+
         $conversion = [
             'id' => (string) Str::uuid(),
             'form_name' => 'project_brief',
+            'page_path' => $request->getPathInfo(),
             'lead_source' => $lead->source,
             'project_type' => $lead->project_type,
             'budget_range' => $lead->budget_range,

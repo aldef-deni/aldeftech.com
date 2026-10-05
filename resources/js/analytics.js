@@ -82,6 +82,47 @@ function eventParams(element = null, extra = {}) {
   return Object.fromEntries(Object.entries(params).filter(([, value]) => value !== ''));
 }
 
+function clickLocation(element) {
+  if (element.dataset.analyticsCtaLocation) return clean(element.dataset.analyticsCtaLocation, 80);
+  if (element.closest('#mobile-drawer')) return 'navbar_mobile';
+  if (element.closest('#navbar')) return 'navbar';
+  if (element.closest('footer')) return 'footer';
+  if (element.closest('form')) return 'contact_form';
+
+  const section = element.closest('article[id], section[id]');
+  return clean(section?.id || 'page_content', 80);
+}
+
+function clickParams(element) {
+  const label = element.querySelector('h2, h3, span');
+  return eventParams(element, {
+    cta_name: clean(element.dataset.analyticsCtaName || element.getAttribute('aria-label')
+      || label?.textContent || element.textContent, 100).replace(/\s+/g, ' '),
+    cta_location: clickLocation(element),
+  });
+}
+
+function linkTarget(element) {
+  try {
+    return new URL(element.getAttribute('href'), window.location.href);
+  } catch {
+    return null;
+  }
+}
+
+function isWhatsApp(target) {
+  return target && (target.protocol === 'whatsapp:'
+    || (['https:', 'http:'].includes(target.protocol)
+      && ['wa.me', 'www.wa.me', 'api.whatsapp.com', 'web.whatsapp.com', 'whatsapp.com', 'www.whatsapp.com'].includes(target.hostname)));
+}
+
+function isPublicCta(element, target) {
+  if (!target || target.origin !== window.location.origin) return false;
+  if (!/^\/(?:en\/)?(?:contact|services|solutions|portfolio|blog)(?:\/|$)/.test(target.pathname)) return false;
+  return element.matches('.btn, .link-arrow, .card-obsidian, .card-lux, .card-quiet')
+    || /^\/(?:en\/)?contact\/?$/.test(target.pathname);
+}
+
 function send(name, params = {}) {
   const analytics = window.__aldefAnalytics || {};
   const payload = Object.fromEntries(Object.entries(params).filter(([, value]) => value !== '' && value != null));
@@ -124,6 +165,7 @@ function initLeadConversion() {
 
   send('generate_lead', {
     ...pageParams(),
+    page_path: clean(conversion.page_path || window.location.pathname, 500),
     language: clean(document.documentElement.lang || 'id', 12),
     lead_source: clean(conversion.lead_source || 'website', 40),
     form_name: clean(conversion.form_name || 'project_brief', 80),
@@ -155,20 +197,37 @@ function initFormTracking() {
 }
 
 function initClickTracking() {
-  document.addEventListener('click', (event) => {
-    const element = event.target.closest?.('a, button');
+  const trackClick = (event) => {
+    if (event.type === 'auxclick' && event.button !== 1) return;
+    const element = event.target?.closest?.('a, button');
     if (!element) return;
 
     const href = element.getAttribute('href') || '';
-    const explicit = element.dataset.analyticsEvent;
-    const params = eventParams(element);
+    const target = href ? linkTarget(element) : null;
+    const whatsapp = isWhatsApp(target);
+    const params = clickParams(element);
+    const events = new Set([
+      element.dataset.analyticsEvent,
+      element.dataset.analyticsAlsoEvent,
+    ].filter(Boolean));
 
-    if (explicit) send(explicit, params);
-    if (element.dataset.analyticsAlsoEvent) send(element.dataset.analyticsAlsoEvent, params);
+    if (whatsapp) {
+      events.add('whatsapp_click');
+      events.add('cta_click');
+      params.button_location = params.cta_location;
+      params.destination = 'whatsapp';
+    } else if (isPublicCta(element, target)) {
+      events.add('cta_click');
+    }
+    if (/^mailto:/i.test(href)) events.add('email_click');
 
-    if (!explicit && /^https:\/\/wa\.me\//i.test(href)) send('whatsapp_click', params);
-    if (!explicit && /^mailto:/i.test(href)) send('email_click', params);
-  }, { passive: true });
+    events.forEach((name) => send(name, params));
+  };
+
+  // Capture queues events before link handlers/navigation. Native navigation
+  // stays immediate, including new tabs and WhatsApp app links.
+  document.addEventListener('click', trackClick, { capture: true, passive: true });
+  document.addEventListener('auxclick', trackClick, { capture: true, passive: true });
 }
 
 function initPageViewEvents() {
@@ -180,6 +239,7 @@ function initPageViewEvents() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  if (/^\/(?:en\/)?admin(?:\/|$)/.test(window.location.pathname)) return;
   initAttribution();
   initLeadConversion();
   initFormTracking();

@@ -48,22 +48,50 @@ class LeadSpamTest extends TestCase
 
     public function test_a_real_enquiry_is_not_flagged(): void
     {
-        $this->submit()->assertRedirect();
+        $response = $this->submit()->assertRedirect();
+        $response->assertSessionHas('lead_conversion.form_name', 'project_brief');
+        $response->assertSessionHas('lead_conversion.page_path', '/contact');
 
         $lead = Lead::firstOrFail();
         $this->assertFalse($lead->is_spam);
         $this->assertSame(0, $lead->spam_score);
+
+        $this->get('/contact/thank-you')->assertOk()->assertSee('window.__aldefLeadConversion', false);
+        $this->get('/contact/thank-you')->assertOk()->assertDontSee('window.__aldefLeadConversion', false);
     }
 
     public function test_honeypot_alone_is_decisive(): void
     {
-        $this->submit(['website_url' => 'https://spam.example'])->assertRedirect();
+        $this->submit(['website_url' => 'https://spam.example'])
+            ->assertRedirect()->assertSessionMissing('lead_conversion');
 
         $lead = Lead::firstOrFail();
         $this->assertTrue($lead->is_spam);
         // Still stored, still recoverable — never silently dropped.
         $this->assertDatabaseCount('leads', 1);
         $this->assertNotEmpty($lead->spam_reasons);
+    }
+
+    public function test_lead_conversion_is_absent_without_a_successful_submission(): void
+    {
+        $this->get('/contact')->assertOk()->assertDontSee('window.__aldefLeadConversion', false);
+        $this->get('/contact/thank-you')->assertOk()->assertDontSee('window.__aldefLeadConversion', false);
+
+        $this->withSession(['lead_conversion' => ['id' => 'stale-token']])
+            ->submit(['email' => 'invalid'])->assertSessionHasErrors('email')
+            ->assertSessionMissing('lead_conversion');
+        $this->assertDatabaseCount('leads', 0);
+    }
+
+    public function test_english_lead_conversion_records_the_contact_form_path(): void
+    {
+        $this->post('/en/contact', [
+            'name' => 'Budi Santoso',
+            'email' => 'budi@perusahaan.co.id',
+            'message' => 'We need an inventory system for our warehouse.',
+            'form_started_at' => encrypt(now()->subSeconds(40)->timestamp),
+        ])->assertRedirect('/en/contact/thank-you')
+            ->assertSessionHas('lead_conversion.page_path', '/en/contact');
     }
 
     public function test_instant_submission_is_flagged(): void
