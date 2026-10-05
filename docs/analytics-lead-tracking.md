@@ -57,12 +57,10 @@ host yang sama, termasuk URL legacy dan pergantian bahasa. Tujuan, status
 redirect, canonical, hreflang, dan sitemap tetap mengikuti implementasi existing;
 parameter tidak diteruskan ke dashboard atau host lain.
 
-Temuan terpisah: CanonicalRedirect existing membandingkan query mentah dengan
-Request::getUri() yang menormalkan urutan query. UTM yang belum berurutan dapat
-memicu 301 ke URL yang sama sebelum middleware web berjalan. Perubahan ini
-tidak menyentuh middleware canonical sesuai batas lingkup; perbandingan URL
-tersebut perlu diperbaiki setelah mendapat izin. Parameter baru pada redirect
-kampanye diurutkan agar tujuan redirect yang diperbaiki bisa dimuat.
+CanonicalRedirect membandingkan target dengan host dan URI request mentah,
+sehingga urutan query UTM tidak memicu 301 ke URL yang sama. Query pada redirect
+host/trailing slash tetap dipertahankan verbatim. Perubahan perbandingan ini
+tidak mengubah aturan host/trailing slash, tujuan/status redirect, atau tag SEO.
 
 ## Verifikasi tanpa event uji di production
 

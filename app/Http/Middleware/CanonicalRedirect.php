@@ -54,7 +54,7 @@ class CanonicalRedirect
 
         $target = ($hostIsCanonical ? $request->getSchemeAndHttpHost() : $base) . $path;
 
-        if ($target . $query === $request->getUri()) {
+        if ($target . $query === $request->getSchemeAndHttpHost() . $request->getRequestUri()) {
             return $next($request);
         }
 
