@@ -4,6 +4,9 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\URL;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -27,8 +30,13 @@ class CanonicalRedirect
     /** Environments where a different host is expected to be legitimate. */
     private const SKIP_HOST_ENFORCEMENT = ['local', 'testing'];
 
+    /** Hosts that can never be the public address of the site. */
+    private const LOOPBACK_HOSTS = ['localhost', '127.0.0.1', '::1', '[::1]'];
+
     public function handle(Request $request, Closure $next): Response
     {
+        $this->replaceLoopbackAppUrl($request);
+
         if (! in_array($request->getMethod(), ['GET', 'HEAD'], true)) {
             return $next($request);
         }
@@ -59,5 +67,36 @@ class CanonicalRedirect
         }
 
         return redirect()->to($target . $query, 301);
+    }
+
+    /**
+     * APP_URL feeds every SEO signal: the canonical tag, hreflang, sitemap,
+     * robots.txt and the JSON-LD @id values. A server set up from .env.example
+     * kept APP_URL=http://localhost:8000, and production then told Google that
+     * every page lived on localhost. A loopback APP_URL is never the public
+     * address, so when a request arrives on a real host, that host is used for
+     * this request and a warning is logged once a day until the .env is fixed.
+     */
+    private function replaceLoopbackAppUrl(Request $request): void
+    {
+        $configured = strtolower((string) parse_url((string) config('app.url'), PHP_URL_HOST));
+
+        if ($configured !== '' && ! in_array($configured, self::LOOPBACK_HOSTS, true)) {
+            return;
+        }
+
+        if (in_array(strtolower($request->getHost()), self::LOOPBACK_HOSTS, true)) {
+            return;
+        }
+
+        config(['app.url' => $request->getSchemeAndHttpHost()]);
+        URL::forceRootUrl($request->getSchemeAndHttpHost());
+
+        if (Cache::add('app_url_loopback_warned', true, now()->addDay())) {
+            Log::warning('APP_URL points at a loopback host; using the request host for canonical URLs. Set APP_URL in .env.', [
+                'app_url' => $configured,
+                'request_host' => $request->getHost(),
+            ]);
+        }
     }
 }
