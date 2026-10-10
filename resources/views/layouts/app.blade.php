@@ -43,6 +43,12 @@
             ?: config('aldeftech.analytics.google_tag_manager_id', '');
         $gaId = \App\Models\SiteSetting::get('google_analytics_id')
             ?: config('aldeftech.analytics.google_analytics_id', '');
+        // The admin form validates these formats, the .env fallback did not:
+        // a GA property number in GOOGLE_TAG_MANAGER_ID loaded a GTM container
+        // that does not exist and nothing reached GA4. A malformed ID is
+        // treated as absent rather than emitted.
+        $gtmId = preg_match('/^GTM-[A-Z0-9]+$/i', trim((string) $gtmId)) ? strtoupper(trim($gtmId)) : '';
+        $gaId = preg_match('/^G-[A-Z0-9]+$/i', trim((string) $gaId)) ? strtoupper(trim($gaId)) : '';
         // GTM owns the page view and events whenever it is configured. This
         // prevents a GA4 tag in GTM plus standalone gtag from double counting.
         $analyticsMode = filled($gtmId) ? 'gtm' : (filled($gaId) ? 'gtag' : 'none');

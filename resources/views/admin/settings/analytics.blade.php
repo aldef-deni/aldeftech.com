@@ -12,7 +12,7 @@
 
     <x-admin.page-head
         eyebrow="Pengaturan"
-        title="Analytics &amp; Pelacakan"
+        title="Analytics & Pelacakan"
         subtitle="Skrip hanya dimuat di situs publik bila kolomnya diisi">
         <button type="submit" class="btn btn-primary">
             <i class="icon-base ti tabler-device-floppy me-2"></i>Simpan Perubahan
