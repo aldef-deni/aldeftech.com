@@ -26,6 +26,9 @@ use App\Http\Controllers\Admin\ProcessStepController;
 use App\Http\Controllers\Admin\SocialMediaController;
 use App\Http\Controllers\Admin\AboutController as AdminAboutController;
 use App\Http\Controllers\Admin\MarketingController;
+use App\Http\Controllers\Admin\StoreCategoryController;
+use App\Http\Controllers\Admin\StoreProductController;
+use App\Http\Controllers\Admin\StoreSettingController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -235,6 +238,15 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
         Route::resource('tags', AdminBlogTagController::class)
             ->except(['show'])
             ->names('tags');
+
+        // Aldef Store (shoe catalogue, no prices)
+        Route::resource('store/products', StoreProductController::class)
+            ->except(['show'])
+            ->names('store.products');
+
+        Route::resource('store/categories', StoreCategoryController::class)
+            ->except(['show'])
+            ->names('store.categories');
     });
 
     /*
@@ -319,6 +331,13 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
 
         Route::delete('social-media/{socialLink}', [SocialMediaController::class, 'destroy'])
             ->name('social-media.destroy');
+
+        // Aldef Store: WhatsApp number for product enquiries
+        Route::get('store/settings', [StoreSettingController::class, 'edit'])
+            ->name('store.settings');
+
+        Route::put('store/settings', [StoreSettingController::class, 'update'])
+            ->name('store.settings.update');
 
         // Site Settings
         Route::get('settings/site', [SiteSettingController::class, 'edit'])

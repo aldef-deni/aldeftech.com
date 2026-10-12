@@ -7,6 +7,7 @@ return [
         'services'  => 'Layanan',
         'solutions' => 'Solusi',
         'portfolio' => 'Portofolio',
+        'store'     => 'Aldef Store',
         'about'     => 'Tentang',
         'blog'      => 'Insight',
         'faq'       => 'FAQ',

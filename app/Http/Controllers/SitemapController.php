@@ -10,6 +10,7 @@ use App\Models\Portfolio;
 use App\Models\Service;
 use App\Models\SiteSetting;
 use App\Models\Solution;
+use App\Models\StoreProduct;
 use App\Models\Testimonial;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Response;
@@ -87,6 +88,14 @@ class SitemapController extends Controller
 
         BlogPost::published()->get()->each(function ($post) use (&$xml) {
             $xml .= $this->urlNode('/blog/' . $post->slug, $post->updated_at, '0.6', $post->translatedLocales());
+        });
+
+        // Aldef Store is Indonesian only, so neither the catalogue nor its
+        // products get an /en alternate. Drafts are never listed.
+        $xml .= $this->urlNode('/store', $this->latestOf([fn () => StoreProduct::published()]), '0.7', []);
+
+        StoreProduct::published()->get(['slug', 'updated_at'])->each(function ($product) use (&$xml) {
+            $xml .= $this->urlNode('/store/' . $product->slug, $product->updated_at, '0.6', []);
         });
 
         $xml .= '</urlset>';

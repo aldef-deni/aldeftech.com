@@ -4,6 +4,7 @@
         ['route' => 'services',  'label' => __('site.nav.services')],
         ['route' => 'solutions', 'label' => __('site.nav.solutions')],
         ['route' => 'portfolio', 'label' => __('site.nav.portfolio')],
+        ['route' => 'store',     'label' => __('site.nav.store')],
         ['route' => 'about',     'label' => __('site.nav.about')],
         ['route' => 'blog',      'label' => __('site.nav.blog')],
         ['route' => 'faq',       'label' => __('site.nav.faq')],

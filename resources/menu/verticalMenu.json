@@ -85,6 +85,27 @@
       "slug": "admin.tags"
     },
     {
+      "menuHeader": "Aldef Store"
+    },
+    {
+      "url": "admin/store/products",
+      "name": "Produk Sepatu",
+      "icon": "menu-icon tf-icons ti tabler-shoe",
+      "slug": "admin.store.products"
+    },
+    {
+      "url": "admin/store/categories",
+      "name": "Kategori Sepatu",
+      "icon": "menu-icon tf-icons ti tabler-category-2",
+      "slug": "admin.store.categories"
+    },
+    {
+      "url": "admin/store/settings",
+      "name": "Pengaturan Toko",
+      "icon": "menu-icon tf-icons ti tabler-brand-whatsapp",
+      "slug": "admin.store.settings"
+    },
+    {
       "menuHeader": "CRM & Pemasaran"
     },
     {

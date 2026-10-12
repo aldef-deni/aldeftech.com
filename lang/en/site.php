@@ -7,6 +7,7 @@ return [
         'services'  => 'Services',
         'solutions' => 'Solutions',
         'portfolio' => 'Portfolio',
+        'store'     => 'Aldef Store',
         'about'     => 'About',
         'blog'      => 'Insights',
         'faq'       => 'FAQ',

@@ -9,6 +9,7 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\SitemapController;
+use App\Http\Controllers\StoreController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -61,6 +62,13 @@ $publicPages = function () {
 
 Route::group([], $publicPages);                                  // id — kanonik
 Route::prefix('en')->name('en.')->group($publicPages);           // en
+
+// Aldef Store is written in Indonesian only, so it has no /en mount; lroute()
+// falls back to these names on English pages.
+Route::get('/store', [StoreController::class, 'index'])->name('store');
+Route::get('/store/{slug}', [StoreController::class, 'show'])
+    ->where('slug', '[a-z0-9]+(?:-[a-z0-9]+)*')
+    ->name('store.show');
 
 /*
  * Legacy locale prefix. Indonesian never used /id, so every /id/... address is

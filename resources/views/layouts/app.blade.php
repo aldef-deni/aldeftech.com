@@ -219,7 +219,10 @@
     @include('layouts.partials.footer')
 
     {{-- Floating WhatsApp Widget --}}
-    @include('layouts.partials.whatsapp-button')
+    {{-- A page with its own WhatsApp button (Aldef Store product) hides this one. --}}
+    @unless($hideWhatsAppWidget ?? false)
+        @include('layouts.partials.whatsapp-button')
+    @endunless
 
     {{-- Flash Toast Notification --}}
     @if(session('success'))

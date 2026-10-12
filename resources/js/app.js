@@ -1,8 +1,10 @@
 import './bootstrap';
 import './analytics';
 import Alpine from 'alpinejs';
+import { registerStore } from './store';
 
 window.Alpine = Alpine;
+registerStore(Alpine);
 
 /**
  * Demo modal on a portfolio detail page.
