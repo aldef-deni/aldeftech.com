@@ -18,7 +18,8 @@ function initGallery(root) {
   const fileInput = root.querySelector('[data-gallery-file]');
   const addBtn = root.querySelector('[data-gallery-add]');
   const errorBox = root.querySelector('[data-gallery-error]');
-  const maxTotal = parseInt(root.dataset.maxTotal || '50', 10);
+  // Files per pick; the product itself takes any number.
+  const maxBatch = parseInt(root.dataset.maxBatch || '50', 10);
   const maxBytes = {
     image: parseInt(root.dataset.maxImageBytes || '0', 10),
     video: parseInt(root.dataset.maxVideoBytes || '0', 10),
@@ -26,10 +27,9 @@ function initGallery(root) {
   const token = document.querySelector('meta[name="csrf-token"]');
   const statusLine = root.querySelector('[data-gallery-status]');
 
-  // Placeholders of uploads in flight count towards the limit but carry no
-  // form fields until their upload finishes.
+  // Placeholders of uploads in flight carry no form fields until their upload
+  // finishes.
   const items = () => Array.from(list.querySelectorAll('[data-gallery-item]:not([data-gallery-pending])'));
-  const total = () => list.querySelectorAll('[data-gallery-item]').length;
 
   const mb = (bytes) => (bytes / 1048576).toLocaleString('id-ID', { maximumFractionDigits: 1 }) + ' MB';
 
@@ -82,17 +82,13 @@ function initGallery(root) {
   let batchDone = 0;
   let problems = [];
 
-  // The button stays usable below the limit; the line beside it says how many
-  // items there are, what is uploading, and why it is off when it is.
+  // The button is always usable; the line beside it says how many items there
+  // are and what is uploading.
   function showStatus() {
-    const full = total() >= maxTotal;
-    addBtn.disabled = full;
     if (!statusLine) return;
-    let text = items().length + ' / ' + maxTotal + ' foto/video';
+    let text = items().length + ' foto/video';
     if (batchTotal) text += ' · mengunggah ' + batchDone + '/' + batchTotal + '…';
-    else if (full) text += ' · batas tercapai, hapus salah satu untuk menambah';
     statusLine.textContent = text;
-    statusLine.classList.toggle('text-warning', full && !batchTotal);
   }
 
   function buildItem(path, url, type) {
@@ -175,14 +171,17 @@ function initGallery(root) {
     const jobs = [];
 
     // Check everything first, then queue in the order the files were chosen.
-    Array.from(files).forEach(function (file) {
+    const picked = Array.from(files);
+    if (picked.length > maxBatch) {
+      problems.push(picked.length + ' berkas dipilih; sekali unggah maksimal ' + maxBatch + '. '
+        + (picked.length - maxBatch) + ' berkas terakhir tidak diunggah, pilih lagi setelah ini.');
+    }
+    picked.slice(0, maxBatch).forEach(function (file) {
       const kind = kindOf(file);
       if (!kind) {
         problems.push(file.name + ': format harus JPG, PNG, WebP, MP4, atau WebM.');
       } else if (maxBytes[kind] && file.size > maxBytes[kind]) {
         problems.push(file.name + ': ' + mb(file.size) + ', melebihi batas ' + mb(maxBytes[kind]) + '.');
-      } else if (total() + jobs.length >= maxTotal) {
-        problems.push(file.name + ': maksimal ' + maxTotal + ' foto/video per produk.');
       } else {
         jobs.push({ file: file, kind: kind });
       }

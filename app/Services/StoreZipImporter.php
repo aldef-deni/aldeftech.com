@@ -341,16 +341,8 @@ class StoreZipImporter
                 $entry[$key][] = $file;
             }
 
-            // Same cap as the product form: photos and videos together. Photos
-            // are kept first, since the main photo has to come from them.
+            // Every photo and video is taken: a product has no limit on them.
             $notes = [];
-            $max = (int) config('aldeftech.upload.store_max_media', 50);
-            $found = count($entry['images']) + count($entry['videos']);
-            if ($found > $max) {
-                $entry['images'] = array_slice($entry['images'], 0, $max);
-                $entry['videos'] = array_slice($entry['videos'], 0, max(0, $max - count($entry['images'])));
-                $notes[] = ($found - $max) . ' foto/video lebih dari ' . $max . ', tidak diambil';
-            }
 
             if ($name === null || $entry['brand'] === null) {
                 $entry['state'] = 'error';
@@ -526,7 +518,9 @@ class StoreZipImporter
         }
 
         // Large camera photos are resized for the web, as in the product form.
+        // A product may hold hundreds of them, so each gets its own time budget.
         if (in_array($extension, self::IMAGE_EXTENSIONS, true)) {
+            @set_time_limit(120);
             $kept = $this->optimizer->optimize($disk->path($path));
             if ($kept !== $disk->path($path)) {
                 $filename = basename($kept);

@@ -46,7 +46,9 @@ return [
         // Aldef Store product photos: large camera files are accepted, then
         // resized for the web (StoreImageOptimizer).
         'store_image_max_size' => 51200, // KB
-        'store_max_media' => 50, // photos + videos per product
+        // Files per pick in the product form. A product itself has no limit
+        // on photos and videos.
+        'store_upload_batch' => 50,
         'video_mimes' => ['mp4', 'webm'],
     ],
 

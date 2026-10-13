@@ -197,7 +197,7 @@ class StoreProductController extends Controller
             'colors.*' => [...$option, 'max:60'],
             'available' => 'nullable|array',
             'available.*' => 'string|max:90',
-            'images' => 'nullable|array|max:' . self::maxMedia(),
+            'images' => 'nullable|array',
             'images.*.type' => 'nullable|in:image,video',
             'images.*.path' => 'required|string|max:500',
             'images.*.alt' => 'nullable|string|max:255',
@@ -205,7 +205,6 @@ class StoreProductController extends Controller
         ], [
             'sizes.*.not_regex' => 'Ukuran tidak boleh memuat karakter |.',
             'colors.*.not_regex' => 'Warna tidak boleh memuat karakter |.',
-            'images.max' => 'Maksimal ' . self::maxMedia() . ' foto/video per produk.',
         ]);
 
         $images = $this->validatedImages($validated['images'] ?? []);
@@ -258,7 +257,6 @@ class StoreProductController extends Controller
         $disk = Storage::disk('public');
         $videoExtensions = config('aldeftech.upload.video_mimes', ['mp4', 'webm']);
         $clean = [];
-        $counts = [StoreProductImage::TYPE_IMAGE => 0, StoreProductImage::TYPE_VIDEO => 0];
 
         foreach (array_values($images) as $index => $image) {
             $type = ($image['type'] ?? '') === StoreProductImage::TYPE_VIDEO
@@ -290,23 +288,10 @@ class StoreProductController extends Controller
                 ]);
             }
 
-            $counts[$type]++;
             $clean[] = ['type' => $type, 'path' => $path, 'alt' => filled($image['alt'] ?? null) ? trim($image['alt']) : null];
         }
 
-        if (array_sum($counts) > self::maxMedia()) {
-            throw ValidationException::withMessages([
-                'images' => 'Maksimal ' . self::maxMedia() . ' foto/video per produk.',
-            ]);
-        }
-
         return $clean;
-    }
-
-    /** Photos and videos together, per product. */
-    private static function maxMedia(): int
-    {
-        return (int) config('aldeftech.upload.store_max_media', 50);
     }
 
     /**
