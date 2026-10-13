@@ -56,7 +56,6 @@
                    @if($onStore) aria-current="page" @endif
                    data-analytics-event="cta_click" data-analytics-cta-location="navbar_marketplace"
                    data-analytics-destination="store">
-                    <span class="btn-marketplace-dot" aria-hidden="true"></span>
                     <span>{{ __('site.cta.marketplace') }}</span>
                 </a>
 
@@ -132,7 +131,6 @@
                    @if($onStore) aria-current="page" @endif
                    data-analytics-event="cta_click" data-analytics-cta-location="navbar_marketplace"
                    data-analytics-destination="store">
-                    <span class="btn-marketplace-dot" aria-hidden="true"></span>
                     <span>{{ __('site.cta.marketplace') }}</span>
                 </a>
 

@@ -2000,45 +2000,35 @@
 
 /* ============================================================================
    MARKETPLACE BUTTON (navbar)
-   Red call to action for Aldef Store, set apart from the main menu. The glow
-   pulses and the dot blinks about once every 1.4 s: well under the three
-   flashes per second WCAG treats as a seizure risk, and switched off by the
-   reduced-motion rule below.
+   Deep red call to action for Aldef Store, set apart from the main menu. A
+   band of light sweeps across it every few seconds, like a reflection on a
+   polished surface. It reuses the .btn::after sheen that other buttons show
+   on hover, run on a loop here; the reduced-motion rule below stops it.
    ========================================================================== */
 .btn-marketplace {
-  position: relative;
-  background: linear-gradient(150deg, #F05252 0%, #DC2626 50%, #B91C1C 100%);
+  background: linear-gradient(150deg, #A3191F 0%, #7F1015 52%, #5C0A0E 100%);
   color: #FFFFFF;
-  border-color: rgba(255, 255, 255, 0.22);
-  box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.28);
-  animation: marketplace-glow 1.4s ease-in-out infinite;
-  gap: 0.5rem;
+  border-color: rgba(255, 255, 255, 0.16);
+  box-shadow: 0 10px 24px -12px rgba(127, 16, 21, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.22);
 }
 .btn-marketplace:hover {
   color: #FFFFFF;
-  filter: brightness(1.08);
-  animation-play-state: paused;
+  background: linear-gradient(150deg, #B31E25 0%, #8C1218 52%, #660B10 100%);
 }
-.btn-marketplace:focus-visible { outline: 2px solid #FCA5A5; outline-offset: 3px; }
-.btn-marketplace.is-current { box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px #DC2626; animation: none; }
+.btn-marketplace:focus-visible { outline: 2px solid #F3B4B4; outline-offset: 3px; }
+.btn-marketplace::after {
+  background: linear-gradient(105deg, transparent 32%, rgba(255, 255, 255, 0.55) 48%, rgba(255, 255, 255, 0.85) 50%, rgba(255, 255, 255, 0.55) 52%, transparent 68%);
+  opacity: 1;
+  transition: none;
+  animation: marketplace-shine 2.8s cubic-bezier(.45, 0, .25, 1) infinite;
+}
+/* On the store itself the button marks the current page and holds still. */
+.btn-marketplace.is-current { box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px #7F1015; }
+.btn-marketplace.is-current::after { animation: none; opacity: 0; }
 
-.btn-marketplace-dot {
-  width: 0.5rem;
-  height: 0.5rem;
-  border-radius: 9999px;
-  background: #FFFFFF;
-  box-shadow: 0 0 6px rgba(255, 255, 255, 0.9);
-  animation: marketplace-blink 1.4s steps(2, jump-none) infinite;
-  flex-shrink: 0;
-}
-
-@keyframes marketplace-glow {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.28); filter: brightness(1); }
-  50% { box-shadow: 0 0 0 7px rgba(239, 68, 68, 0), 0 0 22px 2px rgba(239, 68, 68, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.28); filter: brightness(1.15); }
-}
-@keyframes marketplace-blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.15; }
+@keyframes marketplace-shine {
+  0% { transform: translateX(-130%); }
+  45%, 100% { transform: translateX(130%); }
 }
 
 /* ============================================================================
