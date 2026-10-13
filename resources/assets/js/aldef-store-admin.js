@@ -24,7 +24,7 @@ function initGallery(root) {
     video: parseInt(root.dataset.maxVideoBytes || '0', 10),
   };
   const token = document.querySelector('meta[name="csrf-token"]');
-  const addLabel = addBtn.innerHTML;
+  const statusLine = root.querySelector('[data-gallery-status]');
 
   // Placeholders of uploads in flight count towards the limit but carry no
   // form fields until their upload finishes.
@@ -71,7 +71,28 @@ function initGallery(root) {
       const firstPhoto = all.find((item) => item.dataset.type === 'image');
       if (firstPhoto) firstPhoto.querySelector('[data-gallery-primary]').checked = true;
     }
-    addBtn.disabled = total() >= maxTotal;
+    showStatus();
+  }
+
+  // Uploads of every batch share one queue, so files can be added while
+  // earlier ones are still uploading.
+  const queue = [];
+  let running = 0;
+  let batchTotal = 0;
+  let batchDone = 0;
+  let problems = [];
+
+  // The button stays usable below the limit; the line beside it says how many
+  // items there are, what is uploading, and why it is off when it is.
+  function showStatus() {
+    const full = total() >= maxTotal;
+    addBtn.disabled = full;
+    if (!statusLine) return;
+    let text = items().length + ' / ' + maxTotal + ' foto/video';
+    if (batchTotal) text += ' · mengunggah ' + batchDone + '/' + batchTotal + '…';
+    else if (full) text += ' · batas tercapai, hapus salah satu untuk menambah';
+    statusLine.textContent = text;
+    statusLine.classList.toggle('text-warning', full && !batchTotal);
   }
 
   function buildItem(path, url, type) {
@@ -146,9 +167,11 @@ function initGallery(root) {
     });
   }
 
-  async function addFiles(files) {
-    showError('');
-    const problems = [];
+  function addFiles(files) {
+    if (!batchTotal) {
+      problems = [];
+      showError('');
+    }
     const jobs = [];
 
     // Check everything first, then queue in the order the files were chosen.
@@ -170,38 +193,37 @@ function initGallery(root) {
     jobs.forEach(function (job) {
       job.slot = buildPlaceholder(job.file);
       list.appendChild(job.slot);
+      queue.push(job);
     });
-    if (jobs.length) addBtn.disabled = true;
+    batchTotal += jobs.length;
+    showStatus();
+    if (!jobs.length) showError(problems.join(' '));
 
-    let done = 0;
-    const status = function () {
-      addBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Mengunggah ' + done + '/' + jobs.length + '…';
-    };
-    status();
+    while (running < PARALLEL_UPLOADS && queue.length) worker();
+  }
 
-    let next = 0;
-    async function worker() {
-      while (next < jobs.length) {
-        const job = jobs[next++];
-        const label = job.slot.querySelector('[data-pending-percent]');
-        try {
-          const data = await upload(job.file, job.kind, function (pct) { label.textContent = pct + '%'; });
-          job.slot.replaceWith(buildItem(data.path, data.url, job.kind));
-        } catch (err) {
-          job.slot.remove();
-          problems.push(job.file.name + ': ' + err.message);
-        }
-        done++;
-        status();
-        reindex();
+  async function worker() {
+    running++;
+    while (queue.length) {
+      const job = queue.shift();
+      const label = job.slot.querySelector('[data-pending-percent]');
+      try {
+        const data = await upload(job.file, job.kind, function (pct) { label.textContent = pct + '%'; });
+        job.slot.replaceWith(buildItem(data.path, data.url, job.kind));
+      } catch (err) {
+        job.slot.remove();
+        problems.push(job.file.name + ': ' + err.message);
       }
+      batchDone++;
+      reindex();
     }
-
-    await Promise.all(Array.from({ length: Math.min(PARALLEL_UPLOADS, jobs.length) }, worker));
-
-    addBtn.innerHTML = addLabel;
-    reindex();
-    showError(problems.join(' '));
+    running--;
+    if (running === 0) {
+      batchTotal = 0;
+      batchDone = 0;
+      reindex();
+      showError(problems.join(' '));
+    }
   }
 
   addBtn.addEventListener('click', function () { fileInput.click(); });

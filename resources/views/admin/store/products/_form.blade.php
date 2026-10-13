@@ -109,9 +109,12 @@
                 </div>
 
                 <input type="file" accept=".jpg,.jpeg,.png,.webp,.mp4,.webm,video/mp4,video/webm" multiple hidden data-gallery-file>
-                <button type="button" class="btn btn-outline-primary mt-3" data-gallery-add>
-                    <i class="icon-base ti tabler-photo-plus me-2"></i>Tambah foto / video
-                </button>
+                <div class="d-flex flex-wrap align-items-center gap-3 mt-3">
+                    <button type="button" class="btn btn-outline-primary" data-gallery-add>
+                        <i class="icon-base ti tabler-photo-plus me-2"></i>Tambah foto / video
+                    </button>
+                    <small class="text-body-secondary" data-gallery-status aria-live="polite"></small>
+                </div>
                 <div class="text-danger small mt-2" data-gallery-error hidden></div>
                 @error('images')<div class="text-danger small mt-2">{{ $message }}</div>@enderror
             </div>
