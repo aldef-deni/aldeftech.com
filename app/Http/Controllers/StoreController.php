@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\StoreBrand;
 use App\Models\StoreCategory;
 use App\Models\StoreProduct;
 use App\Models\StoreProductVariant;
@@ -26,18 +27,23 @@ class StoreController extends Controller
         $search = trim(mb_substr((string) $request->query('q', ''), 0, 80));
         $categorySlug = (string) $request->query('kategori', '');
         $size = trim(mb_substr((string) $request->query('ukuran', ''), 0, 20));
+        $brandSlug = (string) $request->query('brand', '');
 
         // A top-level category also matches the products in its subcategories.
         $category = $categorySlug !== '' ? StoreCategory::where('slug', $categorySlug)->first() : null;
 
         $products = StoreProduct::published()
-            ->with(['category', 'images', 'variants'])
+            ->with(['brand', 'category', 'images', 'variants'])
             ->when($search !== '', function ($query) use ($search) {
                 $like = '%' . addcslashes($search, '%_\\') . '%';
-                $query->where(fn ($q) => $q->where('name', 'like', $like)->orWhere('brand', 'like', $like));
+                $query->where(fn ($q) => $q->where('name', 'like', $like)
+                    ->orWhereHas('brand', fn ($b) => $b->where('name', 'like', $like)));
             })
             ->when($categorySlug !== '', fn ($query) => $query->whereIn(
                 'store_category_id', $category ? $category->familyIds() : [0]
+            ))
+            ->when($brandSlug !== '', fn ($query) => $query->whereHas(
+                'brand', fn ($q) => $q->where('slug', $brandSlug)
             ))
             ->when($size !== '', fn ($query) => $query->whereHas(
                 'variants', fn ($q) => $q->where('size', $size)->where('is_available', true)
@@ -64,7 +70,8 @@ class StoreController extends Controller
             'products' => $products,
             'categories' => $categories,
             'sizes' => $sizes,
-            'filters' => ['q' => $search, 'kategori' => $categorySlug, 'ukuran' => $size],
+            'brands' => StoreBrand::ordered()->whereHas('products', fn ($q) => $q->published())->get(['name', 'slug']),
+            'filters' => ['q' => $search, 'brand' => $brandSlug, 'kategori' => $categorySlug, 'ukuran' => $size],
             'hasAnyProduct' => $products->total() > 0 || StoreProduct::published()->exists(),
         ]);
     }
@@ -102,13 +109,13 @@ class StoreController extends Controller
     {
         $product = StoreProduct::published()
             ->where('slug', $slug)
-            ->with(['category.parent', 'images', 'variants'])
+            ->with(['brand', 'category.parent', 'images', 'variants'])
             ->firstOrFail();
 
         $related = StoreProduct::published()
             ->whereKeyNot($product->id)
             ->when($product->store_category_id, fn ($q) => $q->where('store_category_id', $product->store_category_id))
-            ->with(['category', 'images', 'variants'])
+            ->with(['brand', 'category', 'images', 'variants'])
             ->ordered()
             ->limit(4)
             ->get();

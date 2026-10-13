@@ -90,7 +90,7 @@
     {
       "name": "Sepatu",
       "icon": "menu-icon tf-icons ti tabler-shoe",
-      "slug": ["admin.store.products", "admin.store.categories"],
+      "slug": ["admin.store.products", "admin.store.brands", "admin.store.categories", "admin.store.imports"],
       "submenu": [
         {
           "url": "admin/store/products",
@@ -98,9 +98,19 @@
           "slug": "admin.store.products"
         },
         {
+          "url": "admin/store/brands",
+          "name": "Brand Sepatu",
+          "slug": "admin.store.brands"
+        },
+        {
           "url": "admin/store/categories",
           "name": "Kategori Sepatu",
           "slug": "admin.store.categories"
+        },
+        {
+          "url": "admin/store/imports",
+          "name": "Import ZIP",
+          "slug": "admin.store.imports"
         }
       ]
     },

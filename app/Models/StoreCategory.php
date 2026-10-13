@@ -70,6 +70,37 @@ class StoreCategory extends Model
         return $options;
     }
 
+    /**
+     * The category with this name (case-insensitive) under the given parent,
+     * or at the top level, created when missing. Used by the ZIP import.
+     */
+    public static function findOrCreateByName(string $name, ?self $parent = null): self
+    {
+        $name = trim($name);
+
+        return static::whereRaw('LOWER(name) = ?', [mb_strtolower($name)])
+            ->where('parent_id', $parent?->id)
+            ->first()
+            ?? static::create([
+                'name' => $name,
+                'parent_id' => $parent?->id,
+                'slug' => static::uniqueSlug($parent ? $parent->name . ' ' . $name : $name),
+            ]);
+    }
+
+    public static function uniqueSlug(string $name, ?int $ignoreId = null): string
+    {
+        $base = \Illuminate\Support\Str::slug($name) ?: 'kategori';
+        $slug = $base;
+        $n = 2;
+
+        while (static::where('slug', $slug)->when($ignoreId, fn ($q) => $q->whereKeyNot($ignoreId))->exists()) {
+            $slug = $base . '-' . $n++;
+        }
+
+        return $slug;
+    }
+
     /** @return Collection<int, self> top-level categories with their children loaded */
     public static function tree(): Collection
     {

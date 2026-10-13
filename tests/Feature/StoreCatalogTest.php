@@ -22,10 +22,15 @@ class StoreCatalogTest extends TestCase
 
     private function product(array $attributes = [], array $variants = [], int $images = 1): StoreProduct
     {
+        // Tests name the brand as text; products link to a brand record.
+        $attributes = array_merge(['brand' => 'Aldef'], $attributes);
+        $brand = $attributes['brand'] ? \App\Models\StoreBrand::findOrCreateByName($attributes['brand']) : null;
+        unset($attributes['brand']);
+
         $product = StoreProduct::createWithSku(array_merge([
             'name' => 'Runner Pro',
             'slug' => 'runner-pro',
-            'brand' => 'Aldef',
+            'store_brand_id' => $brand?->id,
             'status' => StoreProduct::STATUS_PUBLISHED,
             'published_at' => now(),
             'size_system' => 'EU',

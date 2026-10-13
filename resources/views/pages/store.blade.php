@@ -45,11 +45,21 @@
         @if($hasAnyProduct)
         {{-- Search & filters: a plain GET form, so every result has a shareable URL. --}}
         <form method="GET" action="{{ route('store') }}" role="search"
-              class="grid grid-cols-2 lg:grid-cols-[minmax(0,1fr)_14rem_11rem_auto] gap-3 pb-10 items-end">
+              class="grid grid-cols-2 lg:grid-cols-[minmax(0,1fr)_11rem_13rem_9rem_auto] gap-3 pb-10 items-end">
             <div class="col-span-2 lg:col-span-1">
                 <label for="store-q" class="form-label">Cari sepatu</label>
                 <input id="store-q" type="search" name="q" value="{{ $filters['q'] }}" maxlength="80"
                        class="form-input h-12" placeholder="Nama model atau merek" autocomplete="off">
+            </div>
+
+            <div>
+                <label for="store-brand" class="form-label">Brand</label>
+                <select id="store-brand" name="brand" class="form-input h-12">
+                    <option value="">Semua brand</option>
+                    @foreach($brands as $brand)
+                        <option value="{{ $brand->slug }}" @selected($filters['brand'] === $brand->slug)>{{ $brand->name }}</option>
+                    @endforeach
+                </select>
             </div>
 
             <div>
@@ -92,7 +102,7 @@
                 @foreach($products as $product)
                     @php
                         $photo = $product->primaryImage();
-                        $label = collect([$product->brand, $product->category?->name])->filter()->implode(' · ');
+                        $label = collect([$product->brandName(), $product->category?->name])->filter()->implode(' · ');
                         $sizeSummary = $product->sizeSummary();
                     @endphp
                     <article class="store-card group flex flex-col">
@@ -101,7 +111,7 @@
                             <div class="store-photo">
                                 @if($photo && $photo->url)
                                     <img src="{{ $photo->url }}"
-                                         alt="{{ $photo->alt ?: $product->name . ($product->brand ? ' — ' . $product->brand : '') }}"
+                                         alt="{{ $photo->alt ?: $product->name . ($product->brandName() ? ' — ' . $product->brandName() : '') }}"
                                          loading="lazy" decoding="async" width="600" height="600">
                                 @else
                                     <span class="absolute inset-0 flex items-center justify-center text-gold-400/60" aria-hidden="true">

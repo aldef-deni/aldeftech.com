@@ -47,7 +47,11 @@
                 </div>
 
                 <div class="row">
-                    <x-admin.form.input col="12 col-md-6" label="Merek" name="brand" :value="$product->brand ?? ''" placeholder="mis. Aldef" />
+                    <div class="col-12 col-md-6">
+                        <x-admin.form.select label="Brand" name="store_brand_id" :options="$brandOptions"
+                            :value="$product->store_brand_id ?? null" placeholder="Tanpa brand" />
+                        <a href="{{ route('admin.store.brands.create') }}" class="small d-inline-block" style="margin-top:-1rem" target="_blank" rel="noopener">+ Brand baru</a>
+                    </div>
                     <x-admin.form.input col="12 col-md-6" label="Material" name="material" :value="$product->material ?? ''" placeholder="mis. Upper knit, sol karet" />
                 </div>
 

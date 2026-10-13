@@ -4,12 +4,12 @@
     $images = $product->images;
     $sizes = $product->sizes();
     $colors = $product->colors();
-    $label = collect([$product->brand, $product->category?->name])->filter()->implode(' · ');
+    $label = collect([$product->brandName(), $product->category?->name])->filter()->implode(' · ');
     $productUrl = route('store.show', $product->slug);
     $available = $product->isAvailable();
 
     $pageTitle = $product->meta_title
-        ?: $product->name . ($product->brand ? ' — ' . $product->brand : '') . ' | Aldef Store';
+        ?: $product->name . ($product->brandName() ? ' — ' . $product->brandName() : '') . ' | Aldef Store';
     $metaDescription = $product->meta_description
         ?: (filled($product->description)
             ? excerpt_text($product->description, 158)
@@ -24,7 +24,7 @@
     $hideWhatsAppWidget = true;
 
     $imageAlt = fn ($image, $index) => $image->alt
-        ?: $product->name . ($product->brand ? ' — ' . $product->brand : '')
+        ?: $product->name . ($product->brandName() ? ' — ' . $product->brandName() : '')
             . ($images->count() > 1 ? ($image->isVideo() ? ' (video ' : ' (foto ') . ($index + 1) . ')' : '');
 
     $storeConfig = [
@@ -92,10 +92,10 @@
                         <dt class="eyebrow">Kode produk</dt>
                         <dd class="mt-1.5 font-semibold text-graphite-900 tabular">{{ $product->sku }}</dd>
                     </div>
-                    @if($product->brand)
+                    @if($product->brandName())
                     <div>
-                        <dt class="eyebrow">Merek</dt>
-                        <dd class="mt-1.5 font-semibold text-graphite-900">{{ $product->brand }}</dd>
+                        <dt class="eyebrow">Brand</dt>
+                        <dd class="mt-1.5 font-semibold text-graphite-900"><a href="{{ route('store', ['brand' => $product->brand->slug]) }}" class="hover:text-gold-700">{{ $product->brandName() }}</a></dd>
                     </div>
                     @endif
                     @if($product->category)
@@ -258,7 +258,7 @@
                         @endif
                     </div>
                     <p class="mt-3 text-[0.9375rem] font-semibold text-graphite-900 leading-snug">{{ $item->name }}</p>
-                    @if($item->brand)<p class="mt-1 text-xs text-graphite-500">{{ $item->brand }}</p>@endif
+                    @if($item->brandName())<p class="mt-1 text-xs text-graphite-500">{{ $item->brandName() }}</p>@endif
                 </a>
             @endforeach
         </div>

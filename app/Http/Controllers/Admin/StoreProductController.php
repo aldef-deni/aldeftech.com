@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\ActivityLog;
+use App\Models\StoreBrand;
 use App\Models\StoreCategory;
 use App\Models\StoreProduct;
 use App\Models\StoreProductImage;
@@ -32,31 +33,66 @@ class StoreProductController extends Controller
     {
         $search = trim((string) $request->query('q', ''));
         $status = (string) $request->query('status', '');
+        $brandId = $request->integer('brand') ?: null;
+        $categoryId = $request->integer('kategori') ?: null;
+        $category = $categoryId ? StoreCategory::find($categoryId) : null;
 
-        $products = StoreProduct::with(['category.parent', 'images', 'variants'])
+        $products = StoreProduct::with(['brand', 'category.parent', 'images', 'variants'])
             ->when($search !== '', function ($query) use ($search) {
                 $like = '%' . addcslashes($search, '%_\\') . '%';
                 $query->where(fn ($q) => $q->where('name', 'like', $like)
                     ->orWhere('sku', 'like', $like)
-                    ->orWhere('brand', 'like', $like));
+                    ->orWhereHas('brand', fn ($b) => $b->where('name', 'like', $like)));
             })
             ->when(in_array($status, [StoreProduct::STATUS_DRAFT, StoreProduct::STATUS_PUBLISHED], true),
                 fn ($query) => $query->where('status', $status))
+            ->when($brandId, fn ($query) => $query->where('store_brand_id', $brandId))
+            ->when($categoryId, fn ($query) => $query->whereIn('store_category_id', $category ? $category->familyIds() : [0]))
             ->ordered()
-            ->paginate(20)
+            ->paginate(30)
             ->withQueryString();
 
         return view('admin.store.products.index', [
             'products' => $products,
-            'filters' => ['q' => $search, 'status' => $status],
+            'filters' => ['q' => $search, 'status' => $status, 'brand' => $brandId, 'kategori' => $categoryId],
+            'brandOptions' => StoreBrand::ordered()->pluck('name', 'id')->all(),
+            'categoryOptions' => StoreCategory::treeOptions(),
             'waNumber' => StoreWhatsApp::number(),
         ]);
+    }
+
+    /**
+     * Publish or unpublish many products at once, e.g. after a ZIP import,
+     * which always creates drafts.
+     */
+    public function bulk(Request $request)
+    {
+        $data = $request->validate([
+            'action' => ['required', Rule::in(['publish', 'draft'])],
+            'ids' => 'required|array|max:500',
+            'ids.*' => 'integer',
+        ], ['ids.required' => 'Pilih minimal satu produk.']);
+
+        $products = StoreProduct::whereIn('id', $data['ids'])->get();
+
+        foreach ($products as $product) {
+            $publish = $data['action'] === 'publish';
+            $product->update([
+                'status' => $publish ? StoreProduct::STATUS_PUBLISHED : StoreProduct::STATUS_DRAFT,
+                'published_at' => $publish ? ($product->published_at ?? now()) : $product->published_at,
+            ]);
+        }
+
+        ActivityLog::log('store.product.bulk', ucfirst($data['action']) . ' ' . $products->count() . ' store products');
+
+        return back()->with('success', $products->count() . ' produk ' . ($data['action'] === 'publish' ? 'diterbitkan.' : 'dijadikan draf.'));
     }
 
     public function create()
     {
         return view('admin.store.products.create', [
             'categoryOptions' => StoreCategory::treeOptions(),
+            'brandOptions' => StoreBrand::ordered()->pluck('name', 'id')->all(),
         ]);
     }
 
@@ -85,6 +121,7 @@ class StoreProductController extends Controller
         return view('admin.store.products.edit', [
             'product' => $product,
             'categoryOptions' => StoreCategory::treeOptions(),
+            'brandOptions' => StoreBrand::ordered()->pluck('name', 'id')->all(),
         ]);
     }
 
@@ -125,7 +162,7 @@ class StoreProductController extends Controller
                 // Includes soft-deleted products: their slug stays reserved.
                 Rule::unique('store_products', 'slug')->ignore($product?->id)],
             'store_category_id' => 'nullable|integer|exists:store_categories,id',
-            'brand' => 'nullable|string|max:120',
+            'store_brand_id' => 'nullable|integer|exists:store_brands,id',
             'description' => 'nullable|string|max:10000',
             'material' => 'nullable|string|max:255',
             'size_system' => 'nullable|string|max:20',
@@ -156,7 +193,7 @@ class StoreProductController extends Controller
 
         $slug = filled($validated['slug'] ?? null)
             ? $validated['slug']
-            : $this->uniqueSlug($validated['name'], $product);
+            : StoreProduct::uniqueSlug($validated['name'], $product?->id);
 
         $status = $validated['status'];
         $publishedAt = $product?->published_at;
@@ -169,7 +206,7 @@ class StoreProductController extends Controller
                 'name' => $validated['name'],
                 'slug' => $slug,
                 'store_category_id' => $validated['store_category_id'] ?? null,
-                'brand' => $validated['brand'] ?? null,
+                'store_brand_id' => $validated['store_brand_id'] ?? null,
                 'description' => $validated['description'] ?? null,
                 'material' => $validated['material'] ?? null,
                 'size_system' => filled($validated['size_system'] ?? null) ? trim($validated['size_system']) : 'EU',
@@ -260,21 +297,6 @@ class StoreProductController extends Controller
         }
 
         return -1;
-    }
-
-    /** Readable and unique; a clash gets -2, -3… never a random suffix. */
-    private function uniqueSlug(string $name, ?StoreProduct $product): string
-    {
-        $base = Str::slug($name) ?: 'sepatu';
-        $slug = $base;
-        $n = 2;
-
-        while (StoreProduct::withTrashed()->where('slug', $slug)
-            ->when($product, fn ($q) => $q->whereKeyNot($product->id))->exists()) {
-            $slug = $base . '-' . $n++;
-        }
-
-        return $slug;
     }
 
     /** @return list<string> trimmed, non-empty, first occurrence kept, admin's order */

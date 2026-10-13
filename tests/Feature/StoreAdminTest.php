@@ -46,7 +46,6 @@ class StoreAdminTest extends TestCase
     {
         return array_merge([
             'name' => 'Runner Pro 2',
-            'brand' => 'Aldef',
             'material' => 'Knit',
             'description' => 'Ringan.',
             'size_system' => 'EU',

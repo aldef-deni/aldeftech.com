@@ -22,7 +22,7 @@ class StoreProduct extends Model
     public const SKU_PREFIX = 'ATS';
 
     protected $fillable = [
-        'store_category_id', 'name', 'slug', 'brand', 'description', 'material',
+        'store_category_id', 'store_brand_id', 'name', 'slug', 'description', 'material',
         'size_system', 'size_guide', 'status', 'is_featured', 'sort_order',
         'published_at', 'meta_title', 'meta_description',
     ];
@@ -64,6 +64,24 @@ class StoreProduct extends Model
         }
     }
 
+    /**
+     * Readable and unique slug; a clash gets -2, -3… never a random suffix.
+     * Soft-deleted products keep their slug reserved.
+     */
+    public static function uniqueSlug(string $name, ?int $ignoreId = null): string
+    {
+        $base = \Illuminate\Support\Str::slug($name) ?: 'sepatu';
+        $slug = $base;
+        $n = 2;
+
+        while (static::withTrashed()->where('slug', $slug)
+            ->when($ignoreId, fn ($q) => $q->whereKeyNot($ignoreId))->exists()) {
+            $slug = $base . '-' . $n++;
+        }
+
+        return $slug;
+    }
+
     public static function formatSku(int $sequence, ?\DateTimeInterface $date = null): string
     {
         $date ??= now();
@@ -80,6 +98,17 @@ class StoreProduct extends Model
     public function category()
     {
         return $this->belongsTo(StoreCategory::class, 'store_category_id');
+    }
+
+    public function brand()
+    {
+        return $this->belongsTo(StoreBrand::class, 'store_brand_id');
+    }
+
+    /** "Nike" or null; used in titles, labels and alt text. */
+    public function brandName(): ?string
+    {
+        return $this->brand?->name;
     }
 
     /** Gallery items, photos and videos, main photo first then in order. */

@@ -26,7 +26,9 @@ use App\Http\Controllers\Admin\ProcessStepController;
 use App\Http\Controllers\Admin\SocialMediaController;
 use App\Http\Controllers\Admin\AboutController as AdminAboutController;
 use App\Http\Controllers\Admin\MarketingController;
+use App\Http\Controllers\Admin\StoreBrandController;
 use App\Http\Controllers\Admin\StoreCategoryController;
+use App\Http\Controllers\Admin\StoreImportController;
 use App\Http\Controllers\Admin\StoreProductController;
 use App\Http\Controllers\Admin\StoreSettingController;
 use Illuminate\Support\Facades\Route;
@@ -240,6 +242,9 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
             ->names('tags');
 
         // Aldef Store (shoe catalogue, no prices)
+        Route::post('store/products/bulk', [StoreProductController::class, 'bulk'])
+            ->name('store.products.bulk');
+
         Route::resource('store/products', StoreProductController::class)
             ->except(['show'])
             ->names('store.products');
@@ -247,6 +252,23 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
         Route::resource('store/categories', StoreCategoryController::class)
             ->except(['show'])
             ->names('store.categories');
+
+        Route::resource('store/brands', StoreBrandController::class)
+            ->except(['show'])
+            ->names('store.brands');
+
+        // Bulk ZIP import: chunked upload, staged extraction, preview, then
+        // product creation in small batches so no request runs too long.
+        Route::prefix('store/imports')->name('store.imports.')->controller(StoreImportController::class)->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::post('/', 'store')->name('store');
+            Route::get('{import}', 'show')->name('show');
+            Route::post('{import}/chunk', 'chunk')->name('chunk');
+            Route::post('{import}/extract', 'extract')->name('extract');
+            Route::post('{import}/plan', 'plan')->name('plan');
+            Route::post('{import}/run', 'run')->name('run');
+            Route::delete('{import}', 'destroy')->name('destroy');
+        });
     });
 
     /*
