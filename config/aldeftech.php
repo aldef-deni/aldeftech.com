@@ -43,6 +43,10 @@ return [
         'image_max_height' => 2400,
         // Product videos (Aldef Store). Formats every browser plays natively.
         'video_max_size' => 51200, // KB
+        // Aldef Store product photos: large camera files are accepted, then
+        // resized for the web (StoreImageOptimizer).
+        'store_image_max_size' => 51200, // KB
+        'store_max_media' => 50, // photos + videos per product
         'video_mimes' => ['mp4', 'webm'],
     ],
 

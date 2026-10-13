@@ -101,7 +101,7 @@ Adidas/
                 <ul class="small mb-0 ps-3">
                     <li><strong>Brand / Kategori / Subkategori / Nama Produk</strong>. Kategori dan subkategori boleh dilewati.</li>
                     <li>Nama folder terakhir menjadi <strong>nama produk</strong>. Brand, kategori, dan subkategori yang belum ada dibuat otomatis; yang sudah ada dicocokkan tanpa peduli huruf besar/kecil.</li>
-                    <li>Foto JPG, PNG, WebP (maks 15 MB, hingga 12) dan video MP4, WebM (maks 50 MB, hingga 3). Urutan mengikuti nama berkas; <strong>foto pertama menjadi foto utama</strong>, jadi beri nama <code>1.jpg</code>, <code>2.jpg</code>, dst.</li>
+                    <li>Hingga 50 foto/video per produk: foto JPG, PNG, WebP (maks 50 MB, otomatis diperkecil untuk web) dan video MP4, WebM (maks 50 MB). Urutan mengikuti nama berkas; <strong>foto pertama menjadi foto utama</strong>, jadi beri nama <code>1.jpg</code>, <code>2.jpg</code>, dst.</li>
                     <li>Berkas lain (PDF, dokumen, file sistem Mac/Windows) diabaikan dan dicatat di laporan.</li>
                     <li>Produk dengan nama dan brand yang sudah ada <strong>dilewati</strong>, jadi ZIP aman diunggah ulang.</li>
                     <li>Semua hasil import berstatus <strong>Draf</strong>. Lengkapi ukuran dan warna, lalu terbitkan dari daftar produk (bisa banyak sekaligus).</li>

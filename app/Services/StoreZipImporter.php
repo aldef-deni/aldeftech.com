@@ -34,6 +34,10 @@ use ZipArchive;
  */
 class StoreZipImporter
 {
+    public function __construct(private readonly StoreImageOptimizer $optimizer)
+    {
+    }
+
     public const MAX_ZIP_BYTES = 500 * 1024 * 1024;
     public const CHUNK_BYTES = 5 * 1024 * 1024;
     private const MIN_CHUNK_BYTES = 512 * 1024;
@@ -44,9 +48,6 @@ class StoreZipImporter
 
     public const IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'webp'];
     public const VIDEO_EXTENSIONS = ['mp4', 'webm'];
-    public const MAX_IMAGE_BYTES = 15 * 1024 * 1024;
-    public const MAX_IMAGES = 12;
-    public const MAX_VIDEOS = 3;
 
     /** Seconds of work per request; well under any host's time limit. */
     public const STEP_SECONDS = 15;
@@ -238,7 +239,7 @@ class StoreZipImporter
             return "{$name}: bukan foto/video (JPG, PNG, WebP, MP4, WebM), diabaikan";
         }
 
-        $limit = $isImage ? self::MAX_IMAGE_BYTES : (int) config('aldeftech.upload.video_max_size', 51200) * 1024;
+        $limit = (int) config($isImage ? 'aldeftech.upload.store_image_max_size' : 'aldeftech.upload.video_max_size', 51200) * 1024;
         if ((int) $stat['size'] > $limit) {
             return "{$name}: lebih dari " . format_upload_mb($limit) . ', diabaikan';
         }
@@ -340,14 +341,15 @@ class StoreZipImporter
                 $entry[$key][] = $file;
             }
 
+            // Same cap as the product form: photos and videos together. Photos
+            // are kept first, since the main photo has to come from them.
             $notes = [];
-            if (count($entry['images']) > self::MAX_IMAGES) {
-                $notes[] = (count($entry['images']) - self::MAX_IMAGES) . ' foto lebih, diambil ' . self::MAX_IMAGES . ' pertama';
-                $entry['images'] = array_slice($entry['images'], 0, self::MAX_IMAGES);
-            }
-            if (count($entry['videos']) > self::MAX_VIDEOS) {
-                $notes[] = (count($entry['videos']) - self::MAX_VIDEOS) . ' video lebih, diambil ' . self::MAX_VIDEOS . ' pertama';
-                $entry['videos'] = array_slice($entry['videos'], 0, self::MAX_VIDEOS);
+            $max = (int) config('aldeftech.upload.store_max_media', 50);
+            $found = count($entry['images']) + count($entry['videos']);
+            if ($found > $max) {
+                $entry['images'] = array_slice($entry['images'], 0, $max);
+                $entry['videos'] = array_slice($entry['videos'], 0, max(0, $max - count($entry['images'])));
+                $notes[] = ($found - $max) . ' foto/video lebih dari ' . $max . ', tidak diambil';
             }
 
             if ($name === null || $entry['brand'] === null) {
@@ -521,6 +523,15 @@ class StoreZipImporter
         File::ensureDirectoryExists(dirname($disk->path($path)));
         if (! @rename($from, $disk->path($path)) && ! File::copy($from, $disk->path($path))) {
             throw new RuntimeException("Berkas {$original} gagal dipindahkan.");
+        }
+
+        // Large camera photos are resized for the web, as in the product form.
+        if (in_array($extension, self::IMAGE_EXTENSIONS, true)) {
+            $kept = $this->optimizer->optimize($disk->path($path));
+            if ($kept !== $disk->path($path)) {
+                $filename = basename($kept);
+                $path = 'media/' . $filename;
+            }
         }
 
         Media::create([

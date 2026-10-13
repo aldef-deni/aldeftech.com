@@ -23,8 +23,6 @@ use Illuminate\Validation\ValidationException;
  */
 class StoreProductController extends Controller
 {
-    private const MAX_IMAGES = 12;
-    private const MAX_VIDEOS = 3;
     private const MAX_SIZES = 40;
     private const MAX_COLORS = 20;
     private const IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'webp'];
@@ -178,7 +176,7 @@ class StoreProductController extends Controller
             'colors.*' => [...$option, 'max:60'],
             'available' => 'nullable|array',
             'available.*' => 'string|max:90',
-            'images' => 'nullable|array|max:' . (self::MAX_IMAGES + self::MAX_VIDEOS),
+            'images' => 'nullable|array|max:' . self::maxMedia(),
             'images.*.type' => 'nullable|in:image,video',
             'images.*.path' => 'required|string|max:500',
             'images.*.alt' => 'nullable|string|max:255',
@@ -186,7 +184,7 @@ class StoreProductController extends Controller
         ], [
             'sizes.*.not_regex' => 'Ukuran tidak boleh memuat karakter |.',
             'colors.*.not_regex' => 'Warna tidak boleh memuat karakter |.',
-            'images.max' => 'Maksimal ' . self::MAX_IMAGES . ' foto dan ' . self::MAX_VIDEOS . ' video per produk.',
+            'images.max' => 'Maksimal ' . self::maxMedia() . ' foto/video per produk.',
         ]);
 
         $images = $this->validatedImages($validated['images'] ?? []);
@@ -251,6 +249,10 @@ class StoreProductController extends Controller
             $valid = str_starts_with($path, 'media/')
                 && ! str_contains($path, '..')
                 && $disk->exists($path)
+                && $disk->size($path) <= (int) config(
+                    $type === StoreProductImage::TYPE_VIDEO ? 'aldeftech.upload.video_max_size' : 'aldeftech.upload.store_image_max_size',
+                    51200
+                ) * 1024
                 && ($type === StoreProductImage::TYPE_VIDEO
                     ? in_array($extension, $videoExtensions, true)
                         // finfo on the bytes: Storage::mimeType() falls back to the
@@ -271,13 +273,19 @@ class StoreProductController extends Controller
             $clean[] = ['type' => $type, 'path' => $path, 'alt' => filled($image['alt'] ?? null) ? trim($image['alt']) : null];
         }
 
-        if ($counts[StoreProductImage::TYPE_IMAGE] > self::MAX_IMAGES || $counts[StoreProductImage::TYPE_VIDEO] > self::MAX_VIDEOS) {
+        if (array_sum($counts) > self::maxMedia()) {
             throw ValidationException::withMessages([
-                'images' => 'Maksimal ' . self::MAX_IMAGES . ' foto dan ' . self::MAX_VIDEOS . ' video per produk.',
+                'images' => 'Maksimal ' . self::maxMedia() . ' foto/video per produk.',
             ]);
         }
 
         return $clean;
+    }
+
+    /** Photos and videos together, per product. */
+    private static function maxMedia(): int
+    {
+        return (int) config('aldeftech.upload.store_max_media', 50);
     }
 
     /**

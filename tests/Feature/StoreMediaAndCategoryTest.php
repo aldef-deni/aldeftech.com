@@ -102,13 +102,22 @@ class StoreMediaAndCategoryTest extends TestCase
             ->post('/admin/store/products', $this->payload([['type' => 'video', 'path' => 'media/photo.png']]))
             ->assertSessionHasErrors('images.0.path');
 
-        // At most three videos.
-        $videos = array_map(fn ($n) => ['type' => 'video', 'path' => "media/clip-{$n}.mp4"], ['a', 'b', 'c', 'd']);
+        // At most 50 photos and videos together; the mix is free.
+        $tooMany = array_map(fn ($i) => ['type' => 'image', 'path' => 'media/photo.png'], range(1, 51));
         $this->actingAs($this->admin)
-            ->post('/admin/store/products', $this->payload($videos))
+            ->post('/admin/store/products', $this->payload($tooMany))
             ->assertSessionHasErrors('images');
 
         $this->assertSame(0, StoreProduct::count());
+
+        $fifty = array_merge(
+            array_map(fn ($n) => ['type' => 'video', 'path' => "media/clip-{$n}.mp4"], ['a', 'b', 'c', 'd']),
+            array_map(fn ($i) => ['type' => 'image', 'path' => 'media/photo.png'], range(1, 46)),
+        );
+        $this->actingAs($this->admin)
+            ->post('/admin/store/products', $this->payload($fifty))
+            ->assertSessionHasNoErrors();
+        $this->assertSame(50, StoreProduct::sole()->images()->count());
     }
 
     public function test_product_page_shows_video_with_popup_player(): void

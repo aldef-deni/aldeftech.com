@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 const IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'webp'];
 const VIDEO_EXTENSIONS = ['mp4', 'webm'];
+const PARALLEL_UPLOADS = 3;
 
 /* ── Gallery: photos and videos ──────────────────────────────────────────── */
 
@@ -17,15 +18,20 @@ function initGallery(root) {
   const fileInput = root.querySelector('[data-gallery-file]');
   const addBtn = root.querySelector('[data-gallery-add]');
   const errorBox = root.querySelector('[data-gallery-error]');
-  const limits = {
-    image: parseInt(root.dataset.maxImages || '12', 10),
-    video: parseInt(root.dataset.maxVideos || '3', 10),
+  const maxTotal = parseInt(root.dataset.maxTotal || '50', 10);
+  const maxBytes = {
+    image: parseInt(root.dataset.maxImageBytes || '0', 10),
+    video: parseInt(root.dataset.maxVideoBytes || '0', 10),
   };
   const token = document.querySelector('meta[name="csrf-token"]');
   const addLabel = addBtn.innerHTML;
 
-  const items = () => Array.from(list.querySelectorAll('[data-gallery-item]'));
-  const count = (type) => items().filter((item) => item.dataset.type === type).length;
+  // Placeholders of uploads in flight count towards the limit but carry no
+  // form fields until their upload finishes.
+  const items = () => Array.from(list.querySelectorAll('[data-gallery-item]:not([data-gallery-pending])'));
+  const total = () => list.querySelectorAll('[data-gallery-item]').length;
+
+  const mb = (bytes) => (bytes / 1048576).toLocaleString('id-ID', { maximumFractionDigits: 1 }) + ' MB';
 
   function kindOf(file) {
     const ext = (file.name.split('.').pop() || '').toLowerCase();
@@ -38,6 +44,13 @@ function initGallery(root) {
     errorBox.textContent = message || '';
     errorBox.hidden = !message;
   }
+
+  // Until the admin picks a main photo, the first photo in the gallery is the
+  // main one, whatever order parallel uploads finish in.
+  let primaryChosen = false;
+  list.addEventListener('change', function (e) {
+    if (e.target.matches('[data-gallery-primary]')) primaryChosen = true;
+  });
 
   // Field names carry the position, so they are rewritten after every change.
   // Only a photo can be the main item: catalogue cards need an image.
@@ -54,11 +67,11 @@ function initGallery(root) {
       radio.nextElementSibling.htmlFor = radio.id;
       if (radio.checked && item.dataset.type === 'image') checked = radio;
     });
-    if (!checked) {
+    if (!checked || !primaryChosen) {
       const firstPhoto = all.find((item) => item.dataset.type === 'image');
       if (firstPhoto) firstPhoto.querySelector('[data-gallery-primary]').checked = true;
     }
-    addBtn.disabled = count('image') >= limits.image && count('video') >= limits.video;
+    addBtn.disabled = total() >= maxTotal;
   }
 
   function buildItem(path, url, type) {
@@ -93,6 +106,21 @@ function initGallery(root) {
     return col;
   }
 
+  function buildPlaceholder(file) {
+    const col = document.createElement('div');
+    col.className = 'col-6 col-md-4 col-xl-3';
+    col.setAttribute('data-gallery-item', '');
+    col.setAttribute('data-gallery-pending', '');
+    col.innerHTML =
+      '<div class="border rounded p-2 h-100 d-flex flex-column gap-2">' +
+      '<div class="ratio ratio-1x1 bg-body-tertiary rounded border d-flex">' +
+      '<div class="d-flex flex-column align-items-center justify-content-center gap-2 text-body-secondary small">' +
+      '<span class="spinner-border spinner-border-sm"></span><span data-pending-percent>Menunggu…</span></div></div>' +
+      '<small class="text-truncate text-body-secondary" data-pending-name></small></div>';
+    col.querySelector('[data-pending-name]').textContent = file.name;
+    return col;
+  }
+
   function upload(file, kind, onProgress) {
     return new Promise(function (resolve, reject) {
       const body = new FormData();
@@ -100,7 +128,7 @@ function initGallery(root) {
       const xhr = new XMLHttpRequest();
       // The kind rides in the query string so the server still knows it when
       // an oversized body is dropped.
-      xhr.open('POST', root.dataset.uploadUrl + (kind === 'video' ? '?kind=video' : ''));
+      xhr.open('POST', root.dataset.uploadUrl + '?kind=' + (kind === 'video' ? 'video' : 'store-image'));
       xhr.setRequestHeader('Accept', 'application/json');
       xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
       if (token) xhr.setRequestHeader('X-CSRF-TOKEN', token.content);
@@ -121,32 +149,56 @@ function initGallery(root) {
   async function addFiles(files) {
     showError('');
     const problems = [];
-    const queue = Array.from(files);
+    const jobs = [];
 
-    addBtn.disabled = true;
-    for (let i = 0; i < queue.length; i++) {
-      const file = queue[i];
+    // Check everything first, then queue in the order the files were chosen.
+    Array.from(files).forEach(function (file) {
       const kind = kindOf(file);
       if (!kind) {
         problems.push(file.name + ': format harus JPG, PNG, WebP, MP4, atau WebM.');
-        continue;
+      } else if (maxBytes[kind] && file.size > maxBytes[kind]) {
+        problems.push(file.name + ': ' + mb(file.size) + ', melebihi batas ' + mb(maxBytes[kind]) + '.');
+      } else if (total() + jobs.length >= maxTotal) {
+        problems.push(file.name + ': maksimal ' + maxTotal + ' foto/video per produk.');
+      } else {
+        jobs.push({ file: file, kind: kind });
       }
-      if (count(kind) >= limits[kind]) {
-        problems.push(file.name + ': maksimal ' + limits[kind] + (kind === 'video' ? ' video.' : ' foto.'));
-        continue;
-      }
-      const label = 'Mengunggah ' + (i + 1) + '/' + queue.length;
-      addBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>' + label + '…';
-      try {
-        const data = await upload(file, kind, function (pct) {
-          addBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>' + label + ' (' + pct + '%)…';
-        });
-        list.appendChild(buildItem(data.path, data.url, kind));
+    });
+
+    // Each job gets its slot now, so the gallery keeps the chosen order even
+    // though uploads finish out of order.
+    jobs.forEach(function (job) {
+      job.slot = buildPlaceholder(job.file);
+      list.appendChild(job.slot);
+    });
+    if (jobs.length) addBtn.disabled = true;
+
+    let done = 0;
+    const status = function () {
+      addBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Mengunggah ' + done + '/' + jobs.length + '…';
+    };
+    status();
+
+    let next = 0;
+    async function worker() {
+      while (next < jobs.length) {
+        const job = jobs[next++];
+        const label = job.slot.querySelector('[data-pending-percent]');
+        try {
+          const data = await upload(job.file, job.kind, function (pct) { label.textContent = pct + '%'; });
+          job.slot.replaceWith(buildItem(data.path, data.url, job.kind));
+        } catch (err) {
+          job.slot.remove();
+          problems.push(job.file.name + ': ' + err.message);
+        }
+        done++;
+        status();
         reindex();
-      } catch (err) {
-        problems.push(file.name + ': ' + err.message);
       }
     }
+
+    await Promise.all(Array.from({ length: Math.min(PARALLEL_UPLOADS, jobs.length) }, worker));
+
     addBtn.innerHTML = addLabel;
     reindex();
     showError(problems.join(' '));
@@ -160,7 +212,7 @@ function initGallery(root) {
 
   list.addEventListener('click', function (e) {
     const item = e.target.closest('[data-gallery-item]');
-    if (!item) return;
+    if (!item || item.hasAttribute('data-gallery-pending')) return;
     if (e.target.closest('[data-gallery-remove]')) {
       item.remove();
     } else if (e.target.closest('[data-gallery-up]') && item.previousElementSibling) {
@@ -171,6 +223,14 @@ function initGallery(root) {
       return;
     }
     reindex();
+  });
+
+  // Submitting while uploads are still running would drop those files.
+  root.closest('form').addEventListener('submit', function (e) {
+    if (list.querySelector('[data-gallery-pending]')) {
+      e.preventDefault();
+      showError('Tunggu sampai semua foto/video selesai diunggah, lalu simpan lagi.');
+    }
   });
 
   reindex();

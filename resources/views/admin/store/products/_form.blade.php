@@ -65,13 +65,16 @@
             <div class="card-header">
                 <h5 class="card-title mb-1">Foto &amp; Video Produk</h5>
                 <small class="text-body-secondary">
-                    Foto: JPG, PNG, atau WebP · maks {{ max_upload_label() }} · hingga 12 foto.
-                    Video: MP4 atau WebM · maks {{ format_upload_mb(max_video_upload_bytes()) }} · hingga 3 video.
+                    Hingga {{ config('aldeftech.upload.store_max_media', 50) }} foto/video per produk; pilih banyak berkas sekaligus.
+                    Foto: JPG, PNG, atau WebP · maks {{ format_upload_mb(max_store_image_upload_bytes()) }} per foto, otomatis diperkecil untuk web.
+                    Video: MP4 atau WebM · maks {{ format_upload_mb(max_video_upload_bytes()) }} per video.
                     Foto utama (harus foto) tampil di katalog; urutan menentukan galeri.
                 </small>
             </div>
             <div class="card-body" data-store-gallery data-upload-url="{{ route('admin.uploads.store') }}"
-                 data-max-images="12" data-max-videos="3">
+                 data-max-total="{{ config('aldeftech.upload.store_max_media', 50) }}"
+                 data-max-image-bytes="{{ max_store_image_upload_bytes() }}"
+                 data-max-video-bytes="{{ max_video_upload_bytes() }}">
                 <div class="row g-3" data-gallery-list>
                     @foreach($images as $index => $image)
                         @php $isVideo = ($image['type'] ?? 'image') === 'video'; @endphp

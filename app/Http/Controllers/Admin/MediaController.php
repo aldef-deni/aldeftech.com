@@ -22,16 +22,17 @@ class MediaController extends Controller
 
     public function store(Request $request): JsonResponse
     {
-        // ?kind=video comes only from the Aldef Store product gallery. It rides
-        // in the query string so it survives an oversized body.
-        $kind = $request->query('kind') === MediaUploader::KIND_VIDEO ? MediaUploader::KIND_VIDEO : MediaUploader::KIND_IMAGE;
+        // ?kind=video / store-image come only from the Aldef Store product
+        // gallery. The kind rides in the query string so it survives an
+        // oversized body.
+        $kind = in_array($request->query('kind'), MediaUploader::kinds(), true) ? $request->query('kind') : MediaUploader::KIND_IMAGE;
 
         // A request larger than post_max_size reaches PHP with $_POST and $_FILES
         // already emptied, so there is nothing left to validate — only the raw
         // Content-Length still tells us what happened.
         if (empty($_FILES) && (int) $request->server('CONTENT_LENGTH') > 0) {
             return response()->json([
-                'message' => 'Berkas melebihi batas ' . format_upload_mb($kind === MediaUploader::KIND_VIDEO ? max_video_upload_bytes() : max_upload_bytes())
+                'message' => 'Berkas melebihi batas ' . format_upload_mb(MediaUploader::maxBytes($kind))
                     . ' dan ditolak server sebelum sempat diproses.',
             ], 413);
         }
