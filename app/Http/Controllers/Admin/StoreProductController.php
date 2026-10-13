@@ -27,6 +27,9 @@ class StoreProductController extends Controller
     private const MAX_COLORS = 20;
     private const IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'webp'];
 
+    /** "Tampilkan" choices on the product list; the first is the default. */
+    private const PER_PAGE_OPTIONS = [20, 50, 100, 500];
+
     public function index(Request $request)
     {
         $search = trim((string) $request->query('q', ''));
@@ -34,6 +37,8 @@ class StoreProductController extends Controller
         $brandId = $request->integer('brand') ?: null;
         $categoryId = $request->integer('kategori') ?: null;
         $category = $categoryId ? StoreCategory::find($categoryId) : null;
+        $perPage = in_array($request->integer('per_page'), self::PER_PAGE_OPTIONS, true)
+            ? $request->integer('per_page') : self::PER_PAGE_OPTIONS[0];
 
         $products = StoreProduct::with(['brand', 'category.parent', 'images', 'variants'])
             ->when($search !== '', function ($query) use ($search) {
@@ -47,11 +52,18 @@ class StoreProductController extends Controller
             ->when($brandId, fn ($query) => $query->where('store_brand_id', $brandId))
             ->when($categoryId, fn ($query) => $query->whereIn('store_category_id', $category ? $category->familyIds() : [0]))
             ->ordered()
-            ->paginate(30)
+            ->paginate($perPage)
             ->withQueryString();
+
+        // After a bulk delete the page number can point past the end.
+        if ($products->isEmpty() && $products->currentPage() > 1) {
+            return redirect()->to($products->url($products->lastPage()));
+        }
 
         return view('admin.store.products.index', [
             'products' => $products,
+            'perPage' => $perPage,
+            'perPageOptions' => self::PER_PAGE_OPTIONS,
             'filters' => ['q' => $search, 'status' => $status, 'brand' => $brandId, 'kategori' => $categoryId],
             'brandOptions' => StoreBrand::ordered()->pluck('name', 'id')->all(),
             'categoryOptions' => StoreCategory::treeOptions(),
@@ -60,18 +72,27 @@ class StoreProductController extends Controller
     }
 
     /**
-     * Publish or unpublish many products at once, e.g. after a ZIP import,
-     * which always creates drafts.
+     * Publish, unpublish or delete many products at once, e.g. after a ZIP
+     * import, which always creates drafts.
      */
     public function bulk(Request $request)
     {
         $data = $request->validate([
-            'action' => ['required', Rule::in(['publish', 'draft'])],
-            'ids' => 'required|array|max:500',
+            'action' => ['required', Rule::in(['publish', 'draft', 'delete'])],
+            'ids' => 'required|array|max:' . max(self::PER_PAGE_OPTIONS),
             'ids.*' => 'integer',
         ], ['ids.required' => 'Pilih minimal satu produk.']);
 
         $products = StoreProduct::whereIn('id', $data['ids'])->get();
+
+        if ($data['action'] === 'delete') {
+            // Soft delete, as for a single product: SKUs and slugs stay reserved.
+            $products->each->delete();
+            ActivityLog::log('store.product.bulk', 'Deleted ' . $products->count() . ' store products: '
+                . Str::limit($products->pluck('sku')->implode(', '), 900));
+
+            return back()->with('success', $products->count() . ' produk dihapus.');
+        }
 
         foreach ($products as $product) {
             $publish = $data['action'] === 'publish';

@@ -26,6 +26,7 @@
 <div class="card">
     <div class="card-body border-bottom">
         <form method="GET" class="row g-3 align-items-end">
+            @if($perPage !== $perPageOptions[0])<input type="hidden" name="per_page" value="{{ $perPage }}">@endif
             <div class="col-12 col-md-4">
                 <label class="form-label" for="q">Cari</label>
                 <input type="search" id="q" name="q" value="{{ $filters['q'] }}" class="form-control" placeholder="Nama, kode produk, atau brand">
@@ -88,6 +89,9 @@
         </button>
         <button type="submit" name="action" value="draft" class="btn btn-sm btn-outline-secondary" data-bulk-button disabled>
             Jadikan Draf
+        </button>
+        <button type="submit" name="action" value="delete" class="btn btn-sm btn-outline-danger" data-bulk-button data-bulk-delete disabled>
+            <i class="icon-base ti tabler-trash me-1"></i>Hapus
         </button>
         @error('ids')<span class="text-danger small">{{ $message }}</span>@enderror
     </form>
@@ -165,9 +169,22 @@
             </tbody>
         </table>
     </div>
-    @if($products->hasPages())
-        <div class="card-body border-top">{{ $products->links() }}</div>
-    @endif
+    <div class="card-body border-top d-flex flex-wrap align-items-center justify-content-between gap-3">
+        <form method="GET" class="d-flex flex-wrap align-items-center gap-2 small text-body-secondary">
+            @foreach(['q', 'status', 'brand', 'kategori'] as $key)
+                @if(filled($filters[$key]))<input type="hidden" name="{{ $key }}" value="{{ $filters[$key] }}">@endif
+            @endforeach
+            <label for="per-page" class="mb-0">Tampilkan</label>
+            <select id="per-page" name="per_page" class="form-select form-select-sm w-auto" onchange="this.form.submit()">
+                @foreach($perPageOptions as $option)
+                    <option value="{{ $option }}" @selected($perPage === $option)>{{ $option }}</option>
+                @endforeach
+            </select>
+            <span>per halaman · {{ $products->firstItem() }}–{{ $products->lastItem() }} dari {{ $products->total() }} produk</span>
+            <noscript><button type="submit" class="btn btn-sm btn-outline-secondary">OK</button></noscript>
+        </form>
+        {{ $products->onEachSide(1)->links('vendor.pagination.admin-numbers') }}
+    </div>
     @endif
 </div>
 
@@ -175,7 +192,7 @@
 
 @section('page-script')
 <script>
-  // Select-all and the selected count for the bulk publish bar.
+  // Select-all and the selected count for the bulk action bar.
   document.addEventListener('DOMContentLoaded', function () {
     const all = document.querySelector('[data-bulk-all]');
     const items = Array.from(document.querySelectorAll('[data-bulk-item]'));
@@ -190,6 +207,12 @@
       all.indeterminate = picked > 0 && picked < items.length;
     };
     all.addEventListener('change', function () { items.forEach((b) => { b.checked = all.checked; }); refresh(); });
+    // Deleting asks first, naming how many products go.
+    document.getElementById('bulk-form').addEventListener('submit', function (e) {
+      if (!e.submitter || !e.submitter.hasAttribute('data-bulk-delete')) return;
+      const picked = items.filter((b) => b.checked).length;
+      if (!confirm('Hapus ' + picked + ' produk terpilih? Produk hilang dari situs dan kodenya tidak akan dipakai ulang.')) e.preventDefault();
+    });
     items.forEach((b) => b.addEventListener('change', refresh));
     refresh();
   });
