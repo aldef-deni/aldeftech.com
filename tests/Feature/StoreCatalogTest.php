@@ -212,7 +212,17 @@ class StoreCatalogTest extends TestCase
 
     public function test_navigation_links_to_the_store(): void
     {
-        $this->get('/')->assertOk()->assertSee('Aldef Store')->assertSee(route('store'), false);
+        $html = $this->get('/')->assertOk()->getContent();
+
+        // A red "Marketplace" button, not an item of the main menu rail.
+        $this->assertMatchesRegularExpression('#<a href="' . preg_quote(route('store'), '#') . '"\s+class="hidden sm:inline-flex btn btn-sm btn-marketplace#', $html);
+        $this->assertStringContainsString('btn-marketplace-dot', $html);
+        $this->assertStringContainsString('>Marketplace</span>', $html);
+        preg_match('#<div class="nav-rail".*?</div>#s', $html, $rail);
+        $this->assertStringNotContainsString(route('store'), $rail[0]);
+
+        // On the store itself the button shows it is the current page.
+        $this->get('/store')->assertOk()->assertSee('btn-marketplace is-current', false);
     }
 
     public function test_sku_is_dated_sequential_and_never_reused(): void

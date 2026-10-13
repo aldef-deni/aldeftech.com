@@ -1999,6 +1999,49 @@
 .tabular { font-variant-numeric: tabular-nums; }
 
 /* ============================================================================
+   MARKETPLACE BUTTON (navbar)
+   Red call to action for Aldef Store, set apart from the main menu. The glow
+   pulses and the dot blinks about once every 1.4 s: well under the three
+   flashes per second WCAG treats as a seizure risk, and switched off by the
+   reduced-motion rule below.
+   ========================================================================== */
+.btn-marketplace {
+  position: relative;
+  background: linear-gradient(150deg, #F05252 0%, #DC2626 50%, #B91C1C 100%);
+  color: #FFFFFF;
+  border-color: rgba(255, 255, 255, 0.22);
+  box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.28);
+  animation: marketplace-glow 1.4s ease-in-out infinite;
+  gap: 0.5rem;
+}
+.btn-marketplace:hover {
+  color: #FFFFFF;
+  filter: brightness(1.08);
+  animation-play-state: paused;
+}
+.btn-marketplace:focus-visible { outline: 2px solid #FCA5A5; outline-offset: 3px; }
+.btn-marketplace.is-current { box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px #DC2626; animation: none; }
+
+.btn-marketplace-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 9999px;
+  background: #FFFFFF;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.9);
+  animation: marketplace-blink 1.4s steps(2, jump-none) infinite;
+  flex-shrink: 0;
+}
+
+@keyframes marketplace-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.28); filter: brightness(1); }
+  50% { box-shadow: 0 0 0 7px rgba(239, 68, 68, 0), 0 0 22px 2px rgba(239, 68, 68, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.28); filter: brightness(1.15); }
+}
+@keyframes marketplace-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.15; }
+}
+
+/* ============================================================================
    ALDEF STORE
    Shoe photos are shown whole: a fixed square frame on white with
    object-fit: contain, so a long sole or a raised heel is never cropped.

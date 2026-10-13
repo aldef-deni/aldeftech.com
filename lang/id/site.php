@@ -20,6 +20,7 @@ return [
     ],
 
     'cta' => [
+        'marketplace' => 'Marketplace',
         'consult'        => 'Konsultasi',
         'consult_free'   => 'Konsultasi Proyek Gratis',
         'start_project'  => 'Mulai Proyek',

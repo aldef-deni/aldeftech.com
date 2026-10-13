@@ -20,6 +20,7 @@ return [
     ],
 
     'cta' => [
+        'marketplace' => 'Marketplace',
         'consult'        => 'Talk to us',
         'consult_free'   => 'Book a Free Consultation',
         'start_project'  => 'Start a Project',

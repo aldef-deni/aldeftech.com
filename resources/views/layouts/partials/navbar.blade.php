@@ -4,13 +4,14 @@
         ['route' => 'services',  'label' => __('site.nav.services')],
         ['route' => 'solutions', 'label' => __('site.nav.solutions')],
         ['route' => 'portfolio', 'label' => __('site.nav.portfolio')],
-        ['route' => 'store',     'label' => __('site.nav.store')],
         ['route' => 'about',     'label' => __('site.nav.about')],
         ['route' => 'blog',      'label' => __('site.nav.blog')],
         ['route' => 'faq',       'label' => __('site.nav.faq')],
         ['route' => 'contact',   'label' => __('site.nav.contact')],
     ];
     $waUrl = \App\Services\WhatsAppService::getUrl();
+    // Aldef Store sits outside the main menu as its own call to action.
+    $onStore = is_current_page('store');
 @endphp
 
 <nav id="navbar"
@@ -49,6 +50,15 @@
                 <div class="nav-language-desktop hidden sm:block">
                     <x-language-switcher />
                 </div>
+
+                <a href="{{ route('store') }}"
+                   class="hidden sm:inline-flex btn btn-sm btn-marketplace {{ $onStore ? 'is-current' : '' }}"
+                   @if($onStore) aria-current="page" @endif
+                   data-analytics-event="cta_click" data-analytics-cta-location="navbar_marketplace"
+                   data-analytics-destination="store">
+                    <span class="btn-marketplace-dot" aria-hidden="true"></span>
+                    <span>{{ __('site.cta.marketplace') }}</span>
+                </a>
 
                 <a href="{{ $waUrl }}" target="_blank" rel="noopener"
                    class="hidden xl:inline-flex btn btn-primary btn-sm magnetic" data-magnetic="0.12"
@@ -116,6 +126,15 @@
 
             <div class="px-1.5 pb-1.5 space-y-4">
                 <x-language-switcher variant="mobile" />
+
+                <a href="{{ route('store') }}" @click="open = false"
+                   class="btn btn-marketplace btn-block {{ $onStore ? 'is-current' : '' }}"
+                   @if($onStore) aria-current="page" @endif
+                   data-analytics-event="cta_click" data-analytics-cta-location="navbar_marketplace"
+                   data-analytics-destination="store">
+                    <span class="btn-marketplace-dot" aria-hidden="true"></span>
+                    <span>{{ __('site.cta.marketplace') }}</span>
+                </a>
 
                 <a href="{{ $waUrl }}" target="_blank" rel="noopener" class="btn btn-primary btn-block"
                    data-analytics-event="whatsapp_click" data-analytics-cta-location="navbar"
