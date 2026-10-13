@@ -94,7 +94,31 @@ class SitemapController extends Controller
         // products get an /en alternate. Drafts are never listed.
         $xml .= $this->urlNode('/store', $this->latestOf([fn () => StoreProduct::published()]), '0.7', []);
 
-        StoreProduct::published()->get(['slug', 'updated_at'])->each(function ($product) use (&$xml) {
+        $published = StoreProduct::published()->with(['brand:id,slug', 'category.parent'])
+            ->get(['id', 'slug', 'updated_at', 'store_brand_id', 'store_category_id']);
+
+        // Brand pages and the category levels under them, each dated by its newest shoe.
+        $browse = [];
+        foreach ($published->whereNotNull('store_brand_id') as $product) {
+            $paths = ['/store/brand/' . $product->brand->slug];
+            if ($category = $product->category) {
+                $top = $category->parent ?? $category;
+                $paths[] = $paths[0] . '/' . $top->slug;
+                if ($category->parent) {
+                    $paths[] = $paths[1] . '/' . $category->slug;
+                }
+            }
+            foreach ($paths as $path) {
+                if (! isset($browse[$path]) || $product->updated_at?->gt($browse[$path])) {
+                    $browse[$path] = $product->updated_at;
+                }
+            }
+        }
+        foreach ($browse as $path => $lastmod) {
+            $xml .= $this->urlNode($path, $lastmod, '0.6', []);
+        }
+
+        $published->each(function ($product) use (&$xml) {
             $xml .= $this->urlNode('/store/' . $product->slug, $product->updated_at, '0.6', []);
         });
 

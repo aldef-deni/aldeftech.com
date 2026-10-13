@@ -186,7 +186,7 @@ class StoreMediaAndCategoryTest extends TestCase
             ->assertSee('Road Runner')->assertSee('Mountain Goat')->assertDontSee('City Low');
         $this->get('/store?kategori=trail')->assertOk()
             ->assertSee('Mountain Goat')->assertDontSee('Road Runner');
-        $this->get('/store')->assertOk()
+        $this->get('/store?kategori=trail')->assertOk()
             ->assertSeeInOrder(['>Sepatu Lari<', '>— Trail<', '>Sneakers<'], false);
 
         $this->get('/store/mountain-goat')->assertOk()->assertSeeInOrder(['Sepatu Lari', '›', 'Trail']);

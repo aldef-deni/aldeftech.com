@@ -8,6 +8,19 @@
     $productUrl = route('store.show', $product->slug);
     $available = $product->isAvailable();
 
+    // Brand and category lead back into the brand-first catalogue; a shoe
+    // without a brand falls back to the category filter.
+    $brandUrl = $product->brand ? route('store.brand', $product->brand->slug) : null;
+    $categoryUrl = function ($category) use ($product) {
+        if (! $product->brand) {
+            return route('store', ['kategori' => $category->slug]);
+        }
+
+        return route('store.brand', array_values(array_filter([
+            $product->brand->slug, $category->parent?->slug, $category->slug,
+        ])));
+    };
+
     $pageTitle = $product->meta_title
         ?: $product->name . ($product->brandName() ? ' — ' . $product->brandName() : '') . ' | Aldef Store';
     $metaDescription = $product->meta_description
@@ -60,7 +73,8 @@
     'itemListElement' => [
         ['@type' => 'ListItem', 'position' => 1, 'name' => __('site.nav.home'), 'item' => route('home') . '/'],
         ['@type' => 'ListItem', 'position' => 2, 'name' => 'Aldef Store', 'item' => route('store')],
-        ['@type' => 'ListItem', 'position' => 3, 'name' => $product->name, 'item' => $productUrl],
+        ...($brandUrl ? [['@type' => 'ListItem', 'position' => 3, 'name' => $product->brandName(), 'item' => $brandUrl]] : []),
+        ['@type' => 'ListItem', 'position' => $brandUrl ? 4 : 3, 'name' => $product->name, 'item' => $productUrl],
     ],
 ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}
 </script>
@@ -73,10 +87,11 @@
     :title="$product->name"
     align="left"
     compact
-    :breadcrumbs="[
+    :breadcrumbs="array_values(array_filter([
         ['label' => 'Aldef Store', 'url' => route('store')],
+        $brandUrl ? ['label' => $product->brandName(), 'url' => $brandUrl] : null,
         ['label' => $product->name],
-    ]" />
+    ]))" />
 
 <section class="surface-ivory py-12 lg:py-16" x-data="storeProduct(@js($storeConfig))">
     <div class="shell">
@@ -95,7 +110,7 @@
                     @if($product->brandName())
                     <div>
                         <dt class="eyebrow">Brand</dt>
-                        <dd class="mt-1.5 font-semibold text-graphite-900"><a href="{{ route('store', ['brand' => $product->brand->slug]) }}" class="hover:text-gold-700">{{ $product->brandName() }}</a></dd>
+                        <dd class="mt-1.5 font-semibold text-graphite-900"><a href="{{ $brandUrl }}" class="hover:text-gold-700">{{ $product->brandName() }}</a></dd>
                     </div>
                     @endif
                     @if($product->category)
@@ -103,10 +118,10 @@
                         <dt class="eyebrow">Kategori</dt>
                         <dd class="mt-1.5 font-semibold text-graphite-900">
                             @if($product->category->parent)
-                                <a href="{{ route('store', ['kategori' => $product->category->parent->slug]) }}" class="hover:text-gold-700">{{ $product->category->parent->name }}</a>
+                                <a href="{{ $categoryUrl($product->category->parent) }}" class="hover:text-gold-700">{{ $product->category->parent->name }}</a>
                                 <span class="text-graphite-400" aria-hidden="true">›</span>
                             @endif
-                            <a href="{{ route('store', ['kategori' => $product->category->slug]) }}" class="hover:text-gold-700">{{ $product->category->name }}</a>
+                            <a href="{{ $categoryUrl($product->category) }}" class="hover:text-gold-700">{{ $product->category->name }}</a>
                         </dd>
                     </div>
                     @endif
@@ -243,7 +258,7 @@
     <div class="shell">
         <div class="flex items-end justify-between gap-4">
             <h2 class="text-xl lg:text-2xl">Sepatu lainnya</h2>
-            <a href="{{ route('store') }}" class="link-arrow text-sm">
+            <a href="{{ $brandUrl ?? route('store') }}" class="link-arrow text-sm">
                 <span>Lihat semua</span>
                 <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
             </a>

@@ -71,9 +71,17 @@ class StoreCatalogTest extends TestCase
         $this->product(['name' => 'Runner Pro', 'slug' => 'runner-pro'], [['42', '', true]]);
         $this->product(['name' => 'Secret Draft Shoe', 'slug' => 'secret-draft', 'status' => StoreProduct::STATUS_DRAFT]);
 
-        $html = $this->get('/store')->assertOk()
+        // /store lists brands; the shoes are one click further.
+        $landing = $this->get('/store')->assertOk()
             ->assertSee('Koleksi Sepatu Pilihan')
-            ->assertSee('Temukan sepatu pilihan untuk aktivitas Anda. Pilih model dan ukuran, lalu hubungi kami melalui WhatsApp untuk informasi harga dan ketersediaan.')
+            ->assertSee('Pilih brand favorit Anda, lalu temukan model dan ukurannya. Hubungi kami melalui WhatsApp untuk informasi harga dan ketersediaan.')
+            ->assertSee('Pilih Brand')
+            ->assertSee('href="' . route('store.brand', 'aldef') . '"', false)
+            ->assertSee('1 model')
+            ->getContent();
+        $this->assertDoesNotMatchRegularExpression('/Rp\s?\d|Rp0|checkout|keranjang/i', $landing);
+
+        $html = $this->get('/store/brand/aldef')->assertOk()
             ->assertSee('Runner Pro')
             ->assertSee('Lihat Detail')
             ->assertSee('Ukuran EU 42')
@@ -120,10 +128,16 @@ class StoreCatalogTest extends TestCase
             $this->product(['name' => "Shoe {$i}", 'slug' => "shoe-{$i}"]);
         }
 
-        $this->get('/store')->assertOk()->assertSee('page=2', false);
-        $this->get('/store?page=2')->assertOk()
-            ->assertSee('<link rel="canonical" href="' . route('store') . '?page=2">', false);
-        $this->get('/store?page=3')->assertNotFound();
+        $brandUrl = route('store.brand', 'aldef');
+        $this->get('/store/brand/aldef')->assertOk()->assertSee('page=2', false)
+            ->assertSee('<link rel="canonical" href="' . $brandUrl . '">', false);
+        $this->get('/store/brand/aldef?page=2')->assertOk()
+            ->assertSee('<link rel="canonical" href="' . $brandUrl . '?page=2">', false);
+        $this->get('/store/brand/aldef?page=3')->assertNotFound();
+        $this->get('/store/brand/aldef?page=1')->assertRedirect($brandUrl)->assertStatus(301);
+
+        // The brand list is one page; old catalogue page numbers land on it.
+        $this->get('/store?page=2')->assertRedirect(route('store'))->assertStatus(301);
         $this->get('/store?page=1')->assertRedirect(route('store'))->assertStatus(301);
     }
 
@@ -206,6 +220,7 @@ class StoreCatalogTest extends TestCase
         $sitemap = $this->get('/sitemap.xml')->assertOk()->getContent();
         $this->assertStringContainsString('/store</loc>', $sitemap);
         $this->assertStringContainsString('/store/runner-pro</loc>', $sitemap);
+        $this->assertStringContainsString('/store/brand/aldef</loc>', $sitemap);
         $this->assertStringNotContainsString('draft-shoe', $sitemap);
         $this->assertStringNotContainsString('/en/store', $sitemap);
     }
@@ -223,6 +238,8 @@ class StoreCatalogTest extends TestCase
 
         // On the store itself the button shows it is the current page.
         $this->get('/store')->assertOk()->assertSee('btn-marketplace is-current', false);
+        $this->product();
+        $this->get('/store/brand/aldef')->assertOk()->assertSee('btn-marketplace is-current', false);
     }
 
     public function test_sku_is_dated_sequential_and_never_reused(): void

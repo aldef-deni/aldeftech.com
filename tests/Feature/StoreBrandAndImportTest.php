@@ -265,9 +265,11 @@ class StoreBrandAndImportTest extends TestCase
         $this->assertSame(['published', 'published'], StoreProduct::orderBy('id')->pluck('status')->all());
         $this->assertNotNull($a->fresh()->published_at);
 
-        $this->get('/store?brand=nike')->assertOk()->assertSee('Pegasus')->assertDontSee('Samba');
+        // The old brand filter address moved to the brand's own page.
+        $this->get('/store?brand=nike')->assertRedirect(route('store.brand', 'nike'))->assertStatus(301);
+        $this->get('/store/brand/nike/sepatu-lari')->assertOk()->assertSee('Pegasus')->assertDontSee('Samba');
         $this->get('/store?q=nike')->assertOk()->assertSee('Pegasus');
-        $this->get('/store/pegasus')->assertOk()->assertSee('/store?brand=nike', false);
+        $this->get('/store/pegasus')->assertOk()->assertSee('href="' . route('store.brand', 'nike') . '"', false);
 
         $this->actingAs($this->admin)->delete(route('admin.store.brands.destroy', $nike));
         $this->assertNull($a->fresh()->store_brand_id);

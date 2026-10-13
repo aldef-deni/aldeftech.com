@@ -2,18 +2,17 @@
 
 @php
     $pageTitle = 'Aldef Store — Koleksi Sepatu Pilihan | Aldef Tech';
-    $metaDescription = 'Temukan sepatu pilihan untuk aktivitas Anda. Pilih model dan ukuran, lalu hubungi kami melalui WhatsApp untuk informasi harga dan ketersediaan.';
+    $metaDescription = 'Temukan sepatu pilihan untuk aktivitas Anda. Pilih brand, model, dan ukuran, lalu hubungi kami melalui WhatsApp untuk informasi harga dan ketersediaan.';
     $analyticsPageType = 'store';
 
     // The catalogue exists in Indonesian only.
     $hreflangLocales = ['id'];
 
-    // Search and filter results are views of the same catalogue: keep them out
-    // of the index and point them at /store. Plain pages 2+ keep their number
-    // so crawlers can still walk the catalogue.
-    $isFiltered = collect($filters)->filter(fn ($v) => $v !== '')->isNotEmpty();
+    // /store lists the brands. Search and filter results are views of the
+    // same catalogue: keep them out of the index and point them at /store.
+    $isFiltered = $mode === 'results';
     $noindex = $isFiltered;
-    $canonical = route('store') . (! $isFiltered && $products->currentPage() > 1 ? '?page=' . $products->currentPage() : '');
+    $canonical = route('store');
 @endphp
 
 @push('schema')
@@ -34,7 +33,7 @@
 <x-page-hero
     eyebrow="Aldef Store"
     title="Koleksi Sepatu Pilihan"
-    lead="Temukan sepatu pilihan untuk aktivitas Anda. Pilih model dan ukuran, lalu hubungi kami melalui WhatsApp untuk informasi harga dan ketersediaan."
+    lead="Pilih brand favorit Anda, lalu temukan model dan ukurannya. Hubungi kami melalui WhatsApp untuk informasi harga dan ketersediaan."
     :breadcrumbs="[['label' => 'Aldef Store']]" />
 
 <section class="section-padding surface-ivory relative">
@@ -45,13 +44,14 @@
         @if($hasAnyProduct)
         {{-- Search & filters: a plain GET form, so every result has a shareable URL. --}}
         <form method="GET" action="{{ route('store') }}" role="search"
-              class="grid grid-cols-2 lg:grid-cols-[minmax(0,1fr)_11rem_13rem_9rem_auto] gap-3 pb-10 items-end">
+              class="grid grid-cols-2 {{ $isFiltered ? 'lg:grid-cols-[minmax(0,1fr)_11rem_13rem_9rem_auto]' : 'lg:grid-cols-[minmax(0,1fr)_9rem_auto]' }} gap-3 pb-10 items-end">
             <div class="col-span-2 lg:col-span-1">
                 <label for="store-q" class="form-label">Cari sepatu</label>
                 <input id="store-q" type="search" name="q" value="{{ $filters['q'] }}" maxlength="80"
                        class="form-input h-12" placeholder="Nama model atau merek" autocomplete="off">
             </div>
 
+            @if($isFiltered)
             <div>
                 <label for="store-brand" class="form-label">Brand</label>
                 <select id="store-brand" name="brand" class="form-input h-12">
@@ -71,6 +71,7 @@
                     @endforeach
                 </select>
             </div>
+            @endif
 
             <div>
                 <label for="store-ukuran" class="form-label">Ukuran</label>
@@ -82,8 +83,8 @@
                 </select>
             </div>
 
-            <div class="col-span-2 lg:col-span-1 flex gap-2">
-                <button type="submit" class="btn btn-primary flex-1 lg:flex-none justify-center">Terapkan</button>
+            <div class="{{ $isFiltered ? 'col-span-2 lg:col-span-1' : '' }} flex gap-2">
+                <button type="submit" class="btn btn-primary flex-1 lg:flex-none justify-center">{{ $isFiltered ? 'Terapkan' : 'Cari' }}</button>
                 @if($isFiltered)
                     <a href="{{ route('store') }}" class="btn btn-outline justify-center">Reset</a>
                 @endif
@@ -91,55 +92,41 @@
         </form>
         @endif
 
-        @if($products->isNotEmpty())
-            @if($isFiltered)
-                <p class="pb-6 text-sm text-graphite-600" aria-live="polite">
-                    {{ $products->total() }} sepatu ditemukan
-                </p>
+        @if($mode === 'brands')
+            @if($tiles->isNotEmpty())
+                <h2 class="text-2xl lg:text-3xl">Pilih Brand</h2>
+                <div class="mt-8 grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-3 gap-y-8 sm:gap-x-5 lg:gap-x-6 lg:gap-y-10">
+                    @foreach($tiles as $tile)
+                        @include('pages.partials.store-tile')
+                    @endforeach
+                </div>
             @endif
+
+            @if($loose->isNotEmpty())
+                <h2 class="text-2xl lg:text-3xl {{ $tiles->isNotEmpty() ? 'mt-16' : '' }}">{{ $tiles->isNotEmpty() ? 'Produk Lainnya' : 'Semua Sepatu' }}</h2>
+                <div class="mt-8 grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-3 gap-y-8 sm:gap-x-5 lg:gap-x-6 lg:gap-y-10">
+                    @foreach($loose as $product)
+                        @include('pages.partials.store-product-card')
+                    @endforeach
+                </div>
+            @endif
+
+            @unless($hasAnyProduct)
+                <div class="max-w-lg mx-auto text-center py-16">
+                    <h2 class="text-xl">Koleksi sedang kami siapkan</h2>
+                    <p class="mt-3 text-graphite-600">Belum ada sepatu yang ditampilkan saat ini. Silakan kembali lagi nanti, atau hubungi kami untuk menanyakan model tertentu.</p>
+                    <a href="{{ lroute('contact') }}" class="btn btn-outline mt-7">Hubungi kami</a>
+                </div>
+            @endunless
+
+        @elseif($products->isNotEmpty())
+            <p class="pb-6 text-sm text-graphite-600" aria-live="polite">
+                {{ $products->total() }} sepatu ditemukan
+            </p>
 
             <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-3 gap-y-8 sm:gap-x-5 lg:gap-x-6 lg:gap-y-10">
                 @foreach($products as $product)
-                    @php
-                        $photo = $product->primaryImage();
-                        $label = collect([$product->brandName(), $product->category?->name])->filter()->implode(' · ');
-                        $sizeSummary = $product->sizeSummary();
-                    @endphp
-                    <article class="store-card group flex flex-col">
-                        <a href="{{ route('store.show', $product->slug) }}" class="block"
-                           aria-label="Lihat detail {{ $product->name }}">
-                            <div class="store-photo">
-                                @if($photo && $photo->url)
-                                    <img src="{{ $photo->url }}"
-                                         alt="{{ $photo->alt ?: $product->name . ($product->brandName() ? ' — ' . $product->brandName() : '') }}"
-                                         loading="lazy" decoding="async" width="600" height="600">
-                                @else
-                                    <span class="absolute inset-0 flex items-center justify-center text-gold-400/60" aria-hidden="true">
-                                        <x-lux-icon name="layers" class="w-10 h-10" />
-                                    </span>
-                                @endif
-                                @if($product->isAvailable() === false)
-                                    <span class="absolute top-2.5 left-2.5 rounded-full bg-graphite-900/85 px-2.5 py-1 text-[0.625rem] font-semibold uppercase tracking-[0.1em] text-ivory-100">Stok habis</span>
-                                @endif
-                            </div>
-                        </a>
-
-                        <div class="pt-4 flex-1 flex flex-col">
-                            @if($label)
-                                <p class="text-[0.6875rem] uppercase tracking-[0.14em] text-gold-700 truncate">{{ $label }}</p>
-                            @endif
-                            <h2 class="mt-1.5 text-[0.9375rem] sm:text-base leading-snug font-semibold text-graphite-900">
-                                <a href="{{ route('store.show', $product->slug) }}" class="hover:text-gold-700 transition-colors">{{ $product->name }}</a>
-                            </h2>
-                            @if($sizeSummary)
-                                <p class="mt-1.5 text-xs text-graphite-500">Ukuran {{ $sizeSummary }}</p>
-                            @endif
-                            <a href="{{ route('store.show', $product->slug) }}" class="mt-auto pt-4 link-arrow text-sm" tabindex="-1">
-                                <span>Lihat Detail</span>
-                                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-                            </a>
-                        </div>
-                    </article>
+                    @include('pages.partials.store-product-card')
                 @endforeach
             </div>
 
@@ -149,17 +136,11 @@
                 </div>
             @endif
 
-        @elseif($hasAnyProduct)
+        @else
             <div class="max-w-lg mx-auto text-center py-16">
                 <h2 class="text-xl">Tidak ada sepatu yang cocok</h2>
                 <p class="mt-3 text-graphite-600">Coba kata kunci lain, atau tampilkan semua ukuran dan kategori.</p>
-                <a href="{{ route('store') }}" class="btn btn-outline mt-7">Tampilkan semua sepatu</a>
-            </div>
-        @else
-            <div class="max-w-lg mx-auto text-center py-16">
-                <h2 class="text-xl">Koleksi sedang kami siapkan</h2>
-                <p class="mt-3 text-graphite-600">Belum ada sepatu yang ditampilkan saat ini. Silakan kembali lagi nanti, atau hubungi kami untuk menanyakan model tertentu.</p>
-                <a href="{{ lroute('contact') }}" class="btn btn-outline mt-7">Hubungi kami</a>
+                <a href="{{ route('store') }}" class="btn btn-outline mt-7">Lihat semua brand</a>
             </div>
         @endif
     </div>

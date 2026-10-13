@@ -66,6 +66,9 @@ Route::prefix('en')->name('en.')->group($publicPages);           // en
 // Aldef Store is written in Indonesian only, so it has no /en mount; lroute()
 // falls back to these names on English pages.
 Route::get('/store', [StoreController::class, 'index'])->name('store');
+Route::get('/store/brand/{brand:slug}/{category?}/{subcategory?}', [StoreController::class, 'brand'])
+    ->where(['category' => '[a-z0-9-]+', 'subcategory' => '[a-z0-9-]+'])
+    ->name('store.brand');
 Route::get('/store/{slug}', [StoreController::class, 'show'])
     ->where('slug', '[a-z0-9]+(?:-[a-z0-9]+)*')
     ->name('store.show');
