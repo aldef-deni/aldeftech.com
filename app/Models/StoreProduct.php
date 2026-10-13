@@ -82,6 +82,7 @@ class StoreProduct extends Model
         return $this->belongsTo(StoreCategory::class, 'store_category_id');
     }
 
+    /** Gallery items, photos and videos, main photo first then in order. */
     public function images()
     {
         return $this->hasMany(StoreProductImage::class)->orderByDesc('is_primary')->orderBy('sort_order');
@@ -107,9 +108,10 @@ class StoreProduct extends Model
         return $this->status === self::STATUS_PUBLISHED;
     }
 
+    /** The photo shown on catalogue cards and in link previews; never a video. */
     public function primaryImage(): ?StoreProductImage
     {
-        return $this->images->first();
+        return $this->images->first(fn ($item) => ! $item->isVideo());
     }
 
     /** @return Collection<int, string> sizes in the order the admin entered them */

@@ -88,16 +88,21 @@
       "menuHeader": "Aldef Store"
     },
     {
-      "url": "admin/store/products",
-      "name": "Produk Sepatu",
+      "name": "Sepatu",
       "icon": "menu-icon tf-icons ti tabler-shoe",
-      "slug": "admin.store.products"
-    },
-    {
-      "url": "admin/store/categories",
-      "name": "Kategori Sepatu",
-      "icon": "menu-icon tf-icons ti tabler-category-2",
-      "slug": "admin.store.categories"
+      "slug": ["admin.store.products", "admin.store.categories"],
+      "submenu": [
+        {
+          "url": "admin/store/products",
+          "name": "Produk Sepatu",
+          "slug": "admin.store.products"
+        },
+        {
+          "url": "admin/store/categories",
+          "name": "Kategori Sepatu",
+          "slug": "admin.store.categories"
+        }
+      ]
     },
     {
       "url": "admin/store/settings",

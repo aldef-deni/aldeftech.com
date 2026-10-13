@@ -1,5 +1,5 @@
 /**
- * Aldef Store admin: product photo gallery and the size × colour availability
+ * Aldef Store admin: product photo/video gallery and the size × colour availability
  * table. Loaded only on the product create/edit screens.
  */
 document.addEventListener('DOMContentLoaded', function () {
@@ -8,18 +8,31 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 const IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'webp'];
+const VIDEO_EXTENSIONS = ['mp4', 'webm'];
 
-/* ── Gallery ─────────────────────────────────────────────────────────────── */
+/* ── Gallery: photos and videos ──────────────────────────────────────────── */
 
 function initGallery(root) {
   const list = root.querySelector('[data-gallery-list]');
   const fileInput = root.querySelector('[data-gallery-file]');
   const addBtn = root.querySelector('[data-gallery-add]');
   const errorBox = root.querySelector('[data-gallery-error]');
-  const max = parseInt(root.dataset.max || '12', 10);
+  const limits = {
+    image: parseInt(root.dataset.maxImages || '12', 10),
+    video: parseInt(root.dataset.maxVideos || '3', 10),
+  };
   const token = document.querySelector('meta[name="csrf-token"]');
+  const addLabel = addBtn.innerHTML;
 
   const items = () => Array.from(list.querySelectorAll('[data-gallery-item]'));
+  const count = (type) => items().filter((item) => item.dataset.type === type).length;
+
+  function kindOf(file) {
+    const ext = (file.name.split('.').pop() || '').toLowerCase();
+    if (VIDEO_EXTENSIONS.indexOf(ext) !== -1) return 'video';
+    if (IMAGE_EXTENSIONS.indexOf(ext) !== -1) return 'image';
+    return null;
+  }
 
   function showError(message) {
     errorBox.textContent = message || '';
@@ -27,52 +40,73 @@ function initGallery(root) {
   }
 
   // Field names carry the position, so they are rewritten after every change.
+  // Only a photo can be the main item: catalogue cards need an image.
   function reindex() {
     const all = items();
-    let checked = false;
+    let checked = null;
     all.forEach(function (item, i) {
+      item.querySelector('[data-gallery-type]').name = 'images[' + i + '][type]';
       item.querySelector('[data-gallery-path]').name = 'images[' + i + '][path]';
       item.querySelector('[data-gallery-alt]').name = 'images[' + i + '][alt]';
       const radio = item.querySelector('[data-gallery-primary]');
       radio.value = String(i);
       radio.id = 'primary_' + i;
       radio.nextElementSibling.htmlFor = radio.id;
-      checked = checked || radio.checked;
+      if (radio.checked && item.dataset.type === 'image') checked = radio;
     });
-    if (!checked && all.length) all[0].querySelector('[data-gallery-primary]').checked = true;
-    addBtn.disabled = all.length >= max;
+    if (!checked) {
+      const firstPhoto = all.find((item) => item.dataset.type === 'image');
+      if (firstPhoto) firstPhoto.querySelector('[data-gallery-primary]').checked = true;
+    }
+    addBtn.disabled = count('image') >= limits.image && count('video') >= limits.video;
   }
 
-  function buildItem(path, url) {
+  function buildItem(path, url, type) {
+    const isVideo = type === 'video';
     const col = document.createElement('div');
     col.className = 'col-6 col-md-4 col-xl-3';
     col.setAttribute('data-gallery-item', '');
+    col.dataset.type = type;
     col.innerHTML =
       '<div class="border rounded p-2 h-100 d-flex flex-column gap-2">' +
-      '<div class="ratio ratio-1x1 bg-white rounded border"><img alt="" style="object-fit: contain;" data-gallery-preview></div>' +
+      '<div class="ratio ratio-1x1 bg-white rounded border position-relative">' +
+      (isVideo
+        ? '<video preload="metadata" muted playsinline style="object-fit: contain;" data-gallery-preview></video>' +
+          '<span class="badge bg-dark position-absolute top-0 start-0 m-1" style="width:auto;height:auto;"><i class="icon-base ti tabler-video me-1"></i>Video</span>'
+        : '<img alt="" style="object-fit: contain;" data-gallery-preview>') +
+      '</div>' +
+      '<input type="hidden" data-gallery-type>' +
       '<input type="hidden" data-gallery-path>' +
-      '<input type="text" data-gallery-alt class="form-control form-control-sm" placeholder="Teks alt (opsional)" maxlength="255">' +
-      '<div class="form-check mb-0"><input class="form-check-input" type="radio" name="primary_image" data-gallery-primary>' +
+      '<input type="text" data-gallery-alt class="form-control form-control-sm" maxlength="255">' +
+      '<div class="form-check mb-0"' + (isVideo ? ' hidden' : '') + '>' +
+      '<input class="form-check-input" type="radio" name="primary_image" data-gallery-primary' + (isVideo ? ' disabled' : '') + '>' +
       '<label class="form-check-label small">Foto utama</label></div>' +
       '<div class="d-flex gap-1 mt-auto">' +
       '<button type="button" class="btn btn-sm btn-icon btn-outline-secondary" data-gallery-up title="Geser ke kiri"><i class="icon-base ti tabler-arrow-up"></i></button>' +
       '<button type="button" class="btn btn-sm btn-icon btn-outline-secondary" data-gallery-down title="Geser ke kanan"><i class="icon-base ti tabler-arrow-down"></i></button>' +
-      '<button type="button" class="btn btn-sm btn-icon btn-outline-danger ms-auto" data-gallery-remove title="Hapus foto"><i class="icon-base ti tabler-trash"></i></button>' +
+      '<button type="button" class="btn btn-sm btn-icon btn-outline-danger ms-auto" data-gallery-remove title="Hapus"><i class="icon-base ti tabler-trash"></i></button>' +
       '</div></div>';
-    col.querySelector('[data-gallery-preview]').src = url;
+    col.querySelector('[data-gallery-preview]').src = isVideo ? url + '#t=0.1' : url;
+    col.querySelector('[data-gallery-type]').value = type;
     col.querySelector('[data-gallery-path]').value = path;
+    col.querySelector('[data-gallery-alt]').placeholder = isVideo ? 'Keterangan video (opsional)' : 'Teks alt (opsional)';
     return col;
   }
 
-  function upload(file) {
+  function upload(file, kind, onProgress) {
     return new Promise(function (resolve, reject) {
       const body = new FormData();
       body.append('file', file);
       const xhr = new XMLHttpRequest();
-      xhr.open('POST', root.dataset.uploadUrl);
+      // The kind rides in the query string so the server still knows it when
+      // an oversized body is dropped.
+      xhr.open('POST', root.dataset.uploadUrl + (kind === 'video' ? '?kind=video' : ''));
       xhr.setRequestHeader('Accept', 'application/json');
       xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
       if (token) xhr.setRequestHeader('X-CSRF-TOKEN', token.content);
+      xhr.upload.addEventListener('progress', function (e) {
+        if (e.lengthComputable) onProgress(Math.round((e.loaded / e.total) * 100));
+      });
       xhr.addEventListener('load', function () {
         let data = {};
         try { data = JSON.parse(xhr.responseText || '{}'); } catch { /* not JSON */ }
@@ -86,29 +120,34 @@ function initGallery(root) {
 
   async function addFiles(files) {
     showError('');
-    const room = max - items().length;
-    const queue = Array.from(files).slice(0, Math.max(room, 0));
     const problems = [];
-    if (files.length > room) problems.push('Maksimal ' + max + ' foto per produk.');
+    const queue = Array.from(files);
 
     addBtn.disabled = true;
     for (let i = 0; i < queue.length; i++) {
       const file = queue[i];
-      const ext = (file.name.split('.').pop() || '').toLowerCase();
-      if (IMAGE_EXTENSIONS.indexOf(ext) === -1) {
-        problems.push(file.name + ': format harus JPG, PNG, atau WebP.');
+      const kind = kindOf(file);
+      if (!kind) {
+        problems.push(file.name + ': format harus JPG, PNG, WebP, MP4, atau WebM.');
         continue;
       }
-      addBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Mengunggah ' + (i + 1) + '/' + queue.length + '…';
+      if (count(kind) >= limits[kind]) {
+        problems.push(file.name + ': maksimal ' + limits[kind] + (kind === 'video' ? ' video.' : ' foto.'));
+        continue;
+      }
+      const label = 'Mengunggah ' + (i + 1) + '/' + queue.length;
+      addBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>' + label + '…';
       try {
-        const data = await upload(file);
-        list.appendChild(buildItem(data.path, data.url));
+        const data = await upload(file, kind, function (pct) {
+          addBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>' + label + ' (' + pct + '%)…';
+        });
+        list.appendChild(buildItem(data.path, data.url, kind));
         reindex();
       } catch (err) {
         problems.push(file.name + ': ' + err.message);
       }
     }
-    addBtn.innerHTML = '<i class="icon-base ti tabler-photo-plus me-2"></i>Tambah foto';
+    addBtn.innerHTML = addLabel;
     reindex();
     showError(problems.join(' '));
   }

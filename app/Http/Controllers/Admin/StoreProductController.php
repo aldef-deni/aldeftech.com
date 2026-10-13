@@ -23,6 +23,7 @@ use Illuminate\Validation\ValidationException;
 class StoreProductController extends Controller
 {
     private const MAX_IMAGES = 12;
+    private const MAX_VIDEOS = 3;
     private const MAX_SIZES = 40;
     private const MAX_COLORS = 20;
     private const IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'webp'];
@@ -32,7 +33,7 @@ class StoreProductController extends Controller
         $search = trim((string) $request->query('q', ''));
         $status = (string) $request->query('status', '');
 
-        $products = StoreProduct::with(['category', 'images', 'variants'])
+        $products = StoreProduct::with(['category.parent', 'images', 'variants'])
             ->when($search !== '', function ($query) use ($search) {
                 $like = '%' . addcslashes($search, '%_\\') . '%';
                 $query->where(fn ($q) => $q->where('name', 'like', $like)
@@ -55,7 +56,7 @@ class StoreProductController extends Controller
     public function create()
     {
         return view('admin.store.products.create', [
-            'categories' => StoreCategory::ordered()->get(),
+            'categoryOptions' => StoreCategory::treeOptions(),
         ]);
     }
 
@@ -83,7 +84,7 @@ class StoreProductController extends Controller
 
         return view('admin.store.products.edit', [
             'product' => $product,
-            'categories' => StoreCategory::ordered()->get(),
+            'categoryOptions' => StoreCategory::treeOptions(),
         ]);
     }
 
@@ -140,14 +141,15 @@ class StoreProductController extends Controller
             'colors.*' => [...$option, 'max:60'],
             'available' => 'nullable|array',
             'available.*' => 'string|max:90',
-            'images' => 'nullable|array|max:' . self::MAX_IMAGES,
+            'images' => 'nullable|array|max:' . (self::MAX_IMAGES + self::MAX_VIDEOS),
+            'images.*.type' => 'nullable|in:image,video',
             'images.*.path' => 'required|string|max:500',
             'images.*.alt' => 'nullable|string|max:255',
             'primary_image' => 'nullable|integer|min:0',
         ], [
             'sizes.*.not_regex' => 'Ukuran tidak boleh memuat karakter |.',
             'colors.*.not_regex' => 'Warna tidak boleh memuat karakter |.',
-            'images.max' => 'Maksimal ' . self::MAX_IMAGES . ' foto per produk.',
+            'images.max' => 'Maksimal ' . self::MAX_IMAGES . ' foto dan ' . self::MAX_VIDEOS . ' video per produk.',
         ]);
 
         $images = $this->validatedImages($validated['images'] ?? []);
@@ -180,7 +182,7 @@ class StoreProductController extends Controller
                 'meta_description' => $validated['meta_description'] ?? null,
             ],
             'images' => $images,
-            'primary' => min((int) ($validated['primary_image'] ?? 0), max(count($images) - 1, 0)),
+            'primary' => $this->primaryIndex($images, (int) ($validated['primary_image'] ?? 0)),
             'sizes' => $this->cleanList($validated['sizes'] ?? []),
             'colors' => $this->cleanList($validated['colors'] ?? []),
             'available' => array_values($validated['available'] ?? []),
@@ -188,37 +190,76 @@ class StoreProductController extends Controller
     }
 
     /**
-     * Only images that went through the admin uploader are accepted: a path
-     * under media/ on the public disk, with an image extension, that really
-     * decodes as an image. Anything else is an edited form, not an upload.
+     * Only files that went through the admin uploader are accepted: a path
+     * under media/ on the public disk, with a photo or video extension, whose
+     * content really is a photo (decodes) or a video (MIME type). Anything
+     * else is an edited form, not an upload.
      *
-     * @return list<array{path: string, alt: ?string}>
+     * @return list<array{type: string, path: string, alt: ?string}>
      */
     private function validatedImages(array $images): array
     {
         $disk = Storage::disk('public');
+        $videoExtensions = config('aldeftech.upload.video_mimes', ['mp4', 'webm']);
         $clean = [];
+        $counts = [StoreProductImage::TYPE_IMAGE => 0, StoreProductImage::TYPE_VIDEO => 0];
 
         foreach (array_values($images) as $index => $image) {
+            $type = ($image['type'] ?? '') === StoreProductImage::TYPE_VIDEO
+                ? StoreProductImage::TYPE_VIDEO
+                : StoreProductImage::TYPE_IMAGE;
             $path = ltrim(trim((string) ($image['path'] ?? '')), '/');
             $extension = strtolower(pathinfo($path, PATHINFO_EXTENSION));
 
             $valid = str_starts_with($path, 'media/')
                 && ! str_contains($path, '..')
-                && in_array($extension, self::IMAGE_EXTENSIONS, true)
                 && $disk->exists($path)
-                && @getimagesize($disk->path($path)) !== false;
+                && ($type === StoreProductImage::TYPE_VIDEO
+                    ? in_array($extension, $videoExtensions, true)
+                        // finfo on the bytes: Storage::mimeType() falls back to the
+                        // extension, which would let a renamed text file through.
+                        && str_starts_with((string) (new \finfo(FILEINFO_MIME_TYPE))->file($disk->path($path)), 'video/')
+                    : in_array($extension, self::IMAGE_EXTENSIONS, true)
+                        && @getimagesize($disk->path($path)) !== false);
 
             if (! $valid) {
                 throw ValidationException::withMessages([
-                    "images.{$index}.path" => 'Foto ke-' . ($index + 1) . ' tidak valid. Unggah ulang dalam format JPG, PNG, atau WebP.',
+                    "images.{$index}.path" => $type === StoreProductImage::TYPE_VIDEO
+                        ? 'Video ke-' . ($index + 1) . ' tidak valid. Unggah ulang dalam format MP4 atau WebM.'
+                        : 'Foto ke-' . ($index + 1) . ' tidak valid. Unggah ulang dalam format JPG, PNG, atau WebP.',
                 ]);
             }
 
-            $clean[] = ['path' => $path, 'alt' => filled($image['alt'] ?? null) ? trim($image['alt']) : null];
+            $counts[$type]++;
+            $clean[] = ['type' => $type, 'path' => $path, 'alt' => filled($image['alt'] ?? null) ? trim($image['alt']) : null];
+        }
+
+        if ($counts[StoreProductImage::TYPE_IMAGE] > self::MAX_IMAGES || $counts[StoreProductImage::TYPE_VIDEO] > self::MAX_VIDEOS) {
+            throw ValidationException::withMessages([
+                'images' => 'Maksimal ' . self::MAX_IMAGES . ' foto dan ' . self::MAX_VIDEOS . ' video per produk.',
+            ]);
         }
 
         return $clean;
+    }
+
+    /**
+     * The main photo is what catalogue cards and link previews show, so it
+     * must be a photo: a video chosen as main falls back to the first photo.
+     */
+    private function primaryIndex(array $items, int $requested): int
+    {
+        if (isset($items[$requested]) && $items[$requested]['type'] === StoreProductImage::TYPE_IMAGE) {
+            return $requested;
+        }
+
+        foreach ($items as $index => $item) {
+            if ($item['type'] === StoreProductImage::TYPE_IMAGE) {
+                return $index;
+            }
+        }
+
+        return -1;
     }
 
     /** Readable and unique; a clash gets -2, -3… never a random suffix. */
@@ -257,6 +298,7 @@ class StoreProductController extends Controller
         foreach ($images as $index => $image) {
             StoreProductImage::create([
                 'store_product_id' => $product->id,
+                'type' => $image['type'],
                 'path' => $image['path'],
                 'alt' => $image['alt'],
                 'is_primary' => $index === $primary,

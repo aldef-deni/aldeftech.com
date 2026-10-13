@@ -21,9 +21,15 @@ export function registerStore(Alpine) {
     quantity: 1,
     note: '',
     image: 0,
+    viewer: null, // index open in the full-screen popup, or null
     touched: false,
 
     init() {
+      // The page must not scroll behind the popup.
+      this.$watch('viewer', (value) => {
+        document.body.style.overflow = value === null ? '' : 'hidden';
+      });
+
       // A single option is not a choice; pick it when it is in stock.
       if (this.colors.length === 1 && isColorSelectable(this.variants, this.colors[0], '')) {
         this.color = this.colors[0];
@@ -106,6 +112,24 @@ export function registerStore(Alpine) {
       const count = config.imageCount ?? 0;
       if (count === 0) return;
       this.image = (index + count) % count;
+    },
+
+    // Popup: a photo shown large, or a video with its player. Only the open
+    // item's <video> exists in the DOM, so closing or moving on stops it.
+    openViewer(index) {
+      this.show(index);
+      this.viewer = this.image;
+      this.$nextTick(() => this.$refs.viewerClose?.focus());
+    },
+
+    closeViewer() {
+      this.viewer = null;
+    },
+
+    viewerStep(delta) {
+      if (this.viewer === null) return;
+      this.show(this.viewer + delta);
+      this.viewer = this.image;
     },
   }));
 }

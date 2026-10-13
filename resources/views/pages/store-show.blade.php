@@ -14,7 +14,7 @@
         ?: (filled($product->description)
             ? excerpt_text($product->description, 158)
             : 'Lihat detail ' . $product->name . ' di Aldef Store. Pilih ukuran, lalu tanyakan harga dan ketersediaan melalui WhatsApp.');
-    $ogImage = $images->first()?->url ?? null;
+    $ogImage = $product->primaryImage()?->url;
     $ogType = 'product';
     $hreflangLocales = ['id'];
     $canonical = $productUrl;
@@ -24,7 +24,8 @@
     $hideWhatsAppWidget = true;
 
     $imageAlt = fn ($image, $index) => $image->alt
-        ?: $product->name . ($product->brand ? ' — ' . $product->brand : '') . ($images->count() > 1 ? ' (foto ' . ($index + 1) . ')' : '');
+        ?: $product->name . ($product->brand ? ' — ' . $product->brand : '')
+            . ($images->count() > 1 ? ($image->isVideo() ? ' (video ' : ' (foto ') . ($index + 1) . ')' : '');
 
     $storeConfig = [
         'name' => $product->name,
@@ -81,46 +82,8 @@
     <div class="shell">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14">
 
-            {{-- ── Gallery ─────────────────────────────────────────────── --}}
-            <div class="lg:col-span-7">
-                <div class="store-photo">
-                    @forelse($images as $index => $image)
-                        <img src="{{ $image->url }}" alt="{{ $imageAlt($image, $index) }}"
-                             width="900" height="900" decoding="async"
-                             @if($index === 0) fetchpriority="high" @else loading="lazy" x-cloak @endif
-                             x-show="image === {{ $index }}"
-                             class="absolute inset-0">
-                    @empty
-                        <span class="absolute inset-0 flex items-center justify-center text-gold-400/60" aria-hidden="true">
-                            <x-lux-icon name="layers" class="w-14 h-14" />
-                        </span>
-                    @endforelse
-
-                    @if($images->count() > 1)
-                        <button type="button" @click="show(image - 1)" aria-label="Foto sebelumnya"
-                                class="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 border border-line flex items-center justify-center text-graphite-700 hover:border-gold-400">
-                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
-                        </button>
-                        <button type="button" @click="show(image + 1)" aria-label="Foto berikutnya"
-                                class="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 border border-line flex items-center justify-center text-graphite-700 hover:border-gold-400">
-                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-                        </button>
-                    @endif
-                </div>
-
-                @if($images->count() > 1)
-                    <div class="mt-3 grid grid-cols-5 sm:grid-cols-6 gap-2.5" role="group" aria-label="Pilih foto">
-                        @foreach($images as $index => $image)
-                            <button type="button" class="store-thumb" @click="show({{ $index }})"
-                                    :class="image === {{ $index }} && 'is-active'"
-                                    :aria-current="image === {{ $index }} ? 'true' : 'false'"
-                                    aria-label="Tampilkan foto {{ $index + 1 }}">
-                                <img src="{{ $image->url }}" alt="" loading="lazy" decoding="async" width="160" height="160">
-                            </button>
-                        @endforeach
-                    </div>
-                @endif
-            </div>
+            {{-- ── Gallery (photos, videos, popup viewer) ──────────────── --}}
+            @include('pages.partials.store-gallery')
 
             {{-- ── Picker ──────────────────────────────────────────────── --}}
             <div class="lg:col-span-5">
@@ -139,6 +102,10 @@
                     <div>
                         <dt class="eyebrow">Kategori</dt>
                         <dd class="mt-1.5 font-semibold text-graphite-900">
+                            @if($product->category->parent)
+                                <a href="{{ route('store', ['kategori' => $product->category->parent->slug]) }}" class="hover:text-gold-700">{{ $product->category->parent->name }}</a>
+                                <span class="text-graphite-400" aria-hidden="true">›</span>
+                            @endif
                             <a href="{{ route('store', ['kategori' => $product->category->slug]) }}" class="hover:text-gold-700">{{ $product->category->name }}</a>
                         </dd>
                     </div>

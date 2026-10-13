@@ -41,6 +41,9 @@ return [
         'allowed_mimes' => ['jpg', 'jpeg', 'png', 'gif', 'webp', 'avif', 'svg'],
         'image_max_width' => 2400,
         'image_max_height' => 2400,
+        // Product videos (Aldef Store). Formats every browser plays natively.
+        'video_max_size' => 51200, // KB
+        'video_mimes' => ['mp4', 'webm'],
     ],
 
     'lead' => [

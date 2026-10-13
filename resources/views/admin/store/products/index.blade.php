@@ -95,7 +95,7 @@
                         </div>
                     </td>
                     <td class="d-none d-lg-table-cell">
-                        <span class="badge bg-label-secondary">{{ $product->category->name ?? '—' }}</span>
+                        <span class="badge bg-label-secondary">{{ $product->category?->label() ?? '—' }}</span>
                     </td>
                     <td class="d-none d-md-table-cell">
                         @if($total === 0)

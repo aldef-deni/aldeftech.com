@@ -27,14 +27,17 @@ class StoreController extends Controller
         $categorySlug = (string) $request->query('kategori', '');
         $size = trim(mb_substr((string) $request->query('ukuran', ''), 0, 20));
 
+        // A top-level category also matches the products in its subcategories.
+        $category = $categorySlug !== '' ? StoreCategory::where('slug', $categorySlug)->first() : null;
+
         $products = StoreProduct::published()
             ->with(['category', 'images', 'variants'])
             ->when($search !== '', function ($query) use ($search) {
                 $like = '%' . addcslashes($search, '%_\\') . '%';
                 $query->where(fn ($q) => $q->where('name', 'like', $like)->orWhere('brand', 'like', $like));
             })
-            ->when($categorySlug !== '', fn ($query) => $query->whereHas(
-                'category', fn ($q) => $q->where('slug', $categorySlug)
+            ->when($categorySlug !== '', fn ($query) => $query->whereIn(
+                'store_category_id', $category ? $category->familyIds() : [0]
             ))
             ->when($size !== '', fn ($query) => $query->whereHas(
                 'variants', fn ($q) => $q->where('size', $size)->where('is_available', true)
@@ -46,9 +49,7 @@ class StoreController extends Controller
         // A page past the end would render an empty grid with status 200.
         abort_if($products->currentPage() > 1 && $products->isEmpty(), 404);
 
-        $categories = StoreCategory::ordered()
-            ->whereHas('products', fn ($q) => $q->published())
-            ->get();
+        $categories = $this->categoryFilterOptions();
 
         $sizes = StoreProductVariant::query()
             ->where('is_available', true)
@@ -68,11 +69,40 @@ class StoreController extends Controller
         ]);
     }
 
+    /**
+     * Categories for the filter, subcategories under their parent. Only ones
+     * with published products are offered; a parent stays when only its
+     * subcategories have products, since filtering on it still finds them.
+     *
+     * @return list<array{slug: string, label: string, child: bool}>
+     */
+    private function categoryFilterOptions(): array
+    {
+        $used = StoreProduct::published()->whereNotNull('store_category_id')
+            ->distinct()->pluck('store_category_id')->all();
+
+        $options = [];
+        foreach (StoreCategory::tree() as $parent) {
+            $children = $parent->children->filter(fn ($c) => in_array($c->id, $used));
+
+            if (! in_array($parent->id, $used) && $children->isEmpty()) {
+                continue;
+            }
+
+            $options[] = ['slug' => $parent->slug, 'label' => $parent->name, 'child' => false];
+            foreach ($children as $child) {
+                $options[] = ['slug' => $child->slug, 'label' => $child->name, 'child' => true];
+            }
+        }
+
+        return $options;
+    }
+
     public function show(string $slug)
     {
         $product = StoreProduct::published()
             ->where('slug', $slug)
-            ->with(['category', 'images', 'variants'])
+            ->with(['category.parent', 'images', 'variants'])
             ->firstOrFail();
 
         $related = StoreProduct::published()

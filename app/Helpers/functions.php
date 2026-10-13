@@ -107,6 +107,18 @@ if (! function_exists('max_upload_bytes')) {
     }
 }
 
+if (! function_exists('max_video_upload_bytes')) {
+    /** Like max_upload_bytes(), for product videos, which get a larger limit. */
+    function max_video_upload_bytes(): int
+    {
+        return min(
+            php_size_to_bytes(ini_get('upload_max_filesize')),
+            php_size_to_bytes(ini_get('post_max_size')),
+            (int) config('aldeftech.upload.video_max_size', 51200) * 1024,
+        );
+    }
+}
+
 if (! function_exists('format_upload_mb')) {
     /**
      * "5 MB", "2,5 MB" — Indonesian decimal comma, trailing zeros trimmed.

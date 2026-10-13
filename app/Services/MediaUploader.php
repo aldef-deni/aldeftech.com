@@ -14,15 +14,23 @@ use Illuminate\Support\Str;
  * so every image column stays a plain string. media_url() resolves that path
  * for display and still understands the hand-typed "images/…" values that
  * existed before uploads moved inline.
+ *
+ * Videos (Aldef Store product galleries) go through the same path with their
+ * own formats and size limit.
  */
 class MediaUploader
 {
+    public const KIND_IMAGE = 'image';
+    public const KIND_VIDEO = 'video';
+
     /**
      * @throws MediaUploadException when the file is missing, too large, or not an accepted format
      */
-    public function store(?UploadedFile $file, ?int $userId = null): Media
+    public function store(?UploadedFile $file, ?int $userId = null, string $kind = self::KIND_IMAGE): Media
     {
-        $limit = effective_upload_label();
+        $isVideo = $kind === self::KIND_VIDEO;
+        $maxBytes = $isVideo ? max_video_upload_bytes() : max_upload_bytes();
+        $limit = format_upload_mb($maxBytes);
 
         if (! $file) {
             throw new MediaUploadException('Tidak ada berkas yang dipilih.');
@@ -39,17 +47,24 @@ class MediaUploader
             });
         }
 
-        if ($file->getSize() > max_upload_bytes()) {
+        if ($file->getSize() > $maxBytes) {
             throw new MediaUploadException("Ukuran berkas melebihi batas {$limit}.");
         }
 
-        $allowed = config('aldeftech.upload.allowed_mimes', ['jpg', 'jpeg', 'png', 'gif', 'webp']);
+        $allowed = $isVideo
+            ? config('aldeftech.upload.video_mimes', ['mp4', 'webm'])
+            : config('aldeftech.upload.allowed_mimes', ['jpg', 'jpeg', 'png', 'gif', 'webp']);
         $extension = strtolower($file->getClientOriginalExtension());
 
         if (! in_array($extension, $allowed, true)) {
             throw new MediaUploadException(
                 'Format berkas tidak didukung. Yang diterima: ' . implode(', ', $allowed) . '.'
             );
+        }
+
+        // A renamed file is not a video: check what the bytes actually are.
+        if ($isVideo && ! str_starts_with((string) $file->getMimeType(), 'video/')) {
+            throw new MediaUploadException('Berkas ini bukan video yang valid. Gunakan MP4 atau WebM.');
         }
 
         $filename = Str::uuid() . '.' . $extension;

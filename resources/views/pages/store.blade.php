@@ -56,8 +56,8 @@
                 <label for="store-kategori" class="form-label">Kategori</label>
                 <select id="store-kategori" name="kategori" class="form-input h-12">
                     <option value="">Semua kategori</option>
-                    @foreach($categories as $category)
-                        <option value="{{ $category->slug }}" @selected($filters['kategori'] === $category->slug)>{{ $category->name }}</option>
+                    @foreach($categories as $option)
+                        <option value="{{ $option['slug'] }}" @selected($filters['kategori'] === $option['slug'])>{{ $option['child'] ? '— ' : '' }}{{ $option['label'] }}</option>
                     @endforeach
                 </select>
             </div>

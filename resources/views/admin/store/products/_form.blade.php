@@ -15,7 +15,7 @@
     }
     $knownKeys = $product ? $product->variants->map(fn ($v) => $v->size . '|' . $v->color)->all() : [];
 
-    $images = old('images', $product?->images->map(fn ($i) => ['path' => $i->path, 'alt' => $i->alt])->values()->all() ?? []);
+    $images = old('images', $product?->images->map(fn ($i) => ['type' => $i->type, 'path' => $i->path, 'alt' => $i->alt])->values()->all() ?? []);
     $primaryIndex = (int) old('primary_image', 0);
 @endphp
 
@@ -56,25 +56,38 @@
             </div>
         </div>
 
-        {{-- ── Photos ─────────────────────────────────────────────────── --}}
+        {{-- ── Photos & videos ─────────────────────────────────────────── --}}
         <div class="card mb-4">
             <div class="card-header">
-                <h5 class="card-title mb-1">Foto Produk</h5>
-                <small class="text-body-secondary">JPG, PNG, atau WebP · maks {{ max_upload_label() }} per foto · hingga 12 foto. Foto utama tampil di katalog; urutan menentukan galeri.</small>
+                <h5 class="card-title mb-1">Foto &amp; Video Produk</h5>
+                <small class="text-body-secondary">
+                    Foto: JPG, PNG, atau WebP · maks {{ max_upload_label() }} · hingga 12 foto.
+                    Video: MP4 atau WebM · maks {{ format_upload_mb(max_video_upload_bytes()) }} · hingga 3 video.
+                    Foto utama (harus foto) tampil di katalog; urutan menentukan galeri.
+                </small>
             </div>
-            <div class="card-body" data-store-gallery data-upload-url="{{ route('admin.uploads.store') }}" data-max="12">
+            <div class="card-body" data-store-gallery data-upload-url="{{ route('admin.uploads.store') }}"
+                 data-max-images="12" data-max-videos="3">
                 <div class="row g-3" data-gallery-list>
                     @foreach($images as $index => $image)
-                        <div class="col-6 col-md-4 col-xl-3" data-gallery-item>
+                        @php $isVideo = ($image['type'] ?? 'image') === 'video'; @endphp
+                        <div class="col-6 col-md-4 col-xl-3" data-gallery-item data-type="{{ $isVideo ? 'video' : 'image' }}">
                             <div class="border rounded p-2 h-100 d-flex flex-column gap-2">
-                                <div class="ratio ratio-1x1 bg-white rounded border">
-                                    <img src="{{ media_url($image['path'] ?? '') }}" alt="" style="object-fit: contain;" data-gallery-preview>
+                                <div class="ratio ratio-1x1 bg-white rounded border position-relative">
+                                    @if($isVideo)
+                                        <video src="{{ media_url($image['path'] ?? '') }}#t=0.1" preload="metadata" muted playsinline style="object-fit: contain;" data-gallery-preview></video>
+                                        <span class="badge bg-dark position-absolute top-0 start-0 m-1" style="width:auto;height:auto;"><i class="icon-base ti tabler-video me-1"></i>Video</span>
+                                    @else
+                                        <img src="{{ media_url($image['path'] ?? '') }}" alt="" style="object-fit: contain;" data-gallery-preview>
+                                    @endif
                                 </div>
+                                <input type="hidden" data-gallery-type name="images[{{ $index }}][type]" value="{{ $isVideo ? 'video' : 'image' }}">
                                 <input type="hidden" data-gallery-path name="images[{{ $index }}][path]" value="{{ $image['path'] ?? '' }}">
                                 <input type="text" data-gallery-alt name="images[{{ $index }}][alt]" value="{{ $image['alt'] ?? '' }}"
-                                       class="form-control form-control-sm" placeholder="Teks alt (opsional)" maxlength="255">
-                                <div class="form-check mb-0">
-                                    <input class="form-check-input" type="radio" name="primary_image" value="{{ $index }}" id="primary_{{ $index }}" data-gallery-primary @checked($index === $primaryIndex)>
+                                       class="form-control form-control-sm" placeholder="{{ $isVideo ? 'Keterangan video (opsional)' : 'Teks alt (opsional)' }}" maxlength="255">
+                                <div class="form-check mb-0" @if($isVideo) hidden @endif>
+                                    <input class="form-check-input" type="radio" name="primary_image" value="{{ $index }}" id="primary_{{ $index }}" data-gallery-primary
+                                           @checked($index === $primaryIndex && ! $isVideo) @disabled($isVideo)>
                                     <label class="form-check-label small" for="primary_{{ $index }}">Foto utama</label>
                                 </div>
                                 <div class="d-flex gap-1 mt-auto">
@@ -88,9 +101,9 @@
                     @endforeach
                 </div>
 
-                <input type="file" accept=".jpg,.jpeg,.png,.webp" multiple hidden data-gallery-file>
+                <input type="file" accept=".jpg,.jpeg,.png,.webp,.mp4,.webm,video/mp4,video/webm" multiple hidden data-gallery-file>
                 <button type="button" class="btn btn-outline-primary mt-3" data-gallery-add>
-                    <i class="icon-base ti tabler-photo-plus me-2"></i>Tambah foto
+                    <i class="icon-base ti tabler-photo-plus me-2"></i>Tambah foto / video
                 </button>
                 <div class="text-danger small mt-2" data-gallery-error hidden></div>
                 @error('images')<div class="text-danger small mt-2">{{ $message }}</div>@enderror
@@ -170,7 +183,7 @@
             <div class="card-body">
                 <x-admin.form.select
                     label="Kategori" name="store_category_id"
-                    :options="$categories->pluck('name', 'id')->all()"
+                    :options="$categoryOptions"
                     :value="$product->store_category_id ?? null"
                     placeholder="Tanpa kategori" />
                 <a href="{{ route('admin.store.categories.create') }}" class="small" target="_blank" rel="noopener">+ Kategori baru</a>

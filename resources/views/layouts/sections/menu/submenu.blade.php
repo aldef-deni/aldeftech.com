@@ -12,7 +12,9 @@ use Illuminate\Support\Facades\Route;
       $active = $configData["layout"] === 'vertical' ? 'active open':'active';
       $currentRouteName =  Route::currentRouteName();
 
-      if ($currentRouteName === $submenu->slug) {
+      // A leaf slug names a route prefix, as in the top-level menu: "Produk
+      // Sepatu" (admin.store.products) stays lit on its create and edit pages.
+      if (! isset($submenu->submenu) && (Route::is($submenu->slug) || Route::is($submenu->slug . '.*'))) {
           $activeClass = 'active';
       }
       elseif (isset($submenu->submenu)) {
