@@ -15,17 +15,16 @@ use Illuminate\Support\Collection;
  * ever visible; a draft answers 404 even on its direct URL.
  *
  * Browsing goes brand first:
- *   /store                               brands
- *   /store/brand/{brand}                 its categories, or its products when it has none
- *   /store/brand/{brand}/{category}      its subcategories, or the products
- *   /store/brand/{brand}/{category}/{sub} products
+ *   /store                                   brands
+ *   /store/brand/{brand}                     the brand's shoes
+ *   /store/brand/{brand}/{category}[/{sub}]  the brand's shoes in a category
  * Search and filters (?q, ?kategori, ?ukuran) list products across brands.
  */
 class StoreController extends Controller
 {
     private const PER_PAGE = 12;
 
-    /** Products shown under the tiles, e.g. a brand's uncategorised shoes. */
+    /** Shoes without a brand, listed under the brand tiles on /store. */
     private const LOOSE_LIMIT = 48;
 
     public function index(Request $request)
@@ -130,8 +129,8 @@ class StoreController extends Controller
     }
 
     /**
-     * A brand, then a category, then a subcategory. Each level shows the next
-     * level's tiles when there are any, and the products otherwise.
+     * A brand's shoes. The category segments narrow the list (product pages
+     * link to them); a parent category includes its subcategories.
      */
     public function brand(Request $request, StoreBrand $brand, ?string $category = null, ?string $subcategory = null)
     {
@@ -139,81 +138,27 @@ class StoreController extends Controller
             return redirect()->to($request->url(), 301);
         }
 
-        $base = fn () => StoreProduct::published()->where('store_brand_id', $brand->id);
-        abort_unless($base()->exists(), 404);
-
         $parent = $category ? StoreCategory::topLevel()->where('slug', $category)->firstOrFail() : null;
         $child = $subcategory ? $parent->children()->where('slug', $subcategory)->firstOrFail() : null;
 
-        $used = $base()->whereNotNull('store_category_id')->distinct()->pluck('store_category_id');
-        $usedCategories = StoreCategory::whereIn('id', $used)->get();
+        $products = StoreProduct::published()
+            ->where('store_brand_id', $brand->id)
+            ->when($child, fn ($q) => $q->where('store_category_id', $child->id))
+            ->when($parent && ! $child, fn ($q) => $q->whereIn('store_category_id', $parent->familyIds()))
+            ->with(['brand', 'category', 'images', 'variants'])
+            ->ordered()
+            ->paginate(self::PER_PAGE)
+            ->withQueryString();
 
-        $tiles = collect();
-        $loose = collect();
-        $products = null;
-
-        if (! $parent) {
-            // Brand level: top-level categories this brand's shoes sit in.
-            $topIds = $usedCategories->map(fn ($c) => $c->parent_id ?? $c->id)->unique();
-            $tiles = StoreCategory::whereIn('id', $topIds)->ordered()->get()
-                ->map(fn ($c) => $this->categoryTile($base, $brand, $c));
-
-            if ($tiles->isEmpty()) {
-                $products = $base();
-            } else {
-                $loose = $base()->whereNull('store_category_id');
-            }
-        } elseif (! $child) {
-            abort_unless($base()->whereIn('store_category_id', $parent->familyIds())->exists(), 404);
-
-            $tiles = $parent->children()->whereIn('id', $used)->ordered()->get()
-                ->map(fn ($c) => $this->categoryTile($base, $brand, $c, $parent));
-
-            if ($tiles->isEmpty()) {
-                $products = $base()->whereIn('store_category_id', $parent->familyIds());
-            } else {
-                // Shoes filed under the category itself, not a subcategory.
-                $loose = $base()->where('store_category_id', $parent->id);
-            }
-        } else {
-            $products = $base()->where('store_category_id', $child->id);
-        }
-
-        if ($products) {
-            $products = $products->with(['brand', 'category', 'images', 'variants'])
-                ->ordered()->paginate(self::PER_PAGE)->withQueryString();
-            abort_if($products->currentPage() > 1 && $products->isEmpty(), 404);
-            abort_if($products->total() === 0, 404);
-        }
-        if ($loose instanceof \Illuminate\Database\Eloquent\Builder) {
-            $loose = $loose->with(['brand', 'category', 'images', 'variants'])->ordered()->limit(self::LOOSE_LIMIT)->get();
-        }
+        // No published shoes here, or a page past the end.
+        abort_if($products->isEmpty(), 404);
 
         return view('pages.store-brand', [
             'brand' => $brand,
             'category' => $parent,
             'subcategory' => $child,
-            'tiles' => $tiles,
-            'loose' => $loose,
             'products' => $products,
         ]);
-    }
-
-    private function categoryTile(\Closure $base, StoreBrand $brand, StoreCategory $category, ?StoreCategory $parent = null): array
-    {
-        $ids = $parent ? [$category->id] : $category->familyIds();
-        $count = $base()->whereIn('store_category_id', $ids)->count();
-
-        return [
-            'name' => $category->name,
-            'url' => $parent
-                ? route('store.brand', [$brand->slug, $parent->slug, $category->slug])
-                : route('store.brand', [$brand->slug, $category->slug]),
-            'count' => $count,
-            'logo' => null,
-            'image' => $this->coverImage($base()->whereIn('store_category_id', $ids)),
-            'caption' => $category->description,
-        ];
     }
 
     /** The main photo of the first product in a query, for a tile. */

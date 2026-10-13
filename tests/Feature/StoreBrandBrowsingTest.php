@@ -10,9 +10,8 @@ use Illuminate\Support\Str;
 use Tests\TestCase;
 
 /**
- * Aldef Store browsing goes brand first: /store lists brands, a brand lists
- * its categories (or its shoes when it has none), a category its
- * subcategories (or its shoes).
+ * Aldef Store browsing goes brand first: /store lists brands, and a brand
+ * opens straight onto its shoes.
  */
 class StoreBrandBrowsingTest extends TestCase
 {
@@ -64,7 +63,7 @@ class StoreBrandBrowsingTest extends TestCase
             ->assertSee('Plain Loafer');
     }
 
-    public function test_brand_shows_categories_then_subcategories_then_shoes(): void
+    public function test_brand_opens_straight_onto_its_shoes(): void
     {
         $this->shoe('Pegasus Road', 'Nike', $this->lari);
         $this->shoe('Pegasus Trail', 'Nike', $this->trail);
@@ -72,49 +71,42 @@ class StoreBrandBrowsingTest extends TestCase
         $this->shoe('Nike Mystery', 'Nike');
         $this->shoe('Adidas Trail', 'Adidas', $this->trail);
 
-        // Brand: its categories as tiles; shoes without a category below them.
+        // Every shoe of the brand, whatever its category; no category cards.
         $this->get('/store/brand/nike')->assertOk()
             ->assertSee('<title>Nike — Aldef Store | Aldef Tech</title>', false)
-            ->assertSee('Pilih Kategori')
-            ->assertSee('href="' . route('store.brand', ['nike', 'sepatu-lari']) . '"', false)
-            ->assertSee('href="' . route('store.brand', ['nike', 'sneakers']) . '"', false)
-            ->assertSeeInOrder(['Sepatu Lari', '2 model', 'Sneakers', '1 model', 'Produk Lainnya', 'Nike Mystery'])
-            ->assertDontSee('Pegasus Road')
-            ->assertDontSee('Adidas Trail');
+            ->assertSee('4 model')
+            ->assertSee('Pegasus Road')->assertSee('Pegasus Trail')->assertSee('Air Force')->assertSee('Nike Mystery')
+            ->assertSee('Lihat Detail')
+            ->assertDontSee('Adidas Trail')
+            ->assertDontSee('Pilih Kategori')
+            ->assertDontSee('store-tile', false);
 
-        // Category with subcategories: tiles, and shoes filed on the category itself.
+        // Category addresses (linked from product pages) narrow the list.
         $this->get('/store/brand/nike/sepatu-lari')->assertOk()
-            ->assertSee('Pilih Subkategori')
-            ->assertSee('href="' . route('store.brand', ['nike', 'sepatu-lari', 'trail']) . '"', false)
-            ->assertSee('Lainnya di Sepatu Lari')
-            ->assertSee('Pegasus Road')
-            ->assertDontSee('Pegasus Trail')
+            ->assertSee('Pegasus Road')->assertSee('Pegasus Trail')
+            ->assertDontSee('Air Force')
             ->assertSee('<link rel="canonical" href="' . route('store.brand', ['nike', 'sepatu-lari']) . '">', false);
 
-        // Subcategory: the shoes, of this brand only.
         $this->get('/store/brand/nike/sepatu-lari/trail')->assertOk()
             ->assertSee('Pegasus Trail')
+            ->assertDontSee('Pegasus Road')
             ->assertDontSee('Adidas Trail')
             ->assertSee('<title>Trail — Sepatu Lari — Nike — Aldef Store | Aldef Tech</title>', false)
             ->assertSeeInOrder(['Aldef Store', 'Nike', 'Sepatu Lari', 'Trail']);
-
-        // Category without subcategories: straight to the shoes.
-        $this->get('/store/brand/nike/sneakers')->assertOk()
-            ->assertSee('Air Force')
-            ->assertDontSee('Pilih Subkategori');
     }
 
-    public function test_brand_without_categories_goes_straight_to_the_shoes(): void
+    public function test_brand_pages_are_paginated(): void
     {
-        $this->shoe('Samba', 'Adidas');
-        $this->shoe('Gazelle', 'Adidas');
+        for ($i = 1; $i <= 13; $i++) {
+            $this->shoe("Samba {$i}", 'Adidas', $this->sneakers);
+        }
 
-        $this->get('/store/brand/adidas')->assertOk()
-            ->assertDontSee('Pilih Kategori')
-            ->assertSee('2 model')
-            ->assertSee('Samba')
-            ->assertSee('Gazelle')
-            ->assertSee('Lihat Detail');
+        $url = route('store.brand', 'adidas');
+        $this->get('/store/brand/adidas')->assertOk()->assertSee('13 model')->assertSee('page=2', false);
+        $this->get('/store/brand/adidas?page=2')->assertOk()
+            ->assertSee('<link rel="canonical" href="' . $url . '?page=2">', false);
+        $this->get('/store/brand/adidas?page=3')->assertNotFound();
+        $this->get('/store/brand/adidas?page=1')->assertRedirect($url)->assertStatus(301);
     }
 
     public function test_pages_without_published_shoes_do_not_exist(): void

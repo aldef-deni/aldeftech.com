@@ -23,7 +23,7 @@
 
     // The catalogue exists in Indonesian only.
     $hreflangLocales = ['id'];
-    $page = $products?->currentPage() ?? 1;
+    $page = $products->currentPage();
     $canonical = $pageUrl . ($page > 1 ? '?page=' . $page : '');
 
     $crumbs = [['label' => 'Aldef Store', 'url' => route('store')]];
@@ -67,36 +67,18 @@
 
     <div class="shell relative z-10">
 
-        @if($tiles->isNotEmpty())
-            <h2 class="text-2xl lg:text-3xl">{{ $category ? 'Pilih Subkategori' : 'Pilih Kategori' }}</h2>
-            <div class="mt-8 {{ $grid }}">
-                @foreach($tiles as $tile)
-                    @include('pages.partials.store-tile')
-                @endforeach
+        <p class="pb-6 text-sm text-graphite-600">{{ $products->total() }} model</p>
+
+        <div class="{{ $grid }}">
+            @foreach($products as $product)
+                @include('pages.partials.store-product-card')
+            @endforeach
+        </div>
+
+        @if($products->hasPages())
+            <div class="mt-14">
+                {{ $products->onEachSide(1)->links('vendor.pagination.lux') }}
             </div>
-
-            @if($loose->isNotEmpty())
-                <h2 class="mt-16 text-2xl lg:text-3xl">{{ $category ? 'Lainnya di ' . $category->name : 'Produk Lainnya' }}</h2>
-                <div class="mt-8 {{ $grid }}">
-                    @foreach($loose as $product)
-                        @include('pages.partials.store-product-card')
-                    @endforeach
-                </div>
-            @endif
-        @else
-            <p class="pb-6 text-sm text-graphite-600">{{ $products->total() }} model</p>
-
-            <div class="{{ $grid }}">
-                @foreach($products as $product)
-                    @include('pages.partials.store-product-card')
-                @endforeach
-            </div>
-
-            @if($products->hasPages())
-                <div class="mt-14">
-                    {{ $products->onEachSide(1)->links('vendor.pagination.lux') }}
-                </div>
-            @endif
         @endif
 
         <div class="mt-14">
