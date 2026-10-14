@@ -95,7 +95,7 @@
         @if($mode === 'brands')
             @if($tiles->isNotEmpty())
                 <h2 class="text-2xl lg:text-3xl">Pilih Brand</h2>
-                <div class="mt-8 grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-3 gap-y-8 sm:gap-x-5 lg:gap-x-6 lg:gap-y-10">
+                <div class="mt-8 grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-5 lg:gap-6">
                     @foreach($tiles as $tile)
                         @include('pages.partials.store-tile')
                     @endforeach
@@ -104,7 +104,7 @@
 
             @if($loose->isNotEmpty())
                 <h2 class="text-2xl lg:text-3xl {{ $tiles->isNotEmpty() ? 'mt-16' : '' }}">{{ $tiles->isNotEmpty() ? 'Produk Lainnya' : 'Semua Sepatu' }}</h2>
-                <div class="mt-8 grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-3 gap-y-8 sm:gap-x-5 lg:gap-x-6 lg:gap-y-10">
+                <div class="mt-8 grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-5 lg:gap-6">
                     @foreach($loose as $product)
                         @include('pages.partials.store-product-card')
                     @endforeach
@@ -124,7 +124,7 @@
                 {{ $products->total() }} sepatu ditemukan
             </p>
 
-            <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-3 gap-y-8 sm:gap-x-5 lg:gap-x-6 lg:gap-y-10">
+            <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-5 lg:gap-6">
                 @foreach($products as $product)
                     @include('pages.partials.store-product-card')
                 @endforeach

@@ -6,7 +6,7 @@
    role="button"
    :aria-disabled="(!canAsk).toString()" aria-disabled="true"
    :class="canAsk ? '' : 'opacity-50 cursor-not-allowed'"
-   class="btn btn-primary btn-lg w-full justify-center"
+   class="btn btn-lg btn-store-ask w-full justify-center"
    data-analytics-event="whatsapp_click"
    data-analytics-cta-location="store_product"
    data-analytics-destination="whatsapp">

@@ -108,10 +108,19 @@ export function registerStore(Alpine) {
       if (!this.canAsk) event.preventDefault();
     },
 
-    show(index) {
+    // Gallery and popup are scroll-snap tracks, so a finger swipe moves them
+    // natively; buttons, thumbnails and arrow keys scroll the same tracks.
+    show(index, smooth = true) {
       const count = config.imageCount ?? 0;
       if (count === 0) return;
       this.image = (index + count) % count;
+      slideTo(this.$refs.slider, this.image, smooth);
+    },
+
+    // The track settled on a slide after a swipe.
+    syncSlider() {
+      const index = slideIndex(this.$refs.slider);
+      if (index !== null) this.image = index;
     },
 
     // Popup: a photo shown large, or a video with its player. Only the open
@@ -119,17 +128,42 @@ export function registerStore(Alpine) {
     openViewer(index) {
       this.show(index);
       this.viewer = this.image;
-      this.$nextTick(() => this.$refs.viewerClose?.focus());
+      this.$nextTick(() => {
+        slideTo(this.$refs.viewerTrack, this.viewer, false);
+        this.$refs.viewerClose?.focus();
+      });
     },
 
     closeViewer() {
+      if (this.viewer === null) return;
+      const index = this.viewer;
       this.viewer = null;
+      this.show(index, false);
     },
 
     viewerStep(delta) {
       if (this.viewer === null) return;
-      this.show(this.viewer + delta);
-      this.viewer = this.image;
+      const count = config.imageCount ?? 0;
+      this.viewer = (this.viewer + delta + count) % count;
+      slideTo(this.$refs.viewerTrack, this.viewer, true);
+    },
+
+    syncViewer() {
+      if (this.viewer === null) return;
+      const index = slideIndex(this.$refs.viewerTrack);
+      if (index !== null) this.viewer = index;
     },
   }));
+}
+
+/** Scroll a snap track so slide `index` fills it. */
+function slideTo(track, index, smooth) {
+  if (!track || !track.clientWidth) return;
+  track.scrollTo({ left: index * track.clientWidth, behavior: smooth ? 'smooth' : 'instant' });
+}
+
+/** The slide a snap track rests on, or null while it is hidden. */
+function slideIndex(track) {
+  if (!track || !track.clientWidth) return null;
+  return Math.round(track.scrollLeft / track.clientWidth);
 }

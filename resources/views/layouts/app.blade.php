@@ -198,7 +198,7 @@
     <script>window.__aldefLeadConversion = @json($analyticsLeadConversion);</script>
     @endif
 </head>
-<body class="surface-ivory font-sans antialiased" data-ambient-glow
+<body class="surface-ivory font-sans antialiased {{ $bodyClass ?? '' }}" data-ambient-glow
       data-analytics-page-type="{{ $analyticsPageType ?? '' }}"
       data-analytics-item="{{ $analyticsItem ?? '' }}">
     {{-- GTM Noscript --}}

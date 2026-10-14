@@ -39,7 +39,7 @@
         $schemaItems[] = ['@type' => 'ListItem', 'position' => $i + 3, 'name' => $level['name'], 'item' => $level['url']];
     }
 
-    $grid = 'grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-3 gap-y-8 sm:gap-x-5 lg:gap-x-6 lg:gap-y-10';
+    $grid = 'grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-5 lg:gap-6';
     $back = count($levels) > 1 ? $levels[count($levels) - 2] : ['name' => 'semua brand', 'url' => route('store')];
 @endphp
 
