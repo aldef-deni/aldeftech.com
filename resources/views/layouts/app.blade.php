@@ -79,7 +79,7 @@
     <meta property="og:title" content="{{ $resolvedTitle }}">
     <meta property="og:description" content="{{ $resolvedDescription }}">
     <meta property="og:image" content="{{ $resolvedImage }}">
-    <meta property="og:url" content="{{ $canonicalUrl }}">
+    <meta property="og:url" content="{{ $ogUrl ?? $canonicalUrl }}">
     <meta property="og:site_name" content="{{ config('app.name') }}">
     <meta property="og:locale" content="{{ config('locales.available.'.app()->getLocale().'.og', 'id_ID') }}">
     @foreach($alternates as $code => $href)

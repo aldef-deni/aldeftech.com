@@ -69,6 +69,10 @@ Route::get('/store', [StoreController::class, 'index'])->name('store');
 Route::get('/store/brand/{brand:slug}/{category?}/{subcategory?}', [StoreController::class, 'brand'])
     ->where(['category' => '[a-z0-9-]+', 'subcategory' => '[a-z0-9-]+'])
     ->name('store.brand');
+// One product photo as a JPEG, for WhatsApp and other link previews.
+Route::get('/store/{slug}/foto/{number}.jpg', [StoreController::class, 'photo'])
+    ->where(['slug' => '[a-z0-9]+(?:-[a-z0-9]+)*', 'number' => '[1-9][0-9]{0,3}'])
+    ->name('store.photo');
 Route::get('/store/{slug}', [StoreController::class, 'show'])
     ->where('slug', '[a-z0-9]+(?:-[a-z0-9]+)*')
     ->name('store.show');

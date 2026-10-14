@@ -20,11 +20,15 @@ export function registerStore(Alpine) {
     color: '',
     quantity: 1,
     note: '',
-    image: 0,
+    customSize: '', // typed when the product has no size options
+    image: config.start ?? 0,
     viewer: null, // index open in the full-screen popup, or null
     touched: false,
 
     init() {
+      // Opened from a shared photo link (?foto=N): start on that photo.
+      if (this.image > 0) this.$nextTick(() => slideTo(this.$refs.slider, this.image, false));
+
       // The page must not scroll behind the popup.
       this.$watch('viewer', (value) => {
         document.body.style.overflow = value === null ? '' : 'hidden';
@@ -76,6 +80,8 @@ export function registerStore(Alpine) {
         color: this.color,
         quantity: this.quantity,
         number: config.number,
+        askSize: config.askSize ?? false,
+        customSize: this.customSize,
       });
     },
 
@@ -91,15 +97,22 @@ export function registerStore(Alpine) {
     get whatsappUrl() {
       if (!this.canAsk) return null;
 
+      const media = config.media ?? [];
+
       return buildWhatsAppUrl(config.number, buildMessage({
         name: config.name,
         sku: config.sku,
+        brand: config.brand,
+        category: config.category,
         color: this.color,
         size: this.size,
+        customSize: this.customSize,
         sizeSystem: config.sizeSystem,
         quantity: this.quantity,
         note: this.note,
         url: config.url,
+        // The photo or video on screen when the visitor asks.
+        media: media.length ? { number: this.image + 1, total: media.length, type: media[this.image] } : null,
       }));
     },
 

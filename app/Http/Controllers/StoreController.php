@@ -9,6 +9,8 @@ use App\Models\StoreProductVariant;
 use App\Services\StoreWhatsApp;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * Aldef Store: a shoe catalogue without prices. Only published products are
@@ -206,6 +208,64 @@ class StoreController extends Controller
             ->pluck('size')
             ->sort(fn ($a, $b) => is_numeric($a) && is_numeric($b) ? (float) $a <=> (float) $b : strnatcmp($a, $b))
             ->values();
+    }
+
+    /**
+     * Photo number N of a product (1-based, gallery order) as a JPEG of at
+     * most 1200 px. Link previews (WhatsApp in particular) do not reliably
+     * show WebP, which most product photos are. Converted once, then served
+     * from storage/app/store-previews.
+     */
+    public function photo(string $slug, int $number)
+    {
+        $product = StoreProduct::published()->where('slug', $slug)->with('images')->firstOrFail();
+        $image = $product->images->values()->get($number - 1);
+        abort_if(! $image || $image->isVideo(), 404);
+
+        $source = Storage::disk('public')->path((string) $image->path);
+        abort_unless(is_file($source), 404);
+
+        $target = storage_path('app/store-previews/' . $image->id . '-' . filemtime($source) . '.jpg');
+        if (! is_file($target) && ! $this->writePreview($source, $target)) {
+            // Cannot convert here (no GD support for the format): the original will do.
+            return response()->file($source, ['Cache-Control' => 'public, max-age=604800']);
+        }
+
+        return response()->file($target, [
+            'Content-Type' => 'image/jpeg',
+            'Cache-Control' => 'public, max-age=604800',
+        ]);
+    }
+
+    private function writePreview(string $source, string $target): bool
+    {
+        $info = @getimagesize($source);
+        $open = match ($info[2] ?? null) {
+            IMAGETYPE_JPEG => 'imagecreatefromjpeg',
+            IMAGETYPE_PNG => 'imagecreatefrompng',
+            IMAGETYPE_WEBP => 'imagecreatefromwebp',
+            default => null,
+        };
+        if (! $open || ! function_exists($open) || ! ($image = @$open($source))) {
+            return false;
+        }
+
+        [$width, $height] = [imagesx($image), imagesy($image)];
+        $scale = min(1, 1200 / max($width, $height));
+        $w = max(1, (int) round($width * $scale));
+        $h = max(1, (int) round($height * $scale));
+
+        // JPEG has no transparency: flatten onto white.
+        $canvas = imagecreatetruecolor($w, $h);
+        imagefill($canvas, 0, 0, imagecolorallocate($canvas, 255, 255, 255));
+        imagecopyresampled($canvas, $image, 0, 0, 0, 0, $w, $h, $width, $height);
+
+        File::ensureDirectoryExists(dirname($target));
+        $saved = imagejpeg($canvas, $target, 82);
+        imagedestroy($image);
+        imagedestroy($canvas);
+
+        return $saved;
     }
 
     public function show(string $slug)

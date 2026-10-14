@@ -137,7 +137,7 @@ class StoreMediaAndCategoryTest extends TestCase
             ->assertSee('type="video/mp4"', false)
             ->assertSee('role="dialog" aria-modal="true"', false)
             // Link previews use the photo, never the video.
-            ->assertSee('<meta property="og:image" content="' . media_url('media/photo.png'), false);
+            ->assertSee('<meta property="og:image" content="' . route('store.photo', ['runner-video', 1]) . '"', false);
     }
 
     public function test_subcategories_one_level_deep(): void

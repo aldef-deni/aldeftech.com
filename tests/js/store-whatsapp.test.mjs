@@ -40,22 +40,65 @@ test('quantity is a whole number of at least 1', () => {
   assert.equal(w.clampQuantity('abc'), 1);
 });
 
-test('message follows the template and drops empty colour and note lines', () => {
+test('message follows the template and drops empty lines', () => {
   const message = w.buildMessage({
     name: 'Sepatu Lari X', sku: 'ATS1210202600001', color: '', size: '42', sizeSystem: 'EU',
     quantity: 2, note: '   ', url: 'https://aldeftech.com/store/sepatu-lari-x',
   });
   assert.equal(message, [
-    'Halo, saya tertarik dengan produk sepatu di website Aldeftech.',
+    'Halo Aldef Store, saya ingin menanyakan sepatu ini:',
     '',
-    'Produk: Sepatu Lari X',
+    '*Sepatu Lari X*',
     'Kode: ATS1210202600001',
     'Ukuran: 42 (EU)',
     'Jumlah: 2 pasang',
-    'Link produk: https://aldeftech.com/store/sepatu-lari-x',
+    '',
+    'Link produk:',
+    'https://aldeftech.com/store/sepatu-lari-x',
     '',
     'Mohon informasi harga dan ketersediaannya. Terima kasih.',
   ].join('\n'));
+});
+
+test('message names the brand, category and the photo on screen', () => {
+  const message = w.buildMessage({
+    name: 'Gel-Kayano 30', sku: 'ATS1', brand: 'Asics', category: 'Sepatu Lari › Road', color: 'Hitam',
+    size: '42', sizeSystem: 'EU', quantity: 1, note: 'Kirim ke Bandung',
+    url: 'https://aldeftech.com/store/gel-kayano-30', media: { number: 3, total: 6, type: 'image' },
+  });
+  assert.equal(message, [
+    'Halo Aldef Store, saya ingin menanyakan sepatu ini:',
+    '',
+    '*Gel-Kayano 30*',
+    'Brand: Asics',
+    'Kategori: Sepatu Lari › Road',
+    'Kode: ATS1',
+    'Warna: Hitam',
+    'Ukuran: 42 (EU)',
+    'Jumlah: 1 pasang',
+    'Catatan: Kirim ke Bandung',
+    '',
+    'Foto yang saya lihat (3 dari 6):',
+    'https://aldeftech.com/store/gel-kayano-30?foto=3',
+    '',
+    'Mohon informasi harga dan ketersediaannya. Terima kasih.',
+  ].join('\n'));
+
+  // It is the only link, so WhatsApp previews that photo.
+  assert.equal(message.match(/https?:\/\//g).length, 1);
+
+  const video = w.buildMessage({ name: 'X', sku: 'S', quantity: 1, url: 'https://a.test/store/x', media: { number: 2, total: 4, type: 'video' } });
+  assert.ok(video.includes('Video yang saya lihat (2 dari 4):\nhttps://a.test/store/x?foto=2'));
+});
+
+test('without size options the visitor types the size', () => {
+  const free = { variants: [], sizes: [], colors: [], size: '', color: '', quantity: 1, number: '62811', askSize: true };
+  assert.equal(w.selectionProblem({ ...free, customSize: '   ' }), 'type-size');
+  assert.equal(w.selectionProblem({ ...free, customSize: '42' }), null);
+
+  const message = w.buildMessage({ name: 'X', sku: 'S', customSize: '  42   wide ', sizeSystem: 'EU', quantity: 1, url: 'https://a.test/x' });
+  assert.ok(message.includes('Ukuran: 42 wide (EU)'));
+  assert.equal(w.cleanSize('x'.repeat(50)).length, w.MAX_SIZE_LENGTH);
 });
 
 test('special characters and line breaks are encoded for wa.me', () => {

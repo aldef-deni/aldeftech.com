@@ -27,7 +27,19 @@
         ?: (filled($product->description)
             ? excerpt_text($product->description, 158)
             : 'Lihat detail ' . $product->name . ' di Aldef Store. Pilih ukuran, lalu tanyakan harga dan ketersediaan melalui WhatsApp.');
-    $ogImage = $product->primaryImage()?->url;
+    // ?foto=N opens the gallery on photo N: the link the WhatsApp message
+    // carries. Its preview shows that photo; the canonical stays the product.
+    $foto = (int) request()->query('foto', 0);
+    $start = $foto >= 1 && $foto <= $images->count() ? $foto - 1 : 0;
+    $previewIndex = $images->values()->get($start)?->isVideo() === false
+        ? $start
+        : $images->values()->search(fn ($image) => ! $image->isVideo());
+    $ogImage = $previewIndex !== false && $previewIndex !== null
+        ? route('store.photo', [$product->slug, $previewIndex + 1])
+        : null;
+    if ($start > 0) {
+        $ogUrl = $productUrl . '?foto=' . ($start + 1);
+    }
     $ogType = 'product';
     $hreflangLocales = ['id'];
     $canonical = $productUrl;
@@ -46,8 +58,14 @@
         'name' => $product->name,
         'sku' => $product->sku,
         'url' => $productUrl,
+        'brand' => $product->brandName(),
+        'category' => $product->category?->label(),
         'sizeSystem' => $product->size_system,
         'number' => $waNumber,
+        'start' => $start,
+        'media' => $images->map(fn ($image) => $image->isVideo() ? 'video' : 'image')->values()->all(),
+        // No size options set: the visitor types the size they want.
+        'askSize' => $sizes->isEmpty(),
         'variants' => $product->variantMatrix(),
         'sizes' => $sizes->all(),
         'colors' => $colors->all(),
@@ -56,6 +74,7 @@
             'no-number' => 'Nomor WhatsApp toko belum diatur. Silakan hubungi kami melalui halaman Kontak.',
             'pick-color' => 'Pilih warna terlebih dahulu.',
             'pick-size' => 'Pilih ukuran terlebih dahulu.',
+            'type-size' => 'Tulis ukuran yang Anda inginkan.',
             'quantity' => 'Jumlah minimal 1 pasang.',
             'unavailable' => 'Kombinasi ukuran dan warna ini sedang habis. Silakan pilih yang lain.',
         ],
@@ -138,7 +157,7 @@
                 </div>
 
                 <p class="mt-6 text-[0.9375rem] leading-relaxed text-zinc-400">
-                    Pilih {{ $colors->isNotEmpty() ? 'warna dan ukuran' : 'ukuran' }}, lalu kirim pertanyaan Anda. Harga dan stok terbaru kami informasikan langsung melalui WhatsApp.
+                    Pilih {{ $colors->isNotEmpty() ? 'foto, warna, dan ukuran' : 'foto dan ukuran' }}, lalu kirim pertanyaan Anda. Foto yang sedang Anda lihat ikut terkirim di pesan WhatsApp, dan harga serta stok terbaru kami informasikan langsung.
                 </p>
 
                 <div class="store-panel mt-8 p-5 sm:p-7">
@@ -189,7 +208,17 @@
                     </fieldset>
                     @endif
 
-                    <div @class(['mt-7' => $colors->isNotEmpty() || $sizes->isNotEmpty()])>
+                    @if($sizes->isEmpty())
+                    <div @class(['mt-7' => $colors->isNotEmpty()])>
+                        <label for="store-size" class="form-label">
+                            Ukuran yang Anda inginkan @if($product->size_system)<span class="text-zinc-400 font-normal">({{ $product->size_system }})</span>@endif
+                        </label>
+                        <input id="store-size" type="text" x-model="customSize" maxlength="20" autocomplete="off"
+                               class="form-input" placeholder="Contoh: 42" inputmode="text">
+                    </div>
+                    @endif
+
+                    <div class="mt-7">
                         <label for="store-qty" class="form-label">Jumlah (pasang)</label>
                         <div class="inline-flex items-center gap-2">
                             <button type="button" class="store-option !min-w-0 w-11 h-11 !p-0" @click="step(-1)" :disabled="quantity <= 1" aria-label="Kurangi jumlah">−</button>
