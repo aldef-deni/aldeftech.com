@@ -2008,35 +2008,113 @@
 
 /* ============================================================================
    MARKETPLACE BUTTON (navbar)
-   Deep red call to action for Aldef Store, set apart from the main menu. A
-   band of light sweeps across it every few seconds, like a reflection on a
-   polished surface. It reuses the .btn::after sheen that other buttons show
-   on hover, run on a loop here; the reduced-motion rule below stops it.
+   Aldef Store's call to action, set apart from the main menu: a pane of red
+   tinted glass. Layers, back to front:
+   - the button's own background: a gloss on the top half over a red tint
+     whose gradient drifts slowly sideways (seamless: it repeats every 200%
+     and moves exactly one period per cycle);
+   - ::before, a hairline border lit like the edge of glass, brighter at
+     the top left and bottom right;
+   - ::after, a soft band of light that sweeps across every 4.2 s and rests
+     off the button in between, so the loop never shows a seam.
+   The text sits above all of them. Reduced motion stops both animations.
    ========================================================================== */
 .btn-marketplace {
-  background: linear-gradient(150deg, #A3191F 0%, #7F1015 52%, #5C0A0E 100%);
   color: #FFFFFF;
-  border-color: rgba(255, 255, 255, 0.16);
-  box-shadow: 0 10px 24px -12px rgba(127, 16, 21, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  border-color: transparent;
+  text-shadow: 0 1px 1px rgba(60, 4, 8, 0.35);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.26) 0%, rgba(255, 255, 255, 0.08) 46%, rgba(255, 255, 255, 0) 54%, rgba(40, 0, 4, 0.12) 100%),
+    linear-gradient(105deg, rgba(186, 26, 35, 0.9) 0%, rgba(142, 16, 24, 0.92) 25%, rgba(170, 22, 30, 0.9) 50%, rgba(142, 16, 24, 0.92) 75%, rgba(186, 26, 35, 0.9) 100%);
+  background-size: 100% 100%, 200% 100%;
+  background-repeat: no-repeat, repeat-x;
+  -webkit-backdrop-filter: blur(12px) saturate(170%);
+  backdrop-filter: blur(12px) saturate(170%);
+  box-shadow:
+    0 10px 26px -12px rgba(163, 25, 31, 0.75),
+    0 2px 6px -2px rgba(60, 4, 8, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.38),
+    inset 0 -1px 0 rgba(40, 0, 4, 0.25);
+  animation: marketplace-drift 9s linear infinite;
+  transition:
+    transform var(--t-slow) var(--e-soft),
+    box-shadow var(--t-slow) var(--e-soft),
+    filter var(--t-mid) var(--e-glide);
 }
-.btn-marketplace:hover {
-  color: #FFFFFF;
-  background: linear-gradient(150deg, #B31E25 0%, #8C1218 52%, #660B10 100%);
+
+/* The glass edge. */
+.btn-marketplace::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  padding: 1px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.16) 32%, rgba(255, 255, 255, 0.06) 62%, rgba(255, 200, 204, 0.6) 100%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  pointer-events: none;
 }
-.btn-marketplace:focus-visible { outline: 2px solid #F3B4B4; outline-offset: 3px; }
+
+/* The light sweep. */
 .btn-marketplace::after {
-  background: linear-gradient(105deg, transparent 32%, rgba(255, 255, 255, 0.55) 48%, rgba(255, 255, 255, 0.85) 50%, rgba(255, 255, 255, 0.55) 52%, transparent 68%);
+  background: linear-gradient(110deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.10) 40%,
+    rgba(255, 255, 255, 0.42) 48%,
+    rgba(255, 255, 255, 0.62) 50%,
+    rgba(255, 255, 255, 0.42) 52%,
+    rgba(255, 255, 255, 0.10) 60%,
+    transparent 70%);
   opacity: 1;
   transition: none;
-  animation: marketplace-shine 2.8s cubic-bezier(.45, 0, .25, 1) infinite;
+  animation: marketplace-shine 4.2s cubic-bezier(0.37, 0, 0.18, 1) infinite;
 }
-/* On the store itself the button marks the current page and holds still. */
-.btn-marketplace.is-current { box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px #7F1015; }
-.btn-marketplace.is-current::after { animation: none; opacity: 0; }
+
+.btn-marketplace:hover {
+  color: #FFFFFF;
+  filter: brightness(1.08) saturate(1.05);
+  transform: translateY(-1px);
+  box-shadow:
+    0 14px 32px -12px rgba(225, 29, 42, 0.75),
+    0 0 22px -6px rgba(255, 70, 82, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    inset 0 -1px 0 rgba(40, 0, 4, 0.25);
+}
+.btn-marketplace:active {
+  filter: brightness(0.96);
+  transform: translateY(0) scale(0.975);
+  box-shadow:
+    0 6px 16px -10px rgba(163, 25, 31, 0.8),
+    inset 0 1px 2px rgba(40, 0, 4, 0.35);
+}
+.btn-marketplace:focus-visible { outline: 2px solid #F3B4B4; outline-offset: 3px; }
+
+/* On the store itself a ring marks the current page; the glass keeps moving. */
+.btn-marketplace.is-current {
+  box-shadow:
+    0 0 0 2px rgba(255, 255, 255, 0.9),
+    0 0 0 4px rgba(127, 16, 21, 0.85),
+    0 10px 26px -12px rgba(163, 25, 31, 0.75),
+    inset 0 1px 0 rgba(255, 255, 255, 0.38);
+}
 
 @keyframes marketplace-shine {
   0% { transform: translateX(-130%); }
-  45%, 100% { transform: translateX(130%); }
+  55%, 100% { transform: translateX(130%); }
+}
+@keyframes marketplace-drift {
+  from { background-position: 0 0, 0% 0; }
+  to { background-position: 0 0, -200% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-marketplace,
+  .btn-marketplace::after { animation: none; }
+  .btn-marketplace::after { opacity: 0; }
+  .btn-marketplace:hover,
+  .btn-marketplace:active { transform: none; }
 }
 
 /* ============================================================================
